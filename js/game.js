@@ -17,6 +17,7 @@ const Game = {
         // Initialiser les systèmes
         Mine.init();
         Hatchery.init();
+        MapSystem.init();
         
         UI.init();
 

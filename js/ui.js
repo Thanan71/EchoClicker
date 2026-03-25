@@ -7,7 +7,6 @@ const UI = {
     captureWildEcho: null,
 
     init() {
-        MapSystem.init();
         this.renderRoutes();
         this.renderShop();
         this.renderAchievements();
@@ -88,8 +87,10 @@ const UI = {
         if (regionNameEl) regionNameEl.textContent = `${region.emoji} ${region.name}`;
         if (regionDescEl) regionDescEl.textContent = region.desc;
 
-        // Mettre à jour la carte canvas
-        MapSystem.updateLocations();
+        // Mettre à jour les boutons de navigation de la carte
+        if (MapSystem.createNavigationButtons) {
+            MapSystem.createNavigationButtons();
+        }
     },
 
     // === Combat ===

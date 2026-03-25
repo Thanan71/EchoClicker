@@ -399,6 +399,47 @@ body {
     box-shadow: 0 6px 30px rgba(139, 92, 246, 0.3);
 }
 
+/* Map Navigation Buttons */
+.map-nav-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.map-nav-btn {
+    background: var(--bg-tertiary);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+}
+
+.map-nav-btn:hover:not(:disabled) {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.map-nav-btn.active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+    border-color: var(--accent-purple);
+    color: var(--text-primary);
+    box-shadow: 0 0 15px var(--glow-purple);
+}
+
+.map-nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+}
+
 .map-legend {
     display: flex;
     gap: 16px;
