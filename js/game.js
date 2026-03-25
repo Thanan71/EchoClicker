@@ -1,0 +1,439 @@
+// ============================================
+// ÉchoClicker - Moteur de jeu principal (v2)
+// ============================================
+
+const Game = {
+    state: null,
+    _clickTimestamps: [],
+    _cps: 0,
+    _lastSave: 0,
+
+    init() {
+        this.initState();
+        SaveSystem.load();
+        this.setupEvents();
+        this.setupEventBus();
+        UI.init();
+
+        // Démarrer la boucle de jeu
+        GameLoop.start(
+            (dt) => this.update(dt),
+            (alpha) => this.render(alpha)
+        );
+
+        // Auto-sauvegarde
+        setInterval(() => SaveSystem.save(), GAME_CONFIG.AUTO_SAVE_INTERVAL);
+
+        UI.toast('Bienvenue dans ÉchoClicker : Liens Éternels !', 'info');
+    },
+
+    initState() {
+        this.state = {
+            energy: 0,
+            links: 5,
+            crystals: 0,
+            shards: 0,
+            totalEnergy: 0,
+            totalClicks: 0,
+            totalCaptures: 0,
+            uniqueCaptures: 0,
+            primordialCount: 0,
+            totalWins: 0,
+            bossesDefeated: 0,
+            regionsUnlocked: 1,
+            maxLevel: 1,
+            playTime: 0,
+            clickPower: GAME_CONFIG.ENERGY_PER_CLICK_BASE,
+            passiveIncome: GAME_CONFIG.PASSIVE_BASE,
+            currentRegion: 'foret',
+            currentRoute: null,
+            party: [],
+            reserves: [],
+            seenEchoes: new Set(),
+            caughtEchoes: new Set(),
+            achievements: new Set(),
+            regions: Utils.deepClone(REGIONS),
+            boosts: {},
+            startTime: Date.now()
+        };
+    },
+
+    // === Boucle de jeu ===
+    update(dt) {
+        // Revenu passif (delta time pour précision idle)
+        const passive = this.getPassiveIncome() * dt;
+        if (passive > 0) {
+            this.state.energy += passive;
+            this.state.totalEnergy += passive;
+        }
+
+        // Temps de jeu (delta time)
+        this.state.playTime += dt;
+
+        // Combat automatique
+        Combat.update(dt);
+
+        // Calcul du CPS
+        this.updateCPS();
+
+        // Mise à jour des boosts
+        this.updateBoosts(dt);
+
+        // Vérification des succès
+        this.checkAchievements();
+
+        // Émission de l'événement tick
+        EventBus.emit(GAME_EVENTS.TICK, { dt });
+    },
+
+    render(alpha) {
+        UI.render(alpha);
+    },
+
+    // === CPS (Clics par seconde) ===
+    updateCPS() {
+        const now = Date.now();
+        const window = GAME_CONFIG.CPS_WINDOW;
+        this._clickTimestamps = this._clickTimestamps.filter(t => now - t < window);
+        this._cps = this._clickTimestamps.length / (window / 1000);
+    },
+
+    getCPS() {
+        return this._cps;
+    },
+
+    // === Clic ===
+    click(event) {
+        this.state.totalClicks++;
+        this._clickTimestamps.push(Date.now());
+
+        const power = this.getClickPower();
+        this.state.energy += power;
+        this.state.totalEnergy += power;
+
+        EventBus.emit(GAME_EVENTS.CLICK, { power, event });
+
+        // En combat, fait des dégâts
+        if (Combat.inCombat) {
+            Combat.playerClick();
+        }
+
+        // Particule
+        if (event) UI.spawnParticle(event, `+${Utils.formatNumber(power)}`);
+    },
+
+    getClickPower() {
+        let power = this.state.clickPower;
+        if (this.state.boosts.energy) power *= 2;
+        // Bonus passif basé sur le nombre d'Échos
+        power += this.state.party.length * 0.1;
+        return Math.floor(power);
+    },
+
+    getPassiveIncome() {
+        let income = this.state.passiveIncome;
+        // Bonus par Écho en équipe
+        income += this.state.party.length * 0.05;
+        // Bonus par niveau moyen
+        if (this.state.party.length > 0) {
+            const avgLv = this.state.party.reduce((s, e) => s + e.level, 0) / this.state.party.length;
+            income += avgLv * 0.02;
+        }
+        if (this.state.boosts.energy) income *= 2;
+        return income;
+    },
+
+    // === Monnaies ===
+    spendEnergy(amount) {
+        if (this.state.energy < amount) return false;
+        this.state.energy -= amount;
+        return true;
+    },
+
+    spendLinks(amount) {
+        if (this.state.links < amount) return false;
+        this.state.links -= amount;
+        EventBus.emit(GAME_EVENTS.LINKS_CHANGED, { links: this.state.links });
+        return true;
+    },
+
+    addLinks(amount) {
+        this.state.links += amount;
+        EventBus.emit(GAME_EVENTS.LINKS_CHANGED, { links: this.state.links });
+    },
+
+    // === Équipe ===
+    addToParty(echo) {
+        if (this.state.party.length >= GAME_CONFIG.MAX_PARTY) return false;
+        this.state.party.push(echo);
+        return true;
+    },
+
+    removeFromParty(uid) {
+        const idx = this.state.party.findIndex(e => e.uid === uid);
+        if (idx === -1) return false;
+        const echo = this.state.party.splice(idx, 1)[0];
+        this.state.reserves.push(echo);
+        return true;
+    },
+
+    moveToParty(uid) {
+        if (this.state.party.length >= GAME_CONFIG.MAX_PARTY) {
+            UI.toast('Équipe pleine ! (max 6)', 'warning');
+            return false;
+        }
+        const idx = this.state.reserves.findIndex(e => e.uid === uid);
+        if (idx === -1) return false;
+        const echo = this.state.reserves.splice(idx, 1)[0];
+        this.state.party.push(echo);
+        return true;
+    },
+
+    getAllEchoes() {
+        return [...this.state.party, ...this.state.reserves];
+    },
+
+    findEcho(uid) {
+        return this.getAllEchoes().find(e => e.uid === uid);
+    },
+
+    // === Capture ===
+    attemptCapture(wildEcho) {
+        if (!this.spendLinks(1)) {
+            UI.toast('Pas assez de Liens d\'Aether !', 'error');
+            return false;
+        }
+
+        const rate = Utils.calculateCaptureRate(
+            wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
+            wildEcho.hp, wildEcho.maxHp
+        );
+
+        if (Utils.chance(rate)) {
+            const captured = new Echo(
+                getEchoById(wildEcho.id),
+                wildEcho.level,
+                wildEcho.isPrimordial
+            );
+
+            this.state.totalCaptures++;
+            this.state.caughtEchoes.add(wildEcho.id);
+            if (!this.state.seenEchoes.has(wildEcho.id)) this.state.uniqueCaptures++;
+            if (wildEcho.isPrimordial) this.state.primordialCount++;
+
+            if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
+                this.addToParty(captured);
+            } else {
+                this.state.reserves.push(captured);
+            }
+
+            EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+            const prefix = wildEcho.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
+            UI.toast(`${prefix}${wildEcho.name} capturé !`, 'success');
+            return true;
+        }
+
+        UI.toast('Capture échouée...', 'error');
+        return false;
+    },
+
+    // === Routes & Régions ===
+    selectRoute(routeId) {
+        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        if (!region) return;
+        const route = region.routes.find(r => r.id === routeId);
+        if (!route || !route.unlocked) {
+            UI.toast('Route non débloquée !', 'warning');
+            return;
+        }
+        this.state.currentRoute = route;
+        Combat.startCombat(route);
+        UI.switchTab('combat');
+    },
+
+    selectRegion(regionId) {
+        const region = this.state.regions.find(r => r.id === regionId);
+        if (!region || !region.unlocked) {
+            UI.toast('Contrée non débloquée !', 'warning');
+            return;
+        }
+        this.state.currentRegion = regionId;
+        this.state.currentRoute = null;
+        Combat.endCombat();
+        UI.renderRoutes();
+    },
+
+    unlockNextRoute() {
+        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        if (!region) return;
+        const idx = region.routes.findIndex(r => r.id === this.state.currentRoute?.id);
+        if (idx < region.routes.length - 1) {
+            region.routes[idx + 1].unlocked = true;
+            EventBus.emit(GAME_EVENTS.ROUTE_UNLOCKED, { route: region.routes[idx + 1] });
+            UI.toast(`Nouvelle route : ${region.routes[idx + 1].name} !`, 'success');
+        }
+    },
+
+    defeatBoss() {
+        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        if (!region) return;
+        region.bossDefeated = true;
+        this.state.bossesDefeated++;
+        EventBus.emit(GAME_EVENTS.BOSS_DEFEATED, { region });
+
+        const idx = this.state.regions.findIndex(r => r.id === this.state.currentRegion);
+        if (idx < this.state.regions.length - 1) {
+            const next = this.state.regions[idx + 1];
+            next.unlocked = true;
+            next.routes[0].unlocked = true;
+            this.state.regionsUnlocked++;
+            EventBus.emit(GAME_EVENTS.REGION_UNLOCKED, { region: next });
+            UI.toast(`🎉 ${region.name} terminée ! ${next.name} débloquée !`, 'success');
+        } else {
+            UI.toast('🏆 Toutes les contrées conquises !', 'success');
+        }
+    },
+
+    // === Boutique ===
+    buyItem(item) {
+        if (item.currency === 'energy' && !this.spendEnergy(item.price)) {
+            UI.toast('Pas assez d\'Énergie !', 'error'); return false;
+        }
+        if (item.currency === 'shards' && this.state.shards < item.price) {
+            UI.toast('Pas assez d\'Éclats !', 'error'); return false;
+        }
+        if (item.currency === 'shards') this.state.shards -= item.price;
+
+        if (item.amount && item.id.startsWith('l')) this.addLinks(item.amount);
+        if (item.id === 'evo') this.state.crystals++;
+        if (item.id === 'candy' && this.state.party[0]) {
+            this.state.party[0].gainXp(this.state.party[0].xpToNext);
+        }
+        if (item.id === 'potion') this.getAllEchoes().forEach(e => e.fullHeal());
+        if (item.duration) this.state.boosts[item.type] = { endTime: Date.now() + item.duration * 1000 };
+
+        EventBus.emit(GAME_EVENTS.ITEM_PURCHASED, { item });
+        UI.toast(`${item.name} acheté !`, 'success');
+        return true;
+    },
+
+    // === Boosts ===
+    updateBoosts(dt) {
+        const now = Date.now();
+        for (const [key, boost] of Object.entries(this.state.boosts)) {
+            if (boost.endTime && now > boost.endTime) {
+                delete this.state.boosts[key];
+            }
+        }
+    },
+
+    // === Succès ===
+    checkAchievements() {
+        const stats = this.getStats();
+        ACHIEVEMENTS.forEach(ach => {
+            if (!this.state.achievements.has(ach.id) && ach.cond(stats)) {
+                this.state.achievements.add(ach.id);
+                EventBus.emit(GAME_EVENTS.ACHIEVEMENT_UNLOCKED, { achievement: ach });
+                UI.toast(`🏆 ${ach.name} !`, 'success');
+            }
+        });
+    },
+
+    getStats() {
+        return {
+            totalClicks: this.state.totalClicks,
+            totalCaptures: this.state.totalCaptures,
+            uniqueCaptures: this.state.uniqueCaptures,
+            primordialCount: this.state.primordialCount,
+            totalWins: this.state.totalWins,
+            totalEnergy: this.state.totalEnergy,
+            maxLevel: this.state.maxLevel,
+            bossesDefeated: this.state.bossesDefeated,
+            regionsUnlocked: this.state.regionsUnlocked,
+            playTime: Math.floor(this.state.playTime)
+        };
+    },
+
+    // === Événements ===
+    setupEvents() {
+        // Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => UI.switchTab(btn.dataset.tab));
+        });
+
+        // Combat
+        document.getElementById('btn-tisser-coup').addEventListener('click', e => this.click(e));
+        document.getElementById('btn-capture-combat').addEventListener('click', () => Combat.attemptCapture());
+        document.getElementById('btn-flee').addEventListener('click', () => { Combat.endCombat(); UI.switchTab('map'); });
+
+        // Capture
+        document.getElementById('btn-capture').addEventListener('click', () => UI.captureClick());
+
+        // Sauvegarde & Settings
+        document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast('Sauvegardé !', 'success'); });
+        document.getElementById('btn-settings').addEventListener('click', () => UI.showSettings());
+        document.getElementById('modal-close').addEventListener('click', () => UI.closeModal());
+        document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target.id === 'modal-overlay') UI.closeModal(); });
+
+        // Clic global pour énergie
+        document.getElementById('game-main').addEventListener('click', e => {
+            if (e.target.closest('button, .route-card, .shop-item, .party-slot, .reserve-slot, .pokedex-card, .mine-tile, .nav-btn, .filter-btn, .shop-cat, .parent-slot')) return;
+            if (document.getElementById('tab-combat').classList.contains('active') && Combat.inCombat) return;
+            if (document.getElementById('tab-capture').classList.contains('active')) return;
+            this.click(e);
+        });
+    },
+
+    setupEventBus() {
+        EventBus.on(GAME_EVENTS.ECHO_LEVELED_UP, ({ echo }) => {
+            if (echo.level > this.state.maxLevel) this.state.maxLevel = echo.level;
+        });
+
+        EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => {
+            UI.renderParty();
+            UI.renderPokedex();
+        });
+
+        EventBus.on(GAME_EVENTS.ECHO_EVOLVED, ({ oldName, echo }) => {
+            UI.toast(`✨ ${oldName} évolue en ${echo.name} !`, 'success');
+        });
+    },
+
+    // === Sauvegarde / Export ===
+    exportSave() {
+        const data = SaveSystem.getSaveData();
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'echoclicker_save.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        UI.toast('Sauvegarde exportée !', 'success');
+    },
+
+    importSave() {
+        const input = document.createElement('input');
+        input.type = 'file'; input.accept = '.json';
+        input.onchange = e => {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                try {
+                    SaveSystem.loadFromData(JSON.parse(ev.target.result));
+                    UI.toast('Sauvegarde importée !', 'success');
+                    UI.updateAll();
+                } catch { UI.toast('Fichier invalide !', 'error'); }
+            };
+            reader.readAsText(e.target.files[0]);
+        };
+        input.click();
+    },
+
+    resetGame() {
+        if (confirm('TOUT réinitialiser ? Irréversible !')) {
+            localStorage.removeItem('echoclicker_save');
+            location.reload();
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => Game.init());

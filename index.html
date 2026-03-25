@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÉchoClicker : Liens Éternels</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Header -->
+        <header id="game-header">
+            <div class="header-left">
+                <h1 class="game-title">⚡ ÉchoClicker</h1>
+                <span class="subtitle">Liens Éternels</span>
+            </div>
+            <div class="header-center">
+                <div class="currency-display">
+                    <div class="currency" id="aether-energy">
+                        <span class="currency-icon">💎</span>
+                        <span class="currency-value" id="energy-value">0</span>
+                        <span class="currency-label">Énergie Aether</span>
+                    </div>
+                    <div class="currency" id="aether-links">
+                        <span class="currency-icon">🔗</span>
+                        <span class="currency-value" id="links-value">0</span>
+                        <span class="currency-label">Liens d'Aether</span>
+                    </div>
+                    <div class="currency" id="pure-crystals">
+                        <span class="currency-icon">💠</span>
+                        <span class="currency-value" id="crystals-value">0</span>
+                        <span class="currency-label">Cristaux Purs</span>
+                    </div>
+                    <div class="currency" id="aether-shards">
+                        <span class="currency-icon">✨</span>
+                        <span class="currency-value" id="shards-value">0</span>
+                        <span class="currency-label">Éclats d'Aether</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-icon" id="btn-save" title="Sauvegarder">💾</button>
+                <button class="btn-icon" id="btn-settings" title="Paramètres">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav id="main-nav">
+            <button class="nav-btn active" data-tab="map">🗺️ Carte</button>
+            <button class="nav-btn" data-tab="combat">⚔️ Combat</button>
+            <button class="nav-btn" data-tab="party">👥 Équipe</button>
+            <button class="nav-btn" data-tab="capture">🔮 Capture</button>
+            <button class="nav-btn" data-tab="pokedex">📖 Logbook</button>
+            <button class="nav-btn" data-tab="hatchery">🥚 Élevage</button>
+            <button class="nav-btn" data-tab="mine">⛏️ Mine</button>
+            <button class="nav-btn" data-tab="shop">🏪 Marché</button>
+            <button class="nav-btn" data-tab="achievements">🏆 Succès</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main id="game-main">
+            <!-- Map Tab -->
+            <section class="tab-content active" id="tab-map">
+                <div class="region-header">
+                    <h2 id="region-name">Forêt Éveillée</h2>
+                    <p id="region-desc">Une forêt ancienne où les Échos de Flore et de Lumière dansent entre les arbres millénaires.</p>
+                </div>
+                <div class="routes-container" id="routes-container">
+                    <!-- Routes will be generated here -->
+                </div>
+            </section>
+
+            <!-- Combat Tab -->
+            <section class="tab-content" id="tab-combat">
+                <div class="combat-arena">
+                    <div class="combat-field">
+                        <div class="combat-side enemy-side">
+                            <div class="combat-label">Ennemi</div>
+                            <div class="echo-sprite" id="enemy-sprite">❓</div>
+                            <div class="echo-name" id="enemy-name">???</div>
+                            <div class="hp-bar-container">
+                                <div class="hp-bar" id="enemy-hp-bar">
+                                    <span class="hp-text" id="enemy-hp-text">???/???</span>
+                                </div>
+                            </div>
+                            <div class="type-badge" id="enemy-type"></div>
+                        </div>
+                        <div class="combat-vs">⚡</div>
+                        <div class="combat-side player-side">
+                            <div class="combat-label">Ton Écho</div>
+                            <div class="echo-sprite" id="player-sprite">❓</div>
+                            <div class="echo-name" id="player-name">???</div>
+                            <div class="hp-bar-container">
+                                <div class="hp-bar player-hp" id="player-hp-bar">
+                                    <span class="hp-text" id="player-hp-text">???/???</span>
+                                </div>
+                            </div>
+                            <div class="type-badge" id="player-type"></div>
+                        </div>
+                    </div>
+                    <div class="combat-log" id="combat-log">
+                        <p class="log-entry">Bienvenue, Tisseur de Liens ! Choisis une route pour commencer l'aventure.</p>
+                    </div>
+                    <div class="combat-actions">
+                        <button class="btn-combat" id="btn-tisser-coup" disabled>
+                            ⚡ Coup de Tisseur
+                            <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
+                        </button>
+                        <button class="btn-combat" id="btn-capture-combat" disabled>
+                            🔮 Lancer un Lien
+                        </button>
+                        <button class="btn-combat secondary" id="btn-flee">
+                            🏃 Fuir
+                        </button>
+                    </div>
+                    <div class="click-particles" id="click-particles"></div>
+                </div>
+            </section>
+
+            <!-- Party Tab -->
+            <section class="tab-content" id="tab-party">
+                <h2>👥 Ton Équipe</h2>
+                <p class="tab-desc">Gère tes Échos actifs (max 6 en combat)</p>
+                <div class="party-grid" id="party-grid">
+                    <!-- Party slots generated by JS -->
+                </div>
+                <h3>📦 Réserves</h3>
+                <div class="reserves-grid" id="reserves-grid">
+                    <!-- Reserve Échos generated by JS -->
+                </div>
+            </section>
+
+            <!-- Capture Tab -->
+            <section class="tab-content" id="tab-capture">
+                <div class="capture-zone">
+                    <h2>🔮 Zone de Capture</h2>
+                    <p class="tab-desc">Clique pour lancer des Liens d'Aether et capturer des Échos sauvages !</p>
+                    <div class="capture-field">
+                        <div class="wild-echo-container">
+                            <div class="wild-echo" id="wild-echo">❓</div>
+                            <div class="wild-echo-name" id="wild-echo-name">???</div>
+                            <div class="capture-hp-bar">
+                                <div class="hp-bar" id="wild-hp-bar">
+                                    <span class="hp-text" id="wild-hp-text"></span>
+                                </div>
+                            </div>
+                            <div class="capture-rate">
+                                Taux de capture : <span id="capture-rate">0%</span>
+                            </div>
+                        </div>
+                        <button class="btn-capture" id="btn-capture">
+                            🔗 Lancer un Lien d'Aether
+                            <span class="link-cost">(1 Lien)</span>
+                        </button>
+                        <div class="capture-result" id="capture-result"></div>
+                    </div>
+                    <div class="capture-stats">
+                        <div class="stat">
+                            <span class="stat-label">Captures réussies</span>
+                            <span class="stat-value" id="total-captures">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Échos uniques</span>
+                            <span class="stat-value" id="unique-captures">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Primordiaux trouvés</span>
+                            <span class="stat-value" id="primordial-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pokédex / Logbook Tab -->
+            <section class="tab-content" id="tab-pokedex">
+                <h2>📖 Logbook des Échos</h2>
+                <div class="pokedex-filters">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="caught">Capturés</button>
+                    <button class="filter-btn" data-filter="unseen">Non vus</button>
+                </div>
+                <div class="type-filters" id="type-filters">
+                    <!-- Type filter buttons generated by JS -->
+                </div>
+                <div class="pokedex-grid" id="pokedex-grid">
+                    <!-- Écho cards generated by JS -->
+                </div>
+            </section>
+
+            <!-- Hatchery Tab -->
+            <section class="tab-content" id="tab-hatchery">
+                <h2>🥚 Incubateur / Élevage</h2>
+                <p class="tab-desc">Associe deux Échos compatibles pour obtenir un œuf !</p>
+                <div class="hatchery-container">
+                    <div class="hatchery-slots" id="hatchery-slots">
+                        <!-- Incubation slots -->
+                    </div>
+                    <div class="breeding-panel">
+                        <h3>Sélection des parents</h3>
+                        <div class="parent-slots">
+                            <div class="parent-slot" id="parent-1">
+                                <span class="slot-label">Parent 1</span>
+                                <div class="slot-content">+</div>
+                            </div>
+                            <div class="breeding-arrow">💕</div>
+                            <div class="parent-slot" id="parent-2">
+                                <span class="slot-label">Parent 2</span>
+                                <div class="slot-content">+</div>
+                            </div>
+                        </div>
+                        <button class="btn-primary" id="btn-breed" disabled>🥚 Créer un œuf</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mine Tab -->
+            <section class="tab-content" id="tab-mine">
+                <h2>⛏️ Mine Souterraine</h2>
+                <p class="tab-desc">Creuse pour trouver des Cristaux Purs et des trésors !</p>
+                <div class="mine-container">
+                    <div class="mine-grid" id="mine-grid">
+                        <!-- Mine tiles generated by JS -->
+                    </div>
+                    <div class="mine-tools">
+                        <button class="tool-btn active" data-tool="pick">⛏️ Pioche</button>
+                        <button class="tool-btn" data-tool="bomb">💣 Bombe</button>
+                        <button class="tool-btn" data-tool="radar">📡 Radar</button>
+                    </div>
+                    <div class="mine-stats">
+                        <div class="stat">
+                            <span class="stat-label">Énergie restante</span>
+                            <span class="stat-value" id="mine-energy">100</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Cristaux trouvés</span>
+                            <span class="stat-value" id="mine-crystals">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shop Tab -->
+            <section class="tab-content" id="tab-shop">
+                <h2>🏪 Marché des Esprits</h2>
+                <div class="shop-categories">
+                    <button class="shop-cat active" data-cat="links">🔗 Liens</button>
+                    <button class="shop-cat" data-cat="boosts">⚡ Boosts</button>
+                    <button class="shop-cat" data-cat="items">🎁 Objets</button>
+                    <button class="shop-cat" data-cat="cosmetics">✨ Cosmétiques</button>
+                </div>
+                <div class="shop-items" id="shop-items">
+                    <!-- Shop items generated by JS -->
+                </div>
+            </section>
+
+            <!-- Achievements Tab -->
+            <section class="tab-content" id="tab-achievements">
+                <h2>🏆 Succès</h2>
+                <div class="achievements-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="achievement-progress"></div>
+                    </div>
+                    <span id="achievement-count">0 / 0</span>
+                </div>
+                <div class="achievements-list" id="achievements-list">
+                    <!-- Achievements generated by JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer id="game-footer">
+            <div class="footer-stats">
+                <span>⏱️ <span id="play-time">00:00:00</span></span>
+                <span>👆 <span id="total-clicks">0</span> clics</span>
+                <span>⚡ <span id="cps-display">0.0</span> CPS</span>
+                <span>🔮 <span id="total-echoes">0</span> Échos</span>
+            </div>
+            <div class="footer-right">
+                <span>v0.2.0 Alpha</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Titre</h3>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer" id="modal-footer"></div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts (ordre important) -->
+    <script src="js/data/constants.js"></script>
+    <script src="js/data/utils.js"></script>
+    <script src="js/data/echoesData.js"></script>
+    <script src="js/core/eventBus.js"></script>
+    <script src="js/core/echo.js"></script>
+    <script src="js/core/gameLoop.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
