@@ -913,15 +913,60 @@ const MapSystem = {
     // ============================================
     // ROUTES (commun à toutes les régions)
     // ============================================
+    
+    // Calculer le nombre de kills nécessaires pour débloquer une route
+    getKillsNeededForRoute(routeIndex) {
+        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        if (!region) return GAME_CONFIG.KILLS_FOR_ROUTE;
+        
+        // La première route est toujours débloquée
+        if (routeIndex === 0) return 0;
+        
+        // Vérifier si la route précédente est débloquée
+        const prevRoute = region.routes[routeIndex - 1];
+        if (!prevRoute || !prevRoute.unlocked) return -1; // Route inaccessible
+        
+        return GAME_CONFIG.KILLS_FOR_ROUTE;
+    },
+    
+    // Obtenir la progression actuelle pour débloquer la prochaine route
+    getCurrentRouteProgress() {
+        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        if (!region) return { current: 0, needed: 0, routeIndex: -1 };
+        
+        // Trouver la première route verrouillée
+        for (let i = 0; i < region.routes.length; i++) {
+            if (!region.routes[i].unlocked) {
+                // Vérifier si la route précédente est débloquée
+                if (i === 0 || region.routes[i - 1].unlocked) {
+                    return {
+                        current: Combat.routeKills || 0,
+                        needed: GAME_CONFIG.KILLS_FOR_ROUTE,
+                        routeIndex: i,
+                        routeName: region.routes[i].name
+                    };
+                }
+            }
+        }
+        
+        return { current: 0, needed: 0, routeIndex: -1 };
+    },
+
     drawRoutes() {
         const ctx = this.ctx;
         const routes = this.getRoutePositions();
         const color = this.getRegionColor();
+        const progress = this.getCurrentRouteProgress();
 
         routes.forEach((r, idx) => {
             const isHovered = this.hoveredLocation && this.hoveredLocation.route.id === r.route.id;
             const isActive = Game.state.currentRoute?.id === r.route.id;
             const unlocked = r.route.unlocked;
+            
+            // Couleur verrouillée plus distincte
+            const lockedColor = '#1a1a2e';
+            const lockedBorderColor = '#3a3a5e';
+            const lockedTextColor = '#4a4a6a';
 
             // Rayonnement
             if ((unlocked && isHovered) || isActive) {
@@ -945,26 +990,79 @@ const MapSystem = {
                 bg.addColorStop(1, color + '66');
                 ctx.fillStyle = bg;
             } else {
-                ctx.fillStyle = '#2a2a3e';
+                // Fond verrouillé plus distinctif
+                const lockedBg = ctx.createRadialGradient(r.x - 8, r.y - 8, 0, r.x, r.y, 28);
+                lockedBg.addColorStop(0, lockedColor);
+                lockedBg.addColorStop(1, '#0d0d1a');
+                ctx.fillStyle = lockedBg;
             }
             ctx.fill();
 
             // Bordure
-            ctx.strokeStyle = unlocked ? color : '#444';
+            ctx.strokeStyle = unlocked ? color : lockedBorderColor;
             ctx.lineWidth = isHovered ? 3 : 2;
             ctx.stroke();
+            
+            // Effet de verrouillage - hachures sur le contour
+            if (!unlocked) {
+                ctx.save();
+                ctx.clip();
+                ctx.strokeStyle = 'rgba(100, 100, 140, 0.3)';
+                ctx.lineWidth = 1;
+                for (let i = -40; i < 40; i += 6) {
+                    ctx.beginPath();
+                    ctx.moveTo(r.x + i, r.y - 30);
+                    ctx.lineTo(r.x + i + 20, r.y + 30);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
 
             // Numéro de route
             ctx.font = 'bold 14px Inter, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = unlocked ? '#fff' : '#666';
+            ctx.fillStyle = unlocked ? '#fff' : lockedTextColor;
             ctx.fillText(idx + 1, r.x, r.y);
 
             // Nom sous le cercle
             ctx.font = '10px Inter, sans-serif';
-            ctx.fillStyle = unlocked ? '#ccc' : '#555';
+            ctx.fillStyle = unlocked ? '#ccc' : lockedTextColor;
             ctx.fillText(r.route.name, r.x, r.y + 40);
+
+            // Indicateur de progression pour la prochaine route à débloquer
+            if (!unlocked && progress.routeIndex === idx && progress.needed > 0) {
+                const progressBarWidth = 50;
+                const progressBarHeight = 6;
+                const progressX = r.x - progressBarWidth / 2;
+                const progressY = r.y + 52;
+                const progressPercent = Math.min(1, progress.current / progress.needed);
+                
+                // Fond de la barre
+                ctx.fillStyle = '#1a1a2e';
+                ctx.strokeStyle = lockedBorderColor;
+                ctx.lineWidth = 1;
+                this.roundRect(progressX, progressY, progressBarWidth, progressBarHeight, 3);
+                ctx.fill();
+                ctx.stroke();
+                
+                // Remplissage de la barre
+                if (progressPercent > 0) {
+                    const fillWidth = progressBarWidth * progressPercent;
+                    const gradient = ctx.createLinearGradient(progressX, 0, progressX + fillWidth, 0);
+                    gradient.addColorStop(0, '#f59e0b');
+                    gradient.addColorStop(1, '#fbbf24');
+                    ctx.fillStyle = gradient;
+                    this.roundRect(progressX, progressY, fillWidth, progressBarHeight, 3);
+                    ctx.fill();
+                }
+                
+                // Texte de progression
+                ctx.font = '9px Inter, sans-serif';
+                ctx.fillStyle = '#f59e0b';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${progress.current}/${progress.needed}`, r.x, progressY + progressBarHeight + 10);
+            }
 
             // Indicateur actif
             if (isActive) {
@@ -979,10 +1077,62 @@ const MapSystem = {
 
             // Cadenas si verrouillé
             if (!unlocked) {
-                ctx.font = '12px serif';
+                ctx.font = '14px serif';
                 ctx.fillText('🔒', r.x, r.y);
             }
         });
+        
+        // Afficher l'indicateur global de progression en bas de la carte
+        if (progress.routeIndex >= 0 && progress.needed > 0) {
+            this.drawProgressIndicator(progress);
+        }
+    },
+    
+    drawProgressIndicator(progress) {
+        const ctx = this.ctx;
+        const x = this.width / 2;
+        const y = this.height - 30;
+        const barWidth = 200;
+        const barHeight = 10;
+        const progressPercent = Math.min(1, progress.current / progress.needed);
+        
+        // Fond du panneau
+        ctx.fillStyle = 'rgba(20, 20, 40, 0.9)';
+        ctx.strokeStyle = 'rgba(100, 100, 140, 0.5)';
+        ctx.lineWidth = 1;
+        this.roundRect(x - barWidth / 2 - 15, y - 25, barWidth + 30, 50, 8);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Texte d'instruction
+        ctx.font = 'bold 11px Inter, sans-serif';
+        ctx.fillStyle = '#f59e0b';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`⚔️ Prochaine route: ${progress.routeName}`, x, y - 12);
+        
+        // Fond de la barre
+        ctx.fillStyle = '#1a1a2e';
+        ctx.strokeStyle = 'rgba(100, 100, 140, 0.5)';
+        this.roundRect(x - barWidth / 2, y, barWidth, barHeight, 5);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Remplissage de la barre
+        if (progressPercent > 0) {
+            const fillWidth = barWidth * progressPercent;
+            const gradient = ctx.createLinearGradient(x - barWidth / 2, 0, x - barWidth / 2 + fillWidth, 0);
+            gradient.addColorStop(0, '#f59e0b');
+            gradient.addColorStop(1, '#fbbf24');
+            ctx.fillStyle = gradient;
+            this.roundRect(x - barWidth / 2, y, fillWidth, barHeight, 5);
+            ctx.fill();
+        }
+        
+        // Texte de progression
+        ctx.font = '10px Inter, sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(`${progress.current} / ${progress.needed} échos vaincus`, x, y + barHeight + 10);
     },
 
     drawParticles() {

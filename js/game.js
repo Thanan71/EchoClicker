@@ -549,7 +549,7 @@ const Game = {
 
     resetGame() {
         if (confirm('TOUT réinitialiser ? Irréversible !')) {
-            localStorage.removeItem('echoclicker_save');
+            SaveSystem.deleteSave();
             location.reload();
         }
     }
