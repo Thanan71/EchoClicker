@@ -9,6 +9,7 @@ const Combat = {
     autoTimer: 0,
     routeKills: 0,
     isBoss: false,
+    autoCaptureEnabled: false,
 
     startCombat(route) {
         this.inCombat = true;
@@ -34,8 +35,50 @@ const Combat = {
 
         this.enemy = generateWildEcho(route.ids, route.lv);
         this.activeEcho = this.getActiveEcho();
-        if (this.enemy) Game.state.seenEchoes.add(this.enemy.id);
+        if (this.enemy) {
+            Game.state.seenEchoes.add(this.enemy.id);
+            
+            // Auto-capture pour les nouveaux échos non capturés
+            if (this.autoCaptureEnabled && !Game.state.caughtEchoes.has(this.enemy.id)) {
+                this.autoCaptureNewEcho();
+            }
+        }
         UI.updateCombat();
+    },
+
+    autoCaptureNewEcho() {
+        if (!this.enemy || !Game.spendLinks(1)) {
+            if (this.enemy && !Game.state.caughtEchoes.has(this.enemy.id)) {
+                UI.addLog('info', `Auto-capture: ${this.enemy.name} (pas assez de Liens)`);
+            }
+            return;
+        }
+
+        const rate = Utils.calculateCaptureRate(
+            this.enemy.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
+            this.enemy.hp, this.enemy.maxHp
+        );
+
+        if (Utils.chance(rate)) {
+            const captured = new Echo(getEchoById(this.enemy.id), this.enemy.level, this.enemy.isPrimordial);
+            Game.state.totalCaptures++;
+            Game.state.caughtEchoes.add(this.enemy.id);
+            if (!Game.state.seenEchoes.has(this.enemy.id)) Game.state.uniqueCaptures++;
+            if (this.enemy.isPrimordial) Game.state.primordialCount++;
+
+            if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {
+                Game.addToParty(captured);
+            } else {
+                Game.state.reserves.push(captured);
+            }
+
+            EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+            const prefix = this.enemy.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
+            UI.addLog('capture', `🔮 Auto: ${prefix}${this.enemy.name} capturé !`);
+            UI.toast(`🔮 Auto: ${prefix}${this.enemy.name} capturé !`, 'success');
+        } else {
+            UI.addLog('info', `🔮 Auto-capture échouée: ${this.enemy.name}`);
+        }
     },
 
     spawnBoss(region) {

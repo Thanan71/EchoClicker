@@ -18,7 +18,7 @@ const SaveSystem = {
 
     getSaveData() {
         return {
-            v: 2,
+            v: 3,
             ts: Date.now(),
             s: {
                 energy: Game.state.energy,
@@ -44,7 +44,9 @@ const SaveSystem = {
                 caughtEchoes: [...Game.state.caughtEchoes],
                 achievements: [...Game.state.achievements],
                 regions: Game.state.regions,
-                boosts: Game.state.boosts
+                boosts: Game.state.boosts,
+                mine: Mine.toJSON(),
+                hatchery: Hatchery.toJSON()
             }
         };
     },
@@ -92,6 +94,10 @@ const SaveSystem = {
             Game.state.seenEchoes = new Set(s.seenEchoes || []);
             Game.state.caughtEchoes = new Set(s.caughtEchoes || []);
             Game.state.achievements = new Set(s.achievements || []);
+
+            // Charger les systèmes Mine et Hatchery
+            if (s.mine) Mine.fromJSON(s.mine);
+            if (s.hatchery) Hatchery.fromJSON(s.hatchery);
 
             return true;
         } catch (e) {

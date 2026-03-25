@@ -13,6 +13,11 @@ const Game = {
         SaveSystem.load();
         this.setupEvents();
         this.setupEventBus();
+        
+        // Initialiser les systèmes
+        Mine.init();
+        Hatchery.init();
+        
         UI.init();
 
         // Démarrer la boucle de jeu
@@ -72,6 +77,9 @@ const Game = {
 
         // Combat automatique
         Combat.update(dt);
+
+        // Mise à jour de l'incubateur
+        Hatchery.update(dt);
 
         // Calcul du CPS
         this.updateCPS();
@@ -169,6 +177,83 @@ const Game = {
         return true;
     },
 
+    buildOptimalTeam() {
+        const allEchoes = this.getAllEchoes();
+        if (allEchoes.length === 0) {
+            UI.toast('Aucun Écho disponible !', 'warning');
+            return;
+        }
+
+        // Calculer le score de chaque écho
+        const scoredEchoes = allEchoes.map(echo => {
+            let score = 0;
+            
+            // Stats totales
+            score += echo.maxHp * 0.3;
+            score += echo.atk * 0.4;
+            score += echo.def * 0.2;
+            score += echo.spd * 0.1;
+            
+            // Bonus niveau
+            score += echo.level * 5;
+            
+            // Bonus rareté
+            const rarityBonus = {
+                'common': 0,
+                'uncommon': 20,
+                'rare': 50,
+                'epic': 100,
+                'legendary': 200,
+                'mythical': 300
+            };
+            score += rarityBonus[echo.rarity] || 0;
+            
+            // Bonus primordial
+            if (echo.isPrimordial) score += 50;
+            
+            // Bonus vivant
+            if (echo.isAlive()) score += 100;
+            
+            return { echo, score };
+        });
+
+        // Trier par score décroissant
+        scoredEchoes.sort((a, b) => b.score - a.score);
+
+        // Vider l'équipe actuelle (mettre en réserve)
+        const oldParty = [...this.state.party];
+        this.state.party = [];
+
+        // Construire la nouvelle équipe optimale
+        const newParty = [];
+        const usedIds = new Set();
+
+        for (const { echo } of scoredEchoes) {
+            if (newParty.length >= GAME_CONFIG.MAX_PARTY) break;
+            
+            // Éviter les doublons d'espèces (optionnel)
+            if (!usedIds.has(echo.id) || allEchoes.length <= GAME_CONFIG.MAX_PARTY) {
+                newParty.push(echo);
+                usedIds.add(echo.id);
+            }
+        }
+
+        // Mettre à jour l'équipe
+        this.state.party = newParty;
+
+        // Remettre les autres en réserve
+        const partyUids = new Set(newParty.map(e => e.uid));
+        const newReserves = allEchoes.filter(e => !partyUids.has(e.uid));
+        this.state.reserves = newReserves;
+
+        // Soigner la nouvelle équipe
+        this.state.party.forEach(e => e.fullHeal());
+
+        UI.renderParty();
+        UI.toast('⚡ Équipe optimale créée !', 'success');
+        UI.addLog('info', `Nouvelle équipe: ${newParty.map(e => e.name).join(', ')}`);
+    },
+
     removeFromParty(uid) {
         const idx = this.state.party.findIndex(e => e.uid === uid);
         if (idx === -1) return false;
@@ -248,7 +333,9 @@ const Game = {
         }
         this.state.currentRoute = route;
         Combat.startCombat(route);
-        UI.switchTab('combat');
+        // Plus besoin de changer d'onglet, le combat est sur la même page
+        UI.renderRoutes();
+        UI.updateCombat();
     },
 
     selectRegion(regionId) {
@@ -268,9 +355,12 @@ const Game = {
         if (!region) return;
         const idx = region.routes.findIndex(r => r.id === this.state.currentRoute?.id);
         if (idx < region.routes.length - 1) {
-            region.routes[idx + 1].unlocked = true;
-            EventBus.emit(GAME_EVENTS.ROUTE_UNLOCKED, { route: region.routes[idx + 1] });
-            UI.toast(`Nouvelle route : ${region.routes[idx + 1].name} !`, 'success');
+            const nextRoute = region.routes[idx + 1];
+            if (!nextRoute.unlocked) {
+                nextRoute.unlocked = true;
+                EventBus.emit(GAME_EVENTS.ROUTE_UNLOCKED, { route: nextRoute });
+                UI.toast(`Nouvelle route : ${nextRoute.name} !`, 'success');
+            }
         }
     },
 
@@ -364,10 +454,39 @@ const Game = {
         // Combat
         document.getElementById('btn-tisser-coup').addEventListener('click', e => this.click(e));
         document.getElementById('btn-capture-combat').addEventListener('click', () => Combat.attemptCapture());
-        document.getElementById('btn-flee').addEventListener('click', () => { Combat.endCombat(); UI.switchTab('map'); });
+        document.getElementById('btn-flee').addEventListener('click', () => { 
+            Combat.endCombat(); 
+            UI.renderRoutes();
+            UI.updateCombat();
+        });
 
         // Capture
         document.getElementById('btn-capture').addEventListener('click', () => UI.captureClick());
+
+        // Auto-capture toggle
+        const autoCaptureToggle = document.getElementById('auto-capture-toggle');
+        if (autoCaptureToggle) {
+            autoCaptureToggle.addEventListener('change', (e) => {
+                Combat.autoCaptureEnabled = e.target.checked;
+                UI.toast(e.target.checked ? '🔮 Auto-capture activé' : '🔮 Auto-capture désactivé', 'info');
+            });
+        }
+
+        // Équipe optimale
+        const btnAutoTeam = document.getElementById('btn-auto-team');
+        if (btnAutoTeam) {
+            btnAutoTeam.addEventListener('click', () => this.buildOptimalTeam());
+        }
+
+        // Soigner tout
+        const btnHealAll = document.getElementById('btn-heal-all');
+        if (btnHealAll) {
+            btnHealAll.addEventListener('click', () => {
+                Combat.healParty();
+                UI.renderParty();
+                UI.toast('❤️ Équipe soignée !', 'success');
+            });
+        }
 
         // Sauvegarde & Settings
         document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast('Sauvegardé !', 'success'); });
@@ -377,8 +496,7 @@ const Game = {
 
         // Clic global pour énergie
         document.getElementById('game-main').addEventListener('click', e => {
-            if (e.target.closest('button, .route-card, .shop-item, .party-slot, .reserve-slot, .pokedex-card, .mine-tile, .nav-btn, .filter-btn, .shop-cat, .parent-slot')) return;
-            if (document.getElementById('tab-combat').classList.contains('active') && Combat.inCombat) return;
+            if (e.target.closest('button, .route-card, .shop-item, .party-slot, .reserve-slot, .pokedex-card, .mine-tile, .nav-btn, .filter-btn, .shop-cat, .parent-slot, .combat-arena')) return;
             if (document.getElementById('tab-capture').classList.contains('active')) return;
             this.click(e);
         });

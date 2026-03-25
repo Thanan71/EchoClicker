@@ -294,17 +294,79 @@ body {
 }
 
 /* ============================================
-   Map Tab
+   Adventure Tab (Combat + Map combined)
    ============================================ */
 
-.region-header {
-    text-align: center;
-    margin-bottom: 24px;
+.adventure-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.region-header h2 {
+.adventure-map {
+    display: flex;
+    flex-direction: column;
+}
+
+.adventure-combat {
+    display: flex;
+    flex-direction: column;
+}
+
+.map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+#map-canvas {
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    border-radius: var(--radius-lg);
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
+}
+
+.map-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.legend-color.locked {
+    background: #444;
+}
+
+.region-info {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: var(--radius-lg);
+}
+
+.region-info h3 {
     font-family: var(--font-title);
-    font-size: 2rem;
+    font-size: 1.5rem;
     background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -312,109 +374,55 @@ body {
     margin-bottom: 8px;
 }
 
-.region-header p {
+.region-info p {
     color: var(--text-secondary);
     font-style: italic;
 }
 
-.routes-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+/* Canvas Map Styles */
+.map-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 16px;
 }
 
-.route-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(139, 92, 246, 0.15);
+#map-canvas {
     border-radius: var(--radius-lg);
-    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     cursor: pointer;
-    transition: var(--transition-normal);
-    position: relative;
-    overflow: hidden;
+    transition: box-shadow 0.3s ease;
 }
 
-.route-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
-    opacity: 0;
-    transition: var(--transition-fast);
+#map-canvas:hover {
+    box-shadow: 0 6px 30px rgba(139, 92, 246, 0.3);
 }
 
-.route-card:hover {
-    border-color: var(--accent-purple);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.2);
+.map-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.route-card:hover::before {
-    opacity: 1;
-}
-
-.route-card.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.route-card.locked:hover {
-    transform: none;
-    box-shadow: none;
-}
-
-.route-card.active {
-    border-color: var(--accent-gold);
-    box-shadow: 0 0 20px var(--glow-gold);
-}
-
-.route-card.active::before {
-    opacity: 1;
-    background: linear-gradient(90deg, var(--accent-gold), var(--accent-pink));
-}
-
-.route-name {
-    font-family: var(--font-title);
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--text-primary);
-}
-
-.route-desc {
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.8rem;
     color: var(--text-secondary);
-    margin-bottom: 12px;
 }
 
-.route-echoes {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.route-echo-icon {
-    font-size: 1.3rem;
-    background: var(--bg-tertiary);
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
-    cursor: help;
-}
-
-.route-level {
-    font-size: 0.75rem;
-    color: var(--accent-gold);
-    font-weight: 600;
-}
-
-.route-lock {
-    font-size: 2rem;
-    text-align: center;
-    margin-top: 8px;
+.legend-color.locked {
+    background: #444;
 }
 
 /* ============================================
@@ -635,6 +643,68 @@ body {
     margin-top: 2px;
 }
 
+/* Auto Options */
+.auto-options {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+    gap: 16px;
+}
+
+.auto-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.auto-toggle input {
+    display: none;
+}
+
+.toggle-slider {
+    width: 44px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    position: relative;
+    transition: var(--transition-fast);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.toggle-slider::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: var(--transition-fast);
+}
+
+.auto-toggle input:checked + .toggle-slider {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+    border-color: var(--accent-purple);
+}
+
+.auto-toggle input:checked + .toggle-slider::after {
+    transform: translateX(20px);
+    background: white;
+}
+
+.toggle-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.auto-toggle:hover .toggle-slider {
+    border-color: var(--accent-purple);
+}
+
 .click-particles {
     position: absolute;
     top: 0;
@@ -660,6 +730,13 @@ body {
 /* ============================================
    Party Tab
    ============================================ */
+
+.party-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
 
 .party-grid {
     display: grid;
@@ -1029,6 +1106,22 @@ body {
     font-size: 0.8rem;
     color: var(--accent-gold);
     margin-top: 8px;
+}
+
+.incubator-progress {
+    width: 80%;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.incubator-progress .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-gold));
+    border-radius: 4px;
+    transition: width 0.5s ease;
 }
 
 .breeding-panel {
@@ -1560,6 +1653,10 @@ body {
         display: none;
     }
     
+    .adventure-layout {
+        gap: 16px;
+    }
+    
     .combat-field {
         flex-direction: column;
         gap: 20px;
@@ -1578,9 +1675,7 @@ body {
         grid-template-columns: repeat(6, 1fr);
     }
     
-    .routes-container {
-        grid-template-columns: 1fr;
-    }
+    /* Routes container removed - using canvas map instead */
 }
 
 @media (max-width: 480px) {

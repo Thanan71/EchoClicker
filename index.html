@@ -47,8 +47,7 @@
 
         <!-- Navigation -->
         <nav id="main-nav">
-            <button class="nav-btn active" data-tab="map">🗺️ Carte</button>
-            <button class="nav-btn" data-tab="combat">⚔️ Combat</button>
+            <button class="nav-btn active" data-tab="map">🗺️ Aventure</button>
             <button class="nav-btn" data-tab="party">👥 Équipe</button>
             <button class="nav-btn" data-tab="capture">🔮 Capture</button>
             <button class="nav-btn" data-tab="pokedex">📖 Logbook</button>
@@ -60,61 +59,91 @@
 
         <!-- Main Content -->
         <main id="game-main">
-            <!-- Map Tab -->
+            <!-- Adventure Tab (Combat + Map) -->
             <section class="tab-content active" id="tab-map">
-                <div class="region-header">
-                    <h2 id="region-name">Forêt Éveillée</h2>
-                    <p id="region-desc">Une forêt ancienne où les Échos de Flore et de Lumière dansent entre les arbres millénaires.</p>
-                </div>
-                <div class="routes-container" id="routes-container">
-                    <!-- Routes will be generated here -->
-                </div>
-            </section>
-
-            <!-- Combat Tab -->
-            <section class="tab-content" id="tab-combat">
-                <div class="combat-arena">
-                    <div class="combat-field">
-                        <div class="combat-side enemy-side">
-                            <div class="combat-label">Ennemi</div>
-                            <div class="echo-sprite" id="enemy-sprite">❓</div>
-                            <div class="echo-name" id="enemy-name">???</div>
-                            <div class="hp-bar-container">
-                                <div class="hp-bar" id="enemy-hp-bar">
-                                    <span class="hp-text" id="enemy-hp-text">???/???</span>
+                <div class="adventure-layout">
+                    <!-- Top: Combat -->
+                    <div class="adventure-combat">
+                        <div class="combat-arena">
+                            <div class="combat-field">
+                                <div class="combat-side enemy-side">
+                                    <div class="combat-label">Ennemi</div>
+                                    <div class="echo-sprite" id="enemy-sprite">❓</div>
+                                    <div class="echo-name" id="enemy-name">???</div>
+                                    <div class="hp-bar-container">
+                                        <div class="hp-bar" id="enemy-hp-bar">
+                                            <span class="hp-text" id="enemy-hp-text">???/???</span>
+                                        </div>
+                                    </div>
+                                    <div class="type-badge" id="enemy-type"></div>
+                                </div>
+                                <div class="combat-vs">⚡</div>
+                                <div class="combat-side player-side">
+                                    <div class="combat-label">Ton Écho</div>
+                                    <div class="echo-sprite" id="player-sprite">❓</div>
+                                    <div class="echo-name" id="player-name">???</div>
+                                    <div class="hp-bar-container">
+                                        <div class="hp-bar player-hp" id="player-hp-bar">
+                                            <span class="hp-text" id="player-hp-text">???/???</span>
+                                        </div>
+                                    </div>
+                                    <div class="type-badge" id="player-type"></div>
                                 </div>
                             </div>
-                            <div class="type-badge" id="enemy-type"></div>
+                            <div class="combat-log" id="combat-log">
+                                <p class="log-entry">Bienvenue, Tisseur de Liens ! Choisis une route sur la carte pour commencer l'aventure.</p>
+                            </div>
+                            <div class="combat-actions">
+                                <button class="btn-combat" id="btn-tisser-coup" disabled>
+                                    ⚡ Coup de Tisseur
+                                    <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
+                                </button>
+                                <button class="btn-combat" id="btn-capture-combat" disabled>
+                                    🔮 Lancer un Lien
+                                </button>
+                                <button class="btn-combat secondary" id="btn-flee">
+                                    🏃 Fuir
+                                </button>
+                            </div>
+                            <div class="auto-options">
+                                <label class="auto-toggle">
+                                    <input type="checkbox" id="auto-capture-toggle">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-label">🔮 Auto-Capture Nouveaux</span>
+                                </label>
+                            </div>
+                            <div class="click-particles" id="click-particles"></div>
                         </div>
-                        <div class="combat-vs">⚡</div>
-                        <div class="combat-side player-side">
-                            <div class="combat-label">Ton Écho</div>
-                            <div class="echo-sprite" id="player-sprite">❓</div>
-                            <div class="echo-name" id="player-name">???</div>
-                            <div class="hp-bar-container">
-                                <div class="hp-bar player-hp" id="player-hp-bar">
-                                    <span class="hp-text" id="player-hp-text">???/???</span>
+                    </div>
+                    
+                    <!-- Bottom: Map -->
+                    <div class="adventure-map">
+                        <div class="map-container">
+                            <canvas id="map-canvas"></canvas>
+                            <div class="map-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #55a630"></span>
+                                    <span>Forêt Éveillée</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #74b9ff"></span>
+                                    <span>Montagnes Cristallines</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background: #0984e3"></span>
+                                    <span>Océan Abyssal</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color locked"></span>
+                                    <span>Verrouillé</span>
                                 </div>
                             </div>
-                            <div class="type-badge" id="player-type"></div>
+                        </div>
+                        <div class="region-info" id="region-info">
+                            <h3 id="region-name">Sélectionne une contrée</h3>
+                            <p id="region-desc">Clique sur une contrée ou une route de la carte pour commencer l'aventure.</p>
                         </div>
                     </div>
-                    <div class="combat-log" id="combat-log">
-                        <p class="log-entry">Bienvenue, Tisseur de Liens ! Choisis une route pour commencer l'aventure.</p>
-                    </div>
-                    <div class="combat-actions">
-                        <button class="btn-combat" id="btn-tisser-coup" disabled>
-                            ⚡ Coup de Tisseur
-                            <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
-                        </button>
-                        <button class="btn-combat" id="btn-capture-combat" disabled>
-                            🔮 Lancer un Lien
-                        </button>
-                        <button class="btn-combat secondary" id="btn-flee">
-                            🏃 Fuir
-                        </button>
-                    </div>
-                    <div class="click-particles" id="click-particles"></div>
                 </div>
             </section>
 
@@ -122,6 +151,14 @@
             <section class="tab-content" id="tab-party">
                 <h2>👥 Ton Équipe</h2>
                 <p class="tab-desc">Gère tes Échos actifs (max 6 en combat)</p>
+                <div class="party-actions">
+                    <button class="btn-primary" id="btn-auto-team">
+                        ⚡ Équipe Optimale
+                    </button>
+                    <button class="btn-combat secondary" id="btn-heal-all">
+                        ❤️ Soigner Tout
+                    </button>
+                </div>
                 <div class="party-grid" id="party-grid">
                     <!-- Party slots generated by JS -->
                 </div>
@@ -307,6 +344,9 @@
     <script src="js/core/gameLoop.js"></script>
     <script src="js/save.js"></script>
     <script src="js/combat.js"></script>
+    <script src="js/systems/mine.js"></script>
+    <script src="js/systems/hatchery.js"></script>
+    <script src="js/systems/map.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/game.js"></script>
 </body>

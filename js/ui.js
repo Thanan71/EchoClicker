@@ -7,6 +7,7 @@ const UI = {
     captureWildEcho: null,
 
     init() {
+        MapSystem.init();
         this.renderRoutes();
         this.renderShop();
         this.renderAchievements();
@@ -40,8 +41,7 @@ const UI = {
         document.getElementById(`tab-${tabId}`)?.classList.add('active');
 
         const renderers = {
-            map: () => this.renderRoutes(),
-            combat: () => this.updateCombat(),
+            map: () => { this.renderRoutes(); this.updateCombat(); },
             party: () => this.renderParty(),
             capture: () => this.renderCaptureZone(),
             pokedex: () => this.renderPokedex(),
@@ -79,53 +79,17 @@ const UI = {
 
     // === Carte & Routes ===
     renderRoutes() {
-        const container = document.getElementById('routes-container');
         const region = Game.state.regions.find(r => r.id === Game.state.currentRegion);
-        if (!region || !container) return;
+        if (!region) return;
 
-        document.getElementById('region-name').textContent = `${region.emoji} ${region.name}`;
-        document.getElementById('region-desc').textContent = region.desc;
+        // Mettre à jour le panneau d'info de la région
+        const regionNameEl = document.getElementById('region-name');
+        const regionDescEl = document.getElementById('region-desc');
+        if (regionNameEl) regionNameEl.textContent = `${region.emoji} ${region.name}`;
+        if (regionDescEl) regionDescEl.textContent = region.desc;
 
-        let html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">';
-        Game.state.regions.forEach(r => {
-            const active = r.id === Game.state.currentRegion ? 'active' : '';
-            const locked = !r.unlocked ? 'locked' : '';
-            html += `<button class="nav-btn ${active} ${locked}" onclick="Game.selectRegion('${r.id}')" ${!r.unlocked?'disabled':''}>${r.emoji} ${r.name}</button>`;
-        });
-        html += '</div><div class="routes-container">';
-
-        region.routes.forEach(route => {
-            const isActive = Game.state.currentRoute?.id === route.id;
-            const locked = !route.unlocked;
-            const icons = route.ids.slice(0, 5).map(id => {
-                const e = getEchoById(id);
-                return e ? `<span class="route-echo-icon" title="${e.name}">${e.emoji}</span>` : '';
-            }).join('');
-
-            html += `<div class="route-card ${locked?'locked':''} ${isActive?'active':''}" ${locked?'':'onclick="Game.selectRoute(\''+route.id+'\')"'}>`;
-            html += `<div class="route-name">${route.name}</div>`;
-            html += `<div class="route-echoes">${icons}</div>`;
-            html += `<div class="route-level">Niveau ${route.lv}</div>`;
-            if (locked) html += '<div class="route-lock">🔒</div>';
-            html += '</div>';
-        });
-
-        // Boss
-        if (region.bosses.length && !region.bossDefeated && region.routes.every(r => r.unlocked)) {
-            const boss = region.bosses[0];
-            const be = getEchoById(boss.echoId);
-            html += `<div class="route-card" style="border-color:var(--accent-red);box-shadow:0 0 20px rgba(239,68,68,0.3)" onclick="Game.selectRoute('${region.routes[region.routes.length-1].id}')">`;
-            html += `<div class="route-name" style="color:var(--accent-red)">⚔️ BOSS : ${boss.name}</div>`;
-            html += `<div class="route-echoes"><span class="route-echo-icon">${be?.emoji||'👹'}</span></div>`;
-            html += `<div class="route-level">Niveau ${boss.level}</div></div>`;
-        }
-
-        if (region.bossDefeated) {
-            html += '<div class="route-card" style="border-color:var(--accent-green);opacity:0.7"><div class="route-name" style="color:var(--accent-green)">✅ Terminée !</div></div>';
-        }
-
-        html += '</div>';
-        container.innerHTML = html;
+        // Mettre à jour la carte canvas
+        MapSystem.updateLocations();
     },
 
     // === Combat ===
@@ -399,24 +363,14 @@ const UI = {
         list.innerHTML = html;
     },
 
-    // === Mine (simplifié) ===
+    // === Mine ===
     renderMine() {
-        const grid = document.getElementById('mine-grid');
-        if (!grid) return;
-        let html = '';
-        for (let i = 0; i < 48; i++) {
-            html += `<div class="mine-tile" onclick="this.classList.add('dug');this.textContent=['💎','🪨','💰','✨',''][Math.floor(Math.random()*5)]">🟫</div>`;
-        }
-        grid.innerHTML = html;
+        Mine.updateDisplay();
     },
 
-    // === Élevage (simplifié) ===
+    // === Élevage ===
     renderHatchery() {
-        const slots = document.getElementById('hatchery-slots');
-        if (!slots) return;
-        let html = '';
-        for (let i = 0; i < 4; i++) html += '<div class="incubator-slot"><div style="color:var(--text-muted)">🥚 Vide</div></div>';
-        slots.innerHTML = html;
+        Hatchery.updateDisplay();
     },
 
     // === Logs ===
