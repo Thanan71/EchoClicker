@@ -117,13 +117,4 @@ const SaveSystem = {
     }
 };
 
-// Hook dans Game.init
-Game.loadGame = function() {
-    if (SaveSystem.hasSave()) {
-        if (SaveSystem.load()) {
-            console.log('Sauvegarde chargée');
-        } else {
-            console.log('Erreur de chargage, nouveau jeu');
-        }
-    }
-};
+// Note: Game.loadGame est défini dans game.js pour éviter les erreurs de référence
