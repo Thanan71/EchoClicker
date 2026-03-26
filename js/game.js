@@ -361,7 +361,7 @@ const Game = {
             EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
             
             // Émettre l'événement pour les quêtes
-            eventBus.emit('echo:captured', captured);
+            EventBus.emit('echo:captured', captured);
 
             // Afficher le message de succès
             const prefix = wildEcho.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
@@ -441,8 +441,8 @@ const Game = {
         this.state.bossesDefeated++;
         EventBus.emit(GAME_EVENTS.BOSS_DEFEATED, { region });
         
-        // Émettre l'événement pour les quêtes
-        eventBus.emit('boss:defeated', { id: this.state.currentRegion });
+            // Émettre l'événement pour les quêtes
+            EventBus.emit('boss:defeated', { id: this.state.currentRegion });
 
         const idx = this.state.regions.findIndex(r => r.id === this.state.currentRegion);
         if (idx < this.state.regions.length - 1) {
@@ -608,7 +608,7 @@ const Game = {
         EventBus.on(GAME_EVENTS.ECHO_LEVELED_UP, ({ echo }) => {
             if (echo.level > this.state.maxLevel) this.state.maxLevel = echo.level;
             // Émettre l'événement pour les quêtes
-            eventBus.emit('echo:levelUp', echo);
+            EventBus.emit('echo:levelUp', echo);
         });
 
         EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => {
@@ -621,11 +621,11 @@ const Game = {
         });
         
         // Écouter les événements de quêtes pour les notifications
-        eventBus.on('quest:completed', (quest) => {
+        EventBus.on('quest:completed', (quest) => {
             UI.toast(`🎉 Quête complétée : ${quest.name}`, 'success');
         });
         
-        eventBus.on('quest:rewardsClaimed', (quest) => {
+        EventBus.on('quest:rewardsClaimed', (quest) => {
             UI.toast(`🎁 Récompenses réclamées pour : ${quest.name}`, 'success');
         });
     },

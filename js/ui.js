@@ -49,10 +49,10 @@ const UI = {
         EventBus.on(GAME_EVENTS.BOSS_DEFEATED, () => this.renderRoutes());
         
         // Écouter les événements de quêtes
-        eventBus.on('quest:completed', () => this.renderQuests());
-        eventBus.on('quest:progress', () => this.renderQuests());
-        eventBus.on('quest:rewardsClaimed', () => this.renderQuests());
-        eventBus.on('quest:dailyReset', () => this.renderQuests());
+        EventBus.on('quest:completed', () => this.renderQuests());
+        EventBus.on('quest:progress', () => this.renderQuests());
+        EventBus.on('quest:rewardsClaimed', () => this.renderQuests());
+        EventBus.on('quest:dailyReset', () => this.renderQuests());
     },
 
     // === Navigation ===

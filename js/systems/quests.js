@@ -3,17 +3,14 @@
  * Gère les quêtes quotidiennes et les quêtes d'histoire
  */
 
-import { Game } from '../game.js';
-import { eventBus } from '../core/eventBus.js';
-
 // Types de quêtes
-export const QUEST_TYPES = {
+const QUEST_TYPES = {
   DAILY: 'daily',
   STORY: 'story'
 };
 
 // Catégories de quêtes
-export const QUEST_CATEGORIES = {
+const QUEST_CATEGORIES = {
   CAPTURE: 'capture',
   LEVEL: 'level',
   COMBAT: 'combat',
@@ -23,7 +20,7 @@ export const QUEST_CATEGORIES = {
 };
 
 // Structure d'une quête
-export class Quest {
+class Quest {
   constructor({
     id,
     name,
@@ -63,11 +60,11 @@ export class Quest {
     
     if (this.isCompleted()) {
       this.completed = true;
-      eventBus.emit('quest:completed', this);
+      EventBus.emit('quest:completed', this);
       return true;
     }
     
-    eventBus.emit('quest:progress', this);
+    EventBus.emit('quest:progress', this);
     return false;
   }
 
@@ -104,7 +101,7 @@ export class Quest {
       }
     });
     
-    eventBus.emit('quest:rewardsClaimed', this);
+    EventBus.emit('quest:rewardsClaimed', this);
     return true;
   }
 
@@ -129,7 +126,7 @@ export class Quest {
 }
 
 // Templates de quêtes quotidiennes
-export const DAILY_QUEST_TEMPLATES = [
+const DAILY_QUEST_TEMPLATES = [
   {
     id: 'daily_capture_flore',
     name: 'Chasseur de Flore',
@@ -205,7 +202,7 @@ export const DAILY_QUEST_TEMPLATES = [
 ];
 
 // Templates de quêtes d'histoire
-export const STORY_QUEST_TEMPLATES = [
+const STORY_QUEST_TEMPLATES = [
   {
     id: 'story_boss_forest',
     name: 'Le Gardien de la Forêt',
@@ -281,7 +278,7 @@ export const STORY_QUEST_TEMPLATES = [
 ];
 
 // Classe principale du système de quêtes
-export class QuestSystem {
+class QuestSystem {
   constructor() {
     this.dailyQuests = [];
     this.storyQuests = [];
@@ -303,7 +300,7 @@ export class QuestSystem {
     this.setupEventListeners();
     
     this.initialized = true;
-    eventBus.emit('quest:systemInitialized', this);
+    EventBus.emit('quest:systemInitialized', this);
   }
 
   // Charge les quêtes d'histoire
@@ -319,7 +316,7 @@ export class QuestSystem {
     if (!this.lastDailyReset || this.lastDailyReset < today) {
       this.generateDailyQuests();
       this.lastDailyReset = today;
-      eventBus.emit('quest:dailyReset', this.dailyQuests);
+      EventBus.emit('quest:dailyReset', this.dailyQuests);
     }
   }
 
@@ -335,27 +332,27 @@ export class QuestSystem {
   // Configure les écouteurs d'événements
   setupEventListeners() {
     // Capture d'Échos
-    eventBus.on('echo:captured', (echo) => {
+    EventBus.on('echo:captured', (echo) => {
       this.updateQuests(QUEST_CATEGORIES.CAPTURE, { type: echo.type });
     });
     
     // Montée de niveau
-    eventBus.on('echo:levelUp', (echo) => {
+    EventBus.on('echo:levelUp', (echo) => {
       this.updateQuests(QUEST_CATEGORIES.LEVEL, { level: echo.level });
     });
     
     // Victoire en combat
-    eventBus.on('combat:victory', () => {
+    EventBus.on('combat:victory', () => {
       this.updateQuests(QUEST_CATEGORIES.COMBAT);
     });
     
     // Minage de cristaux
-    eventBus.on('mine:crystal', () => {
+    EventBus.on('mine:crystal', () => {
       this.updateQuests(QUEST_CATEGORIES.MINE);
     });
     
     // Défaite de boss
-    eventBus.on('boss:defeated', (boss) => {
+    EventBus.on('boss:defeated', (boss) => {
       this.updateQuests(QUEST_CATEGORIES.BOSS, { bossId: boss.id });
     });
   }
@@ -470,4 +467,4 @@ export class QuestSystem {
 }
 
 // Instance singleton
-export const questSystem = new QuestSystem();
+const questSystem = new QuestSystem();
