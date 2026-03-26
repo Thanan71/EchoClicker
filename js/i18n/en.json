@@ -100,10 +100,12 @@
     "hatch": "Hatch!",
     "hatching": "Hatching...",
     "ready": "Ready to hatch!",
-    "noEggs": "No eggs available"
+    "noEggs": "No eggs available",
+    "createEgg": "🥚 Create an egg"
   },
   "mine": {
-    "title": "Mine",
+    "title": "Underground Mine",
+    "desc": "Dig to find Pure Crystals and treasures!",
     "energy": "Energy",
     "maxEnergy": "Max energy",
     "regenIn": "Regen in {time}",
@@ -112,17 +114,25 @@
     "found": "Found: {item}",
     "empty": "Nothing here...",
     "bomb": "💣 Bomb!",
+    "pickaxe": "Pickaxe",
+    "radar": "Radar",
+    "remainingEnergy": "Remaining energy",
+    "crystalsFound": "Crystals found",
     "energyRegen": "+1 energy every 30 seconds"
   },
   "shop": {
-    "title": "Shop",
+    "title": "Spirit Market",
     "buy": "Buy",
     "sell": "Sell",
     "price": "Price",
     "owned": "Owned",
     "notEnoughCrystals": "Not enough Pure Crystals!",
     "purchaseSuccess": "Purchase successful!",
-    "sellSuccess": "Sale successful!"
+    "sellSuccess": "Sale successful!",
+    "links": "Links",
+    "boosts": "Boosts",
+    "items": "Items",
+    "cosmetics": "Cosmetics"
   },
   "achievements": {
     "title": "Achievements",

@@ -100,10 +100,12 @@
     "hatch": "Éclore !",
     "hatching": "Éclosion en cours...",
     "ready": "Prêt à éclore !",
-    "noEggs": "Aucun œuf disponible"
+    "noEggs": "Aucun œuf disponible",
+    "createEgg": "🥚 Créer un œuf"
   },
   "mine": {
-    "title": "Mine",
+    "title": "Mine Souterraine",
+    "desc": "Creuse pour trouver des Cristaux Purs et des trésors !",
     "energy": "Énergie",
     "maxEnergy": "Énergie max",
     "regenIn": "Régén dans {time}",
@@ -112,17 +114,25 @@
     "found": "Trouvé : {item}",
     "empty": "Rien ici...",
     "bomb": "💣 Bombe !",
+    "pickaxe": "Pioche",
+    "radar": "Radar",
+    "remainingEnergy": "Énergie restante",
+    "crystalsFound": "Cristaux trouvés",
     "energyRegen": "+1 énergie toutes les 30 secondes"
   },
   "shop": {
-    "title": "Marché",
+    "title": "Marché des Esprits",
     "buy": "Acheter",
     "sell": "Vendre",
     "price": "Prix",
     "owned": "Possédé",
     "notEnoughCrystals": "Pas assez de Cristaux Purs !",
     "purchaseSuccess": "Achat réussi !",
-    "sellSuccess": "Vente réussie !"
+    "sellSuccess": "Vente réussie !",
+    "links": "Liens",
+    "boosts": "Boosts",
+    "items": "Objets",
+    "cosmetics": "Cosmétiques"
   },
   "achievements": {
     "title": "Succès",

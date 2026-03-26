@@ -639,6 +639,17 @@ const Game = {
             SaveSystem.deleteSave();
             location.reload();
         }
+    },
+
+    // Charger la sauvegarde au démarrage
+    loadGame() {
+        if (SaveSystem.hasSave()) {
+            if (SaveSystem.load()) {
+                console.log('Sauvegarde chargée');
+            } else {
+                console.log('Erreur de chargage, nouveau jeu');
+            }
+        }
     }
 };
 

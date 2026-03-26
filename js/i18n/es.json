@@ -100,10 +100,12 @@
     "hatch": "¡Eclosionar!",
     "hatching": "Eclosionando...",
     "ready": "¡Listo para eclosionar!",
-    "noEggs": "No hay huevos disponibles"
+    "noEggs": "No hay huevos disponibles",
+    "createEgg": "🥚 Crear un huevo"
   },
   "mine": {
-    "title": "Mina",
+    "title": "Mina Subterránea",
+    "desc": "¡Cava para encontrar Cristales Puros y tesoros!",
     "energy": "Energía",
     "maxEnergy": "Energía máx",
     "regenIn": "Regen en {time}",
@@ -112,17 +114,25 @@
     "found": "Encontrado: {item}",
     "empty": "Nada aquí...",
     "bomb": "¡💣 Bomba!",
+    "pickaxe": "Pico",
+    "radar": "Radar",
+    "remainingEnergy": "Energía restante",
+    "crystalsFound": "Cristales encontrados",
     "energyRegen": "+1 energía cada 30 segundos"
   },
   "shop": {
-    "title": "Tienda",
+    "title": "Mercado de Espíritus",
     "buy": "Comprar",
     "sell": "Vender",
     "price": "Precio",
     "owned": "Poseído",
     "notEnoughCrystals": "¡No hay suficientes Cristales Puros!",
     "purchaseSuccess": "¡Compra exitosa!",
-    "sellSuccess": "¡Venta exitosa!"
+    "sellSuccess": "¡Venta exitosa!",
+    "links": "Enlaces",
+    "boosts": "Potenciadores",
+    "items": "Objetos",
+    "cosmetics": "Cosméticos"
   },
   "achievements": {
     "title": "Logros",
