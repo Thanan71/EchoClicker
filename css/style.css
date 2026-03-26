@@ -203,6 +203,70 @@ body {
     align-items: center;
 }
 
+/* Boosts Indicator */
+.boosts-indicator {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.boost-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
+    border: 1px solid var(--accent-gold);
+    border-radius: var(--radius-md);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    animation: boostPulse 2s infinite;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.boost-badge .boost-icon {
+    font-size: 0.9rem;
+}
+
+.boost-badge .boost-timer {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-left: 4px;
+}
+
+@keyframes boostPulse {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+.boost-badge.xp {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+.boost-badge.capture {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.boost-badge.energy {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
 /* Language Selector */
 .lang-selector {
     position: relative;
