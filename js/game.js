@@ -284,46 +284,92 @@ const Game = {
     },
 
     // === Capture ===
-    attemptCapture(wildEcho) {
+    /**
+     * Méthode centralisée de capture d'Écho
+     * @param {Echo} wildEcho - L'Écho sauvage à capturer
+     * @param {Object} options - Options de capture
+     * @param {boolean} options.isAuto - Si c'est une auto-capture
+     * @returns {boolean} - true si la capture a réussi
+     */
+    captureEcho(wildEcho, options = {}) {
+        const { isAuto = false } = options;
+
+        // Vérifier les liens disponibles
         if (!this.spendLinks(1)) {
-            UI.toast('Pas assez de Liens d\'Aether !', 'error');
+            if (!isAuto) {
+                UI.toast('Pas assez de Liens d\'Aether !', 'error');
+            } else {
+                UI.addLog('info', `Auto-capture: ${wildEcho.name} (pas assez de Liens)`);
+            }
             return false;
         }
 
+        // Calculer le taux de capture
         const rate = Utils.calculateCaptureRate(
             wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
             wildEcho.hp, wildEcho.maxHp
         );
 
+        // Tenter la capture
         if (Utils.chance(rate)) {
+            // Créer l'Écho capturé
             const captured = new Echo(
                 getEchoById(wildEcho.id),
                 wildEcho.level,
                 wildEcho.isPrimordial
             );
 
-        this.state.totalCaptures++;
-        // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
-        if (!this.state.caughtEchoes.has(wildEcho.id)) {
-            this.state.uniqueCaptures++;
-        }
-        this.state.caughtEchoes.add(wildEcho.id);
-        if (wildEcho.isPrimordial) this.state.primordialCount++;
+            // Mettre à jour les statistiques
+            this.state.totalCaptures++;
+            
+            // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
+            if (!this.state.caughtEchoes.has(wildEcho.id)) {
+                this.state.uniqueCaptures++;
+            }
+            this.state.caughtEchoes.add(wildEcho.id);
+            
+            // Incrémenter le compteur de primordiaux
+            if (wildEcho.isPrimordial) {
+                this.state.primordialCount++;
+            }
 
+            // Ajouter à l'équipe ou aux réserves
             if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
                 this.addToParty(captured);
             } else {
                 this.state.reserves.push(captured);
             }
 
+            // Émettre l'événement de capture
             EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+
+            // Afficher le message de succès
             const prefix = wildEcho.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
-            UI.toast(`${prefix}${wildEcho.name} capturé !`, 'success');
+            if (isAuto) {
+                UI.addLog('capture', `🔮 Auto: ${prefix}${wildEcho.name} capturé !`);
+                UI.toast(`🔮 Auto: ${prefix}${wildEcho.name} capturé !`, 'success');
+            } else {
+                UI.addLog('capture', `${prefix}${wildEcho.name} capturé !`);
+                UI.toast(`${prefix}${wildEcho.name} capturé !`, 'success');
+            }
+
             return true;
         }
 
-        UI.toast('Capture échouée...', 'error');
+        // Capture échouée
+        if (!isAuto) {
+            UI.addLog('info', 'Capture échouée...');
+            UI.toast('Capture échouée !', 'error');
+        } else {
+            UI.addLog('info', `🔮 Auto-capture échouée: ${wildEcho.name}`);
+        }
+
         return false;
+    },
+
+    // === Capture (ancienne méthode - redirige vers captureEcho) ===
+    attemptCapture(wildEcho) {
+        return this.captureEcho(wildEcho);
     },
 
     // === Routes & Régions ===
