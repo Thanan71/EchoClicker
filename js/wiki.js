@@ -107,7 +107,7 @@ function renderEchoes() {
 
         html += `
             <tr>
-                <td><img src="assets/echoes/${echo.id}.png" class="echo-icon" onerror="this.innerText='${echo.emoji}'; this.style.fontSize='24px'"></td>
+                <td><img src="assets/echos-no-bg/echo_${String(echo.id).padStart(3, '0')}_no_bg.png" class="echo-icon" onerror="this.innerText='${echo.emoji}'; this.style.fontSize='24px'"></td>
                 <td><strong>${echo.name}</strong></td>
                 <td>
                     <span class="type-badge" style="background-color: ${typeInfo.color}">
