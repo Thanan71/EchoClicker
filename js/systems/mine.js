@@ -174,8 +174,8 @@ const Mine = {
                 classes += ' dug';
                 content = this.rewards[tile.reward].emoji;
             } else if (tile.revealed) {
+                classes += ' revealed';
                 content = this.rewards[tile.reward].emoji;
-                opacity = 0.6;
             }
             
             html += `<div class="${classes}" onclick="Mine.dig(${i})">${content}</div>`;

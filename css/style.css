@@ -1293,6 +1293,10 @@ body {
     cursor: default;
 }
 
+.mine-tile.revealed {
+    opacity: 0.6;
+}
+
 .mine-tile.found {
     animation: foundItem 0.5s ease;
     background: rgba(245, 158, 11, 0.2);
