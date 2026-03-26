@@ -18,11 +18,15 @@ function getEchoImagePathById(id, isShiny = false) {
 const UI = {
     currentTab: 'map',
     captureWildEcho: null,
+    // Filtres du Pokédex
+    pokedexStatusFilter: 'all',  // 'all', 'caught', 'unseen'
+    pokedexTypeFilter: null,     // null = tous, ou nom du type
 
     init() {
         this.renderRoutes();
         this.renderShop();
         this.renderAchievements();
+        this.initPokedexFilters();
         this.renderPokedex();
         this.updateAll();
         this.setupEventBus();
@@ -289,11 +293,73 @@ const UI = {
     },
 
     // === Pokédex ===
+    initPokedexFilters() {
+        // Générer les boutons de filtre par type
+        const typeFiltersContainer = document.getElementById('type-filters');
+        if (typeFiltersContainer) {
+            let typeHtml = '<button class="type-filter-btn active" data-type="all">Tous</button>';
+            Object.entries(TYPES).forEach(([key, type]) => {
+                typeHtml += `<button class="type-filter-btn" data-type="${key}" style="--type-color:${type.color}">${type.emoji} ${type.name}</button>`;
+            });
+            typeFiltersContainer.innerHTML = typeHtml;
+        }
+
+        // Attacher les gestionnaires d'événements pour les filtres de statut
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.pokedexStatusFilter = btn.dataset.filter;
+                this.renderPokedex();
+            });
+        });
+
+        // Attacher les gestionnaires d'événements pour les filtres par type
+        document.querySelectorAll('.type-filter-btn[data-type]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.type-filter-btn[data-type]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.pokedexTypeFilter = btn.dataset.type === 'all' ? null : btn.dataset.type;
+                this.renderPokedex();
+            });
+        });
+    },
+
     renderPokedex() {
         const grid = document.getElementById('pokedex-grid');
         if (!grid) return;
+
+        // Filtrer les Échos selon les critères actifs
+        const filteredEchoes = ECHOES_DB.filter(echo => {
+            const caught = Game.state.caughtEchoes.has(echo.id);
+            const seen = Game.state.seenEchoes.has(echo.id);
+
+            // Filtre par statut
+            let statusMatch = true;
+            if (this.pokedexStatusFilter === 'caught') {
+                statusMatch = caught;
+            } else if (this.pokedexStatusFilter === 'unseen') {
+                statusMatch = !seen;
+            }
+
+            // Filtre par type
+            let typeMatch = true;
+            if (this.pokedexTypeFilter) {
+                typeMatch = echo.type === this.pokedexTypeFilter;
+            }
+
+            return statusMatch && typeMatch;
+        });
+
+        // Mettre à jour le compteur de résultats
+        const counterEl = document.getElementById('pokedex-counter');
+        if (counterEl) {
+            counterEl.textContent = `${filteredEchoes.length} / ${ECHOES_DB.length} Échos`;
+        }
+
+        // Générer le HTML
         let html = '';
-        ECHOES_DB.forEach(echo => {
+        filteredEchoes.forEach(echo => {
             const caught = Game.state.caughtEchoes.has(echo.id);
             const seen = Game.state.seenEchoes.has(echo.id);
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
@@ -310,6 +376,11 @@ const UI = {
             }
             html += '</div>';
         });
+
+        if (filteredEchoes.length === 0) {
+            html = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">Aucun Écho trouvé avec ces filtres</div>';
+        }
+
         grid.innerHTML = html;
     },
 
