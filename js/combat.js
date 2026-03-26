@@ -62,8 +62,11 @@ const Combat = {
         if (Utils.chance(rate)) {
             const captured = new Echo(getEchoById(this.enemy.id), this.enemy.level, this.enemy.isPrimordial);
             Game.state.totalCaptures++;
+            // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
+            if (!Game.state.caughtEchoes.has(this.enemy.id)) {
+                Game.state.uniqueCaptures++;
+            }
             Game.state.caughtEchoes.add(this.enemy.id);
-            if (!Game.state.seenEchoes.has(this.enemy.id)) Game.state.uniqueCaptures++;
             if (this.enemy.isPrimordial) Game.state.primordialCount++;
 
             if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {
@@ -217,8 +220,11 @@ const Combat = {
         if (Utils.chance(rate)) {
             const captured = new Echo(getEchoById(this.enemy.id), this.enemy.level, this.enemy.isPrimordial);
             Game.state.totalCaptures++;
+            // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
+            if (!Game.state.caughtEchoes.has(this.enemy.id)) {
+                Game.state.uniqueCaptures++;
+            }
             Game.state.caughtEchoes.add(this.enemy.id);
-            if (!Game.state.seenEchoes.has(this.enemy.id)) Game.state.uniqueCaptures++;
             if (this.enemy.isPrimordial) Game.state.primordialCount++;
 
             if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {

@@ -302,10 +302,13 @@ const Game = {
                 wildEcho.isPrimordial
             );
 
-            this.state.totalCaptures++;
-            this.state.caughtEchoes.add(wildEcho.id);
-            if (!this.state.seenEchoes.has(wildEcho.id)) this.state.uniqueCaptures++;
-            if (wildEcho.isPrimordial) this.state.primordialCount++;
+        this.state.totalCaptures++;
+        // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
+        if (!this.state.caughtEchoes.has(wildEcho.id)) {
+            this.state.uniqueCaptures++;
+        }
+        this.state.caughtEchoes.add(wildEcho.id);
+        if (wildEcho.isPrimordial) this.state.primordialCount++;
 
             if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
                 this.addToParty(captured);
