@@ -207,7 +207,11 @@ const MapSystem = {
         const colors = {
             foret: '#55a630',
             montagnes: '#74b9ff',
-            ocean: '#0984e3'
+            ocean: '#0984e3',
+            volcan: '#ff6b35',
+            foret_maudite: '#6c5ce7',
+            ciel_ethere: '#ffeaa7',
+            dimension_arcane: '#a855f7'
         };
         return colors[this.currentRegionId] || '#8b5cf6';
     },
@@ -284,7 +288,11 @@ const MapSystem = {
         const configs = {
             foret: { c1: '#0a1a0a', c2: '#1a3a1a', c3: '#0d200d' },
             montagnes: { c1: '#0a0a1a', c2: '#1a1a3e', c3: '#12122a' },
-            ocean: { c1: '#0a1020', c2: '#0a1a3a', c3: '#0d1530' }
+            ocean: { c1: '#0a1020', c2: '#0a1a3a', c3: '#0d1530' },
+            volcan: { c1: '#1a0500', c2: '#3a1000', c3: '#200a00' },
+            foret_maudite: { c1: '#0a0510', c2: '#1a0a2a', c3: '#0d0515' },
+            ciel_ethere: { c1: '#1a1a30', c2: '#2a2a50', c3: '#151535' },
+            dimension_arcane: { c1: '#10051a', c2: '#200a3a', c3: '#150525' }
         };
         const c = configs[regionId] || configs.foret;
 
@@ -303,6 +311,10 @@ const MapSystem = {
             case 'foret': this.drawForest(); break;
             case 'montagnes': this.drawMountains(); break;
             case 'ocean': this.drawOcean(); break;
+            case 'volcan': this.drawVolcan(); break;
+            case 'foret_maudite': this.drawForetMaudite(); break;
+            case 'ciel_ethere': this.drawCielEthere(); break;
+            case 'dimension_arcane': this.drawDimensionArcane(); break;
         }
     },
 
@@ -910,6 +922,768 @@ const MapSystem = {
         });
     },
 
+
+    // ============================================
+    // VOLCAN INFERNAL
+    // ============================================
+    drawVolcan() {
+        this.drawVolcanBackground();
+        this.drawLavaRivers();
+        this.drawVolcanRocks();
+        this.drawEmbers();
+        this.drawVolcanSmoke();
+        this.drawVolcanPaths();
+        this.drawRoutes();
+    },
+
+    drawVolcanBackground() {
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, h);
+        gradient.addColorStop(0, '#1a0500');
+        gradient.addColorStop(0.3, '#2a0a00');
+        gradient.addColorStop(0.7, '#3a1000');
+        gradient.addColorStop(1, '#200800');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.6);
+        ctx.lineTo(w * 0.2, h * 0.6);
+        ctx.lineTo(w * 0.35, h * 0.15);
+        ctx.lineTo(w * 0.5, h * 0.08);
+        ctx.lineTo(w * 0.65, h * 0.15);
+        ctx.lineTo(w * 0.8, h * 0.6);
+        ctx.lineTo(w, h * 0.6);
+        ctx.lineTo(w, h);
+        ctx.lineTo(0, h);
+        ctx.closePath();
+
+        const volcGrad = ctx.createLinearGradient(0, h * 0.08, 0, h);
+        volcGrad.addColorStop(0, '#4a1a05');
+        volcGrad.addColorStop(0.3, '#3a1205');
+        volcGrad.addColorStop(1, '#1a0800');
+        ctx.fillStyle = volcGrad;
+        ctx.fill();
+
+        const cx = w * 0.5;
+        const cy = h * 0.08;
+        const craterGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60);
+        craterGlow.addColorStop(0, 'rgba(255, 100, 0, 0.6)');
+        craterGlow.addColorStop(0.5, 'rgba(255, 50, 0, 0.2)');
+        craterGlow.addColorStop(1, 'transparent');
+        ctx.fillStyle = craterGlow;
+        ctx.fillRect(cx - 80, cy - 80, 160, 160);
+    },
+
+    drawLavaRivers() {
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+        const t = this.time;
+
+        const lavaPoints = [
+            { x: w * 0.5, y: h * 0.15 },
+            { x: w * 0.45, y: h * 0.3 },
+            { x: w * 0.35, y: h * 0.5 },
+            { x: w * 0.3, y: h * 0.7 },
+            { x: w * 0.25, y: h * 0.9 }
+        ];
+
+        for (let i = 0; i < lavaPoints.length - 1; i++) {
+            const p1 = lavaPoints[i];
+            const p2 = lavaPoints[i + 1];
+            const flow = Math.sin(t * 2 + i) * 5;
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x - 8 + flow, p1.y);
+            ctx.quadraticCurveTo((p1.x + p2.x) / 2 + flow, (p1.y + p2.y) / 2, p2.x - 6 + flow, p2.y);
+            ctx.lineTo(p2.x + 6 + flow, p2.y);
+            ctx.quadraticCurveTo((p1.x + p2.x) / 2 + flow + 4, (p1.y + p2.y) / 2, p1.x + 8 + flow, p1.y);
+            ctx.closePath();
+
+            const lavaGrad = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+            lavaGrad.addColorStop(0, "rgba(255, " + (150 + Math.sin(t + i) * 50) + ", 0, 0.9)");
+            lavaGrad.addColorStop(0.5, "rgba(255, " + (100 + Math.sin(t * 2 + i) * 30) + ", 0, 0.8)");
+            lavaGrad.addColorStop(1, "rgba(200, " + (50 + Math.sin(t + i) * 20) + ", 0, 0.7)");
+            ctx.fillStyle = lavaGrad;
+            ctx.fill();
+
+            ctx.shadowColor = 'rgba(255, 80, 0, 0.5)';
+            ctx.shadowBlur = 15;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    },
+
+    drawVolcanRocks() {
+        const ctx = this.ctx;
+        const rocks = [
+            { x: 0.1, y: 0.55, s: 18 },
+            { x: 0.85, y: 0.6, s: 22 },
+            { x: 0.15, y: 0.8, s: 15 },
+            { x: 0.8, y: 0.75, s: 20 },
+            { x: 0.6, y: 0.85, s: 16 },
+            { x: 0.4, y: 0.7, s: 14 }
+        ];
+
+        rocks.forEach(r => {
+            const rx = r.x * this.width;
+            const ry = r.y * this.height;
+
+            ctx.beginPath();
+            ctx.moveTo(rx - r.s, ry + r.s * 0.3);
+            ctx.lineTo(rx - r.s * 0.5, ry - r.s * 0.6);
+            ctx.lineTo(rx + r.s * 0.3, ry - r.s * 0.8);
+            ctx.lineTo(rx + r.s, ry - r.s * 0.2);
+            ctx.lineTo(rx + r.s * 0.7, ry + r.s * 0.4);
+            ctx.closePath();
+
+            const rockGrad = ctx.createRadialGradient(rx, ry - r.s * 0.3, 0, rx, ry, r.s);
+            rockGrad.addColorStop(0, '#3a2015');
+            rockGrad.addColorStop(1, '#1a0a05');
+            ctx.fillStyle = rockGrad;
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(255, 80, 0, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        });
+    },
+
+    drawEmbers() {
+        const ctx = this.ctx;
+        for (let i = 0; i < 30; i++) {
+            const baseX = (i * 29) % this.width;
+            const x = baseX + Math.sin(this.time * 1.5 + i * 0.7) * 20;
+            const y = (this.height - ((this.time * 25 + i * 41) % (this.height + 40)));
+            const size = 1.5 + (i % 3);
+            const alpha = 0.4 + Math.sin(this.time * 3 + i) * 0.3;
+            const pulse = 0.7 + Math.sin(this.time * 4 + i * 2) * 0.3;
+
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255, " + (100 + i * 5) + ", 0, " + alpha + ")";
+            ctx.fill();
+
+            const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 4);
+            glow.addColorStop(0, "rgba(255, 80, 0, " + (0.2 * pulse) + ")");
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(x - size * 4, y - size * 4, size * 8, size * 8);
+        }
+    },
+
+    drawVolcanSmoke() {
+        const ctx = this.ctx;
+        const cx = this.width * 0.5;
+        const cy = this.height * 0.08;
+
+        for (let i = 0; i < 5; i++) {
+            const offset = Math.sin(this.time * 0.5 + i * 1.2) * 20;
+            const riseY = cy - 20 - i * 30 + Math.sin(this.time + i) * 5;
+            const size = 15 + i * 8;
+            const alpha = 0.15 - i * 0.02;
+
+            ctx.beginPath();
+            ctx.arc(cx + offset, riseY, size, 0, Math.PI * 2);
+            const smokeGrad = ctx.createRadialGradient(cx + offset, riseY, 0, cx + offset, riseY, size);
+            smokeGrad.addColorStop(0, "rgba(80, 60, 50, " + alpha + ")");
+            smokeGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = smokeGrad;
+            ctx.fill();
+        }
+    },
+
+    drawVolcanPaths() {
+        const ctx = this.ctx;
+        const routes = this.getRoutePositions();
+        const paths = [[0,1],[1,2],[0,3],[3,4],[2,3],[1,4]];
+
+        paths.forEach(([a, b]) => {
+            if (!routes[a] || !routes[b]) return;
+            const ra = routes[a], rb = routes[b];
+            const unlocked = ra.route.unlocked && rb.route.unlocked;
+
+            ctx.beginPath();
+            ctx.moveTo(ra.x, ra.y);
+            const midX = (ra.x + rb.x) / 2 + Math.sin(this.time + a) * 8;
+            const midY = (ra.y + rb.y) / 2;
+            ctx.quadraticCurveTo(midX, midY, rb.x, rb.y);
+            ctx.strokeStyle = unlocked ? 'rgba(255, 100, 0, 0.5)' : 'rgba(100, 50, 30, 0.3)';
+            ctx.lineWidth = unlocked ? 4 : 2;
+            ctx.setLineDash(unlocked ? [] : [6, 6]);
+            ctx.stroke();
+
+            if (unlocked) {
+                ctx.shadowColor = 'rgba(255, 60, 0, 0.4)';
+                ctx.shadowBlur = 8;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+            ctx.setLineDash([]);
+        });
+    },
+
+    // ============================================
+    // FORET MAUDITE
+    // ============================================
+    drawForetMaudite() {
+        this.drawMauditeGround();
+        this.drawDeadTrees();
+        this.drawMushrooms();
+        this.drawMist();
+        this.drawMauditePaths();
+        this.drawRoutes();
+    },
+
+    drawMauditeGround() {
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+
+        const gradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.6);
+        gradient.addColorStop(0, '#1a0f2e');
+        gradient.addColorStop(0.5, '#0d0815');
+        gradient.addColorStop(1, '#05030a');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(60, 40, 80, 0.3)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 150; i++) {
+            const x = (i * 137.5 + 42) % w;
+            const y = (i * 73.7 + 19) % h;
+            const len = 4 + (i % 5) * 2;
+            const sway = Math.sin(this.time * 1.5 + x * 0.02) * 2;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.quadraticCurveTo(x + sway, y - len / 2, x + sway * 1.2, y - len);
+            ctx.stroke();
+        }
+    },
+
+    drawDeadTrees() {
+        const ctx = this.ctx;
+        const trees = [
+            { x: 0.08, y: 0.25, s: 1.3 },
+            { x: 0.92, y: 0.2, s: 1.1 },
+            { x: 0.05, y: 0.7, s: 1.0 },
+            { x: 0.95, y: 0.72, s: 1.4 },
+            { x: 0.18, y: 0.88, s: 0.9 },
+            { x: 0.82, y: 0.9, s: 1.2 },
+            { x: 0.3, y: 0.08, s: 0.8 },
+            { x: 0.72, y: 0.1, s: 0.85 }
+        ];
+
+        trees.forEach(t => {
+            const tx = t.x * this.width;
+            const ty = t.y * this.height;
+            const s = 35 * t.s;
+            const sway = Math.sin(this.time * 0.8 + tx * 0.01) * 2;
+
+            ctx.fillStyle = '#1a0a20';
+            ctx.fillRect(tx - s * 0.08, ty - s * 0.5, s * 0.16, s * 0.7);
+
+            ctx.strokeStyle = '#2a1530';
+            ctx.lineWidth = 3;
+            for (let b = 0; b < 4; b++) {
+                const angle = (b / 4) * Math.PI - Math.PI / 4 + sway * 0.02;
+                const blen = s * (0.4 + ((b * 7 + 3) % 5) * 0.06);
+                ctx.beginPath();
+                ctx.moveTo(tx, ty - s * 0.3 - b * s * 0.12);
+                ctx.lineTo(tx + Math.cos(angle) * blen, ty - s * 0.3 - b * s * 0.12 + Math.sin(angle) * blen * 0.5);
+                ctx.stroke();
+            }
+
+            const glow = ctx.createRadialGradient(tx, ty - s * 0.3, 0, tx, ty - s * 0.3, s * 0.6);
+            glow.addColorStop(0, 'rgba(100, 50, 150, 0.08)');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(tx - s, ty - s, s * 2, s * 2);
+        });
+    },
+
+    drawMushrooms() {
+        const ctx = this.ctx;
+        const shrooms = [
+            { x: 0.25, y: 0.5 },
+            { x: 0.55, y: 0.45 },
+            { x: 0.4, y: 0.7 },
+            { x: 0.7, y: 0.6 },
+            { x: 0.15, y: 0.4 }
+        ];
+
+        shrooms.forEach(m => {
+            const mx = m.x * this.width;
+            const my = m.y * this.height;
+            const pulse = 0.6 + Math.sin(this.time * 2.5 + mx) * 0.4;
+
+            const glow = ctx.createRadialGradient(mx, my, 0, mx, my, 20);
+            glow.addColorStop(0, 'rgba(100, 255, 50, ' + (0.15 * pulse) + ')');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(mx - 25, my - 25, 50, 50);
+
+            ctx.fillStyle = '#2a1a30';
+            ctx.fillRect(mx - 2, my, 4, 10);
+
+            ctx.beginPath();
+            ctx.arc(mx, my, 8, Math.PI, 0);
+            ctx.fillStyle = 'rgba(80, 40, 120, ' + pulse + ')';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(mx - 3, my - 3, 1.5, 0, Math.PI * 2);
+            ctx.arc(mx + 4, my - 2, 1, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(150, 255, 100, ' + (pulse * 0.8) + ')';
+            ctx.fill();
+        });
+    },
+
+    drawMist() {
+        const ctx = this.ctx;
+        for (let i = 0; i < 8; i++) {
+            const x = ((this.time * 15 + i * 100) % (this.width + 200)) - 100;
+            const y = this.height * (0.3 + i * 0.08);
+            const alpha = 0.06 + Math.sin(this.time + i) * 0.03;
+
+            ctx.beginPath();
+            ctx.ellipse(x, y, 80, 20, 0, 0, Math.PI * 2);
+            const mistGrad = ctx.createRadialGradient(x, y, 0, x, y, 80);
+            mistGrad.addColorStop(0, 'rgba(80, 50, 120, ' + alpha + ')');
+            mistGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = mistGrad;
+            ctx.fill();
+        }
+    },
+
+    drawMauditePaths() {
+        const ctx = this.ctx;
+        const routes = this.getRoutePositions();
+        const paths = [[0,1],[1,2],[0,3],[3,4],[2,3],[1,4]];
+
+        paths.forEach(([a, b]) => {
+            if (!routes[a] || !routes[b]) return;
+            const ra = routes[a], rb = routes[b];
+            const unlocked = ra.route.unlocked && rb.route.unlocked;
+
+            ctx.beginPath();
+            ctx.moveTo(ra.x, ra.y);
+            const midX = (ra.x + rb.x) / 2 + Math.sin(this.time * 0.5 + a * 2) * 12;
+            const midY = (ra.y + rb.y) / 2 + Math.cos(this.time * 0.7 + b) * 8;
+            ctx.quadraticCurveTo(midX, midY, rb.x, rb.y);
+            ctx.strokeStyle = unlocked ? 'rgba(100, 60, 150, 0.5)' : 'rgba(60, 40, 80, 0.2)';
+            ctx.lineWidth = unlocked ? 3 : 2;
+            ctx.setLineDash(unlocked ? [] : [8, 8]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        });
+    },
+
+    // ============================================
+    // CIEL ETHERE
+    // ============================================
+    drawCielEthere() {
+        this.drawSkyBackground();
+        this.drawClouds();
+        this.drawLightRays();
+        this.drawEtherealParticles();
+        this.drawSkyPaths();
+        this.drawRoutes();
+    },
+
+    drawSkyBackground() {
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, h);
+        gradient.addColorStop(0, '#1a1a40');
+        gradient.addColorStop(0.3, '#2a2a60');
+        gradient.addColorStop(0.6, '#1a2040');
+        gradient.addColorStop(1, '#151535');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+
+        for (let i = 0; i < 60; i++) {
+            const x = (i * 137.5) % w;
+            const y = (i * 73.7) % (h * 0.6);
+            const twinkle = 0.4 + Math.sin(this.time * 2.5 + i * 0.8) * 0.4;
+            const size = 1 + (i % 3) * 0.5;
+
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 200, ' + twinkle + ')';
+            ctx.fill();
+
+            if (i % 5 === 0) {
+                ctx.strokeStyle = 'rgba(255, 255, 200, ' + (twinkle * 0.3) + ')';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(x - 4, y);
+                ctx.lineTo(x + 4, y);
+                ctx.moveTo(x, y - 4);
+                ctx.lineTo(x, y + 4);
+                ctx.stroke();
+            }
+        }
+    },
+
+    drawClouds() {
+        const ctx = this.ctx;
+        const clouds = [
+            { x: 0.15, y: 0.3, s: 1.2 },
+            { x: 0.5, y: 0.25, s: 1.5 },
+            { x: 0.8, y: 0.35, s: 1.0 },
+            { x: 0.35, y: 0.55, s: 0.8 },
+            { x: 0.65, y: 0.5, s: 1.1 }
+        ];
+
+        clouds.forEach(c => {
+            const cx = c.x * this.width + Math.sin(this.time * 0.3 + c.x * 10) * 15;
+            const cy = c.y * this.height;
+            const s = 30 * c.s;
+
+            for (let i = 0; i < 4; i++) {
+                const ox = (i - 1.5) * s * 0.4;
+                const oy = Math.sin(i * 1.5) * s * 0.15;
+                const r = s * (0.3 + Math.sin(i * 2) * 0.1);
+
+                ctx.beginPath();
+                ctx.arc(cx + ox, cy + oy, r, 0, Math.PI * 2);
+                const cloudGrad = ctx.createRadialGradient(cx + ox, cy + oy, 0, cx + ox, cy + oy, r);
+                cloudGrad.addColorStop(0, 'rgba(200, 210, 255, 0.15)');
+                cloudGrad.addColorStop(0.7, 'rgba(150, 170, 220, 0.08)');
+                cloudGrad.addColorStop(1, 'transparent');
+                ctx.fillStyle = cloudGrad;
+                ctx.fill();
+            }
+
+            const aura = ctx.createRadialGradient(cx, cy, 0, cx, cy, s * 0.8);
+            aura.addColorStop(0, 'rgba(200, 200, 255, 0.05)');
+            aura.addColorStop(1, 'transparent');
+            ctx.fillStyle = aura;
+            ctx.fillRect(cx - s, cy - s, s * 2, s * 2);
+        });
+    },
+
+    drawLightRays() {
+        const ctx = this.ctx;
+        const w = this.width;
+
+        for (let i = 0; i < 4; i++) {
+            const x = w * (0.2 + i * 0.2);
+            const alpha = 0.04 + Math.sin(this.time * 0.8 + i * 1.5) * 0.02;
+
+            ctx.beginPath();
+            ctx.moveTo(x - 15, 0);
+            ctx.lineTo(x + 30, this.height * 0.7);
+            ctx.lineTo(x - 30, this.height * 0.7);
+            ctx.closePath();
+
+            const rayGrad = ctx.createLinearGradient(x, 0, x, this.height * 0.7);
+            rayGrad.addColorStop(0, 'rgba(255, 240, 200, ' + alpha + ')');
+            rayGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = rayGrad;
+            ctx.fill();
+        }
+    },
+
+    drawEtherealParticles() {
+        const ctx = this.ctx;
+        for (let i = 0; i < 25; i++) {
+            const x = (Math.sin(this.time * 0.4 + i * 1.8) * 0.45 + 0.5) * this.width;
+            const y = (Math.cos(this.time * 0.3 + i * 2.2) * 0.4 + 0.5) * this.height;
+            const alpha = 0.3 + Math.sin(this.time * 3 + i) * 0.2;
+            const size = 2 + (i % 3);
+
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 5);
+            glow.addColorStop(0, 'rgba(255, 230, 150, ' + alpha + ')');
+            glow.addColorStop(0.5, 'rgba(200, 200, 255, ' + (alpha * 0.5) + ')');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fill();
+        }
+    },
+
+    drawSkyPaths() {
+        const ctx = this.ctx;
+        const routes = this.getRoutePositions();
+        const paths = [[0,1],[1,2],[0,3],[3,4],[2,3],[1,4]];
+
+        paths.forEach(([a, b]) => {
+            if (!routes[a] || !routes[b]) return;
+            const ra = routes[a], rb = routes[b];
+            const unlocked = ra.route.unlocked && rb.route.unlocked;
+
+            ctx.beginPath();
+            ctx.moveTo(ra.x, ra.y);
+            const cp1x = ra.x + (rb.x - ra.x) * 0.3 + Math.sin(this.time + a) * 12;
+            const cp1y = ra.y + (rb.y - ra.y) * 0.3 - 20;
+            const cp2x = ra.x + (rb.x - ra.x) * 0.7 + Math.cos(this.time + b) * 12;
+            const cp2y = ra.y + (rb.y - ra.y) * 0.7 - 20;
+            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, rb.x, rb.y);
+            ctx.strokeStyle = unlocked ? 'rgba(255, 230, 150, 0.4)' : 'rgba(100, 100, 140, 0.2)';
+            ctx.lineWidth = unlocked ? 3 : 2;
+            ctx.setLineDash(unlocked ? [] : [6, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        });
+    },
+
+    // ============================================
+    // DIMENSION ARCANE
+    // ============================================
+    drawDimensionArcane() {
+        this.drawArcaneBackground();
+        this.drawRuneCircles();
+        this.drawFloatingCrystals();
+        this.drawArcaneParticles();
+        this.drawDimensionRifts();
+        this.drawArcanePaths();
+        this.drawRoutes();
+    },
+
+    drawArcaneBackground() {
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+
+        const gradient = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.6);
+        gradient.addColorStop(0, '#200a3a');
+        gradient.addColorStop(0.5, '#150525');
+        gradient.addColorStop(1, '#0a0215');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(120, 80, 200, 0.08)';
+        ctx.lineWidth = 0.5;
+        const gridSize = 40;
+        for (let x = 0; x < w; x += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, h);
+            ctx.stroke();
+        }
+        for (let y = 0; y < h; y += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+        }
+    },
+
+    drawRuneCircles() {
+        const ctx = this.ctx;
+        const circles = [
+            { x: 0.25, y: 0.35, r: 50, speed: 0.5 },
+            { x: 0.7, y: 0.3, r: 40, speed: -0.7 },
+            { x: 0.5, y: 0.7, r: 60, speed: 0.3 }
+        ];
+
+        circles.forEach(c => {
+            const cx = c.x * this.width;
+            const cy = c.y * this.height;
+            const rotation = this.time * c.speed;
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, c.r, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(168, 85, 247, ' + (0.2 + Math.sin(this.time + c.x * 5) * 0.1) + ')';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, c.r * 0.6, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(200, 150, 255, ' + (0.15 + Math.sin(this.time * 1.5 + c.y * 5) * 0.08) + ')';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2 + rotation;
+                const rx = cx + Math.cos(angle) * c.r * 0.8;
+                const ry = cy + Math.sin(angle) * c.r * 0.8;
+
+                ctx.save();
+                ctx.translate(rx, ry);
+                ctx.rotate(angle + Math.PI / 2);
+
+                ctx.beginPath();
+                ctx.moveTo(0, -5);
+                ctx.lineTo(3, 3);
+                ctx.lineTo(-3, 3);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(200, 150, 255, ' + (0.4 + Math.sin(this.time * 2 + i) * 0.2) + ')';
+                ctx.fill();
+
+                ctx.restore();
+            }
+
+            const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, c.r * 0.4);
+            glow.addColorStop(0, 'rgba(168, 85, 247, 0.1)');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(cx - c.r, cy - c.r, c.r * 2, c.r * 2);
+        });
+    },
+
+    drawFloatingCrystals() {
+        const ctx = this.ctx;
+        const crystals = [
+            { x: 0.15, y: 0.2, s: 12, rot: 0 },
+            { x: 0.85, y: 0.25, s: 15, rot: 1 },
+            { x: 0.1, y: 0.75, s: 10, rot: 2 },
+            { x: 0.9, y: 0.7, s: 14, rot: 3 },
+            { x: 0.5, y: 0.15, s: 11, rot: 4 }
+        ];
+
+        crystals.forEach(c => {
+            const cx = c.x * this.width + Math.sin(this.time * 0.5 + c.rot) * 10;
+            const cy = c.y * this.height + Math.cos(this.time * 0.4 + c.rot) * 8;
+            const pulse = 0.6 + Math.sin(this.time * 2 + c.rot * 1.5) * 0.4;
+            const rotation = this.time * 0.3 + c.rot;
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(rotation);
+
+            ctx.beginPath();
+            ctx.moveTo(0, -c.s);
+            ctx.lineTo(c.s * 0.5, 0);
+            ctx.lineTo(0, c.s * 0.6);
+            ctx.lineTo(-c.s * 0.5, 0);
+            ctx.closePath();
+
+            const crystalGrad = ctx.createLinearGradient(-c.s, -c.s, c.s, c.s);
+            crystalGrad.addColorStop(0, 'rgba(180, 130, 255, ' + (0.5 * pulse) + ')');
+            crystalGrad.addColorStop(1, 'rgba(120, 80, 200, ' + (0.3 * pulse) + ')');
+            ctx.fillStyle = crystalGrad;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(200, 170, 255, ' + (0.6 * pulse) + ')';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.restore();
+
+            const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, c.s * 2);
+            glow.addColorStop(0, 'rgba(168, 85, 247, ' + (0.15 * pulse) + ')');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(cx - c.s * 2, cy - c.s * 2, c.s * 4, c.s * 4);
+        });
+    },
+
+    drawArcaneParticles() {
+        const ctx = this.ctx;
+        for (let i = 0; i < 35; i++) {
+            const angle = (this.time * 0.3 + i * 0.5) % (Math.PI * 2);
+            const radius = 50 + (i % 5) * 40 + Math.sin(this.time + i) * 20;
+            const x = this.width / 2 + Math.cos(angle + i * 0.8) * radius;
+            const y = this.height / 2 + Math.sin(angle + i * 0.8) * radius * 0.7;
+            const alpha = 0.3 + Math.sin(this.time * 2 + i * 0.7) * 0.2;
+            const size = 1.5 + (i % 3);
+
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(200, 150, 255, ' + alpha + ')';
+            ctx.fill();
+
+            const trailX = x - Math.cos(angle + i * 0.8) * 8;
+            const trailY = y - Math.sin(angle + i * 0.8) * 8;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(trailX, trailY);
+            ctx.strokeStyle = 'rgba(200, 150, 255, ' + (alpha * 0.3) + ')';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+    },
+
+    drawDimensionRifts() {
+        const ctx = this.ctx;
+        const rifts = [
+            { x: 0.3, y: 0.5, angle: 0.3 },
+            { x: 0.7, y: 0.45, angle: -0.2 }
+        ];
+
+        rifts.forEach(r => {
+            const rx = r.x * this.width;
+            const ry = r.y * this.height;
+            const pulse = 0.5 + Math.sin(this.time * 1.5 + r.angle * 10) * 0.3;
+
+            ctx.save();
+            ctx.translate(rx, ry);
+            ctx.rotate(r.angle + Math.sin(this.time * 0.5) * 0.1);
+
+            ctx.beginPath();
+            ctx.moveTo(-30, -5 + Math.sin(this.time * 2) * 3);
+            ctx.quadraticCurveTo(0, -15 + Math.cos(this.time * 3) * 5, 30, -3 + Math.sin(this.time * 2.5) * 4);
+            ctx.quadraticCurveTo(5, 5, -25, 3 + Math.cos(this.time * 2) * 3);
+            ctx.closePath();
+
+            const riftGrad = ctx.createLinearGradient(-30, 0, 30, 0);
+            riftGrad.addColorStop(0, 'rgba(255, 200, 100, ' + (0.3 * pulse) + ')');
+            riftGrad.addColorStop(0.5, 'rgba(200, 100, 255, ' + (0.4 * pulse) + ')');
+            riftGrad.addColorStop(1, 'rgba(100, 200, 255, ' + (0.3 * pulse) + ')');
+            ctx.fillStyle = riftGrad;
+            ctx.fill();
+
+            ctx.restore();
+
+            const glow = ctx.createRadialGradient(rx, ry, 0, rx, ry, 40);
+            glow.addColorStop(0, 'rgba(200, 150, 255, ' + (0.1 * pulse) + ')');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(rx - 50, ry - 50, 100, 100);
+        });
+    },
+
+    drawArcanePaths() {
+        const ctx = this.ctx;
+        const routes = this.getRoutePositions();
+        const paths = [[0,1],[1,2],[0,3],[3,4],[2,3],[1,4]];
+
+        paths.forEach(([a, b]) => {
+            if (!routes[a] || !routes[b]) return;
+            const ra = routes[a], rb = routes[b];
+            const unlocked = ra.route.unlocked && rb.route.unlocked;
+
+            ctx.beginPath();
+            ctx.moveTo(ra.x, ra.y);
+            const midX = (ra.x + rb.x) / 2 + Math.sin(this.time + a * 1.5) * 15;
+            const midY = (ra.y + rb.y) / 2 + Math.cos(this.time * 1.2 + b) * 10;
+            ctx.quadraticCurveTo(midX, midY, rb.x, rb.y);
+
+            const alpha = unlocked ? (0.5 + Math.sin(this.time * 2 + a) * 0.15) : 0.2;
+            ctx.strokeStyle = unlocked ? 'rgba(168, 85, 247, ' + alpha + ')' : 'rgba(80, 50, 120, 0.2)';
+            ctx.lineWidth = unlocked ? 3 : 2;
+            ctx.setLineDash(unlocked ? [] : [6, 6]);
+            ctx.stroke();
+
+            if (unlocked) {
+                ctx.shadowColor = 'rgba(168, 85, 247, 0.3)';
+                ctx.shadowBlur = 6;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+            ctx.setLineDash([]);
+
+            if (unlocked) {
+                for (let t = 0.25; t < 1; t += 0.25) {
+                    const px = ra.x + (rb.x - ra.x) * t;
+                    const py = ra.y + (rb.y - ra.y) * t + Math.sin(this.time * 2 + t * 10) * 3;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(200, 170, 255, ' + (0.4 + Math.sin(this.time * 3 + t * 5) * 0.2) + ')';
+                    ctx.fill();
+                }
+            }
+        });
+    },
     // ============================================
     // ROUTES (commun à toutes les régions)
     // ============================================
