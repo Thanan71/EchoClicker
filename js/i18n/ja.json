@@ -16,6 +16,7 @@
     "party": "👥 パーティ",
     "capture": "🔮 キャプチャ",
     "pokedex": "📖 ログブック",
+    "quests": "📋 クエスト",
     "hatchery": "🥚 孵化",
     "mine": "⛏️ 鉱山",
     "shop": "🏪 ショップ",
@@ -225,6 +226,10 @@
     "rare": "レア",
     "epic": "エピック",
     "legendary": "レジェンダリー"
+  },
+  "quests": {
+    "title": "📋 クエスト",
+    "desc": "クエストをクリアして報酬を獲得し、冒険を進めよう！"
   },
   "notifications": {
     "saved": "セーブしました！",
