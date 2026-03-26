@@ -46,6 +46,7 @@
     "captureFailed": "キャプチャ失敗！",
     "autoCaptureSuccess": "🔮 オート：{name}をキャプチャした！",
     "autoCaptureFailed": "🔮 オートキャプチャ失敗：{name}",
+    "autoCapture": "🔮 オートキャプチャ新規",
     "fled": "戦闘から逃走した！",
     "enemyFled": "敵が逃走した！",
     "criticalHit": "クリティカルヒット！",
@@ -57,6 +58,14 @@
     "newTeam": "新しいチーム：{names}"
   },
   "capture": {
+    "title": "🔮 キャプチャゾーン",
+    "desc": "クリックしてエーテルの絆を発動し、野生のエコーをキャプチャしよう！",
+    "rate": "キャプチャ率",
+    "launchLink": "エーテルの絆を発動",
+    "cost": "（1絆）",
+    "successfulCaptures": "キャプチャ成功数",
+    "uniqueEchoes": "ユニークエコー",
+    "primordialsFound": "プライモーディアル発見数",
     "notEnoughLinks": "エーテルの絆が足りない！",
     "autoNotEnoughLinks": "オートキャプチャ：{name}（絆が不足）",
     "routeLocked": "ルートが未解放！",
@@ -70,10 +79,14 @@
     "routes": "ルート",
     "locked": "ロック中",
     "unlocked": "解放済み",
+    "activeRoute": "アクティブルート",
+    "selectRegion": "地域を選択",
+    "selectRegionDesc": "マップの地域またはルートをクリックして冒険を始めよう。",
     "level": "レベル{level}"
   },
   "party": {
     "title": "あなたのパーティ",
+    "desc": "アクティブなエコーを管理（戦闘中は最大6体）",
     "empty": "パーティにエコーがいない",
     "leader": "リーダー",
     "slot": "スロット{number}",
@@ -82,11 +95,16 @@
     "def": "DEF",
     "spd": "SPD",
     "level": "Lv.{level}",
+    "optimalTeam": "最適チーム",
+    "reserves": "📦 リザーブ",
     "addToParty": "パーティに追加",
     "removeFromParty": "パーティから外す"
   },
   "pokedex": {
     "title": "エコーログブック",
+    "all": "すべて",
+    "caught": "キャプチャ済み",
+    "unseen": "未発見",
     "discovered": "発見",
     "captured": "キャプチャ",
     "total": "合計",
@@ -95,15 +113,21 @@
   },
   "hatchery": {
     "title": "孵化施設",
+    "desc": "互換性のある2つのエコーを組み合わせて卵を手に入れよう！",
     "incubator": "インキュベーター",
     "empty": "孵化中の卵がない",
     "hatch": "孵化！",
     "hatching": "孵化中...",
     "ready": "孵化準備完了！",
-    "noEggs": "卵がない"
+    "noEggs": "卵がない",
+    "createEgg": "🥚 卵を作成",
+    "selectParents": "親を選択",
+    "parent1": "親1",
+    "parent2": "親2"
   },
   "mine": {
-    "title": "鉱山",
+    "title": "地下鉱山",
+    "desc": "掘って純クリスタルと宝物を見つけよう！",
     "energy": "エネルギー",
     "maxEnergy": "最大エネルギー",
     "regenIn": "回復まで{time}",
@@ -112,17 +136,25 @@
     "found": "発見：{item}",
     "empty": "何もなし...",
     "bomb": "💣 爆弾！",
+    "pickaxe": "つるはし",
+    "radar": "レーダー",
+    "remainingEnergy": "残りエネルギー",
+    "crystalsFound": "クリスタル発見数",
     "energyRegen": "30秒ごとにエネルギー+1"
   },
   "shop": {
-    "title": "ショップ",
+    "title": "スピリットマーケット",
     "buy": "購入",
     "sell": "売却",
     "price": "価格",
     "owned": "所持",
     "notEnoughCrystals": "純クリスタルが足りない！",
     "purchaseSuccess": "購入成功！",
-    "sellSuccess": "売却成功！"
+    "sellSuccess": "売却成功！",
+    "links": "リンク",
+    "boosts": "ブースト",
+    "items": "アイテム",
+    "cosmetics": "コスメティック"
   },
   "achievements": {
     "title": "実績",

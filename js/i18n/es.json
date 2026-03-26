@@ -46,6 +46,7 @@
     "captureFailed": "¡Captura fallida!",
     "autoCaptureSuccess": "🔮 Auto: ¡{name} capturado!",
     "autoCaptureFailed": "🔮 Auto-captura fallida: {name}",
+    "autoCapture": "🔮 Auto-Captura Nuevos",
     "fled": "¡Has huido del combate!",
     "enemyFled": "¡El enemigo ha huido!",
     "criticalHit": "¡Golpe crítico!",
@@ -57,6 +58,14 @@
     "newTeam": "Nuevo equipo: {names}"
   },
   "capture": {
+    "title": "🔮 Zona de Captura",
+    "desc": "¡Haz clic para lanzar Enlaces Aether y capturar Ecos salvajes!",
+    "rate": "Tasa de captura",
+    "launchLink": "Lanzar un Enlace Aether",
+    "cost": "(1 Enlace)",
+    "successfulCaptures": "Capturas exitosas",
+    "uniqueEchoes": "Ecos únicos",
+    "primordialsFound": "Primordiales encontrados",
     "notEnoughLinks": "¡No hay suficientes Enlaces Aether!",
     "autoNotEnoughLinks": "Auto-captura: {name} (no hay suficientes Enlaces)",
     "routeLocked": "¡Ruta no desbloqueada!",
@@ -70,10 +79,14 @@
     "routes": "Rutas",
     "locked": "Bloqueado",
     "unlocked": "Desbloqueado",
+    "activeRoute": "Ruta activa",
+    "selectRegion": "Selecciona una región",
+    "selectRegionDesc": "Haz clic en una región o ruta del mapa para comenzar la aventura.",
     "level": "Nivel {level}"
   },
   "party": {
     "title": "Tu Equipo",
+    "desc": "Gestiona tus Ecos activos (máx 6 en combate)",
     "empty": "No hay Echo en el equipo",
     "leader": "Líder",
     "slot": "Espacio {number}",
@@ -82,11 +95,16 @@
     "def": "DEF",
     "spd": "VEL",
     "level": "Nv. {level}",
+    "optimalTeam": "Equipo Óptimo",
+    "reserves": "📦 Reservas",
     "addToParty": "Añadir al equipo",
     "removeFromParty": "Quitar del equipo"
   },
   "pokedex": {
     "title": "Registro de Ecos",
+    "all": "Todos",
+    "caught": "Capturados",
+    "unseen": "No vistos",
     "discovered": "Descubiertos",
     "captured": "Capturados",
     "total": "Total",
@@ -95,13 +113,17 @@
   },
   "hatchery": {
     "title": "Incubadora",
+    "desc": "¡Combina dos Ecos compatibles para obtener un huevo!",
     "incubator": "Incubadora",
     "empty": "No hay huevo en incubación",
     "hatch": "¡Eclosionar!",
     "hatching": "Eclosionando...",
     "ready": "¡Listo para eclosionar!",
     "noEggs": "No hay huevos disponibles",
-    "createEgg": "🥚 Crear un huevo"
+    "createEgg": "🥚 Crear un huevo",
+    "selectParents": "Seleccionar padres",
+    "parent1": "Padre 1",
+    "parent2": "Padre 2"
   },
   "mine": {
     "title": "Mina Subterránea",

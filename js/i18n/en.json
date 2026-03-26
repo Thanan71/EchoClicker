@@ -46,6 +46,7 @@
     "captureFailed": "Capture failed!",
     "autoCaptureSuccess": "🔮 Auto: {name} captured!",
     "autoCaptureFailed": "🔮 Auto-capture failed: {name}",
+    "autoCapture": "🔮 Auto-Capture New",
     "fled": "You fled the battle!",
     "enemyFled": "The enemy fled!",
     "criticalHit": "Critical hit!",
@@ -57,6 +58,14 @@
     "newTeam": "New team: {names}"
   },
   "capture": {
+    "title": "🔮 Capture Zone",
+    "desc": "Click to launch Aether Links and capture wild Echoes!",
+    "rate": "Capture rate",
+    "launchLink": "Launch an Aether Link",
+    "cost": "(1 Link)",
+    "successfulCaptures": "Successful captures",
+    "uniqueEchoes": "Unique Echoes",
+    "primordialsFound": "Primordials found",
     "notEnoughLinks": "Not enough Aether Links!",
     "autoNotEnoughLinks": "Auto-capture: {name} (not enough Links)",
     "routeLocked": "Route not unlocked!",
@@ -70,10 +79,14 @@
     "routes": "Routes",
     "locked": "Locked",
     "unlocked": "Unlocked",
+    "activeRoute": "Active route",
+    "selectRegion": "Select a region",
+    "selectRegionDesc": "Click on a region or route on the map to start the adventure.",
     "level": "Level {level}"
   },
   "party": {
     "title": "Your Party",
+    "desc": "Manage your active Echoes (max 6 in combat)",
     "empty": "No Echo in party",
     "leader": "Leader",
     "slot": "Slot {number}",
@@ -82,11 +95,16 @@
     "def": "DEF",
     "spd": "SPD",
     "level": "Lv. {level}",
+    "optimalTeam": "Optimal Team",
+    "reserves": "📦 Reserves",
     "addToParty": "Add to party",
     "removeFromParty": "Remove from party"
   },
   "pokedex": {
     "title": "Echo Logbook",
+    "all": "All",
+    "caught": "Caught",
+    "unseen": "Unseen",
     "discovered": "Discovered",
     "captured": "Captured",
     "total": "Total",
@@ -95,13 +113,17 @@
   },
   "hatchery": {
     "title": "Hatchery",
+    "desc": "Combine two compatible Echoes to get an egg!",
     "incubator": "Incubator",
     "empty": "No egg in incubation",
     "hatch": "Hatch!",
     "hatching": "Hatching...",
     "ready": "Ready to hatch!",
     "noEggs": "No eggs available",
-    "createEgg": "🥚 Create an egg"
+    "createEgg": "🥚 Create an egg",
+    "selectParents": "Select parents",
+    "parent1": "Parent 1",
+    "parent2": "Parent 2"
   },
   "mine": {
     "title": "Underground Mine",

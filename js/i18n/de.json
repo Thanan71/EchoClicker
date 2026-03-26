@@ -46,6 +46,7 @@
     "captureFailed": "Fang fehlgeschlagen!",
     "autoCaptureSuccess": "🔮 Auto: {name} gefangen!",
     "autoCaptureFailed": "🔮 Auto-Fang fehlgeschlagen: {name}",
+    "autoCapture": "🔮 Auto-Fang Neue",
     "fled": "Du bist aus dem Kampf geflohen!",
     "enemyFled": "Der Gegner ist geflohen!",
     "criticalHit": "Volltreffer!",
@@ -57,6 +58,14 @@
     "newTeam": "Neues Team: {names}"
   },
   "capture": {
+    "title": "🔮 Fangzone",
+    "desc": "Klicke, um Aether-Verbindungen zu starten und wilde Echos zu fangen!",
+    "rate": "Fangrate",
+    "launchLink": "Aether-Verbindung starten",
+    "cost": "(1 Verbindung)",
+    "successfulCaptures": "Erfolgreiche Fänge",
+    "uniqueEchoes": "Einzigartige Echos",
+    "primordialsFound": "Primordiale gefunden",
     "notEnoughLinks": "Nicht genug Aether-Verbindungen!",
     "autoNotEnoughLinks": "Auto-Fang: {name} (nicht genug Verbindungen)",
     "routeLocked": "Route nicht freigeschaltet!",
@@ -70,10 +79,14 @@
     "routes": "Routen",
     "locked": "Gesperrt",
     "unlocked": "Freigeschaltet",
+    "activeRoute": "Aktive Route",
+    "selectRegion": "Wähle eine Region",
+    "selectRegionDesc": "Klicke auf eine Region oder Route auf der Karte, um das Abenteuer zu beginnen.",
     "level": "Stufe {level}"
   },
   "party": {
     "title": "Dein Team",
+    "desc": "Verwalte deine aktiven Echos (max 6 im Kampf)",
     "empty": "Kein Echo im Team",
     "leader": "Anführer",
     "slot": "Platz {number}",
@@ -82,11 +95,16 @@
     "def": "DEF",
     "spd": "GES",
     "level": "St. {level}",
+    "optimalTeam": "Optimales Team",
+    "reserves": "📦 Reserven",
     "addToParty": "Zum Team hinzufügen",
     "removeFromParty": "Aus dem Team entfernen"
   },
   "pokedex": {
     "title": "Echo-Logbuch",
+    "all": "Alle",
+    "caught": "Gefangen",
+    "unseen": "Ungesehen",
     "discovered": "Entdeckt",
     "captured": "Gefangen",
     "total": "Gesamt",
@@ -95,15 +113,21 @@
   },
   "hatchery": {
     "title": "Zucht",
+    "desc": "Kombiniere zwei kompatible Echos, um ein Ei zu erhalten!",
     "incubator": "Inkubator",
     "empty": "Kein Ei in Inkubation",
     "hatch": "Schlüpfen!",
     "hatching": "Schlüpft...",
     "ready": "Bereit zum Schlüpfen!",
-    "noEggs": "Keine Eier verfügbar"
+    "noEggs": "Keine Eier verfügbar",
+    "createEgg": "🥚 Ei erstellen",
+    "selectParents": "Eltern auswählen",
+    "parent1": "Elternteil 1",
+    "parent2": "Elternteil 2"
   },
   "mine": {
-    "title": "Mine",
+    "title": "Untergrundmine",
+    "desc": "Grabe, um reine Kristalle und Schätze zu finden!",
     "energy": "Energie",
     "maxEnergy": "Max Energie",
     "regenIn": "Regen in {time}",
@@ -112,17 +136,25 @@
     "found": "Gefunden: {item}",
     "empty": "Nichts hier...",
     "bomb": "💣 Bombe!",
+    "pickaxe": "Spitzhacke",
+    "radar": "Radar",
+    "remainingEnergy": "Verbleibende Energie",
+    "crystalsFound": "Kristalle gefunden",
     "energyRegen": "+1 Energie alle 30 Sekunden"
   },
   "shop": {
-    "title": "Laden",
+    "title": "Geistermarkt",
     "buy": "Kaufen",
     "sell": "Verkaufen",
     "price": "Preis",
     "owned": "Besessen",
     "notEnoughCrystals": "Nicht genug reine Kristalle!",
     "purchaseSuccess": "Kauf erfolgreich!",
-    "sellSuccess": "Verkauf erfolgreich!"
+    "sellSuccess": "Verkauf erfolgreich!",
+    "links": "Verbindungen",
+    "boosts": "Verstärkungen",
+    "items": "Gegenstände",
+    "cosmetics": "Kosmetik"
   },
   "achievements": {
     "title": "Erfolge",
