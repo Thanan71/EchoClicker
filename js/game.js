@@ -87,6 +87,7 @@ const Game = {
 
         // Mise à jour de l'incubateur
         Hatchery.update(dt);
+        Hatchery.updateDisplay();
 
         // Mise à jour de la mine (régénération d'énergie)
         Mine.update(dt);
