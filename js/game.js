@@ -315,10 +315,15 @@ const Game = {
         }
 
         // Calculer le taux de capture
-        const rate = Utils.calculateCaptureRate(
+        let rate = Utils.calculateCaptureRate(
             wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
             wildEcho.hp, wildEcho.maxHp
         );
+        
+        // Appliquer le boost de capture si actif
+        if (this.state.boosts.capture) {
+            rate *= 2; // Double le taux de capture
+        }
 
         // Tenter la capture
         if (Utils.chance(rate)) {

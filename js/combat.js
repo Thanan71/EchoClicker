@@ -130,7 +130,13 @@ const Combat = {
         this.routeKills++;
 
         // XP
-        const xpGain = this.enemy.level * 5 + (this.isBoss ? 50 : 0);
+        let xpGain = this.enemy.level * 5 + (this.isBoss ? 50 : 0);
+        
+        // Appliquer le boost XP si actif
+        if (Game.state.boosts.xp) {
+            xpGain *= 2; // Double l'XP gagnée
+        }
+        
         Game.state.party.forEach(e => {
             if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, Game.state.party.length)));
         });
