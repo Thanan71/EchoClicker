@@ -79,6 +79,13 @@
         "#3F51B5",
         "#2196F3",
         "#00BCD4"
+      ],
+      "FEU": [
+        "#FF5722",
+        "#FF9800",
+        "#FFEB3B",
+        "#F44336",
+        "#D32F2F"
       ]
     },
     "lighting": "Top-left light source, soft shadows bottom-right",
@@ -385,6 +392,348 @@
       "pixelArtPrompt": "64x64 pixel art sprite, mini chaos vortex creature, small swirling portal body with distorted space effect, chaotic energy tendrils, multiple eyes appearing and disappearing, reality-warping aura, chibi style, 16-bit retro game aesthetic, dark purple and electric blue palette (#673AB7, #2196F3), sharp 2px dark outline, top-left lighting with chaotic energy glow, transparent background, spinning chaotic pose, fantasy creature design, clean pixel art, no anti-aliasing",
       "generated": true,
       "generatedAt": "2026-03-26T01:38:52.614Z"
+    },
+    {
+      "id": 31,
+      "name": "Braise",
+      "emoji": "🔥",
+      "sprite": "assets/echos/echo_031.png",
+      "spriteShiny": "assets/echos/echo_031_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, living ember creature, small round glowing coal body with orange-red core, tiny ember arms, smoke wisps rising, determined glowing eyes, rolling motion effect, chibi style, 16-bit retro game aesthetic, fiery orange and red palette (#FF5722, #FF9800), sharp 2px dark outline, top-left lighting with fire glow, transparent background, rolling pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 32,
+      "name": "Flammide",
+      "emoji": "🔥",
+      "sprite": "assets/echos/echo_032.png",
+      "spriteShiny": "assets/echos/echo_032_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, conscious flame creature, humanoid flame body with flickering fire edges, fierce orange eyes, flame arms reaching forward, fire trail behind, intense heat aura, chibi style, 16-bit retro game aesthetic, bright orange and yellow palette (#FF9800, #FFEB3B), sharp 2px dark outline, top-left lighting with intense fire glow, transparent background, aggressive advancing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 33,
+      "name": "Infernus",
+      "emoji": "🌋",
+      "sprite": "assets/echos/echo_033.png",
+      "spriteShiny": "assets/echos/echo_033_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, fire demon creature, massive muscular body made of molten lava, glowing red eyes, horns of flame, fire wings spread, lava dripping from body, volcanic aura, chibi style, 16-bit retro game aesthetic, deep red and orange palette (#D32F2F, #FF5722), sharp 2px dark outline, top-left lighting with volcanic glow, transparent background, powerful standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 34,
+      "name": "Scorielle",
+      "emoji": "🪨",
+      "sprite": "assets/echos/echo_034.png",
+      "spriteShiny": "assets/echos/echo_034_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, volcanic rock creature, chunky obsidian body with glowing lava cracks, small determined eyes, tiny stone arms, heat shimmer effect, small flame on top, chibi style, 16-bit retro game aesthetic, dark gray and orange palette (#424242, #FF5722), sharp 2px dark outline, top-left lighting with heat glow, transparent background, sturdy standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 35,
+      "name": "Magmior",
+      "emoji": "🌋",
+      "sprite": "assets/echos/echo_035.png",
+      "spriteShiny": "assets/echos/echo_035_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, magma golem creature, massive body of flowing magma with hardened rock armor, glowing orange core, lava dripping from fists, fire trail behind, volcanic crown, chibi style, 16-bit retro game aesthetic, dark red and bright orange palette (#B71C1C, #FF5722), sharp 2px dark outline, top-left lighting with magma glow, transparent background, powerful walking pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 36,
+      "name": "Chaotik",
+      "emoji": "🌀",
+      "sprite": "assets/echos/echo_036.png",
+      "spriteShiny": "assets/echos/echo_036_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, chaotic anomaly creature, distorted geometric body with shifting colors, multiple glitching eyes, reality-warping tendrils, static effect around body, unstable form, chibi style, 16-bit retro game aesthetic, purple and electric blue palette (#9C27B0, #2196F3), sharp 2px dark outline, top-left lighting with glitch effect, transparent background, unstable floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 37,
+      "name": "Vortexia",
+      "emoji": "🌀",
+      "sprite": "assets/echos/echo_037.png",
+      "spriteShiny": "assets/echos/echo_037_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, chaos vortex creature, large swirling portal body with dimensional rift effect, energy tendrils spiraling outward, multiple eyes in center, reality distortion aura, chibi style, 16-bit retro game aesthetic, deep purple and magenta palette (#673AB7, #E91E63), sharp 2px dark outline, top-left lighting with dimensional glow, transparent background, powerful spinning pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 38,
+      "name": "Pyrodrak",
+      "emoji": "🐉",
+      "sprite": "assets/echos/echo_038.png",
+      "spriteShiny": "assets/echos/echo_038_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, infernal dragon creature, massive draconic body with flame-covered scales, glowing red eyes, fire breath visible, molten lava wings, spiked tail with fire, crown of flames, chibi style, 16-bit retro game aesthetic, deep red and orange palette (#D32F2F, #FF9800), sharp 2px dark outline, top-left lighting with fire aura, transparent background, majestic flying pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 39,
+      "name": "Cendrille",
+      "emoji": "🌫️",
+      "sprite": "assets/echos/echo_039.png",
+      "spriteShiny": "assets/echos/echo_039_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, conscious ash cloud creature, swirling gray ash body with ember particles, glowing orange eyes within cloud, wispy ash arms, smoke trail effect, chibi style, 16-bit retro game aesthetic, gray and orange palette (#9E9E9E, #FF5722), sharp 2px dark outline, top-left lighting with smoky glow, transparent background, floating pose with ash dispersing, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 40,
+      "name": "Obsidiame",
+      "emoji": "🖤",
+      "sprite": "assets/echos/echo_040.png",
+      "spriteShiny": "assets/echos/echo_040_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, obsidian entity creature, massive crystalline black body with glossy reflective surface, glowing purple eyes, obsidian spikes, indestructible aura, dark energy emanating, chibi style, 16-bit retro game aesthetic, black and dark purple palette (#212121, #4A148C), sharp 2px dark outline, top-left lighting with dark reflections, transparent background, imposing standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 41,
+      "name": "Ombrette",
+      "emoji": "👤",
+      "sprite": "assets/echos/echo_041.png",
+      "spriteShiny": "assets/echos/echo_041_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, malevolent shadow creature, dark humanoid silhouette with wavy edges, glowing red eyes, claw-like shadow arms, dark aura spreading, menacing pose, chibi style, 16-bit retro game aesthetic, dark gray and black palette (#424242, #212121), sharp 2px dark outline, top-left lighting with shadow effect, transparent background, lurking pose among trees, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 42,
+      "name": "Spectralis",
+      "emoji": "👻",
+      "sprite": "assets/echos/echo_042.png",
+      "spriteShiny": "assets/echos/echo_042_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, ghostly specter creature, translucent ethereal body with flowing ghost tail, hollow glowing eyes, wispy ghost arms, ectoplasm trail, haunting expression, chibi style, 16-bit retro game aesthetic, pale blue and white palette (#B3E5FC, #E3F2FD), sharp 2px dark outline, top-left lighting with ghostly glow, transparent background, floating haunting pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 43,
+      "name": "Nuitshade",
+      "emoji": "🌑",
+      "sprite": "assets/echos/echo_043.png",
+      "spriteShiny": "assets/echos/echo_043_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, pure shadow entity, massive dark void body absorbing all light, glowing white eyes piercing darkness, shadow tendrils extending, darkness aura spreading, chibi style, 16-bit retro game aesthetic, pure black and dark purple palette (#000000, #311B92), sharp 2px dark outline, top-left lighting absorbed into darkness, transparent background, menacing floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 44,
+      "name": "Morbillon",
+      "emoji": "🌿",
+      "sprite": "assets/echos/echo_044.png",
+      "spriteShiny": "assets/echos/echo_044_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, corrupted carnivorous plant creature, dark green vine body with thorny jaws, glowing red eyes, snapping plant mouth, toxic drool, root legs, chibi style, 16-bit retro game aesthetic, dark green and red palette (#2E7D32, #F44336), sharp 2px dark outline, top-left lighting with sinister glow, transparent background, aggressive snapping pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 45,
+      "name": "Viperoak",
+      "emoji": "🌳",
+      "sprite": "assets/echos/echo_045.png",
+      "spriteShiny": "assets/echos/echo_045_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, cursed tree creature, dark twisted trunk body with snake branches, glowing yellow eyes, serpent-like limbs coiling, dark leaves dripping poison, ancient bark texture, chibi style, 16-bit retro game aesthetic, dark brown and sickly green palette (#5D4037, #827717), sharp 2px dark outline, top-left lighting with ominous glow, transparent background, menacing standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 46,
+      "name": "Necroflore",
+      "emoji": "💀",
+      "sprite": "assets/echos/echo_046.png",
+      "spriteShiny": "assets/echos/echo_046_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, death flower creature, large dark flower with skull-shaped center, glowing purple petals, skeletal vine arms, soul wisps floating around, death aura, chibi style, 16-bit retro game aesthetic, dark purple and bone white palette (#4A148C, #ECEFF1), sharp 2px dark outline, top-left lighting with necrotic glow, transparent background, ominous blooming pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 47,
+      "name": "Champitox",
+      "emoji": "🍄",
+      "sprite": "assets/echos/echo_047.png",
+      "spriteShiny": "assets/echos/echo_047_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, toxic mushroom creature, large purple cap with oozing toxic spots, thick dark stem, menacing eyes, toxic spore cloud, dripping venom, muscular root legs, chibi style, 16-bit retro game aesthetic, toxic purple and green palette (#7B1FA2, #76FF03), sharp 2px dark outline, top-left lighting with toxic glow, transparent background, aggressive standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 48,
+      "name": "Ombrelune",
+      "emoji": "🌙",
+      "sprite": "assets/echos/echo_048.png",
+      "spriteShiny": "assets/echos/echo_048_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, lunar shadow creature, crescent moon-shaped body with shadow tendrils, glowing silver eyes, night aura surrounding, star particles, ethereal moonlight glow, chibi style, 16-bit retro game aesthetic, silver and dark blue palette (#B0BEC5, #1A237E), sharp 2px dark outline, top-left lighting with moonlight glow, transparent background, mystical floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 49,
+      "name": "Spectrillon",
+      "emoji": "👁️",
+      "sprite": "assets/echos/echo_049.png",
+      "spriteShiny": "assets/echos/echo_049_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, spectral eye creature, single large floating eye with spectral aura, glowing purple iris, wispy eye stalks, ghostly trail, watching expression, chibi style, 16-bit retro game aesthetic, purple and white palette (#9C27B0, #FAFAFA), sharp 2px dark outline, top-left lighting with spectral glow, transparent background, hovering observing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 50,
+      "name": "Creepvine",
+      "emoji": "🌱",
+      "sprite": "assets/echos/echo_050.png",
+      "spriteShiny": "assets/echos/echo_050_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, creeping vine creature, long coiling vine body with thorns, glowing green eyes, multiple vine tendrils reaching out, strangling motion, dark leaves, chibi style, 16-bit retro game aesthetic, dark green and brown palette (#1B5E20, #5D4037), sharp 2px dark outline, top-left lighting with sinister glow, transparent background, coiling attack pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 51,
+      "name": "Lumiette",
+      "emoji": "✨",
+      "sprite": "assets/echos/echo_051.png",
+      "spriteShiny": "assets/echos/echo_051_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, light orb creature, small round glowing body with radiant core, tiny light arms, sparkle particles floating around, cheerful bright eyes, halo of light, chibi style, 16-bit retro game aesthetic, bright yellow and white palette (#FFD700, #FFF9C4), sharp 2px dark outline, top-left lighting with radiant glow, transparent background, cheerful floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 52,
+      "name": "Aurorella",
+      "emoji": "🌟",
+      "sprite": "assets/echos/echo_052.png",
+      "spriteShiny": "assets/echos/echo_052_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, austral light fairy, graceful humanoid figure with aurora-colored wings, flowing rainbow dress, star-shaped crown, gentle smile, northern lights particles, chibi style, 16-bit retro game aesthetic, aurora green and pink palette (#69F0AE, #F48FB1), sharp 2px dark outline, top-left lighting with aurora glow, transparent background, dancing pose with light trails, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 53,
+      "name": "Seraphiel",
+      "emoji": "👼",
+      "sprite": "assets/echos/echo_053.png",
+      "spriteShiny": "assets/echos/echo_053_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, light angel creature, majestic humanoid body with six radiant wings, golden armor, divine halo, holy sword of light, serene expression, divine aura, chibi style, 16-bit retro game aesthetic, gold and white palette (#FFD700, #FFFFFF), sharp 2px dark outline, top-left lighting with divine glow, transparent background, majestic flying pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 54,
+      "name": "Zephyrion",
+      "emoji": "🌬️",
+      "sprite": "assets/echos/echo_054.png",
+      "spriteShiny": "assets/echos/echo_054_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, wind spirit creature, translucent swirling wind body with visible air currents, bright blue eyes, wind arms flowing, cloud wisps trailing, breezy expression, chibi style, 16-bit retro game aesthetic, light blue and white palette (#81D4FA, #E1F5FE), sharp 2px dark outline, top-left lighting with wind effect, transparent background, soaring flying pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 55,
+      "name": "Tempestia",
+      "emoji": "🌪️",
+      "sprite": "assets/echos/echo_055.png",
+      "spriteShiny": "assets/echos/echo_055_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, conscious tornado creature, massive swirling vortex body with debris caught inside, fierce eyes in center, lightning bolts, powerful wind arms, storm aura, chibi style, 16-bit retro game aesthetic, gray and electric blue palette (#607D8B, #03A9F4), sharp 2px dark outline, top-left lighting with storm effect, transparent background, powerful spinning pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 56,
+      "name": "Celestino",
+      "emoji": "☀️",
+      "sprite": "assets/echos/echo_056.png",
+      "spriteShiny": "assets/echos/echo_056_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, celestial being creature, small round sunny body with warm glow, happy smiling face, tiny ray arms, sunbeam particles, joyful expression, halo of warmth, chibi style, 16-bit retro game aesthetic, bright yellow and orange palette (#FFEB3B, #FFC107), sharp 2px dark outline, top-left lighting with warm glow, transparent background, cheerful floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 57,
+      "name": "Nimbus",
+      "emoji": "☁️",
+      "sprite": "assets/echos/echo_057.png",
+      "spriteShiny": "assets/echos/echo_057_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, living cloud creature, fluffy cloud body with lightning bolts inside, fierce storm eyes, rain drops falling, thunder arms, storm aura, chibi style, 16-bit retro game aesthetic, dark gray and electric yellow palette (#607D8B, #FFEB3B), sharp 2px dark outline, top-left lighting with lightning flash, transparent background, stormy floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 58,
+      "name": "Solarius",
+      "emoji": "⭐",
+      "sprite": "assets/echos/echo_058.png",
+      "spriteShiny": "assets/echos/echo_058_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, living star creature, massive star-shaped body with burning core, radiant light rays extending, wise ancient eyes, solar flare arms, cosmic aura, chibi style, 16-bit retro game aesthetic, brilliant gold and white palette (#FFD700, #FFFFFF), sharp 2px dark outline, top-left lighting with stellar glow, transparent background, powerful floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 59,
+      "name": "Ailedevent",
+      "emoji": "🦅",
+      "sprite": "assets/echos/echo_059.png",
+      "spriteShiny": "assets/echos/echo_059_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, storm bird creature, sleek bird body with wind-swept feathers, fierce blue eyes, powerful wings spread, lightning talons, wind trail behind, chibi style, 16-bit retro game aesthetic, sky blue and white palette (#03A9F4, #E1F5FE), sharp 2px dark outline, top-left lighting with wind effect, transparent background, soaring flying pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 60,
+      "name": "Eclairoz",
+      "emoji": "💫",
+      "sprite": "assets/echos/echo_060.png",
+      "spriteShiny": "assets/echos/echo_060_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, divine spark creature, small radiant orb body with holy light, bright golden core, tiny light wings, sparkle trail, divine expression, chibi style, 16-bit retro game aesthetic, gold and white palette (#FFD700, #FFFDE7), sharp 2px dark outline, top-left lighting with divine sparkle, transparent background, dazzling floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 61,
+      "name": "Arcafox",
+      "emoji": "🦊",
+      "sprite": "assets/echos/echo_061.png",
+      "spriteShiny": "assets/echos/echo_061_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, arcane fox creature, sleek fox body with glowing arcane runes on fur, magical tail with orb tip, bright purple eyes, mystical aura, arcane particles, chibi style, 16-bit retro game aesthetic, orange and purple palette (#FF9800, #9C27B0), sharp 2px dark outline, top-left lighting with magical glow, transparent background, alert standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 62,
+      "name": "Mystigard",
+      "emoji": "🔮",
+      "sprite": "assets/echos/echo_062.png",
+      "spriteShiny": "assets/echos/echo_062_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, mystical guardian creature, humanoid body in flowing robes with arcane symbols, glowing crystal staff, wise ancient eyes, magical shield aura, floating runes, chibi style, 16-bit retro game aesthetic, deep purple and gold palette (#6A1B9A, #FFD700), sharp 2px dark outline, top-left lighting with mystical glow, transparent background, guardian standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 63,
+      "name": "Archanos",
+      "emoji": "✨",
+      "sprite": "assets/echos/echo_063.png",
+      "spriteShiny": "assets/echos/echo_063_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, arcane archmage creature, majestic humanoid body with cosmic robes, multiple floating spell orbs, ancient wise face, reality-bending hands, arcane crown, cosmic aura, chibi style, 16-bit retro game aesthetic, deep purple and cosmic blue palette (#4A148C, #1A237E), sharp 2px dark outline, top-left lighting with cosmic glow, transparent background, powerful casting pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 64,
+      "name": "Cristalite",
+      "emoji": "💎",
+      "sprite": "assets/echos/echo_064.png",
+      "spriteShiny": "assets/echos/echo_064_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, conscious crystal creature, small faceted crystal body with internal glow, bright purple core, tiny crystal arms, refraction sparkles, curious expression, chibi style, 16-bit retro game aesthetic, light purple and violet palette (#E1BEE7, #7B1FA2), sharp 2px dark outline, top-left lighting with prismatic reflections, transparent background, curious standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 65,
+      "name": "Prismatik",
+      "emoji": "💎",
+      "sprite": "assets/echos/echo_065.png",
+      "spriteShiny": "assets/echos/echo_065_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, living prism creature, geometric prism body refracting rainbow light, multiple colored facets, rainbow beam emanating, crystalline arms, spectrum aura, chibi style, 16-bit retro game aesthetic, rainbow and white palette (#E91E63, #9C27B0, #2196F3), sharp 2px dark outline, top-left lighting with rainbow refraction, transparent background, light-refracting pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 66,
+      "name": "Runestone",
+      "emoji": "🪨",
+      "sprite": "assets/echos/echo_066.png",
+      "spriteShiny": "assets/echos/echo_066_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, runic stone creature, ancient stone body with glowing rune carvings, mystical purple glow from runes, small determined eyes, stone arms, magical energy pulsing, chibi style, 16-bit retro game aesthetic, gray and purple palette (#757575, #9C27B0), sharp 2px dark outline, top-left lighting with rune glow, transparent background, ancient standing pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 67,
+      "name": "Cristallus",
+      "emoji": "💠",
+      "sprite": "assets/echos/echo_067.png",
+      "spriteShiny": "assets/echos/echo_067_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, crystal dragon creature, massive draconic body with crystal scale armor, glowing purple eyes, crystal wings with prismatic light, diamond claws, crystal crown, magical aura, chibi style, 16-bit retro game aesthetic, brilliant white and purple palette (#FAFAFA, #7B1FA2), sharp 2px dark outline, top-left lighting with crystal sparkle, transparent background, majestic flying pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
+    },
+    {
+      "id": 68,
+      "name": "Arcanexus",
+      "emoji": "🌌",
+      "sprite": "assets/echos/echo_068.png",
+      "spriteShiny": "assets/echos/echo_068_shiny.png",
+      "pixelArtPrompt": "64x64 pixel art sprite, cosmic arcane nexus creature, cosmic void body with swirling galaxies inside, multiple arcane eyes, reality-warping tendrils, star particles, cosmic crown, universal aura, chibi style, 16-bit retro game aesthetic, deep purple and cosmic blue palette (#311B92, #1A237E), sharp 2px dark outline, top-left lighting with cosmic glow, transparent background, transcendent floating pose, fantasy creature design, clean pixel art, no anti-aliasing",
+      "generated": false
     }
   ]
 }

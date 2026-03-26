@@ -141,23 +141,80 @@ async function generateImage(prompt, filename) {
 // ====================== GÉNÉRATION ======================
 const echoStart = Number(process.env.ECHO_START || 0);
 const echoLimit = Number(process.env.ECHO_LIMIT || data.echoes.length);
-const echoesToGenerate = data.echoes.slice(echoStart, echoStart + echoLimit);
 
-console.log(`🚀 Démarrage génération Leonardo AI (${echoesToGenerate.length} sprites à partir de #${echoStart + 1})...\n`);
+// Filtrer les échos qui n'ont pas encore été générés (ou dont les fichiers manquent)
+const echoesToGenerate = data.echoes
+    .slice(echoStart, echoStart + echoLimit)
+    .filter(echo => {
+        const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
+        const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
+        const baseExists = fs.existsSync(path.join(OUTPUT_DIR, baseFilename));
+        const shinyExists = fs.existsSync(path.join(OUTPUT_DIR, shinyFilename));
+        
+        // Garder l'écho si pas marqué généré OU si un des fichiers manque
+        return echo.generated !== true || !baseExists || !shinyExists;
+    });
+
+console.log(`🚀 Démarrage génération Leonardo AI (${echoesToGenerate.length} échos à traiter)...\n`);
+
+// ===== PREMIÈRE PASSE : Générer tous les sprites NON-SHINY =====
+console.log('📸 Phase 1/2 : Génération des sprites normaux (non-shiny)...\n');
 
 for (const echo of echoesToGenerate) {
+    const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
+    const baseFilepath = path.join(OUTPUT_DIR, baseFilename);
+    
+    // Vérifier si le fichier existe déjà
+    if (fs.existsSync(baseFilepath)) {
+        console.log(`⏭️  ${baseFilename} existe déjà, passage au suivant`);
+        continue;
+    }
+
     const basePrompt = echo.pixelArtPrompt;
-
-    const okBase = await generateImage(basePrompt, `echo_${echo.id.toString().padStart(3, '0')}.png`);
-
-    const shinyPrompt = basePrompt + ", shiny variant, glowing aura, luminous edges, inverted vibrant colors, sparkling particles, premium quality, high contrast";
-    const okShiny = await generateImage(shinyPrompt, `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`);
-
-    // Important: on ne marque pas “généré” si au moins une variante a time-out / échoué.
-    echo.generated = okBase && okShiny;
-    echo.generatedAt = new Date().toISOString();
-
+    const okBase = await generateImage(basePrompt, baseFilename);
+    
+    if (okBase) {
+        echo.generatedBase = true;
+    }
+    
     await new Promise(r => setTimeout(r, 1000)); // petite pause
+}
+
+// ===== DEUXIÈME PASSE : Générer tous les sprites SHINY =====
+console.log('\n✨ Phase 2/2 : Génération des sprites shiny...\n');
+
+for (const echo of echoesToGenerate) {
+    const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
+    const shinyFilepath = path.join(OUTPUT_DIR, shinyFilename);
+    
+    // Vérifier si le fichier existe déjà
+    if (fs.existsSync(shinyFilepath)) {
+        console.log(`⏭️  ${shinyFilename} existe déjà, passage au suivant`);
+        continue;
+    }
+
+    const basePrompt = echo.pixelArtPrompt;
+    const shinyPrompt = basePrompt + ", shiny variant, glowing aura, luminous edges, inverted vibrant colors, sparkling particles, premium quality, high contrast";
+    const okShiny = await generateImage(shinyPrompt, shinyFilename);
+    
+    if (okShiny) {
+        echo.generatedShiny = true;
+    }
+    
+    await new Promise(r => setTimeout(r, 1000)); // petite pause
+}
+
+// Marquer comme généré seulement si les deux variantes sont OK
+for (const echo of echoesToGenerate) {
+    const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
+    const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
+    const baseExists = fs.existsSync(path.join(OUTPUT_DIR, baseFilename));
+    const shinyExists = fs.existsSync(path.join(OUTPUT_DIR, shinyFilename));
+    
+    if (baseExists && shinyExists) {
+        echo.generated = true;
+        echo.generatedAt = echo.generatedAt || new Date().toISOString();
+    }
 }
 
 // ====================== AUTO-UPDATE ======================

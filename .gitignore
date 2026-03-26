@@ -24,6 +24,8 @@ npm-debug.log*
 .env.local
 .env.*.local
 
+assets/echos
+
 # Kanban Cline scripts
 scripts/kanban-branch-watcher.sh
 scripts/kanban-branch-watcher.sh.bak

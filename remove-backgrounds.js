@@ -62,12 +62,24 @@ async function processAllFiles() {
         process.exit(1);
     }
     
-    console.log(`🎯 Traitement de ${pngFiles.length} fichier(s) PNG...\n`);
+    // Lire les fichiers déjà traités dans le dossier de sortie
+    const outputFiles = await fs.readdir(OUTPUT_DIR);
+    const processedFiles = new Set(outputFiles.map(f => f.replace('_no_bg.png', '.png')));
+    
+    // Filtrer pour ne garder que les fichiers non traités
+    const filesToProcess = pngFiles.filter(file => !processedFiles.has(file));
+    
+    if (filesToProcess.length === 0) {
+        console.log('✅ Tous les fichiers ont déjà été traités !');
+        process.exit(0);
+    }
+    
+    console.log(`🎯 ${filesToProcess.length} fichier(s) à traiter (sur ${pngFiles.length} total)...\n`);
     
     let successCount = 0;
     let failCount = 0;
     
-    for (const fileName of pngFiles) {
+    for (const fileName of filesToProcess) {
         const inputPath = path.join(INPUT_DIR, fileName);
         const outputPath = path.join(OUTPUT_DIR, fileName.replace('.png', '_no_bg.png'));
         
@@ -83,7 +95,8 @@ async function processAllFiles() {
     console.log(`\n📊 Résumé:`);
     console.log(`   ✅ Succès: ${successCount}`);
     console.log(`   ❌ Échecs: ${failCount}`);
-    console.log(`   📁 Total: ${pngFiles.length}`);
+    console.log(`   📁 Traités cette session: ${filesToProcess.length}`);
+    console.log(`   📁 Total images: ${pngFiles.length}`);
     
     process.exit(failCount > 0 ? 1 : 0);
 }
