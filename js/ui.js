@@ -2,8 +2,6 @@
 // ÉchoClicker - Interface utilisateur (v2)
 // ============================================
 
-import { questSystem, QUEST_TYPES } from './systems/quests.js';
-
 // Helper function to get echo image path
 function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');

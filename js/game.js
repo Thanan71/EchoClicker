@@ -2,8 +2,6 @@
 // ÉchoClicker - Moteur de jeu principal (v2)
 // ============================================
 
-import { questSystem } from './systems/quests.js';
-
 const Game = {
     state: null,
     _clickTimestamps: [],
