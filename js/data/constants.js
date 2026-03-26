@@ -58,7 +58,9 @@ const GAME_CONFIG = {
     AUTO_SAVE_INTERVAL: 30000,  // Auto-sauvegarde (ms)
     ENERGY_PER_CLICK_BASE: 1,   // Énergie par clic de base
     COMBAT_CLICK_MULTIPLIER: 2, // Multiplicateur dégâts clic en combat
-    MAX_LOG_ENTRIES: 50         // Max entrées dans le log de combat
+    MAX_LOG_ENTRIES: 50,        // Max entrées dans le log de combat
+    MINE_ENERGY_REGEN_RATE: 1,  // Énergie régénérée par tick de mine
+    MINE_ENERGY_REGEN_INTERVAL: 30000  // Intervalle de régénération (ms) = 30 secondes
 };
 
 // === CONTRÉES & ROUTES (Phase 1 : 3 premières) ===

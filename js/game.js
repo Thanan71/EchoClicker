@@ -8,7 +8,10 @@ const Game = {
     _cps: 0,
     _lastSave: 0,
 
-    init() {
+    async init() {
+        // Initialiser le système i18n
+        await i18n.init();
+        
         this.initState();
         SaveSystem.load();
         this.setupEvents();
@@ -18,6 +21,7 @@ const Game = {
         Mine.init();
         Hatchery.init();
         MapSystem.init();
+        questSystem.init(); // Initialiser le système de quêtes
         
         UI.init();
 
@@ -30,7 +34,10 @@ const Game = {
         // Auto-sauvegarde
         setInterval(() => SaveSystem.save(), GAME_CONFIG.AUTO_SAVE_INTERVAL);
 
-        UI.toast('Bienvenue dans ÉchoClicker : Liens Éternels !', 'info');
+        // Traduire le DOM
+        i18n.translateDOM();
+        
+        UI.toast(i18n.t('game.welcome'), 'info');
     },
 
     initState() {
@@ -60,6 +67,7 @@ const Game = {
             achievements: new Set(),
             regions: Utils.deepClone(REGIONS),
             boosts: {},
+            inventory: [], // Inventaire pour les objets de quêtes
             startTime: Date.now()
         };
     },
@@ -81,6 +89,10 @@ const Game = {
 
         // Mise à jour de l'incubateur
         Hatchery.update(dt);
+        Hatchery.updateDisplay();
+
+        // Mise à jour de la mine (régénération d'énergie)
+        Mine.update(dt);
 
         // Calcul du CPS
         this.updateCPS();
@@ -181,7 +193,7 @@ const Game = {
     buildOptimalTeam() {
         const allEchoes = this.getAllEchoes();
         if (allEchoes.length === 0) {
-            UI.toast('Aucun Écho disponible !', 'warning');
+            UI.toast(i18n.t('combat.noEchoAvailable'), 'warning');
             return;
         }
 
@@ -251,8 +263,8 @@ const Game = {
         this.state.party.forEach(e => e.fullHeal());
 
         UI.renderParty();
-        UI.toast('⚡ Équipe optimale créée !', 'success');
-        UI.addLog('info', `Nouvelle équipe: ${newParty.map(e => e.name).join(', ')}`);
+        UI.toast(i18n.t('combat.optimalTeamCreated'), 'success');
+        UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map(e => e.name).join(', ') }));
     },
 
     removeFromParty(uid) {
@@ -265,7 +277,7 @@ const Game = {
 
     moveToParty(uid) {
         if (this.state.party.length >= GAME_CONFIG.MAX_PARTY) {
-            UI.toast('Équipe pleine ! (max 6)', 'warning');
+            UI.toast(i18n.t('combat.partyFull'), 'warning');
             return false;
         }
         const idx = this.state.reserves.findIndex(e => e.uid === uid);
@@ -284,43 +296,100 @@ const Game = {
     },
 
     // === Capture ===
-    attemptCapture(wildEcho) {
+    /**
+     * Méthode centralisée de capture d'Écho
+     * @param {Echo} wildEcho - L'Écho sauvage à capturer
+     * @param {Object} options - Options de capture
+     * @param {boolean} options.isAuto - Si c'est une auto-capture
+     * @returns {boolean} - true si la capture a réussi
+     */
+    captureEcho(wildEcho, options = {}) {
+        const { isAuto = false } = options;
+
+        // Vérifier les liens disponibles
         if (!this.spendLinks(1)) {
-            UI.toast('Pas assez de Liens d\'Aether !', 'error');
+            if (!isAuto) {
+                UI.toast(i18n.t('capture.notEnoughLinks'), 'error');
+            } else {
+                UI.addLog('info', i18n.t('capture.autoNotEnoughLinks', { name: wildEcho.name }));
+            }
             return false;
         }
 
-        const rate = Utils.calculateCaptureRate(
+        // Calculer le taux de capture
+        let rate = Utils.calculateCaptureRate(
             wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
             wildEcho.hp, wildEcho.maxHp
         );
+        
+        // Appliquer le boost de capture si actif
+        if (this.state.boosts.capture) {
+            rate *= 2; // Double le taux de capture
+        }
 
+        // Tenter la capture
         if (Utils.chance(rate)) {
+            // Créer l'Écho capturé
             const captured = new Echo(
                 getEchoById(wildEcho.id),
                 wildEcho.level,
                 wildEcho.isPrimordial
             );
 
+            // Mettre à jour les statistiques
             this.state.totalCaptures++;
+            
+            // Incrémenter uniqueCaptures seulement si c'est une nouvelle capture
+            if (!this.state.caughtEchoes.has(wildEcho.id)) {
+                this.state.uniqueCaptures++;
+            }
             this.state.caughtEchoes.add(wildEcho.id);
-            if (!this.state.seenEchoes.has(wildEcho.id)) this.state.uniqueCaptures++;
-            if (wildEcho.isPrimordial) this.state.primordialCount++;
+            
+            // Incrémenter le compteur de primordiaux
+            if (wildEcho.isPrimordial) {
+                this.state.primordialCount++;
+            }
 
+            // Ajouter à l'équipe ou aux réserves
             if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
                 this.addToParty(captured);
             } else {
                 this.state.reserves.push(captured);
             }
 
+            // Émettre l'événement de capture
             EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+            
+            // Émettre l'événement pour les quêtes
+            EventBus.emit('echo:captured', captured);
+
+            // Afficher le message de succès
             const prefix = wildEcho.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
-            UI.toast(`${prefix}${wildEcho.name} capturé !`, 'success');
+            if (isAuto) {
+                UI.addLog('capture', i18n.t('combat.autoCaptureSuccess', { name: `${prefix}${wildEcho.name}` }));
+                UI.toast(i18n.t('combat.autoCaptureSuccess', { name: `${prefix}${wildEcho.name}` }), 'success');
+            } else {
+                UI.addLog('capture', i18n.t('combat.captureSuccess', { name: `${prefix}${wildEcho.name}` }));
+                UI.toast(i18n.t('combat.captureSuccess', { name: `${prefix}${wildEcho.name}` }), 'success');
+            }
+
             return true;
         }
 
-        UI.toast('Capture échouée...', 'error');
+        // Capture échouée
+        if (!isAuto) {
+            UI.addLog('info', i18n.t('combat.captureFailed'));
+            UI.toast(i18n.t('combat.captureFailed'), 'error');
+        } else {
+            UI.addLog('info', i18n.t('combat.autoCaptureFailed', { name: wildEcho.name }));
+        }
+
         return false;
+    },
+
+    // === Capture (ancienne méthode - redirige vers captureEcho) ===
+    attemptCapture(wildEcho) {
+        return this.captureEcho(wildEcho);
     },
 
     // === Routes & Régions ===
@@ -329,7 +398,7 @@ const Game = {
         if (!region) return;
         const route = region.routes.find(r => r.id === routeId);
         if (!route || !route.unlocked) {
-            UI.toast('Route non débloquée !', 'warning');
+            UI.toast(i18n.t('capture.routeLocked'), 'warning');
             return;
         }
         this.state.currentRoute = route;
@@ -342,7 +411,7 @@ const Game = {
     selectRegion(regionId) {
         const region = this.state.regions.find(r => r.id === regionId);
         if (!region || !region.unlocked) {
-            UI.toast('Contrée non débloquée !', 'warning');
+            UI.toast(i18n.t('capture.regionLocked'), 'warning');
             return;
         }
         this.state.currentRegion = regionId;
@@ -360,7 +429,7 @@ const Game = {
             if (!nextRoute.unlocked) {
                 nextRoute.unlocked = true;
                 EventBus.emit(GAME_EVENTS.ROUTE_UNLOCKED, { route: nextRoute });
-                UI.toast(`Nouvelle route : ${nextRoute.name} !`, 'success');
+                UI.toast(i18n.t('capture.newRoute', { name: nextRoute.name }), 'success');
             }
         }
     },
@@ -371,6 +440,9 @@ const Game = {
         region.bossDefeated = true;
         this.state.bossesDefeated++;
         EventBus.emit(GAME_EVENTS.BOSS_DEFEATED, { region });
+        
+            // Émettre l'événement pour les quêtes
+            EventBus.emit('boss:defeated', { id: this.state.currentRegion });
 
         const idx = this.state.regions.findIndex(r => r.id === this.state.currentRegion);
         if (idx < this.state.regions.length - 1) {
@@ -379,19 +451,19 @@ const Game = {
             next.routes[0].unlocked = true;
             this.state.regionsUnlocked++;
             EventBus.emit(GAME_EVENTS.REGION_UNLOCKED, { region: next });
-            UI.toast(`🎉 ${region.name} terminée ! ${next.name} débloquée !`, 'success');
+            UI.toast(i18n.t('capture.newRegion', { name: next.name }), 'success');
         } else {
-            UI.toast('🏆 Toutes les contrées conquises !', 'success');
+            UI.toast(i18n.t('notifications.success'), 'success');
         }
     },
 
     // === Boutique ===
     buyItem(item) {
         if (item.currency === 'energy' && !this.spendEnergy(item.price)) {
-            UI.toast('Pas assez d\'Énergie !', 'error'); return false;
+            UI.toast(i18n.t('notifications.error'), 'error'); return false;
         }
         if (item.currency === 'shards' && this.state.shards < item.price) {
-            UI.toast('Pas assez d\'Éclats !', 'error'); return false;
+            UI.toast(i18n.t('notifications.error'), 'error'); return false;
         }
         if (item.currency === 'shards') this.state.shards -= item.price;
 
@@ -404,7 +476,7 @@ const Game = {
         if (item.duration) this.state.boosts[item.type] = { endTime: Date.now() + item.duration * 1000 };
 
         EventBus.emit(GAME_EVENTS.ITEM_PURCHASED, { item });
-        UI.toast(`${item.name} acheté !`, 'success');
+        UI.toast(i18n.t('shop.purchaseSuccess'), 'success');
         return true;
     },
 
@@ -425,7 +497,7 @@ const Game = {
             if (!this.state.achievements.has(ach.id) && ach.cond(stats)) {
                 this.state.achievements.add(ach.id);
                 EventBus.emit(GAME_EVENTS.ACHIEVEMENT_UNLOCKED, { achievement: ach });
-                UI.toast(`🏆 ${ach.name} !`, 'success');
+                UI.toast(i18n.t('achievements.unlocked'), 'success');
             }
         });
     },
@@ -490,8 +562,37 @@ const Game = {
         }
 
         // Sauvegarde & Settings
-        document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast('Sauvegardé !', 'success'); });
+        document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast(i18n.t('notifications.saved'), 'success'); });
         document.getElementById('btn-settings').addEventListener('click', () => UI.showSettings());
+        
+        // Language selector
+        const btnLang = document.getElementById('btn-lang');
+        const langDropdown = document.getElementById('lang-dropdown');
+        if (btnLang && langDropdown) {
+            btnLang.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langDropdown.classList.toggle('active');
+            });
+            
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', async (e) => {
+                    const lang = e.target.dataset.lang;
+                    await i18n.setLanguage(lang);
+                    i18n.translateDOM();
+                    langDropdown.classList.remove('active');
+                    
+                    // Update active state
+                    document.querySelectorAll('.lang-option').forEach(opt => {
+                        opt.classList.toggle('active', opt.dataset.lang === lang);
+                    });
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+                langDropdown.classList.remove('active');
+            });
+        }
         document.getElementById('modal-close').addEventListener('click', () => UI.closeModal());
         document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target.id === 'modal-overlay') UI.closeModal(); });
 
@@ -506,6 +607,8 @@ const Game = {
     setupEventBus() {
         EventBus.on(GAME_EVENTS.ECHO_LEVELED_UP, ({ echo }) => {
             if (echo.level > this.state.maxLevel) this.state.maxLevel = echo.level;
+            // Émettre l'événement pour les quêtes
+            EventBus.emit('echo:levelUp', echo);
         });
 
         EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => {
@@ -515,6 +618,15 @@ const Game = {
 
         EventBus.on(GAME_EVENTS.ECHO_EVOLVED, ({ oldName, echo }) => {
             UI.toast(`✨ ${oldName} évolue en ${echo.name} !`, 'success');
+        });
+        
+        // Écouter les événements de quêtes pour les notifications
+        EventBus.on('quest:completed', (quest) => {
+            UI.toast(`🎉 Quête complétée : ${quest.name}`, 'success');
+        });
+        
+        EventBus.on('quest:rewardsClaimed', (quest) => {
+            UI.toast(`🎁 Récompenses réclamées pour : ${quest.name}`, 'success');
         });
     },
 
@@ -527,7 +639,7 @@ const Game = {
         a.download = 'echoclicker_save.json';
         a.click();
         URL.revokeObjectURL(a.href);
-        UI.toast('Sauvegarde exportée !', 'success');
+        UI.toast(i18n.t('notifications.success'), 'success');
     },
 
     importSave() {
@@ -538,9 +650,9 @@ const Game = {
             reader.onload = ev => {
                 try {
                     SaveSystem.loadFromData(JSON.parse(ev.target.result));
-                    UI.toast('Sauvegarde importée !', 'success');
+                    UI.toast(i18n.t('notifications.loaded'), 'success');
                     UI.updateAll();
-                } catch { UI.toast('Fichier invalide !', 'error'); }
+                } catch { UI.toast(i18n.t('notifications.error'), 'error'); }
             };
             reader.readAsText(e.target.files[0]);
         };
@@ -548,9 +660,20 @@ const Game = {
     },
 
     resetGame() {
-        if (confirm('TOUT réinitialiser ? Irréversible !')) {
+        if (confirm(i18n.t('settings.reset') + ' ?')) {
             SaveSystem.deleteSave();
             location.reload();
+        }
+    },
+
+    // Charger la sauvegarde au démarrage
+    loadGame() {
+        if (SaveSystem.hasSave()) {
+            if (SaveSystem.load()) {
+                console.log('Sauvegarde chargée');
+            } else {
+                console.log('Erreur de chargage, nouveau jeu');
+            }
         }
     }
 };

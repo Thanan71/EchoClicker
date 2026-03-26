@@ -18,12 +18,17 @@ function getEchoImagePathById(id, isShiny = false) {
 const UI = {
     currentTab: 'map',
     captureWildEcho: null,
+    // Filtres du Pokédex
+    pokedexStatusFilter: 'all',  // 'all', 'caught', 'unseen'
+    pokedexTypeFilter: null,     // null = tous, ou nom du type
 
     init() {
         this.renderRoutes();
         this.renderShop();
         this.renderAchievements();
+        this.initPokedexFilters();
         this.renderPokedex();
+        this.renderQuests();
         this.updateAll();
         this.setupEventBus();
     },
@@ -42,6 +47,12 @@ const UI = {
         EventBus.on(GAME_EVENTS.ROUTE_UNLOCKED, () => this.renderRoutes());
         EventBus.on(GAME_EVENTS.REGION_UNLOCKED, () => this.renderRoutes());
         EventBus.on(GAME_EVENTS.BOSS_DEFEATED, () => this.renderRoutes());
+        
+        // Écouter les événements de quêtes
+        EventBus.on('quest:completed', () => this.renderQuests());
+        EventBus.on('quest:progress', () => this.renderQuests());
+        EventBus.on('quest:rewardsClaimed', () => this.renderQuests());
+        EventBus.on('quest:dailyReset', () => this.renderQuests());
     },
 
     // === Navigation ===
@@ -60,7 +71,8 @@ const UI = {
             shop: () => this.renderShop(),
             achievements: () => this.renderAchievements(),
             mine: () => this.renderMine(),
-            hatchery: () => this.renderHatchery()
+            hatchery: () => this.renderHatchery(),
+            quests: () => this.renderQuests()
         };
         renderers[tabId]?.();
     },
@@ -71,6 +83,41 @@ const UI = {
         this.updateFooter();
         this.updateCombat();
         this.renderRoutes();
+        this.updateBoostsDisplay();
+    },
+
+    // === Affichage des boosts actifs ===
+    updateBoostsDisplay() {
+        const container = document.getElementById('boosts-indicator');
+        if (!container) return;
+
+        let html = '';
+        const now = Date.now();
+
+        // Vérifier chaque boost
+        const boostTypes = {
+            'xp': { icon: '📈', name: 'XP', cssClass: 'xp' },
+            'capture': { icon: '🎯', name: 'Capture', cssClass: 'capture' },
+            'energy': { icon: '⚡', name: 'Énergie', cssClass: 'energy' }
+        };
+
+        for (const [type, boost] of Object.entries(Game.state.boosts)) {
+            if (boost && boost.endTime && now < boost.endTime) {
+                const remaining = Math.ceil((boost.endTime - now) / 1000);
+                const minutes = Math.floor(remaining / 60);
+                const seconds = remaining % 60;
+                const timerText = minutes > 0 ? `${minutes}m${seconds}s` : `${seconds}s`;
+                const config = boostTypes[type] || { icon: '✨', name: type, cssClass: '' };
+                
+                html += `<div class="boost-badge ${config.cssClass}">
+                    <span class="boost-icon">${config.icon}</span>
+                    <span class="boost-name">${config.name}</span>
+                    <span class="boost-timer">${timerText}</span>
+                </div>`;
+            }
+        }
+
+        container.innerHTML = html;
     },
 
     updateCurrencies() {
@@ -289,11 +336,73 @@ const UI = {
     },
 
     // === Pokédex ===
+    initPokedexFilters() {
+        // Générer les boutons de filtre par type
+        const typeFiltersContainer = document.getElementById('type-filters');
+        if (typeFiltersContainer) {
+            let typeHtml = '<button class="type-filter-btn active" data-type="all">Tous</button>';
+            Object.entries(TYPES).forEach(([key, type]) => {
+                typeHtml += `<button class="type-filter-btn" data-type="${key}" style="--type-color:${type.color}">${type.emoji} ${type.name}</button>`;
+            });
+            typeFiltersContainer.innerHTML = typeHtml;
+        }
+
+        // Attacher les gestionnaires d'événements pour les filtres de statut
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.pokedexStatusFilter = btn.dataset.filter;
+                this.renderPokedex();
+            });
+        });
+
+        // Attacher les gestionnaires d'événements pour les filtres par type
+        document.querySelectorAll('.type-filter-btn[data-type]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.type-filter-btn[data-type]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.pokedexTypeFilter = btn.dataset.type === 'all' ? null : btn.dataset.type;
+                this.renderPokedex();
+            });
+        });
+    },
+
     renderPokedex() {
         const grid = document.getElementById('pokedex-grid');
         if (!grid) return;
+
+        // Filtrer les Échos selon les critères actifs
+        const filteredEchoes = ECHOES_DB.filter(echo => {
+            const caught = Game.state.caughtEchoes.has(echo.id);
+            const seen = Game.state.seenEchoes.has(echo.id);
+
+            // Filtre par statut
+            let statusMatch = true;
+            if (this.pokedexStatusFilter === 'caught') {
+                statusMatch = caught;
+            } else if (this.pokedexStatusFilter === 'unseen') {
+                statusMatch = !seen;
+            }
+
+            // Filtre par type
+            let typeMatch = true;
+            if (this.pokedexTypeFilter) {
+                typeMatch = echo.type === this.pokedexTypeFilter;
+            }
+
+            return statusMatch && typeMatch;
+        });
+
+        // Mettre à jour le compteur de résultats
+        const counterEl = document.getElementById('pokedex-counter');
+        if (counterEl) {
+            counterEl.textContent = `${filteredEchoes.length} / ${ECHOES_DB.length} Échos`;
+        }
+
+        // Générer le HTML
         let html = '';
-        ECHOES_DB.forEach(echo => {
+        filteredEchoes.forEach(echo => {
             const caught = Game.state.caughtEchoes.has(echo.id);
             const seen = Game.state.seenEchoes.has(echo.id);
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
@@ -310,6 +419,11 @@ const UI = {
             }
             html += '</div>';
         });
+
+        if (filteredEchoes.length === 0) {
+            html = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">Aucun Écho trouvé avec ces filtres</div>';
+        }
+
         grid.innerHTML = html;
     },
 
@@ -369,6 +483,139 @@ const UI = {
                 this.renderShop();
             };
         });
+    },
+
+    // === Quêtes ===
+    renderQuests() {
+        const dailyContainer = document.getElementById('daily-quests');
+        const storyContainer = document.getElementById('story-quests');
+        const completedContainer = document.getElementById('completed-quests');
+        
+        if (!dailyContainer || !storyContainer || !completedContainer) return;
+
+        const { daily, story } = questSystem.getActiveQuests();
+        const completedUnclaimed = questSystem.getCompletedUnclaimedQuests();
+
+        // Quêtes quotidiennes
+        let dailyHtml = '';
+        if (daily.length === 0) {
+            dailyHtml = '<div class="quest-empty">Aucune quête quotidienne disponible</div>';
+        } else {
+            daily.forEach(quest => {
+                const progress = Math.min(quest.current, quest.target);
+                const percent = (progress / quest.target) * 100;
+                const isCompleted = quest.completed;
+                
+                dailyHtml += `
+                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                    <div class="quest-header">
+                        <div class="quest-icon">📋</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">🎁 Réclamer</button>' : ''}
+                    </div>
+                    <div class="quest-progress">
+                        <div class="quest-progress-bar">
+                            <div class="quest-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="quest-progress-text">${progress} / ${quest.target}</div>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        dailyContainer.innerHTML = dailyHtml;
+
+        // Quêtes d'histoire
+        let storyHtml = '';
+        if (story.length === 0) {
+            storyHtml = '<div class="quest-empty">Aucune quête d\'histoire disponible</div>';
+        } else {
+            story.forEach(quest => {
+                const progress = Math.min(quest.current, quest.target);
+                const percent = (progress / quest.target) * 100;
+                const isCompleted = quest.completed;
+                
+                storyHtml += `
+                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                    <div class="quest-header">
+                        <div class="quest-icon">📖</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">🎁 Réclamer</button>' : ''}
+                    </div>
+                    <div class="quest-progress">
+                        <div class="quest-progress-bar">
+                            <div class="quest-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="quest-progress-text">${progress} / ${quest.target}</div>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        storyContainer.innerHTML = storyHtml;
+
+        // Quêtes complétées non réclamées
+        let completedHtml = '';
+        if (completedUnclaimed.length === 0) {
+            completedHtml = '<div class="quest-empty">Aucune récompense à réclamer</div>';
+        } else {
+            completedUnclaimed.forEach(quest => {
+                completedHtml += `
+                <div class="quest-card completed">
+                    <div class="quest-header">
+                        <div class="quest-icon">✅</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        <button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">🎁 Réclamer</button>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        completedContainer.innerHTML = completedHtml;
+    },
+
+    claimQuestReward(questId) {
+        const success = questSystem.claimQuestRewards(questId);
+        if (success) {
+            this.toast('🎁 Récompenses réclamées !', 'success');
+            this.renderQuests();
+            this.updateCurrencies();
+        } else {
+            this.toast('❌ Impossible de réclamer les récompenses', 'error');
+        }
     },
 
     // === Succès ===

@@ -98,8 +98,140 @@ body {
 }
 
 /* ============================================
-   Layout
+   ÉchoClicker - Styles (Dark Fantasy Theme)
    ============================================ */
+
+/* === Quêtes === */
+.quest-section {
+    margin-bottom: 24px;
+}
+
+.quest-section-title {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    color: var(--accent-gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quest-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+
+.quest-card:hover {
+    border-color: var(--accent-gold);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.quest-card.completed {
+    border-color: var(--accent-green);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), var(--bg-card));
+}
+
+.quest-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.quest-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.quest-info {
+    flex: 1;
+}
+
+.quest-name {
+    font-family: var(--font-title);
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.quest-description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.quest-claim-btn {
+    background: linear-gradient(135deg, var(--accent-gold), #f59e0b);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.quest-claim-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.quest-progress {
+    margin-bottom: 12px;
+}
+
+.quest-progress-bar {
+    height: 8px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.quest-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.quest-card.completed .quest-progress-fill {
+    background: linear-gradient(90deg, var(--accent-green), #10b981);
+}
+
+.quest-progress-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.quest-rewards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.quest-reward {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.quest-empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 24px;
+    font-style: italic;
+}
 
 #game-container {
     max-width: 1400px;
@@ -200,6 +332,119 @@ body {
 .header-right {
     display: flex;
     gap: 8px;
+    align-items: center;
+}
+
+/* Boosts Indicator */
+.boosts-indicator {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.boost-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
+    border: 1px solid var(--accent-gold);
+    border-radius: var(--radius-md);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    animation: boostPulse 2s infinite;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.boost-badge .boost-icon {
+    font-size: 0.9rem;
+}
+
+.boost-badge .boost-timer {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-left: 4px;
+}
+
+@keyframes boostPulse {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+.boost-badge.xp {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+.boost-badge.capture {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.boost-badge.energy {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(239, 68, 68, 0.2));
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+/* Language Selector */
+.lang-selector {
+    position: relative;
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: var(--radius-md);
+    padding: 8px 0;
+    min-width: 150px;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.lang-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.lang-option {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+}
+
+.lang-option:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.lang-option.active {
+    color: var(--accent-purple);
+    font-weight: 600;
 }
 
 .btn-icon {
@@ -1040,6 +1285,37 @@ body {
     padding: 4px 10px;
     font-size: 0.75rem;
     border-radius: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+}
+
+.type-filter-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--type-color, var(--accent-purple));
+}
+
+.type-filter-btn.active {
+    background: var(--type-color, var(--accent-purple));
+    color: white;
+    border-color: var(--type-color, var(--accent-purple));
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+.pokedex-counter {
+    text-align: center;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    border: 1px solid rgba(139, 92, 246, 0.15);
 }
 
 .pokedex-grid {

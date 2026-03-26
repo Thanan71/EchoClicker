@@ -18,7 +18,7 @@ const SaveSystem = {
 
     getSaveData() {
         return {
-            v: 3,
+            v: 4, // Version mise à jour pour inclure les quêtes
             ts: Date.now(),
             s: {
                 energy: Game.state.energy,
@@ -35,6 +35,7 @@ const SaveSystem = {
                 regionsUnlocked: Game.state.regionsUnlocked,
                 maxLevel: Game.state.maxLevel,
                 playTime: Game.state.playTime,
+                startTime: Game.state.startTime,
                 clickPower: Game.state.clickPower,
                 passiveIncome: Game.state.passiveIncome,
                 currentRegion: Game.state.currentRegion,
@@ -45,8 +46,10 @@ const SaveSystem = {
                 achievements: [...Game.state.achievements],
                 regions: Game.state.regions,
                 boosts: Game.state.boosts,
+                inventory: Game.state.inventory || [],
                 mine: Mine.toJSON(),
-                hatchery: Hatchery.toJSON()
+                hatchery: Hatchery.toJSON(),
+                quests: questSystem.toJSON() // Sauvegarder les quêtes
             }
         };
     },
@@ -81,11 +84,13 @@ const SaveSystem = {
             Game.state.regionsUnlocked = s.regionsUnlocked ?? 1;
             Game.state.maxLevel = s.maxLevel ?? 1;
             Game.state.playTime = s.playTime ?? 0;
+            Game.state.startTime = s.startTime ?? Date.now();
             Game.state.clickPower = s.clickPower ?? GAME_CONFIG.ENERGY_PER_CLICK_BASE;
             Game.state.passiveIncome = s.passiveIncome ?? GAME_CONFIG.PASSIVE_BASE;
             Game.state.currentRegion = s.currentRegion ?? 'foret';
             Game.state.regions = s.regions ?? Utils.deepClone(REGIONS);
             Game.state.boosts = s.boosts ?? {};
+            Game.state.inventory = s.inventory || [];
 
             // Reconstruire les Échos depuis JSON
             Game.state.party = (s.party || []).map(j => Echo.fromJSON(j));
@@ -98,6 +103,11 @@ const SaveSystem = {
             // Charger les systèmes Mine et Hatchery
             if (s.mine) Mine.fromJSON(s.mine);
             if (s.hatchery) Hatchery.fromJSON(s.hatchery);
+            
+            // Charger les quêtes
+            if (s.quests) {
+                questSystem.fromJSON(s.quests);
+            }
 
             return true;
         } catch (e) {
@@ -115,13 +125,4 @@ const SaveSystem = {
     }
 };
 
-// Hook dans Game.init
-Game.loadGame = function() {
-    if (SaveSystem.hasSave()) {
-        if (SaveSystem.load()) {
-            console.log('Sauvegarde chargée');
-        } else {
-            console.log('Erreur de chargage, nouveau jeu');
-        }
-    }
-};
+// Note: Game.loadGame est défini dans game.js pour éviter les erreurs de référence

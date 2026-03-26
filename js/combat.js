@@ -47,38 +47,10 @@ const Combat = {
     },
 
     autoCaptureNewEcho() {
-        if (!this.enemy || !Game.spendLinks(1)) {
-            if (this.enemy && !Game.state.caughtEchoes.has(this.enemy.id)) {
-                UI.addLog('info', `Auto-capture: ${this.enemy.name} (pas assez de Liens)`);
-            }
-            return;
-        }
+        if (!this.enemy) return;
 
-        const rate = Utils.calculateCaptureRate(
-            this.enemy.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
-            this.enemy.hp, this.enemy.maxHp
-        );
-
-        if (Utils.chance(rate)) {
-            const captured = new Echo(getEchoById(this.enemy.id), this.enemy.level, this.enemy.isPrimordial);
-            Game.state.totalCaptures++;
-            Game.state.caughtEchoes.add(this.enemy.id);
-            if (!Game.state.seenEchoes.has(this.enemy.id)) Game.state.uniqueCaptures++;
-            if (this.enemy.isPrimordial) Game.state.primordialCount++;
-
-            if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {
-                Game.addToParty(captured);
-            } else {
-                Game.state.reserves.push(captured);
-            }
-
-            EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
-            const prefix = this.enemy.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
-            UI.addLog('capture', `🔮 Auto: ${prefix}${this.enemy.name} capturé !`);
-            UI.toast(`🔮 Auto: ${prefix}${this.enemy.name} capturé !`, 'success');
-        } else {
-            UI.addLog('info', `🔮 Auto-capture échouée: ${this.enemy.name}`);
-        }
+        // Appeler la méthode centralisée de capture avec l'option isAuto
+        Game.captureEcho(this.enemy, { isAuto: true });
     },
 
     spawnBoss(region) {
@@ -158,7 +130,13 @@ const Combat = {
         this.routeKills++;
 
         // XP
-        const xpGain = this.enemy.level * 5 + (this.isBoss ? 50 : 0);
+        let xpGain = this.enemy.level * 5 + (this.isBoss ? 50 : 0);
+        
+        // Appliquer le boost XP si actif
+        if (Game.state.boosts.xp) {
+            xpGain *= 2; // Double l'XP gagnée
+        }
+        
         Game.state.party.forEach(e => {
             if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, Game.state.party.length)));
         });
@@ -204,40 +182,16 @@ const Combat = {
 
     attemptCapture() {
         if (!this.inCombat || !this.enemy) return;
-        if (!Game.spendLinks(1)) {
-            UI.toast('Pas assez de Liens !', 'error');
-            return;
-        }
 
-        const rate = Utils.calculateCaptureRate(
-            this.enemy.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
-            this.enemy.hp, this.enemy.maxHp
-        );
+        // Appeler la méthode centralisée de capture
+        const success = Game.captureEcho(this.enemy);
 
-        if (Utils.chance(rate)) {
-            const captured = new Echo(getEchoById(this.enemy.id), this.enemy.level, this.enemy.isPrimordial);
-            Game.state.totalCaptures++;
-            Game.state.caughtEchoes.add(this.enemy.id);
-            if (!Game.state.seenEchoes.has(this.enemy.id)) Game.state.uniqueCaptures++;
-            if (this.enemy.isPrimordial) Game.state.primordialCount++;
-
-            if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {
-                Game.addToParty(captured);
-            } else {
-                Game.state.reserves.push(captured);
-            }
-
-            EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
-            const prefix = this.enemy.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
-            UI.addLog('capture', `${prefix}${this.enemy.name} capturé !`);
-            UI.toast(`${prefix}${this.enemy.name} capturé !`, 'success');
-
+        // Si la capture a réussi, spawn un nouvel ennemi
+        if (success) {
             const route = Game.state.currentRoute;
             if (route) setTimeout(() => this.spawnEnemy(route), 500);
-        } else {
-            UI.addLog('info', 'Capture échouée...');
-            UI.toast('Capture échouée !', 'error');
         }
+
         UI.updateCombat();
     },
 
