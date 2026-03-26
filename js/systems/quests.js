@@ -468,3 +468,6 @@ class QuestSystem {
 
 // Instance singleton
 const questSystem = new QuestSystem();
+
+// Make questSystem globally available
+window.questSystem = questSystem;
