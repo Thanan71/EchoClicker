@@ -5,14 +5,47 @@
 // Helper function to get echo image path
 function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');
-    const suffix = echo.isShiny ? '_shiny_no_bg' : '_no_bg';
-    return `assets/echos-no-bg/echo_${id}${suffix}.png`;
+    return `assets/echos-no-bg/echo_${id}_no_bg.png`;
 }
 
 function getEchoImagePathById(id, isShiny = false) {
     const idStr = String(id).padStart(3, '0');
-    const suffix = isShiny ? '_shiny_no_bg' : '_no_bg';
-    return `assets/echos-no-bg/echo_${idStr}${suffix}.png`;
+    return `assets/echos-no-bg/echo_${idStr}_no_bg.png`;
+}
+
+// Helper function to apply shiny effect to an image element
+function applyShinyToImage(imgElement, echo) {
+    if (!imgElement || !echo) return;
+    
+    if (echo.isPrimordial || echo.isShiny) {
+        const rarity = echo.rarity || 'common';
+        ShinyEffect.makeShiny(imgElement, rarity, true);
+    }
+}
+
+// Helper function to create image HTML with shiny support
+function createEchoImageHTML(echo, size = 64) {
+    const imgPath = getEchoImagePath(echo);
+    const isShiny = echo.isPrimordial || echo.isShiny;
+    
+    if (isShiny) {
+        const config = ShinyEffect.SHINY_CONFIGS[echo.rarity] || ShinyEffect.SHINY_CONFIGS.common;
+        return `<div class="shiny-wrapper" style="position:relative;display:inline-block;width:${size}px;height:${size}px;">
+            <img src="${imgPath}" alt="${echo.name}" 
+                style="width:100%;height:100%;object-fit:contain;filter:hue-rotate(${config.hueRotate}deg) saturate(${config.saturate}) brightness(${config.brightness}) contrast(${config.contrast});"
+                class="shiny-sprite" data-shiny-rarity="${echo.rarity}">
+            <div class="shiny-sparkles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;">
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:0s;left:20%;top:30%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:0.25s;left:70%;top:20%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:0.5s;left:50%;top:70%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:0.75s;left:80%;top:60%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:1s;left:30%;top:80%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+                <div class="sparkle" style="position:absolute;width:4px;height:4px;background:${config.sparkleColor};border-radius:50%;animation:sparkle 1.5s ease-in-out infinite;animation-delay:1.25s;left:60%;top:40%;box-shadow:0 0 6px ${config.sparkleColor};"></div>
+            </div>
+        </div>`;
+    }
+    
+    return `<img src="${imgPath}" alt="${echo.name}" style="width:${size}px;height:${size}px;object-fit:contain;">`;
 }
 
 const UI = {
@@ -162,8 +195,9 @@ const UI = {
         if (Combat.enemy) {
             const e = Combat.enemy;
             const imgPath = getEchoImagePath(e);
-            const primordialBadge = e.isPrimordial ? '<span style="position:absolute;top:-5px;right:-5px;font-size:1rem">⭐</span>' : '';
-            setHTML('enemy-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${e.name}" style="width:64px;height:64px;object-fit:contain"></div>`);
+            const primordialBadge = e.isPrimordial ? '<span class="shiny-badge">⭐</span>' : '';
+            const imgHTML = createEchoImageHTML(e, 64);
+            setHTML('enemy-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`);
             set('enemy-name', e.bossName || e.name);
             const hpPct = Math.max(0, e.getHpPercent());
             setStyle('enemy-hp-bar', '--hp-percent', hpPct+'%');
@@ -183,8 +217,9 @@ const UI = {
         if (Combat.activeEcho) {
             const p = Combat.activeEcho;
             const imgPath = getEchoImagePath(p);
-            const primordialBadge = p.isPrimordial ? '<span style="position:absolute;top:-5px;right:-5px;font-size:1rem">⭐</span>' : '';
-            setHTML('player-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${p.name}" style="width:64px;height:64px;object-fit:contain"></div>`);
+            const primordialBadge = p.isPrimordial ? '<span class="shiny-badge">⭐</span>' : '';
+            const imgHTML = createEchoImageHTML(p, 64);
+            setHTML('player-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`);
             set('player-name', p.name);
             const hpPct = Math.max(0, p.getHpPercent());
             setStyle('player-hp-bar', '--hp-percent', hpPct+'%');
@@ -217,10 +252,10 @@ const UI = {
             if (echo) {
                 const active = Combat.activeEcho?.uid === echo.uid;
                 const hpPct = echo.getHpPercent();
-                const imgPath = getEchoImagePath(echo);
+                const imgHTML = createEchoImageHTML(echo, 48);
                 ph += `<div class="party-slot ${active?'active-combat':''}" onclick="UI.showEchoDetail('${echo.uid}')">`;
                 if (echo.isPrimordial) ph += '<span class="primordial-badge">⭐</span>';
-                ph += `<div class="party-echo-icon"><img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain"></div>`;
+                ph += `<div class="party-echo-icon">${imgHTML}</div>`;
                 ph += `<div class="party-echo-name">${echo.name}</div>`;
                 ph += `<div class="party-echo-level">Nv. ${echo.level}</div>`;
                 ph += `<div class="party-echo-hp" style="color:${hpPct<30?'var(--accent-red)':hpPct<60?'var(--accent-gold)':'var(--accent-green)'}">❤️ ${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</div>`;
@@ -233,8 +268,8 @@ const UI = {
 
         let rh = '';
         Game.state.reserves.forEach(echo => {
-            const imgPath = getEchoImagePath(echo);
-            rh += `<div class="reserve-slot" onclick="UI.showEchoDetail('${echo.uid}')" title="${echo.name} Nv.${echo.level}">${echo.isPrimordial?'⭐':''}<img src="${imgPath}" alt="${echo.name}" style="width:32px;height:32px;object-fit:contain"></div>`;
+            const imgHTML = createEchoImageHTML(echo, 32);
+            rh += `<div class="reserve-slot" onclick="UI.showEchoDetail('${echo.uid}')" title="${echo.name} Nv.${echo.level}">${echo.isPrimordial?'⭐':''}${imgHTML}</div>`;
         });
         if (!Game.state.reserves.length) rh = '<div style="color:var(--text-muted);padding:20px;text-align:center">Aucun Écho en réserve</div>';
         rg.innerHTML = rh;
@@ -246,11 +281,12 @@ const UI = {
         const t = TYPES[echo.type];
         const inParty = Game.state.party.some(e => e.uid === uid);
         const imgPath = getEchoImagePath(echo);
+        const imgHTML = createEchoImageHTML(echo, 128);
 
         let html = `<div style="text-align:center">
             <div style="margin:10px 0;position:relative;display:inline-block">
-                ${echo.isPrimordial?'<span style="position:absolute;top:0;right:0;font-size:1.5rem">⭐</span>':''}
-                <img src="${imgPath}" alt="${echo.name}" style="width:128px;height:128px;object-fit:contain">
+                ${echo.isPrimordial?'<span class="shiny-badge">⭐</span>':''}
+                ${imgHTML}
             </div>
             <h3 style="font-family:var(--font-title)">${echo.name}</h3>
             <span class="type-badge" style="background:${t.color};color:#fff;padding:4px 12px;border-radius:12px;font-size:0.8rem">${t.emoji} ${t.name}</span>
@@ -302,9 +338,9 @@ const UI = {
         const setHTML = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
         const setStyle = (id, prop, v) => { const el = document.getElementById(id); if (el) el.style.setProperty(prop, v); };
 
-        const imgPath = getEchoImagePath(e);
-        const primordialBadge = e.isPrimordial ? '<span style="position:absolute;top:0;right:0;font-size:1.5rem">⭐</span>' : '';
-        setHTML('wild-echo', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${e.name}" style="width:96px;height:96px;object-fit:contain"></div>`);
+        const primordialBadge = e.isPrimordial ? '<span class="shiny-badge">⭐</span>' : '';
+        const imgHTML = createEchoImageHTML(e, 96);
+        setHTML('wild-echo', `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`);
         set('wild-echo-name', e.name + (e.isPrimordial ? ' (Primordial)' : ''));
         setStyle('wild-hp-bar', '--hp-percent', e.getHpPercent()+'%');
         set('wild-hp-text', `${Math.floor(e.hp)}/${Math.floor(e.maxHp)}`);
