@@ -75,6 +75,41 @@ const UI = {
         this.updateFooter();
         this.updateCombat();
         this.renderRoutes();
+        this.updateBoostsDisplay();
+    },
+
+    // === Affichage des boosts actifs ===
+    updateBoostsDisplay() {
+        const container = document.getElementById('boosts-indicator');
+        if (!container) return;
+
+        let html = '';
+        const now = Date.now();
+
+        // Vérifier chaque boost
+        const boostTypes = {
+            'xp': { icon: '📈', name: 'XP', cssClass: 'xp' },
+            'capture': { icon: '🎯', name: 'Capture', cssClass: 'capture' },
+            'energy': { icon: '⚡', name: 'Énergie', cssClass: 'energy' }
+        };
+
+        for (const [type, boost] of Object.entries(Game.state.boosts)) {
+            if (boost && boost.endTime && now < boost.endTime) {
+                const remaining = Math.ceil((boost.endTime - now) / 1000);
+                const minutes = Math.floor(remaining / 60);
+                const seconds = remaining % 60;
+                const timerText = minutes > 0 ? `${minutes}m${seconds}s` : `${seconds}s`;
+                const config = boostTypes[type] || { icon: '✨', name: type, cssClass: '' };
+                
+                html += `<div class="boost-badge ${config.cssClass}">
+                    <span class="boost-icon">${config.icon}</span>
+                    <span class="boost-name">${config.name}</span>
+                    <span class="boost-timer">${timerText}</span>
+                </div>`;
+            }
+        }
+
+        container.innerHTML = html;
     },
 
     updateCurrencies() {
