@@ -2,6 +2,8 @@
 // ÉchoClicker - Système de sauvegarde (v2)
 // ============================================
 
+import { questSystem } from './systems/quests.js';
+
 const SaveSystem = {
     KEY: 'echoclicker_save_v2',
 
@@ -18,7 +20,7 @@ const SaveSystem = {
 
     getSaveData() {
         return {
-            v: 3,
+            v: 4, // Version mise à jour pour inclure les quêtes
             ts: Date.now(),
             s: {
                 energy: Game.state.energy,
@@ -46,8 +48,10 @@ const SaveSystem = {
                 achievements: [...Game.state.achievements],
                 regions: Game.state.regions,
                 boosts: Game.state.boosts,
+                inventory: Game.state.inventory || [],
                 mine: Mine.toJSON(),
-                hatchery: Hatchery.toJSON()
+                hatchery: Hatchery.toJSON(),
+                quests: questSystem.toJSON() // Sauvegarder les quêtes
             }
         };
     },
@@ -88,6 +92,7 @@ const SaveSystem = {
             Game.state.currentRegion = s.currentRegion ?? 'foret';
             Game.state.regions = s.regions ?? Utils.deepClone(REGIONS);
             Game.state.boosts = s.boosts ?? {};
+            Game.state.inventory = s.inventory || [];
 
             // Reconstruire les Échos depuis JSON
             Game.state.party = (s.party || []).map(j => Echo.fromJSON(j));
@@ -100,6 +105,11 @@ const SaveSystem = {
             // Charger les systèmes Mine et Hatchery
             if (s.mine) Mine.fromJSON(s.mine);
             if (s.hatchery) Hatchery.fromJSON(s.hatchery);
+            
+            // Charger les quêtes
+            if (s.quests) {
+                questSystem.fromJSON(s.quests);
+            }
 
             return true;
         } catch (e) {

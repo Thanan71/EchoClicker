@@ -2,6 +2,8 @@
 // ÉchoClicker - Moteur de jeu principal (v2)
 // ============================================
 
+import { questSystem } from './systems/quests.js';
+
 const Game = {
     state: null,
     _clickTimestamps: [],
@@ -21,6 +23,7 @@ const Game = {
         Mine.init();
         Hatchery.init();
         MapSystem.init();
+        questSystem.init(); // Initialiser le système de quêtes
         
         UI.init();
 
@@ -66,6 +69,7 @@ const Game = {
             achievements: new Set(),
             regions: Utils.deepClone(REGIONS),
             boosts: {},
+            inventory: [], // Inventaire pour les objets de quêtes
             startTime: Date.now()
         };
     },
@@ -357,6 +361,9 @@ const Game = {
 
             // Émettre l'événement de capture
             EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+            
+            // Émettre l'événement pour les quêtes
+            eventBus.emit('echo:captured', captured);
 
             // Afficher le message de succès
             const prefix = wildEcho.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
@@ -435,6 +442,9 @@ const Game = {
         region.bossDefeated = true;
         this.state.bossesDefeated++;
         EventBus.emit(GAME_EVENTS.BOSS_DEFEATED, { region });
+        
+        // Émettre l'événement pour les quêtes
+        eventBus.emit('boss:defeated', { id: this.state.currentRegion });
 
         const idx = this.state.regions.findIndex(r => r.id === this.state.currentRegion);
         if (idx < this.state.regions.length - 1) {
@@ -599,6 +609,8 @@ const Game = {
     setupEventBus() {
         EventBus.on(GAME_EVENTS.ECHO_LEVELED_UP, ({ echo }) => {
             if (echo.level > this.state.maxLevel) this.state.maxLevel = echo.level;
+            // Émettre l'événement pour les quêtes
+            eventBus.emit('echo:levelUp', echo);
         });
 
         EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => {
@@ -608,6 +620,15 @@ const Game = {
 
         EventBus.on(GAME_EVENTS.ECHO_EVOLVED, ({ oldName, echo }) => {
             UI.toast(`✨ ${oldName} évolue en ${echo.name} !`, 'success');
+        });
+        
+        // Écouter les événements de quêtes pour les notifications
+        eventBus.on('quest:completed', (quest) => {
+            UI.toast(`🎉 Quête complétée : ${quest.name}`, 'success');
+        });
+        
+        eventBus.on('quest:rewardsClaimed', (quest) => {
+            UI.toast(`🎁 Récompenses réclamées pour : ${quest.name}`, 'success');
         });
     },
 

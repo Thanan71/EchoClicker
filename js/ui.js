@@ -2,6 +2,8 @@
 // ÉchoClicker - Interface utilisateur (v2)
 // ============================================
 
+import { questSystem, QUEST_TYPES } from './systems/quests.js';
+
 // Helper function to get echo image path
 function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');
@@ -28,6 +30,7 @@ const UI = {
         this.renderAchievements();
         this.initPokedexFilters();
         this.renderPokedex();
+        this.renderQuests();
         this.updateAll();
         this.setupEventBus();
     },
@@ -46,6 +49,12 @@ const UI = {
         EventBus.on(GAME_EVENTS.ROUTE_UNLOCKED, () => this.renderRoutes());
         EventBus.on(GAME_EVENTS.REGION_UNLOCKED, () => this.renderRoutes());
         EventBus.on(GAME_EVENTS.BOSS_DEFEATED, () => this.renderRoutes());
+        
+        // Écouter les événements de quêtes
+        eventBus.on('quest:completed', () => this.renderQuests());
+        eventBus.on('quest:progress', () => this.renderQuests());
+        eventBus.on('quest:rewardsClaimed', () => this.renderQuests());
+        eventBus.on('quest:dailyReset', () => this.renderQuests());
     },
 
     // === Navigation ===
@@ -64,7 +73,8 @@ const UI = {
             shop: () => this.renderShop(),
             achievements: () => this.renderAchievements(),
             mine: () => this.renderMine(),
-            hatchery: () => this.renderHatchery()
+            hatchery: () => this.renderHatchery(),
+            quests: () => this.renderQuests()
         };
         renderers[tabId]?.();
     },
@@ -475,6 +485,139 @@ const UI = {
                 this.renderShop();
             };
         });
+    },
+
+    // === Quêtes ===
+    renderQuests() {
+        const dailyContainer = document.getElementById('daily-quests');
+        const storyContainer = document.getElementById('story-quests');
+        const completedContainer = document.getElementById('completed-quests');
+        
+        if (!dailyContainer || !storyContainer || !completedContainer) return;
+
+        const { daily, story } = questSystem.getActiveQuests();
+        const completedUnclaimed = questSystem.getCompletedUnclaimedQuests();
+
+        // Quêtes quotidiennes
+        let dailyHtml = '';
+        if (daily.length === 0) {
+            dailyHtml = '<div class="quest-empty">Aucune quête quotidienne disponible</div>';
+        } else {
+            daily.forEach(quest => {
+                const progress = Math.min(quest.current, quest.target);
+                const percent = (progress / quest.target) * 100;
+                const isCompleted = quest.completed;
+                
+                dailyHtml += `
+                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                    <div class="quest-header">
+                        <div class="quest-icon">📋</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">🎁 Réclamer</button>' : ''}
+                    </div>
+                    <div class="quest-progress">
+                        <div class="quest-progress-bar">
+                            <div class="quest-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="quest-progress-text">${progress} / ${quest.target}</div>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        dailyContainer.innerHTML = dailyHtml;
+
+        // Quêtes d'histoire
+        let storyHtml = '';
+        if (story.length === 0) {
+            storyHtml = '<div class="quest-empty">Aucune quête d\'histoire disponible</div>';
+        } else {
+            story.forEach(quest => {
+                const progress = Math.min(quest.current, quest.target);
+                const percent = (progress / quest.target) * 100;
+                const isCompleted = quest.completed;
+                
+                storyHtml += `
+                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                    <div class="quest-header">
+                        <div class="quest-icon">📖</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">🎁 Réclamer</button>' : ''}
+                    </div>
+                    <div class="quest-progress">
+                        <div class="quest-progress-bar">
+                            <div class="quest-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="quest-progress-text">${progress} / ${quest.target}</div>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        storyContainer.innerHTML = storyHtml;
+
+        // Quêtes complétées non réclamées
+        let completedHtml = '';
+        if (completedUnclaimed.length === 0) {
+            completedHtml = '<div class="quest-empty">Aucune récompense à réclamer</div>';
+        } else {
+            completedUnclaimed.forEach(quest => {
+                completedHtml += `
+                <div class="quest-card completed">
+                    <div class="quest-header">
+                        <div class="quest-icon">✅</div>
+                        <div class="quest-info">
+                            <div class="quest-name">${quest.name}</div>
+                            <div class="quest-description">${quest.description}</div>
+                        </div>
+                        <button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">🎁 Réclamer</button>
+                    </div>
+                    <div class="quest-rewards">
+                        ${quest.rewards.map(r => {
+                            if (r.type === 'xp') return `<span class="quest-reward">📈 ${r.amount} XP</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">💎 ${r.amount} cristaux</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">⚡ ${r.amount} énergie</span>`;
+                            if (r.type === 'item') return `<span class="quest-reward">🎁 ${r.item.name}</span>`;
+                            return '';
+                        }).join('')}
+                    </div>
+                </div>`;
+            });
+        }
+        completedContainer.innerHTML = completedHtml;
+    },
+
+    claimQuestReward(questId) {
+        const success = questSystem.claimQuestRewards(questId);
+        if (success) {
+            this.toast('🎁 Récompenses réclamées !', 'success');
+            this.renderQuests();
+            this.updateCurrencies();
+        } else {
+            this.toast('❌ Impossible de réclamer les récompenses', 'error');
+        }
     },
 
     // === Succès ===
