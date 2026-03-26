@@ -35,6 +35,7 @@ const SaveSystem = {
                 regionsUnlocked: Game.state.regionsUnlocked,
                 maxLevel: Game.state.maxLevel,
                 playTime: Game.state.playTime,
+                startTime: Game.state.startTime,
                 clickPower: Game.state.clickPower,
                 passiveIncome: Game.state.passiveIncome,
                 currentRegion: Game.state.currentRegion,
@@ -81,6 +82,7 @@ const SaveSystem = {
             Game.state.regionsUnlocked = s.regionsUnlocked ?? 1;
             Game.state.maxLevel = s.maxLevel ?? 1;
             Game.state.playTime = s.playTime ?? 0;
+            Game.state.startTime = s.startTime ?? Date.now();
             Game.state.clickPower = s.clickPower ?? GAME_CONFIG.ENERGY_PER_CLICK_BASE;
             Game.state.passiveIncome = s.passiveIncome ?? GAME_CONFIG.PASSIVE_BASE;
             Game.state.currentRegion = s.currentRegion ?? 'foret';
