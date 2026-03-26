@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÉchoClicker : Liens Éternels</title>
+    <title data-i18n="game.title">ÉchoClicker</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,49 +12,59 @@
         <!-- Header -->
         <header id="game-header">
             <div class="header-left">
-                <h1 class="game-title">⚡ ÉchoClicker</h1>
-                <span class="subtitle">Liens Éternels</span>
+                <h1 class="game-title">⚡ <span data-i18n="game.title">ÉchoClicker</span></h1>
+                <span class="subtitle" data-i18n="game.subtitle">Liens Éternels</span>
             </div>
             <div class="header-center">
                 <div class="currency-display">
                     <div class="currency" id="aether-energy">
                         <span class="currency-icon">💎</span>
                         <span class="currency-value" id="energy-value">0</span>
-                        <span class="currency-label">Énergie Aether</span>
+                        <span class="currency-label" data-i18n="currencies.energy">Énergie Aether</span>
                     </div>
                     <div class="currency" id="aether-links">
                         <span class="currency-icon">🔗</span>
                         <span class="currency-value" id="links-value">0</span>
-                        <span class="currency-label">Liens d'Aether</span>
+                        <span class="currency-label" data-i18n="currencies.links">Liens d'Aether</span>
                     </div>
                     <div class="currency" id="pure-crystals">
                         <span class="currency-icon">💠</span>
                         <span class="currency-value" id="crystals-value">0</span>
-                        <span class="currency-label">Cristaux Purs</span>
+                        <span class="currency-label" data-i18n="currencies.crystals">Cristaux Purs</span>
                     </div>
                     <div class="currency" id="aether-shards">
                         <span class="currency-icon">✨</span>
                         <span class="currency-value" id="shards-value">0</span>
-                        <span class="currency-label">Éclats d'Aether</span>
+                        <span class="currency-label" data-i18n="currencies.shards">Éclats d'Aether</span>
                     </div>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn-icon" id="btn-save" title="Sauvegarder">💾</button>
-                <button class="btn-icon" id="btn-settings" title="Paramètres">⚙️</button>
+                <button class="btn-icon" id="btn-save" data-i18n-title="buttons.save" title="Sauvegarder">💾</button>
+                <button class="btn-icon" id="btn-settings" data-i18n-title="buttons.settings" title="Paramètres">⚙️</button>
+                <div class="lang-selector">
+                    <button class="btn-icon" id="btn-lang" title="Language">🌐</button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+                        <button class="lang-option" data-lang="en">🇬🇧 English</button>
+                        <button class="lang-option" data-lang="es">🇪🇸 Español</button>
+                        <button class="lang-option" data-lang="de">🇩🇪 Deutsch</button>
+                        <button class="lang-option" data-lang="ja">🇯🇵 日本語</button>
+                    </div>
+                </div>
             </div>
         </header>
 
         <!-- Navigation -->
         <nav id="main-nav">
-            <button class="nav-btn active" data-tab="map">🗺️ Aventure</button>
-            <button class="nav-btn" data-tab="party">👥 Équipe</button>
-            <button class="nav-btn" data-tab="capture">🔮 Capture</button>
-            <button class="nav-btn" data-tab="pokedex">📖 Logbook</button>
-            <button class="nav-btn" data-tab="hatchery">🥚 Élevage</button>
-            <button class="nav-btn" data-tab="mine">⛏️ Mine</button>
-            <button class="nav-btn" data-tab="shop">🏪 Marché</button>
-            <button class="nav-btn" data-tab="achievements">🏆 Succès</button>
+            <button class="nav-btn active" data-tab="map" data-i18n="nav.adventure">🗺️ Aventure</button>
+            <button class="nav-btn" data-tab="party" data-i18n="nav.party">👥 Équipe</button>
+            <button class="nav-btn" data-tab="capture" data-i18n="nav.capture">🔮 Capture</button>
+            <button class="nav-btn" data-tab="pokedex" data-i18n="nav.pokedex">📖 Logbook</button>
+            <button class="nav-btn" data-tab="hatchery" data-i18n="nav.hatchery">🥚 Élevage</button>
+            <button class="nav-btn" data-tab="mine" data-i18n="nav.mine">⛏️ Mine</button>
+            <button class="nav-btn" data-tab="shop" data-i18n="nav.shop">🏪 Marché</button>
+            <button class="nav-btn" data-tab="achievements" data-i18n="nav.achievements">🏆 Succès</button>
         </nav>
 
         <!-- Main Content -->
@@ -67,7 +77,7 @@
                         <div class="combat-arena">
                             <div class="combat-field">
                                 <div class="combat-side enemy-side">
-                                    <div class="combat-label">Ennemi</div>
+                                    <div class="combat-label" data-i18n="combat.enemySide">Ennemi</div>
                                     <div class="echo-sprite" id="enemy-sprite">❓</div>
                                     <div class="echo-name" id="enemy-name">???</div>
                                     <div class="hp-bar-container">
@@ -79,7 +89,7 @@
                                 </div>
                                 <div class="combat-vs">⚡</div>
                                 <div class="combat-side player-side">
-                                    <div class="combat-label">Ton Écho</div>
+                                    <div class="combat-label" data-i18n="combat.playerSide">Ton Écho</div>
                                     <div class="echo-sprite" id="player-sprite">❓</div>
                                     <div class="echo-name" id="player-name">???</div>
                                     <div class="hp-bar-container">
@@ -91,25 +101,25 @@
                                 </div>
                             </div>
                             <div class="combat-log" id="combat-log">
-                                <p class="log-entry">Bienvenue, Tisseur de Liens ! Choisis une route sur la carte pour commencer l'aventure.</p>
+                                <p class="log-entry" data-i18n="game.welcomeCombat">Bienvenue, Tisseur de Liens ! Choisis une route sur la carte pour commencer l'aventure.</p>
                             </div>
                             <div class="combat-actions">
                                 <button class="btn-combat" id="btn-tisser-coup" disabled>
-                                    ⚡ Coup de Tisseur
+                                    ⚡ <span data-i18n="buttons.attack">Coup de Tisseur</span>
                                     <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
                                 </button>
                                 <button class="btn-combat" id="btn-capture-combat" disabled>
-                                    🔮 Lancer un Lien
+                                    🔮 <span data-i18n="buttons.capture">Lancer un Lien</span>
                                 </button>
                                 <button class="btn-combat secondary" id="btn-flee">
-                                    🏃 Fuir
+                                    🏃 <span data-i18n="buttons.flee">Fuir</span>
                                 </button>
                             </div>
                             <div class="auto-options">
                                 <label class="auto-toggle">
                                     <input type="checkbox" id="auto-capture-toggle">
                                     <span class="toggle-slider"></span>
-                                    <span class="toggle-label">🔮 Auto-Capture Nouveaux</span>
+                                    <span class="toggle-label" data-i18n="combat.autoCapture">🔮 Auto-Capture Nouveaux</span>
                                 </label>
                             </div>
                             <div class="click-particles" id="click-particles"></div>
@@ -123,21 +133,21 @@
                             <div class="map-legend">
                                 <div class="legend-item">
                                     <span class="legend-color" style="background: var(--accent-green)"></span>
-                                    <span>Débloqué</span>
+                                    <span data-i18n="map.unlocked">Débloqué</span>
                                 </div>
                                 <div class="legend-item">
                                     <span class="legend-color locked"></span>
-                                    <span>Verrouillé</span>
+                                    <span data-i18n="map.locked">Verrouillé</span>
                                 </div>
                                 <div class="legend-item">
                                     <span class="legend-color" style="background: var(--accent-gold)"></span>
-                                    <span>Route active</span>
+                                    <span data-i18n="map.activeRoute">Route active</span>
                                 </div>
                             </div>
                         </div>
                         <div class="region-info" id="region-info">
-                            <h3 id="region-name">Sélectionne une contrée</h3>
-                            <p id="region-desc">Clique sur une contrée ou une route de la carte pour commencer l'aventure.</p>
+                            <h3 id="region-name" data-i18n="map.selectRegion">Sélectionne une contrée</h3>
+                            <p id="region-desc" data-i18n="map.selectRegionDesc">Clique sur une contrée ou une route de la carte pour commencer l'aventure.</p>
                         </div>
                     </div>
                 </div>
@@ -145,20 +155,20 @@
 
             <!-- Party Tab -->
             <section class="tab-content" id="tab-party">
-                <h2>👥 Ton Équipe</h2>
-                <p class="tab-desc">Gère tes Échos actifs (max 6 en combat)</p>
+                <h2 data-i18n="party.title">👥 Ton Équipe</h2>
+                <p class="tab-desc" data-i18n="party.desc">Gère tes Échos actifs (max 6 en combat)</p>
                 <div class="party-actions">
                     <button class="btn-primary" id="btn-auto-team">
-                        ⚡ Équipe Optimale
+                        ⚡ <span data-i18n="party.optimalTeam">Équipe Optimale</span>
                     </button>
                     <button class="btn-combat secondary" id="btn-heal-all">
-                        ❤️ Soigner Tout
+                        ❤️ <span data-i18n="buttons.heal">Soigner Tout</span>
                     </button>
                 </div>
                 <div class="party-grid" id="party-grid">
                     <!-- Party slots generated by JS -->
                 </div>
-                <h3>📦 Réserves</h3>
+                <h3 data-i18n="party.reserves">📦 Réserves</h3>
                 <div class="reserves-grid" id="reserves-grid">
                     <!-- Reserve Échos generated by JS -->
                 </div>
@@ -167,8 +177,8 @@
             <!-- Capture Tab -->
             <section class="tab-content" id="tab-capture">
                 <div class="capture-zone">
-                    <h2>🔮 Zone de Capture</h2>
-                    <p class="tab-desc">Clique pour lancer des Liens d'Aether et capturer des Échos sauvages !</p>
+                    <h2 data-i18n="capture.title">🔮 Zone de Capture</h2>
+                    <p class="tab-desc" data-i18n="capture.desc">Clique pour lancer des Liens d'Aether et capturer des Échos sauvages !</p>
                     <div class="capture-field">
                         <div class="wild-echo-container">
                             <div class="wild-echo" id="wild-echo">❓</div>
@@ -179,26 +189,26 @@
                                 </div>
                             </div>
                             <div class="capture-rate">
-                                Taux de capture : <span id="capture-rate">0%</span>
+                                <span data-i18n="capture.rate">Taux de capture</span> : <span id="capture-rate">0%</span>
                             </div>
                         </div>
                         <button class="btn-capture" id="btn-capture">
-                            🔗 Lancer un Lien d'Aether
-                            <span class="link-cost">(1 Lien)</span>
+                            🔗 <span data-i18n="capture.launchLink">Lancer un Lien d'Aether</span>
+                            <span class="link-cost" data-i18n="capture.cost">(1 Lien)</span>
                         </button>
                         <div class="capture-result" id="capture-result"></div>
                     </div>
                     <div class="capture-stats">
                         <div class="stat">
-                            <span class="stat-label">Captures réussies</span>
+                            <span class="stat-label" data-i18n="capture.successfulCaptures">Captures réussies</span>
                             <span class="stat-value" id="total-captures">0</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-label">Échos uniques</span>
+                            <span class="stat-label" data-i18n="capture.uniqueEchoes">Échos uniques</span>
                             <span class="stat-value" id="unique-captures">0</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-label">Primordiaux trouvés</span>
+                            <span class="stat-label" data-i18n="capture.primordialsFound">Primordiaux trouvés</span>
                             <span class="stat-value" id="primordial-count">0</span>
                         </div>
                     </div>
@@ -207,11 +217,11 @@
 
             <!-- Pokédex / Logbook Tab -->
             <section class="tab-content" id="tab-pokedex">
-                <h2>📖 Logbook des Échos</h2>
+                <h2 data-i18n="pokedex.title">📖 Logbook des Échos</h2>
                 <div class="pokedex-filters">
-                    <button class="filter-btn active" data-filter="all">Tous</button>
-                    <button class="filter-btn" data-filter="caught">Capturés</button>
-                    <button class="filter-btn" data-filter="unseen">Non vus</button>
+                    <button class="filter-btn active" data-filter="all" data-i18n="pokedex.all">Tous</button>
+                    <button class="filter-btn" data-filter="caught" data-i18n="pokedex.caught">Capturés</button>
+                    <button class="filter-btn" data-filter="unseen" data-i18n="pokedex.unseen">Non vus</button>
                 </div>
                 <div class="type-filters" id="type-filters">
                     <!-- Type filter buttons generated by JS -->
@@ -223,50 +233,50 @@
 
             <!-- Hatchery Tab -->
             <section class="tab-content" id="tab-hatchery">
-                <h2>🥚 Incubateur / Élevage</h2>
-                <p class="tab-desc">Associe deux Échos compatibles pour obtenir un œuf !</p>
+                <h2 data-i18n="hatchery.title">🥚 Incubateur / Élevage</h2>
+                <p class="tab-desc" data-i18n="hatchery.desc">Associe deux Échos compatibles pour obtenir un œuf !</p>
                 <div class="hatchery-container">
                     <div class="hatchery-slots" id="hatchery-slots">
                         <!-- Incubation slots -->
                     </div>
                     <div class="breeding-panel">
-                        <h3>Sélection des parents</h3>
+                        <h3 data-i18n="hatchery.selectParents">Sélection des parents</h3>
                         <div class="parent-slots">
                             <div class="parent-slot" id="parent-1">
-                                <span class="slot-label">Parent 1</span>
+                                <span class="slot-label" data-i18n="hatchery.parent1">Parent 1</span>
                                 <div class="slot-content">+</div>
                             </div>
                             <div class="breeding-arrow">💕</div>
                             <div class="parent-slot" id="parent-2">
-                                <span class="slot-label">Parent 2</span>
+                                <span class="slot-label" data-i18n="hatchery.parent2">Parent 2</span>
                                 <div class="slot-content">+</div>
                             </div>
                         </div>
-                        <button class="btn-primary" id="btn-breed" disabled>🥚 Créer un œuf</button>
+                        <button class="btn-primary" id="btn-breed" disabled>🥚 <span data-i18n="hatchery.createEgg">Créer un œuf</span></button>
                     </div>
                 </div>
             </section>
 
             <!-- Mine Tab -->
             <section class="tab-content" id="tab-mine">
-                <h2>⛏️ Mine Souterraine</h2>
-                <p class="tab-desc">Creuse pour trouver des Cristaux Purs et des trésors !</p>
+                <h2 data-i18n="mine.title">⛏️ Mine Souterraine</h2>
+                <p class="tab-desc" data-i18n="mine.desc">Creuse pour trouver des Cristaux Purs et des trésors !</p>
                 <div class="mine-container">
                     <div class="mine-grid" id="mine-grid">
                         <!-- Mine tiles generated by JS -->
                     </div>
                     <div class="mine-tools">
-                        <button class="tool-btn active" data-tool="pick">⛏️ Pioche</button>
-                        <button class="tool-btn" data-tool="bomb">💣 Bombe</button>
-                        <button class="tool-btn" data-tool="radar">📡 Radar</button>
+                        <button class="tool-btn active" data-tool="pick">⛏️ <span data-i18n="mine.pickaxe">Pioche</span></button>
+                        <button class="tool-btn" data-tool="bomb">💣 <span data-i18n="mine.bomb">Bombe</span></button>
+                        <button class="tool-btn" data-tool="radar">📡 <span data-i18n="mine.radar">Radar</span></button>
                     </div>
                     <div class="mine-stats">
                         <div class="stat">
-                            <span class="stat-label">Énergie restante</span>
+                            <span class="stat-label" data-i18n="mine.remainingEnergy">Énergie restante</span>
                             <span class="stat-value" id="mine-energy">100</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-label">Cristaux trouvés</span>
+                            <span class="stat-label" data-i18n="mine.crystalsFound">Cristaux trouvés</span>
                             <span class="stat-value" id="mine-crystals">0</span>
                         </div>
                     </div>
@@ -275,12 +285,12 @@
 
             <!-- Shop Tab -->
             <section class="tab-content" id="tab-shop">
-                <h2>🏪 Marché des Esprits</h2>
+                <h2 data-i18n="shop.title">🏪 Marché des Esprits</h2>
                 <div class="shop-categories">
-                    <button class="shop-cat active" data-cat="links">🔗 Liens</button>
-                    <button class="shop-cat" data-cat="boosts">⚡ Boosts</button>
-                    <button class="shop-cat" data-cat="items">🎁 Objets</button>
-                    <button class="shop-cat" data-cat="cosmetics">✨ Cosmétiques</button>
+                    <button class="shop-cat active" data-cat="links">🔗 <span data-i18n="shop.links">Liens</span></button>
+                    <button class="shop-cat" data-cat="boosts">⚡ <span data-i18n="shop.boosts">Boosts</span></button>
+                    <button class="shop-cat" data-cat="items">🎁 <span data-i18n="shop.items">Objets</span></button>
+                    <button class="shop-cat" data-cat="cosmetics">✨ <span data-i18n="shop.cosmetics">Cosmétiques</span></button>
                 </div>
                 <div class="shop-items" id="shop-items">
                     <!-- Shop items generated by JS -->
@@ -289,7 +299,7 @@
 
             <!-- Achievements Tab -->
             <section class="tab-content" id="tab-achievements">
-                <h2>🏆 Succès</h2>
+                <h2 data-i18n="achievements.title">🏆 Succès</h2>
                 <div class="achievements-progress">
                     <div class="progress-bar">
                         <div class="progress-fill" id="achievement-progress"></div>
@@ -332,6 +342,7 @@
     <div id="toast-container"></div>
 
     <!-- Scripts (ordre important) -->
+    <script src="js/i18n/i18n.js"></script>
     <script src="js/data/constants.js"></script>
     <script src="js/data/utils.js"></script>
     <script src="js/data/echoesData.js"></script>
