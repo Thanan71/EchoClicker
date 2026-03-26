@@ -332,8 +332,8 @@ const Hatchery = {
             this.slots = data.slots || Array(this.maxSlots).fill(null);
             if (data.parents) {
                 this.parents = [
-                    data.parents[0] ? Game.findEcho(data.parents[0]) : null,
-                    data.parents[1] ? Game.findEcho(data.parents[1]) : null
+                    data.parents[0] ? (Game.findEcho(data.parents[0]) || null) : null,
+                    data.parents[1] ? (Game.findEcho(data.parents[1]) || null) : null
                 ];
             }
         }
