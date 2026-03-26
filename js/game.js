@@ -82,6 +82,9 @@ const Game = {
         // Mise à jour de l'incubateur
         Hatchery.update(dt);
 
+        // Mise à jour de la mine (régénération d'énergie)
+        Mine.update(dt);
+
         // Calcul du CPS
         this.updateCPS();
 
