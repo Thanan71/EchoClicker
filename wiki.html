@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki - ÉchoClicker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/wiki.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="wiki-body">
+    <header class="wiki-header">
+        <div class="wiki-title">
+            📖 Wiki ÉchoClicker
+        </div>
+        <a href="index.html" class="back-btn">
+            ⬅️ Retour au Jeu
+        </a>
+    </header>
+
+    <div class="wiki-container">
+        <nav class="wiki-nav">
+            <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#hatchery">Système d'Élevage</a></li>
+                <li><a href="#routes">Carte & Routes</a></li>
+                <li><a href="#types">Table des Types</a></li>
+                <li><a href="#echoes">Encyclopédie des Échos</a></li>
+            </ul>
+        </nav>
+
+        <main class="wiki-content">
+            <section id="intro" class="wiki-section">
+                <h2>⚡ Introduction</h2>
+                <p>Bienvenue dans le monde d'ÉchoClicker ! En tant que Tisseur de Liens, votre objectif est de capturer et d'élever des créatures magiques appelées <strong>Échos</strong>.</p>
+                <p>Dans ce guide, vous apprendrez comment fonctionnent les routes, comment utiliser l'incubateur pour obtenir de rares Échos, et comment exploiter les faiblesses des ennemis.</p>
+                <h3>Objectifs Principaux</h3>
+                <ul>
+                    <li><strong>Capturer :</strong> Utilisez vos Liens d'Aether pour capturer des Échos sauvages.</li>
+                    <li><strong>Combattre :</strong> Affrontez les Échos sur les routes pour gagner de l'expérience et des ressources.</li>
+                    <li><strong>Évoluer :</strong> Entraînez vos Échos pour qu'ils atteignent de nouveaux niveaux et évoluent.</li>
+                    <li><strong>Collectionner :</strong> Remplissez votre Logbook en découvrant tous les Échos.</li>
+                </ul>
+            </section>
+
+            <section id="hatchery" class="wiki-section">
+                <h2>🥚 Système d'Élevage (Incubateur)</h2>
+                <p>L'Incubateur vous permet de croiser deux Échos pour obtenir un œuf. C'est souvent le moyen d'obtenir des Échos plus puissants ou des variantes rares.</p>
+                
+                <h3>Comment ça marche ?</h3>
+                <ol style="margin-left: 20px; margin-bottom: 20px; color: var(--text-secondary);">
+                    <li>Sélectionnez deux parents dans votre équipe ou vos réserves.</li>
+                    <li>Assurez-vous d'avoir un slot d'incubation libre (4 slots max).</li>
+                    <li>Lancez l'incubation. Le temps dépend de la rareté de l'œuf.</li>
+                    <li>Récupérez votre nouvel Écho une fois l'incubation terminée !</li>
+                </ol>
+
+                <h3>Temps d'Incubation</h3>
+                <table class="wiki-table">
+                    <thead>
+                        <tr>
+                            <th>Rareté</th>
+                            <th>Temps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Common</td><td>30 secondes</td></tr>
+                        <tr><td>Uncommon</td><td>1 minute</td></tr>
+                        <tr><td>Rare</td><td>2 minutes</td></tr>
+                        <tr><td>Epic</td><td>5 minutes</td></tr>
+                        <tr><td>Legendary</td><td>10 minutes</td></tr>
+                        <tr><td>Mythical</td><td>15 minutes</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="routes" class="wiki-section">
+                <h2>🗺️ Carte & Routes</h2>
+                <p>Le monde est divisé en plusieurs <strong>Contrées</strong>, chacune contenant plusieurs <strong>Routes</strong>. Vous devez vaincre les ennemis pour débloquer les routes suivantes.</p>
+                <div id="routes-content">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <section id="types" class="wiki-section">
+                <h2>🌀 Table des Types</h2>
+                <p>Chaque Écho possède un type qui détermine ses forces et ses faiblesses au combat.</p>
+                <div id="types-content">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <section id="echoes" class="wiki-section">
+                <h2>📖 Encyclopédie des Échos</h2>
+                <p>Liste complète de tous les Échos connus dans la région actuelle.</p>
+                <div id="echoes-content">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/i18n/i18n.js"></script>
+    <script src="js/data/constants.js"></script>
+    <script src="js/data/utils.js"></script>
+    <script src="js/data/echoesData.js"></script>
+    <script src="js/wiki.js"></script>
+</body>
+</html>
