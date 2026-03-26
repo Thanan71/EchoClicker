@@ -9,6 +9,7 @@ const Mine = {
     maxEnergy: 100,
     crystalsFound: 0,
     currentTool: 'pick',
+    regenTimer: 0,  // Timer pour la régénération passive d'énergie
     tools: {
         pick: { name: 'Pioche', emoji: '⛏️', cost: 1, power: 1, area: 1 },
         bomb: { name: 'Bombe', emoji: '💣', cost: 5, power: 3, area: 3 },
@@ -148,6 +149,18 @@ const Mine = {
         }
     },
 
+    // Régénération passive d'énergie de mine
+    update(dt) {
+        this.regenTimer += dt * 1000; // Convertir dt (secondes) en ms
+        if (this.regenTimer >= GAME_CONFIG.MINE_ENERGY_REGEN_INTERVAL) {
+            this.regenTimer -= GAME_CONFIG.MINE_ENERGY_REGEN_INTERVAL;
+            if (this.energy < this.maxEnergy) {
+                this.energy = Math.min(this.maxEnergy, this.energy + GAME_CONFIG.MINE_ENERGY_REGEN_RATE);
+                this.updateDisplay();
+            }
+        }
+    },
+
     rechargeEnergy(amount = 50) {
         this.energy = Math.min(this.maxEnergy, this.energy + amount);
         this.updateDisplay();
@@ -194,7 +207,8 @@ const Mine = {
         return {
             grid: this.grid,
             energy: this.energy,
-            crystalsFound: this.crystalsFound
+            crystalsFound: this.crystalsFound,
+            regenTimer: this.regenTimer
         };
     },
 
@@ -203,6 +217,7 @@ const Mine = {
             this.grid = data.grid || this.grid;
             this.energy = data.energy ?? this.maxEnergy;
             this.crystalsFound = data.crystalsFound ?? 0;
+            this.regenTimer = data.regenTimer ?? 0;
         }
     }
 };
