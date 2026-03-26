@@ -24,5 +24,10 @@ npm-debug.log*
 .env.local
 .env.*.local
 
+# Kanban Cline scripts
+scripts/kanban-branch-watcher.sh
+scripts/kanban-branch-watcher.sh.bak
+scripts/task-start.sh
+
 # Save files (optional - uncomment if you don't want to track saves)
 # *.json
