@@ -2,6 +2,19 @@
 // ÉchoClicker - Interface utilisateur (v2)
 // ============================================
 
+// Helper function to get echo image path
+function getEchoImagePath(echo) {
+    const id = String(echo.id).padStart(3, '0');
+    const suffix = echo.isShiny ? '_shiny_no_bg' : '_no_bg';
+    return `assets/echos-no-bg/echo_${id}${suffix}.png`;
+}
+
+function getEchoImagePathById(id, isShiny = false) {
+    const idStr = String(id).padStart(3, '0');
+    const suffix = isShiny ? '_shiny_no_bg' : '_no_bg';
+    return `assets/echos-no-bg/echo_${idStr}${suffix}.png`;
+}
+
 const UI = {
     currentTab: 'map',
     captureWildEcho: null,
@@ -96,11 +109,14 @@ const UI = {
     // === Combat ===
     updateCombat() {
         const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+        const setHTML = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
         const setStyle = (id, prop, v) => { const e = document.getElementById(id); if (e) e.style.setProperty(prop, v); };
 
         if (Combat.enemy) {
             const e = Combat.enemy;
-            set('enemy-sprite', e.isPrimordial ? '⭐'+e.emoji : e.emoji);
+            const imgPath = getEchoImagePath(e);
+            const primordialBadge = e.isPrimordial ? '<span style="position:absolute;top:-5px;right:-5px;font-size:1rem">⭐</span>' : '';
+            setHTML('enemy-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${e.name}" style="width:64px;height:64px;object-fit:contain"></div>`);
             set('enemy-name', e.bossName || e.name);
             const hpPct = Math.max(0, e.getHpPercent());
             setStyle('enemy-hp-bar', '--hp-percent', hpPct+'%');
@@ -119,7 +135,9 @@ const UI = {
 
         if (Combat.activeEcho) {
             const p = Combat.activeEcho;
-            set('player-sprite', p.isPrimordial ? '⭐'+p.emoji : p.emoji);
+            const imgPath = getEchoImagePath(p);
+            const primordialBadge = p.isPrimordial ? '<span style="position:absolute;top:-5px;right:-5px;font-size:1rem">⭐</span>' : '';
+            setHTML('player-sprite', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${p.name}" style="width:64px;height:64px;object-fit:contain"></div>`);
             set('player-name', p.name);
             const hpPct = Math.max(0, p.getHpPercent());
             setStyle('player-hp-bar', '--hp-percent', hpPct+'%');
@@ -152,9 +170,10 @@ const UI = {
             if (echo) {
                 const active = Combat.activeEcho?.uid === echo.uid;
                 const hpPct = echo.getHpPercent();
+                const imgPath = getEchoImagePath(echo);
                 ph += `<div class="party-slot ${active?'active-combat':''}" onclick="UI.showEchoDetail('${echo.uid}')">`;
                 if (echo.isPrimordial) ph += '<span class="primordial-badge">⭐</span>';
-                ph += `<div class="party-echo-icon">${echo.emoji}</div>`;
+                ph += `<div class="party-echo-icon"><img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain"></div>`;
                 ph += `<div class="party-echo-name">${echo.name}</div>`;
                 ph += `<div class="party-echo-level">Nv. ${echo.level}</div>`;
                 ph += `<div class="party-echo-hp" style="color:${hpPct<30?'var(--accent-red)':hpPct<60?'var(--accent-gold)':'var(--accent-green)'}">❤️ ${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</div>`;
@@ -167,7 +186,8 @@ const UI = {
 
         let rh = '';
         Game.state.reserves.forEach(echo => {
-            rh += `<div class="reserve-slot" onclick="UI.showEchoDetail('${echo.uid}')" title="${echo.name} Nv.${echo.level}">${echo.isPrimordial?'⭐':''}${echo.emoji}</div>`;
+            const imgPath = getEchoImagePath(echo);
+            rh += `<div class="reserve-slot" onclick="UI.showEchoDetail('${echo.uid}')" title="${echo.name} Nv.${echo.level}">${echo.isPrimordial?'⭐':''}<img src="${imgPath}" alt="${echo.name}" style="width:32px;height:32px;object-fit:contain"></div>`;
         });
         if (!Game.state.reserves.length) rh = '<div style="color:var(--text-muted);padding:20px;text-align:center">Aucun Écho en réserve</div>';
         rg.innerHTML = rh;
@@ -178,9 +198,13 @@ const UI = {
         if (!echo) return;
         const t = TYPES[echo.type];
         const inParty = Game.state.party.some(e => e.uid === uid);
+        const imgPath = getEchoImagePath(echo);
 
         let html = `<div style="text-align:center">
-            <div style="font-size:4rem;margin:10px 0">${echo.isPrimordial?'⭐':''}${echo.emoji}</div>
+            <div style="margin:10px 0;position:relative;display:inline-block">
+                ${echo.isPrimordial?'<span style="position:absolute;top:0;right:0;font-size:1.5rem">⭐</span>':''}
+                <img src="${imgPath}" alt="${echo.name}" style="width:128px;height:128px;object-fit:contain">
+            </div>
             <h3 style="font-family:var(--font-title)">${echo.name}</h3>
             <span class="type-badge" style="background:${t.color};color:#fff;padding:4px 12px;border-radius:12px;font-size:0.8rem">${t.emoji} ${t.name}</span>
             ${echo.isPrimordial?'<div style="color:var(--accent-gold);margin-top:8px">✨ Primordial (+10%)</div>':''}
@@ -197,7 +221,8 @@ const UI = {
 
         if (echo.evolution) {
             const evo = getEchoById(echo.evolution.to);
-            html += `<div style="text-align:center;margin:12px 0;color:var(--accent-gold)">📈 Évolue en ${evo?.emoji||''} ${evo?.name||'?'} au niveau ${echo.evolution.lv}</div>`;
+            const evoImgPath = evo ? getEchoImagePathById(evo.id) : '';
+            html += `<div style="text-align:center;margin:12px 0;color:var(--accent-gold)">📈 Évolue en ${evo?`<img src="${evoImgPath}" alt="${evo.name}" style="width:24px;height:24px;object-fit:contain;vertical-align:middle">`:''} ${evo?.name||'?'} au niveau ${echo.evolution.lv}</div>`;
         }
 
         const footer = inParty
@@ -227,9 +252,12 @@ const UI = {
         const e = this.captureWildEcho;
         if (!e) return;
         const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        const setHTML = (id, v) => { const el = document.getElementById(id); if (el) el.innerHTML = v; };
         const setStyle = (id, prop, v) => { const el = document.getElementById(id); if (el) el.style.setProperty(prop, v); };
 
-        set('wild-echo', e.isPrimordial ? '⭐'+e.emoji : e.emoji);
+        const imgPath = getEchoImagePath(e);
+        const primordialBadge = e.isPrimordial ? '<span style="position:absolute;top:0;right:0;font-size:1.5rem">⭐</span>' : '';
+        setHTML('wild-echo', `<div style="position:relative;display:inline-block">${primordialBadge}<img src="${imgPath}" alt="${e.name}" style="width:96px;height:96px;object-fit:contain"></div>`);
         set('wild-echo-name', e.name + (e.isPrimordial ? ' (Primordial)' : ''));
         setStyle('wild-hp-bar', '--hp-percent', e.getHpPercent()+'%');
         set('wild-hp-text', `${Math.floor(e.hp)}/${Math.floor(e.maxHp)}`);
@@ -270,9 +298,10 @@ const UI = {
             const seen = Game.state.seenEchoes.has(echo.id);
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
             const t = TYPES[echo.type];
+            const imgPath = getEchoImagePathById(echo.id);
             html += `<div class="pokedex-card ${status}" onclick="UI.showPokedexDetail(${echo.id})">`;
             html += `<span class="pokedex-number">#${echo.id.toString().padStart(3,'0')}</span>`;
-            html += `<div class="pokedex-echo-icon">${seen ? echo.emoji : '❓'}</div>`;
+            html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain">` : '❓'}</div>`;
             if (seen) {
                 html += `<div class="pokedex-echo-name">${echo.name}</div>`;
                 html += `<span class="pokedex-echo-type" style="background:${t.color};color:#fff">${t.emoji} ${t.name}</span>`;
@@ -293,8 +322,9 @@ const UI = {
         }
         const t = TYPES[echo.type];
         const caught = Game.state.caughtEchoes.has(id);
+        const imgPath = getEchoImagePathById(echo.id);
         let html = `<div style="text-align:center">
-            <div style="font-size:4rem;margin:10px 0">${echo.emoji}</div>
+            <div style="margin:10px 0"><img src="${imgPath}" alt="${echo.name}" style="width:128px;height:128px;object-fit:contain"></div>
             <h3 style="font-family:var(--font-title)">${echo.name}</h3>
             <span class="type-badge" style="background:${t.color};color:#fff;padding:4px 12px;border-radius:12px">${t.emoji} ${t.name}</span>
             <p style="color:var(--text-secondary);margin:12px 0;font-style:italic">${echo.desc}</p>
@@ -307,7 +337,8 @@ const UI = {
         <div style="text-align:center;margin:8px 0"><span style="color:${caught?'var(--accent-green)':'var(--accent-red)'}">${caught?'✅ Capturé':'❌ Non capturé'}</span></div>`;
         if (echo.evo) {
             const evo = getEchoById(echo.evo.to);
-            html += `<div style="text-align:center;color:var(--accent-gold)">📈 Évolue en ${evo?.emoji||''} ${evo?.name||'?'} au niveau ${echo.evo.lv}</div>`;
+            const evoImgPath = evo ? getEchoImagePathById(evo.id) : '';
+            html += `<div style="text-align:center;color:var(--accent-gold)">📈 Évolue en ${evo?`<img src="${evoImgPath}" alt="${evo.name}" style="width:24px;height:24px;object-fit:contain;vertical-align:middle">`:''} ${evo?.name||'?'} au niveau ${echo.evo.lv}</div>`;
         }
         this.showModal(`#${echo.id.toString().padStart(3,'0')} - ${echo.name}`, html);
     },

@@ -28,8 +28,9 @@ const Hatchery = {
         let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
         party.forEach(echo => {
             const t = TYPES[echo.type];
+            const imgPath = getEchoImagePath(echo);
             html += `<div class="party-slot" onclick="Hatchery.setParent(${slotIndex}, '${echo.uid}')">
-                <div class="party-echo-icon">${echo.isPrimordial ? '⭐' : ''}${echo.emoji}</div>
+                <div class="party-echo-icon">${echo.isPrimordial ? '⭐' : ''}<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain"></div>
                 <div class="party-echo-name">${echo.name}</div>
                 <div class="party-echo-level">Nv. ${echo.level}</div>
             </div>`;
@@ -291,8 +292,9 @@ const Hatchery = {
         
         if (p1) {
             if (this.parents[0]) {
+                const imgPath1 = getEchoImagePath(this.parents[0]);
                 p1.innerHTML = `<span class="slot-label">Parent 1</span>
-                    <div class="slot-content">${this.parents[0].emoji}</div>
+                    <div class="slot-content"><img src="${imgPath1}" alt="${this.parents[0].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[0].name}</div>`;
                 p1.classList.add('filled');
             } else {
@@ -303,8 +305,9 @@ const Hatchery = {
 
         if (p2) {
             if (this.parents[1]) {
+                const imgPath2 = getEchoImagePath(this.parents[1]);
                 p2.innerHTML = `<span class="slot-label">Parent 2</span>
-                    <div class="slot-content">${this.parents[1].emoji}</div>
+                    <div class="slot-content"><img src="${imgPath2}" alt="${this.parents[1].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[1].name}</div>`;
                 p2.classList.add('filled');
             } else {
