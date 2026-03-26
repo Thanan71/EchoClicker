@@ -16,6 +16,7 @@
     "party": "👥 Equipo",
     "capture": "🔮 Captura",
     "pokedex": "📖 Registro",
+    "quests": "📋 Misiones",
     "hatchery": "🥚 Incubadora",
     "mine": "⛏️ Mina",
     "shop": "🏪 Tienda",
@@ -225,6 +226,10 @@
     "rare": "Raro",
     "epic": "Épico",
     "legendary": "Legendario"
+  },
+  "quests": {
+    "title": "📋 Misiones",
+    "desc": "¡Completa misiones para ganar recompensas y progresar en tu aventura!"
   },
   "notifications": {
     "saved": "¡Partida guardada!",

@@ -16,6 +16,7 @@
     "party": "👥 Party",
     "capture": "🔮 Capture",
     "pokedex": "📖 Logbook",
+    "quests": "📋 Quests",
     "hatchery": "🥚 Hatchery",
     "mine": "⛏️ Mine",
     "shop": "🏪 Shop",
@@ -225,6 +226,10 @@
     "rare": "Rare",
     "epic": "Epic",
     "legendary": "Legendary"
+  },
+  "quests": {
+    "title": "📋 Quests",
+    "desc": "Complete quests to earn rewards and progress in your adventure!"
   },
   "notifications": {
     "saved": "Game saved!",

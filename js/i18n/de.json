@@ -16,6 +16,7 @@
     "party": "👥 Team",
     "capture": "🔮 Fangen",
     "pokedex": "📖 Logbuch",
+    "quests": "📋 Aufgaben",
     "hatchery": "🥚 Zucht",
     "mine": "⛏️ Mine",
     "shop": "🏪 Laden",
@@ -225,6 +226,10 @@
     "rare": "Selten",
     "epic": "Episch",
     "legendary": "Legendär"
+  },
+  "quests": {
+    "title": "📋 Aufgaben",
+    "desc": "Erfülle Aufgaben, um Belohnungen zu erhalten und im Abenteuer voranzukommen!"
   },
   "notifications": {
     "saved": "Spiel gespeichert!",
