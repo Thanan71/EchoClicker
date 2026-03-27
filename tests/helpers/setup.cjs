@@ -44,6 +44,37 @@ globalThis.i18n = {
 // getEchoById mock (utilisé par Echo.js)
 globalThis.getEchoById = jest.fn((id) => null);
 
+// GAME_EVENTS global (Echo.js l'utilise directement)
+globalThis.GAME_EVENTS = {
+    ENERGY_CHANGED:    'energy_changed',
+    LINKS_CHANGED:     'links_changed',
+    CLICK:             'click',
+    COMBAT_START:      'combat_start',
+    COMBAT_END:        'combat_end',
+    ENEMY_DEFEATED:    'enemy_defeated',
+    ECHO_CAPTURED:     'echo_captured',
+    ECHO_LEVELED_UP:   'echo_leveled_up',
+    ECHO_EVOLVED:      'echo_evolved',
+    ECHO_FAINTED:      'echo_fainted',
+    BOSS_DEFEATED:     'boss_defeated',
+    ROUTE_UNLOCKED:    'route_unlocked',
+    REGION_UNLOCKED:   'region_unlocked',
+    ACHIEVEMENT_UNLOCKED: 'achievement_unlocked',
+    ITEM_PURCHASED:    'item_purchased',
+    SAVE_COMPLETE:     'save_complete',
+    TICK:              'tick'
+};
+
+// Charger echo.js et exposer Echo/generateWildEcho sur globalThis
+const fs = require('fs');
+const echoPath = require('path').join(__dirname, '..', '..', 'js', 'core', 'echo.js');
+const echoCode = fs.readFileSync(echoPath, 'utf-8');
+// Remplacer "class Echo" par "globalThis.Echo = class Echo" et la fonction
+const patchedCode = echoCode
+    .replace(/^class Echo \{/m, 'globalThis.Echo = class Echo {')
+    .replace(/^function generateWildEcho\(/m, 'globalThis.generateWildEcho = function generateWildEcho(');
+eval(patchedCode);
+
 module.exports = {
     EventBus,
     GAME_EVENTS,
