@@ -14,11 +14,23 @@ function loadScript(filePath) {
     return context;
 }
 
-const echoesCtx = loadScript(path.join(__dirname, '../js/data/echoesData.js'));
-const ECHOES_DB = echoesCtx.ECHOES_DB;
+// Charger le fichier et extraire ECHOES_DB
+const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
+const echoesContext = { ECHOES_DB: undefined };
+echoesContext.echoesContext = echoesContext; // self-reference for VM
+const echoesCodeToEval = echoesCode.replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+vm.createContext(echoesContext);
+vm.runInContext(echoesCodeToEval, echoesContext);
+const ECHOES_DB = echoesContext.ECHOES_DB;
 
-const regionsCtx = loadScript(path.join(__dirname, '../js/data/regions-data.js'));
-const REGIONS = regionsCtx.REGIONS;
+// Charger regionsData pour avoir REGIONS
+const regionsCode = fs.readFileSync(path.join(__dirname, '../js/data/regions-data.js'), 'utf-8');
+const regionsContext = { REGIONS: undefined };
+regionsContext.regionsContext = regionsContext; // self-reference for VM
+const regionsCodeToEval = regionsCode.replace('const REGIONS', 'regionsContext.REGIONS');
+vm.createContext(regionsContext);
+vm.runInContext(regionsCodeToEval, regionsContext);
+const REGIONS = regionsContext.REGIONS;
 
 const VALID_ECHO_IDS = new Set(ECHOES_DB.map(e => e.id));
 

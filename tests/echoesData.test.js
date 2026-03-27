@@ -14,12 +14,27 @@ function loadScript(filePath) {
     return context;
 }
 
-const typesCtx = loadScript(path.join(__dirname, '../js/data/types.js'));
-const TYPES = typesCtx.TYPES;
-const RARITY_COLORS = typesCtx.RARITY_COLORS;
+// Charger types.js pour avoir TYPES et RARITY_COLORS
+const typesCode = fs.readFileSync(path.join(__dirname, '../js/data/types.js'), 'utf-8');
+const typesContext = { TYPES: undefined, RARITY_COLORS: undefined, TYPE_CHART: undefined };
+typesContext.typesContext = typesContext; // self-reference for VM
+const typesCodeToEval = typesCode
+    .replace('const TYPES', 'typesContext.TYPES')
+    .replace('const TYPE_CHART', 'typesContext.TYPE_CHART')
+    .replace('const RARITY_COLORS', 'typesContext.RARITY_COLORS');
+vm.createContext(typesContext);
+vm.runInContext(typesCodeToEval, typesContext);
+const TYPES = typesContext.TYPES;
+const RARITY_COLORS = typesContext.RARITY_COLORS;
 
-const echoesCtx = loadScript(path.join(__dirname, '../js/data/echoesData.js'));
-const ECHOES_DB = echoesCtx.ECHOES_DB;
+// Charger le fichier et extraire ECHOES_DB
+const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
+const echoesContext = { ECHOES_DB: undefined };
+echoesContext.echoesContext = echoesContext; // self-reference for VM
+const echoesCodeToEval = echoesCode.replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+vm.createContext(echoesContext);
+vm.runInContext(echoesCodeToEval, echoesContext);
+const ECHOES_DB = echoesContext.ECHOES_DB;
 
 describe('echoesData.js - Structure des Echos', () => {
     test('ECHOES_DB est un tableau non vide', () => {

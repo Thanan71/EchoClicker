@@ -137,3 +137,4 @@ describe('Combat (facade)', () => {
             expect(mockAuto.update.mock.calls[1][0]).toBe(0.016);
         });
     });
+});

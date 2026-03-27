@@ -5,8 +5,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// Charger le fichier et extraire ACHIEVEMENTS
 const achCode = fs.readFileSync(path.join(__dirname, '../js/data/achievements-data.js'), 'utf-8');
-let ACHIEVEMENTS; eval(achCode);
+
+// Créer un contexte pour capturer ACHIEVEMENTS
+const context = {};
+const codeToEval = achCode.replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
+eval(codeToEval);
+const ACHIEVEMENTS = context.ACHIEVEMENTS;
 
 describe('achievements-data.js - Succès', () => {
     test('ACHIEVEMENTS est un tableau non vide', () => {

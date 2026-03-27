@@ -66,7 +66,8 @@ describe('Echo', () => {
         EventBus.reset();
         Game.reset();
         setupGetEchoById();
-        Game.state.boosts = {};
+        // S'assurer que Game.state est accessible globalement
+        globalThis.Game = Game;
     });
 
     // ========== Constructor ==========
@@ -266,15 +267,15 @@ describe('Echo', () => {
         });
 
         test('applies 1.5x xp boost when Game.state.boosts.xp is active', () => {
-            Game.state.boosts = { xp: { endTime: Date.now() + 60000 } };
-            const echo = new Echo(mockEchoData.base, 1);
+            globalThis.Game.state.boosts = { xp: { endTime: Date.now() + 60000 } };
+            const echo = new Echo(mockEchoData.base, 10);
             echo.gainXp(100);
             expect(echo.xp).toBe(150);
         });
 
         test('does not apply boost when boosts.xp is falsy', () => {
-            Game.state.boosts = {};
-            const echo = new Echo(mockEchoData.base, 1);
+            globalThis.Game.state.boosts = {};
+            const echo = new Echo(mockEchoData.base, 10);
             echo.gainXp(100);
             expect(echo.xp).toBe(100);
         });

@@ -2,30 +2,32 @@
 // Mock Game - Simule l'objet Game principal pour les tests
 // ============================================
 
-const createMockGameState = (overrides = {}) => ({
-    energy: 0,
-    totalEnergy: 0,
-    links: 0,
-    maxLevel: 1,
-    playTime: 0,
-    clickPower: 1,
-    currentRegion: 'verdant',
-    bossesDefeated: 0,
-    regionsUnlocked: 1,
-    captureChance: 30,
-    party: [],
-    reserves: [],
-    achievements: new Set(),
-    boosts: {},
-    pokedex: {},
-    routes: {},
-    regions: [],
-    // ... overrides
-    ...overrides
-});
+const createMockGameState = (overrides = {}) => {
+    const baseState = {
+        energy: 0,
+        totalEnergy: 0,
+        links: 0,
+        maxLevel: 1,
+        playTime: 0,
+        clickPower: 1,
+        currentRegion: 'verdant',
+        bossesDefeated: 0,
+        regionsUnlocked: 1,
+        captureChance: 30,
+        party: [],
+        reserves: [],
+        achievements: new Set(),
+        boosts: {},
+        pokedex: {},
+        routes: {},
+        regions: [],
+    };
+    // Merge overrides deeply to allow setting nested properties like boosts
+    return { ...baseState, ...overrides };
+};
 
 const Game = {
-    state: null,
+    state: createMockGameState(),
 
     /** Initialise le mock avec un state par défaut */
     initState(overrides = {}) {

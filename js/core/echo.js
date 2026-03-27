@@ -44,7 +44,7 @@ class Echo {
     }
 
     gainXp(amount) {
-        if (Game.state.boosts.xp) amount = Math.floor(amount * 1.5);
+        if (globalThis.Game && globalThis.Game.state && globalThis.Game.state.boosts && globalThis.Game.state.boosts.xp) amount = Math.floor(amount * 1.5);
         this.xp += amount;
         const leveledUp = [];
         while (this.xp >= this.xpToNext) {

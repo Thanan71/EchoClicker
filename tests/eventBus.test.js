@@ -102,7 +102,7 @@ describe('EventBus', () => {
             EventBus.on('evt', () => {});
             const otherHandler = () => {};
 
-            expect(() => EventBus.off('evt', otherHandler)).not.toHaveBeenCalled();
+            expect(() => EventBus.off('evt', otherHandler)).not.toThrow();
         });
 
         test('retire correctement par référence, pas par valeur', () => {
@@ -254,6 +254,7 @@ describe('EventBus', () => {
             expect(consoleSpy).toHaveBeenCalledTimes(1);
             expect(consoleSpy.mock.calls[0][0]).toMatch(/EventBus error \[evt\]/);
         });
+    });
 
     // Unsubscribe
     describe('Fonction unsubscribe', () => {
