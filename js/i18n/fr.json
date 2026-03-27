@@ -16,6 +16,7 @@
     "party": "👥 Équipe",
     "capture": "🔮 Capture",
     "pokedex": "📖 Logbook",
+    "quests": "📋 Quêtes",
     "hatchery": "🥚 Élevage",
     "mine": "⛏️ Mine",
     "shop": "🏪 Marché",
@@ -225,6 +226,10 @@
     "rare": "Rare",
     "epic": "Épique",
     "legendary": "Légendaire"
+  },
+  "quests": {
+    "title": "📋 Quêtes",
+    "desc": "Complète des quêtes pour gagner des récompenses et progresser dans l'aventure !"
   },
   "notifications": {
     "saved": "Partie sauvegardée !",
