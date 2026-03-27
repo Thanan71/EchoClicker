@@ -1,5 +1,5 @@
 // ============================================
-// ÉchoClicker - Bus d'événements
+// Mock EventBus - Simule le système pub/sub pour les tests
 // ============================================
 
 const EventBus = {
@@ -29,10 +29,31 @@ const EventBus = {
             callback(data);
         });
         return unsub;
+    },
+
+    // === Helpers de test ===
+    /** Réinitialise tous les listeners (pour beforeEach) */
+    reset() {
+        this._listeners = {};
+    },
+
+    /** Retourne les listeners pour un event */
+    getListeners(event) {
+        return this._listeners[event] || [];
+    },
+
+    /** Vérifie si un événement a des listeners */
+    hasListeners(event) {
+        return (this._listeners[event]?.length || 0) > 0;
+    },
+
+    /** Retourne tous les noms d'événements avec des listeners */
+    getEventNames() {
+        return Object.keys(this._listeners).filter(k => this._listeners[k].length > 0);
     }
 };
 
-// Événements du jeu
+// Reproduire les constantes d'événements
 const GAME_EVENTS = {
     ENERGY_CHANGED:    'energy_changed',
     LINKS_CHANGED:     'links_changed',
@@ -53,7 +74,4 @@ const GAME_EVENTS = {
     TICK:              'tick'
 };
 
-// Export for tests (compatible CJS/ESM)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { EventBus, GAME_EVENTS };
-}
+module.exports = { EventBus, GAME_EVENTS };

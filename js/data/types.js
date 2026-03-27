@@ -18,19 +18,57 @@ const TYPES = {
 };
 
 // Table des faiblesses/résistances (multiplicateur de dégâts)
+// Règle: si A est strong contre B, alors B est weak contre A
 const TYPE_CHART = {
-    FEU:     { strong: ['FLORE','GLACE','CRISTAL'], weak: ['OCEAN','TERRE','CHAOS'] },
-    GLACE:   { strong: ['VENT','FLORE','TERRE'],    weak: ['FEU','FOUDRE','ARCANE'] },
-    VENT:    { strong: ['FLORE','ARCANE'],          weak: ['FOUDRE','CRISTAL','TERRE'] },
-    OMBRE:   { strong: ['LUMIERE','ARCANE'],        weak: ['LUMIERE','FOUDRE','CHAOS'] },
-    LUMIERE: { strong: ['OMBRE','CHAOS'],           weak: ['OMBRE','CRISTAL','TERRE'] },
-    FLORE:   { strong: ['OCEAN','TERRE','CRISTAL'], weak: ['FEU','GLACE','VENT'] },
-    FOUDRE:  { strong: ['OCEAN','VENT','GLACE'],    weak: ['TERRE','CRISTAL','CHAOS'] },
-    CRISTAL: { strong: ['VENT','LUMIERE','ARCANE'], weak: ['FEU','TERRE','CHAOS'] },
-    CHAOS:   { strong: ['ARCANE','OMBRE','CRISTAL'],weak: ['LUMIERE','FLORE','OCEAN'] },
-    OCEAN:   { strong: ['FEU','TERRE','CHAOS'],     weak: ['FLORE','FOUDRE','GLACE'] },
-    TERRE:   { strong: ['FEU','FOUDRE','CRISTAL'],  weak: ['OCEAN','FLORE','GLACE'] },
-    ARCANE:  { strong: ['GLACE','OMBRE','CHAOS'],   weak: ['FLORE','VENT','CRISTAL'] }
+    FEU: {
+        strong: ['FLORE', 'GLACE'],
+        weak:   ['OCEAN', 'TERRE', 'CRISTAL']
+    },
+    GLACE: {
+        strong: ['FLORE', 'TERRE', 'OCEAN', 'VENT'],
+        weak:   ['FEU', 'FOUDRE', 'ARCANE']
+    },
+    VENT: {
+        strong: ['FLORE', 'ARCANE'],
+        weak:   ['FOUDRE', 'CRISTAL', 'GLACE', 'TERRE']
+    },
+    OMBRE: {
+        strong: [],
+        weak:   ['FOUDRE', 'CHAOS', 'LUMIERE', 'ARCANE']
+    },
+    LUMIERE: {
+        strong: ['OMBRE', 'CHAOS'],
+        weak:   ['CRISTAL', 'OCEAN', 'TERRE']
+    },
+    FLORE: {
+        strong: ['OCEAN', 'CHAOS', 'ARCANE'],
+        weak:   ['FEU', 'GLACE', 'VENT', 'CRISTAL', 'TERRE']
+    },
+    FOUDRE: {
+        strong: ['OCEAN', 'VENT', 'GLACE', 'OMBRE'],
+        weak:   ['TERRE', 'CRISTAL', 'CHAOS']
+    },
+    CRISTAL: {
+        strong: ['VENT', 'LUMIERE', 'FOUDRE', 'FEU', 'FLORE', 'ARCANE'],
+        weak:   ['TERRE', 'CHAOS', 'OCEAN']
+    },
+    CHAOS: {
+        strong: ['OMBRE', 'ARCANE', 'FOUDRE', 'CRISTAL'],
+        weak:   ['FLORE', 'OCEAN', 'TERRE', 'LUMIERE']
+    },
+    OCEAN: {
+        strong: ['FEU', 'CRISTAL', 'LUMIERE', 'CHAOS', 'TERRE'],
+        weak:   ['FLORE', 'FOUDRE', 'GLACE']
+    },
+    TERRE: {
+        strong: ['FEU', 'FOUDRE', 'VENT', 'LUMIERE', 'FLORE', 'CRISTAL', 'CHAOS'],
+        weak:   ['OCEAN', 'GLACE']
+    },
+    ARCANE: {
+        strong: ['GLACE', 'OMBRE'],
+        weak:   ['CHAOS', 'FLORE', 'VENT', 'CRISTAL']
+    }
+
 };
 
 // Couleurs de rareté
@@ -41,4 +79,6 @@ const RARITY_COLORS = {
     epic:      '#a855f7',
     legendary: '#f59e0b',
     mythical:  '#ec4899'
+
 };
+
