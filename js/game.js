@@ -18,9 +18,9 @@ const Game = {
         this.setupEventBus();
         
         // Initialiser les systèmes
-        Mine.init();
-        Hatchery.init();
-        MapSystem.init();
+        Mine.init(Game, UI, EventBus);
+        Hatchery.init(Game, UI, EventBus);
+        MapSystem.init(Game, UI, EventBus);
         questSystem.init(); // Initialiser le système de quêtes
         
         UI.init();
