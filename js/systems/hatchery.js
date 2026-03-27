@@ -7,7 +7,21 @@ const Hatchery = {
     maxSlots: 4,
     parents: [null, null],
 
-    init() {
+    // Dépendances injectées (DIP)
+    _game: null,
+    _ui: null,
+    _eventBus: null,
+
+    /**
+     * Initialise les dépendances et les écouteurs d'événements.
+     * @param {IGameStateProvider} gameRef - Référence au provider d'état de jeu
+     * @param {IUIRenderer} uiRef - Référence au renderer UI
+     * @param {IEventBus} eventBusRef - Référence au bus d'événements
+     */
+    init(gameRef, uiRef, eventBusRef) {
+        this._game = gameRef;
+        this._ui = uiRef;
+        this._eventBus = eventBusRef;
         this.slots = Array(this.maxSlots).fill(null);
         this.setupEventListeners();
     },
@@ -19,9 +33,9 @@ const Hatchery = {
     },
 
     selectParent(slotIndex) {
-        const party = [...Game.state.party, ...Game.state.reserves];
+        const party = [...this._game.state.party, ...this._game.state.reserves];
         if (party.length === 0) {
-            UI.toast('Aucun Écho disponible !', 'error');
+            this._ui.toast('Aucun Écho disponible !', 'error');
             return;
         }
 
@@ -37,22 +51,21 @@ const Hatchery = {
         });
         html += '</div>';
 
-        UI.showModal('Sélectionner un parent', html);
+        this._ui.showModal('Sélectionner un parent', html);
     },
 
     setParent(slotIndex, uid) {
-        const echo = Game.findEcho(uid);
+        const echo = this._game.findEcho(uid);
         if (!echo) return;
 
-        // Vérifier que le même Écho n'est pas dans l'autre slot
         const otherSlot = slotIndex === 0 ? 1 : 0;
         if (this.parents[otherSlot]?.uid === uid) {
-            UI.toast('Cet Écho est déjà sélectionné !', 'warning');
+            this._ui.toast('Cet Écho est déjà sélectionné !', 'warning');
             return;
         }
 
         this.parents[slotIndex] = echo;
-        UI.closeModal();
+        this._ui.closeModal();
         this.updateDisplay();
         this.checkCanBreed();
     },
@@ -71,26 +84,21 @@ const Hatchery = {
 
     breed() {
         if (!this.parents[0] || !this.parents[1]) {
-            UI.toast('Sélectionne deux parents !', 'error');
+            this._ui.toast('Sélectionne deux parents !', 'error');
             return;
         }
 
         if (!this.hasFreeSlot()) {
-            UI.toast('Tous les incubateurs sont occupés !', 'error');
+            this._ui.toast('Tous les incubateurs sont occupés !', 'error');
             return;
         }
 
-        // Vérifier la compatibilité (même type ou types compatibles)
         const p1 = this.parents[0];
         const p2 = this.parents[1];
 
-        // Calculer le résultat
         const offspring = this.calculateOffspring(p1, p2);
         
-        // Trouver un slot libre
         const slotIndex = this.slots.findIndex(s => s === null);
-        
-        // Calculer le temps d'incubation basé sur la rareté
         const incubationTime = this.getIncubationTime(offspring.rarity);
         
         this.slots[slotIndex] = {
@@ -101,10 +109,9 @@ const Hatchery = {
             parent2: p2.id
         };
 
-        // Réinitialiser les parents
         this.parents = [null, null];
 
-        UI.toast('🥚 Œuf créé ! Incubation en cours...', 'success');
+        this._ui.toast('🥚 Œuf créé ! Incubation en cours...', 'success');
         this.updateDisplay();
     },
 
@@ -210,22 +217,20 @@ const Hatchery = {
             eggData.isPrimordial
         );
 
-        // Ajouter à l'équipe ou aux réserves
-        if (Game.state.party.length < GAME_CONFIG.MAX_PARTY) {
-            Game.addToParty(echo);
+        if (this._game.state.party.length < GAME_CONFIG.MAX_PARTY) {
+            this._game.addToParty(echo);
         } else {
-            Game.state.reserves.push(echo);
+            this._game.state.reserves.push(echo);
         }
 
-        // Stats pour les succès
-        Game.state.totalCaptures++;
-        Game.state.caughtEchoes.add(echo.id);
-        if (echo.isPrimordial) Game.state.primordialCount++;
+        this._game.state.totalCaptures++;
+        this._game.state.caughtEchoes.add(echo.id);
+        if (echo.isPrimordial) this._game.state.primordialCount++;
 
         const prefix = echo.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
-        UI.toast(`${prefix}🥚 ${echo.name} est éclos !`, 'success');
+        this._ui.toast(`${prefix}🥚 ${echo.name} est éclos !`, 'success');
         
-        EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo });
+        this._eventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo });
 
         this.slots[index] = null;
         this.updateDisplay();
@@ -240,17 +245,16 @@ const Hatchery = {
         const remaining = slot.duration - elapsed;
 
         if (remaining > 0) {
-            // Accélérer avec des cristaux
-            const cost = Math.ceil(remaining / 10000); // 1 cristal par 10 secondes
-            if (Game.state.crystals >= cost) {
+            const cost = Math.ceil(remaining / 10000);
+            if (this._game.state.crystals >= cost) {
                 if (confirm(`Accélérer pour ${cost} cristaux ?`)) {
-                    Game.state.crystals -= cost;
+                    this._game.state.crystals -= cost;
                     slot.startTime = now - slot.duration;
                     this.updateDisplay();
                 }
             } else {
                 const timeStr = Utils.formatTime(Math.ceil(remaining / 1000));
-                UI.toast(`Encore ${timeStr} avant l'éclosion`, 'info');
+                this._ui.toast(`Encore ${timeStr} avant l'éclosion`, 'info');
             }
         } else {
             this.hatch(index);
@@ -332,8 +336,8 @@ const Hatchery = {
             this.slots = data.slots || Array(this.maxSlots).fill(null);
             if (data.parents) {
                 this.parents = [
-                    data.parents[0] ? (Game.findEcho(data.parents[0]) || null) : null,
-                    data.parents[1] ? (Game.findEcho(data.parents[1]) || null) : null
+                    data.parents[0] ? (this._game.findEcho(data.parents[0]) || null) : null,
+                    data.parents[1] ? (this._game.findEcho(data.parents[1]) || null) : null
                 ];
             }
         }
