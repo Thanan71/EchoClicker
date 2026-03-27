@@ -374,7 +374,11 @@
     <!-- Toast notifications -->
     <div id="toast-container"></div>
 
-    <!-- Scripts (ordre important) -->
+    <!-- ============================================
+         Scripts - Chargement modulaire par couches
+         ============================================ -->
+
+    <!-- Couche Données (aucune dépendance interne) -->
     <script src="js/i18n/i18n.js"></script>
     <script src="js/data/types.js"></script>
     <script src="js/data/game-config.js"></script>
@@ -383,18 +387,28 @@
     <script src="js/data/constants.js"></script>
     <script src="js/data/utils.js"></script>
     <script src="js/data/echoesData.js"></script>
+
+    <!-- Couche Noyau (infrastructure du jeu) -->
     <script src="js/core/eventBus.js"></script>
     <script src="js/core/echo.js"></script>
     <script src="js/core/gameLoop.js"></script>
     <script src="js/core/shinyEffect.js"></script>
-    <script src="js/save-serializer.js"></script>
-    <script src="js/save.js"></script>
-    <script src="js/combat.js"></script>
+
+    <!-- Couche Systèmes (dépend de Données + Noyau) -->
     <script src="js/systems/mine.js"></script>
     <script src="js/systems/hatchery.js"></script>
     <script src="js/systems/map.js"></script>
     <script src="js/systems/quests.js"></script>
+
+    <!-- Couche Logique Métier (dépend de Systèmes) -->
+    <script src="js/combat.js"></script>
+    <script src="js/save-serializer.js"></script>
+    <script src="js/save.js"></script>
+
+    <!-- Couche Présentation (dépend de tout le reste) -->
     <script src="js/ui.js"></script>
+
+    <!-- Orchestrateur (dernier - dépend de toutes les couches) -->
     <script src="js/game.js"></script>
 </body>
 </html>
