@@ -68,6 +68,7 @@ const TYPE_CHART = {
         strong: ['GLACE', 'OMBRE'],
         weak:   ['CHAOS', 'FLORE', 'VENT', 'CRISTAL']
     }
+
 };
 
 // Couleurs de rareté
@@ -78,4 +79,6 @@ const RARITY_COLORS = {
     epic:      '#a855f7',
     legendary: '#f59e0b',
     mythical:  '#ec4899'
+
 };
+

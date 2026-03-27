@@ -32,5 +32,6 @@ scripts/kanban-branch-watcher.sh.bak
 scripts/task-start.sh
 scripts/canvas
 
+
 # Save files (optional - uncomment if you don't want to track saves)
 # *.json
