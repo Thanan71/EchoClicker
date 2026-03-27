@@ -11,20 +11,37 @@ const Combat = {
     isBoss: false,
     autoCaptureEnabled: false,
 
+    // Dépendances injectées (DIP)
+    _game: null,
+    _ui: null,
+    _eventBus: null,
+
+    /**
+     * Initialise les dépendances du système.
+     * @param {IGameStateProvider} gameRef - Référence au provider d'état de jeu
+     * @param {IUIRenderer} uiRef - Référence au renderer UI
+     * @param {IEventBus} eventBusRef - Référence au bus d'événements
+     */
+    init(gameRef, uiRef, eventBusRef) {
+        this._game = gameRef;
+        this._ui = uiRef;
+        this._eventBus = eventBusRef;
+    },
+
     startCombat(route) {
         this.inCombat = true;
         this.routeKills = 0;
         this.isBoss = false;
         this.spawnEnemy(route);
-        EventBus.emit(GAME_EVENTS.COMBAT_START, { route });
-        UI.addLog('info', `Exploration de ${route.name}...`);
+        this._eventBus.emit(GAME_EVENTS.COMBAT_START, { route });
+        this._ui.addLog('info', `Exploration de ${route.name}...`);
     },
 
     spawnEnemy(route) {
         if (!route) return;
 
         // Vérifier boss
-        const region = Game.state.regions.find(r => r.id === Game.state.currentRegion);
+        const region = this._game.state.regions.find(r => r.id === this._game.state.currentRegion);
         if (region && !region.bossDefeated && this.routeKills >= GAME_CONFIG.KILLS_FOR_ROUTE) {
             const last = region.routes[region.routes.length - 1];
             if (route.id === last.id && region.bosses.length) {
@@ -36,21 +53,19 @@ const Combat = {
         this.enemy = generateWildEcho(route.ids, route.lv);
         this.activeEcho = this.getActiveEcho();
         if (this.enemy) {
-            Game.state.seenEchoes.add(this.enemy.id);
+            this._game.state.seenEchoes.add(this.enemy.id);
             
             // Auto-capture pour les nouveaux échos non capturés
-            if (this.autoCaptureEnabled && !Game.state.caughtEchoes.has(this.enemy.id)) {
+            if (this.autoCaptureEnabled && !this._game.state.caughtEchoes.has(this.enemy.id)) {
                 this.autoCaptureNewEcho();
             }
         }
-        UI.updateCombat();
+        this._ui.updateCombat();
     },
 
     autoCaptureNewEcho() {
         if (!this.enemy) return;
-
-        // Appeler la méthode centralisée de capture avec l'option isAuto
-        Game.captureEcho(this.enemy, { isAuto: true });
+        this._game.captureEcho(this.enemy, { isAuto: true });
     },
 
     spawnBoss(region) {
@@ -62,20 +77,19 @@ const Combat = {
         this.enemy = new Echo(data, boss.level, false);
         this.enemy.isBoss = true;
         this.enemy.bossName = boss.name;
-        // Boss = stats boostées
         this.enemy.maxHp = Math.floor(this.enemy.maxHp * 2);
         this.enemy.hp = this.enemy.maxHp;
         this.enemy.atk = Math.floor(this.enemy.atk * 1.5);
 
         this.activeEcho = this.getActiveEcho();
-        Game.state.seenEchoes.add(this.enemy.id);
-        UI.updateCombat();
-        UI.addLog('info', `⚔️ BOSS : ${boss.name} !`);
-        UI.toast(`⚔️ Boss : ${boss.name} !`, 'warning');
+        this._game.state.seenEchoes.add(this.enemy.id);
+        this._ui.updateCombat();
+        this._ui.addLog('info', `⚔️ BOSS : ${boss.name} !`);
+        this._ui.toast(`⚔️ Boss : ${boss.name} !`, 'warning');
     },
 
     getActiveEcho() {
-        return Game.state.party.find(e => e.isAlive()) || null;
+        return this._game.state.party.find(e => e.isAlive()) || null;
     },
 
     update(dt) {
@@ -91,7 +105,6 @@ const Combat = {
     autoAttack() {
         if (!this.inCombat || !this.enemy || !this.activeEcho) return;
 
-        // Attaque joueur
         const dmg = this.activeEcho.calculateDamageAgainst(this.enemy);
         this.enemy.takeDamage(dmg);
 
@@ -100,7 +113,6 @@ const Combat = {
             return;
         }
 
-        // Attaque ennemi
         const enemyDmg = this.enemy.calculateDamageAgainst(this.activeEcho);
         this.activeEcho.takeDamage(enemyDmg);
 
@@ -108,7 +120,7 @@ const Combat = {
             this.onPlayerFainted();
         }
 
-        UI.updateCombat();
+        this._ui.updateCombat();
     },
 
     playerClick() {
@@ -116,83 +128,77 @@ const Combat = {
 
         const dmg = this.activeEcho.calculateDamageAgainst(this.enemy) * GAME_CONFIG.COMBAT_CLICK_MULTIPLIER;
         this.enemy.takeDamage(dmg);
-        UI.spawnDamageParticle(dmg);
+        this._ui.spawnDamageParticle(dmg);
 
         if (!this.enemy.isAlive()) {
             this.onEnemyDefeated();
         }
 
-        UI.updateCombat();
+        this._ui.updateCombat();
     },
 
     onEnemyDefeated() {
-        Game.state.totalWins++;
+        this._game.state.totalWins++;
         this.routeKills++;
 
-        // XP
         let xpGain = this.enemy.level * 5 + (this.isBoss ? 50 : 0);
         
-        // Appliquer le boost XP si actif
-        if (Game.state.boosts.xp) {
-            xpGain *= 2; // Double l'XP gagnée
+        if (this._game.state.boosts.xp) {
+            xpGain *= 2;
         }
         
-        Game.state.party.forEach(e => {
-            if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, Game.state.party.length)));
+        this._game.state.party.forEach(e => {
+            if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, this._game.state.party.length)));
         });
 
-        // Énergie
         const energyGain = this.enemy.level * 3 + (this.isBoss ? 100 : 0);
-        Game.state.energy += energyGain;
-        Game.state.totalEnergy += energyGain;
+        this._game.state.energy += energyGain;
+        this._game.state.totalEnergy += energyGain;
 
         const name = this.enemy.bossName || this.enemy.name;
-        UI.addLog('damage', `${name} vaincu ! +${energyGain}⚡ +${xpGain}XP`);
-        EventBus.emit(GAME_EVENTS.ENEMY_DEFEATED, { enemy: this.enemy, energyGain, xpGain });
+        this._ui.addLog('damage', `${name} vaincu ! +${energyGain}⚡ +${xpGain}XP`);
+        this._eventBus.emit(GAME_EVENTS.ENEMY_DEFEATED, { enemy: this.enemy, energyGain, xpGain });
 
         if (this.isBoss) {
-            Game.defeatBoss();
+            this._game.defeatBoss();
             this.isBoss = false;
             this.endCombat();
             return;
         }
 
         if (this.routeKills >= GAME_CONFIG.KILLS_FOR_ROUTE) {
-            Game.unlockNextRoute();
+            this._game.unlockNextRoute();
         }
 
-        // Nouvel ennemi
-        const route = Game.state.currentRoute;
+        const route = this._game.state.currentRoute;
         if (route) setTimeout(() => this.spawnEnemy(route), 500);
     },
 
     onPlayerFainted() {
-        UI.addLog('damage', `${this.activeEcho.name} est K.O. !`);
-        const next = Game.state.party.find(e => e.isAlive() && e.uid !== this.activeEcho.uid);
+        this._ui.addLog('damage', `${this.activeEcho.name} est K.O. !`);
+        const next = this._game.state.party.find(e => e.isAlive() && e.uid !== this.activeEcho.uid);
         if (next) {
             this.activeEcho = next;
-            UI.addLog('info', `${next.name} entre en combat !`);
-            UI.updateCombat();
+            this._ui.addLog('info', `${next.name} entre en combat !`);
+            this._ui.updateCombat();
         } else {
-            UI.addLog('damage', 'Tous tes Échos sont K.O. !');
+            this._ui.addLog('damage', 'Tous tes Échos sont K.O. !');
             this.endCombat();
-            UI.toast('Tous tes Échos sont K.O. !', 'error');
+            this._ui.toast('Tous tes Échos sont K.O. !', 'error');
         }
     },
 
     attemptCapture() {
         if (!this.inCombat || !this.enemy) return;
 
-        // Appeler la méthode centralisée de capture
-        const success = Game.captureEcho(this.enemy);
+        const success = this._game.captureEcho(this.enemy);
 
-        // Si la capture a réussi, spawn un nouvel ennemi
         if (success) {
-            const route = Game.state.currentRoute;
+            const route = this._game.state.currentRoute;
             if (route) setTimeout(() => this.spawnEnemy(route), 500);
         }
 
-        UI.updateCombat();
+        this._ui.updateCombat();
     },
 
     endCombat() {
@@ -200,12 +206,12 @@ const Combat = {
         this.enemy = null;
         this.activeEcho = null;
         this.isBoss = false;
-        EventBus.emit(GAME_EVENTS.COMBAT_END, {});
-        UI.updateCombat();
+        this._eventBus.emit(GAME_EVENTS.COMBAT_END, {});
+        this._ui.updateCombat();
     },
 
     healParty() {
-        Game.state.party.forEach(e => e.fullHeal());
-        Game.state.reserves.forEach(e => e.fullHeal());
+        this._game.state.party.forEach(e => e.fullHeal());
+        this._game.state.reserves.forEach(e => e.fullHeal());
     }
 };

@@ -9,7 +9,13 @@ const Mine = {
     maxEnergy: 100,
     crystalsFound: 0,
     currentTool: 'pick',
-    regenTimer: 0,  // Timer pour la régénération passive d'énergie
+    regenTimer: 0,
+
+    // Dépendances injectées (DIP)
+    _game: null,
+    _ui: null,
+    _eventBus: null,
+
     tools: {
         pick: { name: 'Pioche', emoji: '⛏️', cost: 1, power: 1, area: 1 },
         bomb: { name: 'Bombe', emoji: '💣', cost: 5, power: 3, area: 3 },
@@ -23,7 +29,16 @@ const Mine = {
         rock: { emoji: '🪨', chance: 45, value: 0 }
     },
 
-    init() {
+    /**
+     * Initialise les dépendances et la grille de mine.
+     * @param {IGameStateProvider} gameRef - Référence au provider d'état de jeu
+     * @param {IUIRenderer} uiRef - Référence au renderer UI
+     * @param {IEventBus} eventBusRef - Référence au bus d'événements
+     */
+    init(gameRef, uiRef, eventBusRef) {
+        this._game = gameRef;
+        this._ui = uiRef;
+        this._eventBus = eventBusRef;
         this.generateGrid();
         this.setupEventListeners();
     },
@@ -67,17 +82,15 @@ const Mine = {
 
         const tool = this.tools[this.currentTool];
         if (this.energy < tool.cost) {
-            UI.toast('Pas assez d\'énergie de mine !', 'error');
+            this._ui.toast('Pas assez d\'énergie de mine !', 'error');
             return;
         }
 
         this.energy -= tool.cost;
 
         if (tool.reveal) {
-            // Radar révèle les tuiles adjacentes
             this.revealArea(index, tool.area);
         } else {
-            // Pioche/Bombe creuse
             this.digArea(index, tool.area);
         }
 
@@ -130,28 +143,27 @@ const Mine = {
         const reward = this.rewards[tile.reward];
         if (reward.value > 0) {
             if (tile.reward === 'crystal') {
-                Game.state.crystals += reward.value;
+                this._game.state.crystals += reward.value;
                 this.crystalsFound += reward.value;
             } else if (tile.reward === 'shard') {
-                Game.state.shards += reward.value;
+                this._game.state.shards += reward.value;
             } else if (tile.reward === 'gold') {
-                Game.state.energy += reward.value;
+                this._game.state.energy += reward.value;
             } else if (tile.reward === 'gem') {
-                Game.state.crystals += reward.value;
+                this._game.state.crystals += reward.value;
             }
-            UI.toast(`${reward.emoji} +${reward.value} !`, 'success');
+            this._ui.toast(`${reward.emoji} +${reward.value} !`, 'success');
         }
     },
 
     checkEnergy() {
         if (this.energy <= 0) {
-            UI.toast('Énergie de mine épuisée ! Attendez ou achetez un rechargement.', 'warning');
+            this._ui.toast('Énergie de mine épuisée ! Attendez ou achetez un rechargement.', 'warning');
         }
     },
 
-    // Régénération passive d'énergie de mine
     update(dt) {
-        this.regenTimer += dt * 1000; // Convertir dt (secondes) en ms
+        this.regenTimer += dt * 1000;
         if (this.regenTimer >= GAME_CONFIG.MINE_ENERGY_REGEN_INTERVAL) {
             this.regenTimer -= GAME_CONFIG.MINE_ENERGY_REGEN_INTERVAL;
             if (this.energy < this.maxEnergy) {
@@ -164,7 +176,7 @@ const Mine = {
     rechargeEnergy(amount = 50) {
         this.energy = Math.min(this.maxEnergy, this.energy + amount);
         this.updateDisplay();
-        UI.toast(`⛏️ +${amount} énergie de mine !`, 'success');
+        this._ui.toast(`⛏️ +${amount} énergie de mine !`, 'success');
     },
 
     reset() {
@@ -202,7 +214,6 @@ const Mine = {
         if (crystalsEl) crystalsEl.textContent = this.crystalsFound;
     },
 
-    // Sauvegarde
     toJSON() {
         return {
             grid: this.grid,

@@ -17,7 +17,21 @@ const MapSystem = {
     transitioningTo: null,
     time: 0,
 
-    init() {
+    // Dépendances injectées (DIP)
+    _game: null,
+    _ui: null,
+    _eventBus: null,
+
+    /**
+     * Initialise les dépendances et le canvas de la carte.
+     * @param {IGameStateProvider} gameRef - Référence au provider d'état de jeu
+     * @param {IUIRenderer} uiRef - Référence au renderer UI
+     * @param {IEventBus} eventBusRef - Référence au bus d'événements
+     */
+    init(gameRef, uiRef, eventBusRef) {
+        this._game = gameRef;
+        this._ui = uiRef;
+        this._eventBus = eventBusRef;
         this.canvas = document.getElementById('map-canvas');
         if (!this.canvas) return;
 
@@ -26,11 +40,11 @@ const MapSystem = {
         this.setupEvents();
         this.animate();
 
-        EventBus.on(GAME_EVENTS.REGION_UNLOCKED, () => this.updateRegionInfo());
-        EventBus.on(GAME_EVENTS.ROUTE_UNLOCKED, () => this.updateRegionInfo());
+        this._eventBus.on(GAME_EVENTS.REGION_UNLOCKED, () => this.updateRegionInfo());
+        this._eventBus.on(GAME_EVENTS.ROUTE_UNLOCKED, () => this.updateRegionInfo());
         
         // Synchroniser avec l'état du jeu
-        this.currentRegionId = Game.state.currentRegion;
+        this.currentRegionId = this._game.state.currentRegion;
         
         // Créer les boutons de navigation
         this.createNavigationButtons();
@@ -61,7 +75,7 @@ const MapSystem = {
         const nav = document.createElement('div');
         nav.className = 'map-nav-buttons';
 
-        const regions = Game.state.regions;
+        const regions = this._game.state.regions;
         regions.forEach(region => {
             const btn = document.createElement('button');
             btn.className = 'map-nav-btn' + (region.id === this.currentRegionId ? ' active' : '');
@@ -73,7 +87,7 @@ const MapSystem = {
                 if (region.unlocked) {
                     this.navigateToRegion(region.id);
                 } else {
-                    UI.toast('🔒 Contrée verrouillée !', 'warning');
+                    this._ui.toast('🔒 Contrée verrouillée !', 'warning');
                 }
             });
             
@@ -92,8 +106,8 @@ const MapSystem = {
         this.currentRegionId = regionId;
         
         // Synchroniser avec l'état du jeu
-        Game.state.currentRegion = regionId;
-        Game.state.currentRoute = null;
+        this._game.state.currentRegion = regionId;
+        this._game.state.currentRoute = null;
 
         // Mettre à jour les boutons
         document.querySelectorAll('.map-nav-btn').forEach(btn => {
@@ -104,7 +118,7 @@ const MapSystem = {
     },
 
     updateRegionInfo() {
-        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
         if (!region) return;
 
         const nameEl = document.getElementById('region-name');
@@ -133,7 +147,7 @@ const MapSystem = {
     },
 
     getRoutePositions() {
-        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
         if (!region) return [];
 
         const routes = region.routes;
@@ -156,7 +170,7 @@ const MapSystem = {
             const angle = (idx / routes.length) * Math.PI * 2 - Math.PI / 2 + offset.angle * 0.3;
             const spread = radius * offset.dist;
             positions.push({
-                route, // Ceci est une référence directe à l'objet route dans Game.state.regions
+                route, // Ceci est une référence directe à l'objet route dans this._game.state.regions
                 x: centerX + Math.cos(angle) * spread,
                 y: centerY + Math.sin(angle) * spread
             });
@@ -193,10 +207,10 @@ const MapSystem = {
                 console.log(`Route ${r.route.id} (${r.route.name}): unlocked=${r.route.unlocked}`);
                 
                 if (r.route.unlocked) {
-                    Game.selectRoute(r.route.id);
+                    this._game.selectRoute(r.route.id);
                     this.spawnParticles(r.x, r.y, this.getRegionColor());
                 } else {
-                    UI.toast('🔒 Route verrouillée ! Termine les routes précédentes pour débloquer celle-ci.', 'warning');
+                    this._ui.toast('🔒 Route verrouillée ! Termine les routes précédentes pour débloquer celle-ci.', 'warning');
                 }
                 break;
             }
@@ -1690,7 +1704,7 @@ const MapSystem = {
     
     // Calculer le nombre de kills nécessaires pour débloquer une route
     getKillsNeededForRoute(routeIndex) {
-        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
         if (!region) return GAME_CONFIG.KILLS_FOR_ROUTE;
         
         // La première route est toujours débloquée
@@ -1705,7 +1719,7 @@ const MapSystem = {
     
     // Obtenir la progression actuelle pour débloquer la prochaine route
     getCurrentRouteProgress() {
-        const region = Game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
         if (!region) return { current: 0, needed: 0, routeIndex: -1 };
         
         // Trouver la première route verrouillée
@@ -1734,7 +1748,7 @@ const MapSystem = {
 
         routes.forEach((r, idx) => {
             const isHovered = this.hoveredLocation && this.hoveredLocation.route.id === r.route.id;
-            const isActive = Game.state.currentRoute?.id === r.route.id;
+            const isActive = this._game.state.currentRoute?.id === r.route.id;
             const unlocked = r.route.unlocked;
             
             // Couleur verrouillée plus distincte
