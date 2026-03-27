@@ -52,3 +52,8 @@ const GAME_EVENTS = {
     SAVE_COMPLETE:     'save_complete',
     TICK:              'tick'
 };
+
+// Export for tests (compatible CJS/ESM)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { EventBus, GAME_EVENTS };
+}
