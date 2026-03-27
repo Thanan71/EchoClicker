@@ -649,9 +649,14 @@ const Game = {
             const reader = new FileReader();
             reader.onload = ev => {
                 try {
-                    SaveSystem.loadFromData(JSON.parse(ev.target.result));
-                    UI.toast(i18n.t('notifications.loaded'), 'success');
-                    UI.updateAll();
+                    const data = JSON.parse(ev.target.result);
+                    // Utiliser importFromData pour gérer la migration automatiquement
+                    if (SaveSystem.importFromData(data)) {
+                        UI.toast(i18n.t('notifications.loaded'), 'success');
+                        UI.updateAll();
+                    } else {
+                        UI.toast(i18n.t('notifications.error'), 'error');
+                    }
                 } catch { UI.toast(i18n.t('notifications.error'), 'error'); }
             };
             reader.readAsText(e.target.files[0]);
