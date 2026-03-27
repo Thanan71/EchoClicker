@@ -14,9 +14,9 @@ python3 -m http.server 8080
 ## ✨ Fonctionnalités
 
 ### 🗺️ Exploration
-- **3 Contrées** : Forêt Éveillée, Montagnes Cristallines, Océan Abyssal
-- **15 Routes** avec des niveaux progressifs
-- **3 Boss** à vaincre pour débloquer de nouvelles contrées
+- **7 Contrées** : Forêt Éveillée, Montagnes Cristallines, Océan Abyssal, Volcan Infernal, Forêt Maudite, Ciel Éthéré, Dimension Arcane
+- **35 Routes** avec des niveaux progressifs
+- **7 Boss** à vaincre pour débloquer de nouvelles contrées
 
 ### ⚔️ Combat
 - Combat automatique avec attaques manuelles
@@ -29,7 +29,7 @@ python3 -m http.server 8080
 - Chance de trouver des Échos **Primordiaux** (shiny)
 
 ### 👥 Collection
-- **30 Échos** uniques à découvrir
+- **68 Échos** uniques à découvrir
 - Système d'évolution
 - Équipe de 6 Échos + réserves illimitées
 - Logbook pour suivre les captures
@@ -85,7 +85,7 @@ EchoClicker/
 ├── js/
 │   ├── data/               # Couche Données
 │   │   ├── constants.js    # Config, types, table des faiblesses
-│   │   ├── echoesData.js   # Données des 30 Échos
+│   │   ├── echoesData.js   # Données des 68 Échos
 │   │   └── utils.js        # Fonctions utilitaires
 │   ├── core/               # Couche Noyau
 │   │   ├── echo.js         # Classe Echo (entité principale)
@@ -145,7 +145,7 @@ Le projet suit une **architecture modulaire événementielle** avec séparation 
 
 #### 1. **Couche Données** (`js/data/`)
 - **`constants.js`** : Configuration globale, types élémentaires (12 types), table des faiblesses/résistances, paramètres de jeu
-- **`echoesData.js`** : Base de données des 30 Échos (stats, rareté, évolution)
+- **`echoesData.js`** : Base de données des 68 Échos (stats, rareté, évolution)
 - **`utils.js`** : Fonctions utilitaires (formatage, calculs de dégâts, taux de capture, génération d'UID)
 
 #### 2. **Couche Noyau** (`js/core/`)

@@ -33,12 +33,12 @@ const TYPE_CHART = {
         weak:   ['FOUDRE', 'CRISTAL', 'GLACE', 'TERRE']
     },
     OMBRE: {
-        strong: [],
-        weak:   ['FOUDRE', 'CHAOS', 'LUMIERE', 'ARCANE']
+        strong: ['LUMIERE'],                    // ← Ombre bat Lumière (thématique Dark > Light)
+        weak:   ['FOUDRE', 'CHAOS', 'ARCANE']
     },
     LUMIERE: {
-        strong: ['OMBRE', 'CHAOS'],
-        weak:   ['CRISTAL', 'OCEAN', 'TERRE']
+        strong: ['CHAOS'],
+        weak:   ['CRISTAL', 'OCEAN', 'TERRE', 'OMBRE']
     },
     FLORE: {
         strong: ['OCEAN', 'CHAOS', 'ARCANE'],
@@ -68,7 +68,6 @@ const TYPE_CHART = {
         strong: ['GLACE', 'OMBRE'],
         weak:   ['CHAOS', 'FLORE', 'VENT', 'CRISTAL']
     }
-
 };
 
 // Couleurs de rareté
