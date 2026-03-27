@@ -19,6 +19,7 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
         Mine.init(Game, UI, EventBus);
         Hatchery.init(Game, UI, EventBus);
         MapSystem.init(Game, UI, EventBus);
+        Combat.init(Game, UI, EventBus);
         questSystem.init();
         UI.init();
         GameLoop.start(
