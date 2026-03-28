@@ -80,7 +80,9 @@
     "newRoute": "New route: {name}!",
     "newRegion": "New region unlocked: {name}!",
     "captureSuccessDisplay": "✨ Capture succeeded!",
-    "captureFailedDisplay": "💥 Capture failed!"
+    "captureFailedDisplay": "💥 Capture failed!",
+    "captureSuccess": "{name} captured!",
+    "captureFailed": "Capture failed!"
   },
   "map": {
     "title": "World Map",

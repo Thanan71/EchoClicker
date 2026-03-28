@@ -80,7 +80,9 @@
     "newRoute": "¡Nueva ruta: {name}!",
     "newRegion": "¡Nueva región desbloqueada: {name}!",
     "captureSuccessDisplay": "✨ ¡Captura exitosa!",
-    "captureFailedDisplay": "💥 ¡Captura fallida!"
+    "captureFailedDisplay": "💥 ¡Captura fallida!",
+    "captureSuccess": "¡{name} capturado!",
+    "captureFailed": "¡Captura fallida!"
   },
   "map": {
     "title": "Mapa del Mundo",
@@ -177,7 +179,9 @@
     "energyRegen": "+1 energía cada 30 segundos",
     "energyNotEnough": "¡No hay suficiente energía de mina!",
     "energyDepletedWait": "¡Energía de mina agotada! Espera o compra una recarga.",
-    "rechargeSuccess": "⛏️ +{amount} energía de mina!"
+    "rechargeSuccess": "⛏️ +{amount} energía de mina!",
+    "energyDepleted": "Energía agotada",
+    "recharge": "Recargar"
   },
   "shop": {
     "title": "Mercado de Espíritus",
@@ -209,7 +213,8 @@
     "autoSave": "Guardado auto",
     "reset": "Reiniciar",
     "export": "Exportar",
-    "import": "Importar"
+    "import": "Importar",
+    "saveBtn": "💾 Guardar"
   },
   "echoes": {
     "1": {

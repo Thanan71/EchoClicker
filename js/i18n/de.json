@@ -80,7 +80,9 @@
     "newRoute": "Neue Route: {name}!",
     "newRegion": "Neue Region freigeschaltet: {name}!",
     "captureSuccessDisplay": "✨ Fang erfolgreich!",
-    "captureFailedDisplay": "💥 Fang fehlgeschlagen!"
+    "captureFailedDisplay": "💥 Fang fehlgeschlagen!",
+    "captureSuccess": "{name} gefangen!",
+    "captureFailed": "Fang fehlgeschlagen!"
   },
   "map": {
     "title": "Weltkarte",
@@ -211,7 +213,8 @@
     "autoSave": "Auto-Speichern",
     "reset": "Zurücksetzen",
     "export": "Exportieren",
-    "import": "Importieren"
+    "import": "Importieren",
+    "saveBtn": "💾 Speichern"
   },
   "echoes": {
     "1": {
@@ -390,5 +393,82 @@
     "lore": "📜 Geschichte",
     "cinematics": "🎬 Kinofilme",
     "close": "Schließen"
+  },
+  "wiki": {
+    "title": "📖 EchoClicker Wiki",
+    "backToGame": "⬅️ Zurück zum Spiel",
+    "nav": {
+      "introduction": "Einführung",
+      "hatcherySystem": "Zuchtsystem",
+      "mapRoutes": "Karte & Routen",
+      "typeChart": "Typentabelle",
+      "echoEncyclopedia": "Echo-Enzyklopädie"
+    },
+    "intro": {
+      "title": "⚡ Einführung",
+      "desc1": "Willkommen in der Welt von EchoClicker!",
+      "desc2": "In diesem Leitfaden erfährst du, wie Routen funktionieren.",
+      "mainObjectives": "Hauptziele",
+      "capture": "Fangen",
+      "captureDesc": "Nutze deine Aether-Verbindungen, um wilde Echos zu fangen.",
+      "fight": "Kämpfen",
+      "fightDesc": "Kämpfe gegen Echos auf Routen, um Erfahrung zu sammeln.",
+      "evolve": "Entwickeln",
+      "evolveDesc": "Trainiere deine Echos, damit sie neue Stufen erreichen.",
+      "collect": "Sammeln",
+      "collectDesc": "Fülle dein Logbuch, indem du alle Echos entdeckst."
+    },
+    "hatchery": {
+      "title": "🥚 Zuchtsystem (Inkubator)",
+      "desc": "Der Inkubator ermöglicht es dir, zwei Echos zu kreuzen.",
+      "howItWorks": "Wie funktioniert es?",
+      "step1": "Wähle zwei Elternteile aus deinem Team oder deinen Reserven.",
+      "step2": "Stelle sicher, dass du einen freien Inkubationsslot hast (max. 4).",
+      "step3": "Starte die Inkubation. Die Zeit hängt von der Seltenheit ab.",
+      "step4": "Hole dein neues Echo ab, sobald die Inkubation abgeschlossen ist!",
+      "incubationTimes": "Inkubationszeiten",
+      "rarity": "Seltenheit",
+      "time": "Zeit",
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "mythical": "Mythical",
+      "time30s": "30 Sekunden",
+      "time1m": "1 Minute",
+      "time2m": "2 Minuten",
+      "time5m": "5 Minuten",
+      "time10m": "10 Minuten",
+      "time15m": "15 Minuten"
+    },
+    "routes": {
+      "title": "🗺️ Karte & Routen",
+      "desc": "Die Welt ist in mehrere Regionen unterteilt.",
+      "colRoute": "Route",
+      "colLevels": "Stufen",
+      "colEchoes": "Verfübare Echos",
+      "level": "St. {level}",
+      "boss": "Boss:"
+    },
+    "types": {
+      "title": "🌀 Typentabelle",
+      "desc": "Jedes Echo hat einen Typ, der Stärken und Schwächen bestimmt.",
+      "colType": "Typ",
+      "colStrong": "Stark gegen (x1.5)",
+      "colWeak": "Schwach gegen (x0.5)"
+    },
+    "echoes": {
+      "title": "📖 Echo-Enzyklopädie",
+      "desc": "Vollständige Liste aller bekannten Echos in der aktuellen Region.",
+      "colIcon": "Symbol",
+      "colName": "Name",
+      "colType": "Typ",
+      "colRarity": "Seltenheit",
+      "colStats": "Basis-Stats",
+      "colEvolution": "Entwicklung",
+      "colCaptureRate": "Fangrate",
+      "none": "Keine"
+    }
   }
 }
