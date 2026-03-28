@@ -36,7 +36,10 @@
     "close": "Schließen",
     "back": "Zurück",
     "next": "Weiter",
-    "previous": "Zurück"
+    "previous": "Zurück",
+    "logbook": "📓 Logbuch",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Sprache"
   },
   "combat": {
     "enemySide": "Gegner",
@@ -56,7 +59,8 @@
     "noEchoAvailable": "Kein Echo verfügbar!",
     "partyFull": "Team voll! (max 6)",
     "optimalTeamCreated": "⚡ Optimales Team erstellt!",
-    "newTeam": "Neues Team: {names}"
+    "newTeam": "Neues Team: {names}",
+    "dmgPreview": "{min} - {max} DMG"
   },
   "capture": {
     "title": "🔮 Fangzone",
@@ -99,7 +103,9 @@
     "optimalTeam": "Optimales Team",
     "reserves": "📦 Reserven",
     "addToParty": "Zum Team hinzufügen",
-    "removeFromParty": "Aus dem Team entfernen"
+    "removeFromParty": "Aus dem Team entfernen",
+    "primordial": "Primordial",
+    "addToReserve": "Zu Reserven hinzufügen"
   },
   "pokedex": {
     "title": "Echo-Logbuch",
@@ -110,7 +116,14 @@
     "captured": "Gefangen",
     "total": "Gesamt",
     "noEntry": "Kein Eintrag",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "typeAll": "Alle Typen",
+    "counter": "{caught}/{total}",
+    "noResults": "Keine Ergebnisse",
+    "unknownEcho": "Unbekanntes Echo",
+    "notEncountered": "Nicht begegnet",
+    "notCaptured": "Nicht gefangen",
+    "evolvesTo": "Entwickelt sich zu {name}"
   },
   "hatchery": {
     "title": "Zucht",
@@ -124,7 +137,8 @@
     "createEgg": "🥚 Ei erstellen",
     "selectParents": "Eltern auswählen",
     "parent1": "Elternteil 1",
-    "parent2": "Elternteil 2"
+    "parent2": "Elternteil 2",
+    "selectParent": "Elternteil auswählen"
   },
   "mine": {
     "title": "Untergrundmine",
@@ -141,7 +155,9 @@
     "radar": "Radar",
     "remainingEnergy": "Verbleibende Energie",
     "crystalsFound": "Kristalle gefunden",
-    "energyRegen": "+1 Energie alle 30 Sekunden"
+    "energyRegen": "+1 Energie alle 30 Sekunden",
+    "energyDepleted": "Energie aufgebraucht",
+    "recharge": "Aufladen"
   },
   "shop": {
     "title": "Geistermarkt",
@@ -229,7 +245,19 @@
   },
   "quests": {
     "title": "📋 Aufgaben",
-    "desc": "Erfülle Aufgaben, um Belohnungen zu erhalten und im Abenteuer voranzukommen!"
+    "desc": "Erfülle Aufgaben, um Belohnungen zu erhalten und im Abenteuer voranzukommen!",
+    "dailyEmpty": "Keine täglichen Aufgaben verfügbar",
+    "storyEmpty": "Keine Story-Aufgaben verfügbar",
+    "noRewards": "Keine Belohnungen verfügbar",
+    "claim": "Einfordern",
+    "claimedRewards": "Eingeforderte Belohnungen",
+    "cannotClaim": "Kann nicht eingefordert werden",
+    "dailyTitle": "📋 Tägliche Aufgaben",
+    "storyTitle": "📖 Story-Aufgaben",
+    "completedTitle": "✅ Abgeschlossene Aufgaben",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Kristalle",
+    "rewardEnergy": "+{amount} Energie"
   },
   "notifications": {
     "saved": "Spiel gespeichert!",

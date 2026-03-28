@@ -36,7 +36,10 @@
     "close": "Cerrar",
     "back": "Atrás",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "logbook": "📓 Registro",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Idioma"
   },
   "combat": {
     "enemySide": "Enemigo",
@@ -56,7 +59,8 @@
     "noEchoAvailable": "¡No hay Echo disponible!",
     "partyFull": "¡Equipo completo! (máx 6)",
     "optimalTeamCreated": "¡⚡ Equipo óptimo creado!",
-    "newTeam": "Nuevo equipo: {names}"
+    "newTeam": "Nuevo equipo: {names}",
+    "dmgPreview": "{min} - {max} DMG"
   },
   "capture": {
     "title": "🔮 Zona de Captura",
@@ -99,7 +103,9 @@
     "optimalTeam": "Equipo Óptimo",
     "reserves": "📦 Reservas",
     "addToParty": "Añadir al equipo",
-    "removeFromParty": "Quitar del equipo"
+    "removeFromParty": "Quitar del equipo",
+    "primordial": "Primordial",
+    "addToReserve": "Añadir a reservas"
   },
   "pokedex": {
     "title": "Registro de Ecos",
@@ -110,7 +116,14 @@
     "captured": "Capturados",
     "total": "Total",
     "noEntry": "Sin entrada",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "typeAll": "Todos los tipos",
+    "counter": "{caught}/{total}",
+    "noResults": "Sin resultados",
+    "unknownEcho": "Eco Desconocido",
+    "notEncountered": "No encontrado",
+    "notCaptured": "No capturado",
+    "evolvesTo": "Evoluciona a {name}"
   },
   "hatchery": {
     "title": "Incubadora",
@@ -124,7 +137,8 @@
     "createEgg": "🥚 Crear un huevo",
     "selectParents": "Seleccionar padres",
     "parent1": "Padre 1",
-    "parent2": "Padre 2"
+    "parent2": "Padre 2",
+    "selectParent": "Seleccionar padre"
   },
   "mine": {
     "title": "Mina Subterránea",
@@ -229,7 +243,19 @@
   },
   "quests": {
     "title": "📋 Misiones",
-    "desc": "¡Completa misiones para ganar recompensas y progresar en tu aventura!"
+    "desc": "¡Completa misiones para ganar recompensas y progresar en tu aventura!",
+    "dailyEmpty": "No hay misiones diarias disponibles",
+    "storyEmpty": "No hay misiones de historia disponibles",
+    "noRewards": "No hay recompensas disponibles",
+    "claim": "Reclamar",
+    "claimedRewards": "Recompensas reclamadas",
+    "cannotClaim": "No se puede reclamar",
+    "dailyTitle": "📋 Misiones Diarias",
+    "storyTitle": "📖 Misiones de Historia",
+    "completedTitle": "✅ Misiones Completadas",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Cristales",
+    "rewardEnergy": "+{amount} Energía"
   },
   "notifications": {
     "saved": "¡Partida guardada!",
@@ -237,5 +263,17 @@
     "reset": "¡Partida reiniciada!",
     "error": "¡Error!",
     "success": "¡Éxito!"
+  },
+  "logbook": {
+    "title": "📖 Registro",
+    "dialogues": "💬 Diálogos",
+    "lore": "📜 Historia",
+    "cinematics": "🎬 Cinemáticas",
+    "close": "Cerrar"
+  },
+  "footer": {
+    "clicks": "Clics",
+    "cps": "CPS",
+    "echoes": "Ecos"
   }
 }

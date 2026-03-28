@@ -36,7 +36,10 @@
     "close": "Close",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "logbook": "📓 Logbook",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Language"
   },
   "combat": {
     "enemySide": "Enemy",
@@ -56,7 +59,8 @@
     "noEchoAvailable": "No Echo available!",
     "partyFull": "Party full! (max 6)",
     "optimalTeamCreated": "⚡ Optimal team created!",
-    "newTeam": "New team: {names}"
+    "newTeam": "New team: {names}",
+    "dmgPreview": "{min} - {max} DMG"
   },
   "capture": {
     "title": "🔮 Capture Zone",
@@ -99,7 +103,9 @@
     "optimalTeam": "Optimal Team",
     "reserves": "📦 Reserves",
     "addToParty": "Add to party",
-    "removeFromParty": "Remove from party"
+    "removeFromParty": "Remove from party",
+    "primordial": "Primordial",
+    "addToReserve": "Add to reserve"
   },
   "pokedex": {
     "title": "Echo Logbook",
@@ -110,7 +116,14 @@
     "captured": "Captured",
     "total": "Total",
     "noEntry": "No entry",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "typeAll": "All types",
+    "counter": "{caught}/{total}",
+    "noResults": "No results",
+    "unknownEcho": "Unknown Echo",
+    "notEncountered": "Not encountered",
+    "notCaptured": "Not captured",
+    "evolvesTo": "Evolves into {name}"
   },
   "hatchery": {
     "title": "Hatchery",
@@ -124,7 +137,8 @@
     "createEgg": "🥚 Create an egg",
     "selectParents": "Select parents",
     "parent1": "Parent 1",
-    "parent2": "Parent 2"
+    "parent2": "Parent 2",
+    "selectParent": "Select parent"
   },
   "mine": {
     "title": "Underground Mine",
@@ -141,7 +155,9 @@
     "radar": "Radar",
     "remainingEnergy": "Remaining energy",
     "crystalsFound": "Crystals found",
-    "energyRegen": "+1 energy every 30 seconds"
+    "energyRegen": "+1 energy every 30 seconds",
+    "energyDepleted": "Energy depleted",
+    "recharge": "Recharge"
   },
   "shop": {
     "title": "Spirit Market",
@@ -173,7 +189,8 @@
     "autoSave": "Auto-save",
     "reset": "Reset",
     "export": "Export",
-    "import": "Import"
+    "import": "Import",
+    "saveBtn": "💾 Save"
   },
   "echoes": {
     "1": { "name": "Mossling", "desc": "A small ball of moss that rolls aimlessly." },
@@ -229,7 +246,19 @@
   },
   "quests": {
     "title": "📋 Quests",
-    "desc": "Complete quests to earn rewards and progress in your adventure!"
+    "desc": "Complete quests to earn rewards and progress in your adventure!",
+    "dailyEmpty": "No daily quests available",
+    "storyEmpty": "No story quests available",
+    "noRewards": "No rewards available",
+    "claim": "Claim",
+    "claimedRewards": "Claimed rewards",
+    "cannotClaim": "Cannot claim",
+    "dailyTitle": "📋 Daily Quests",
+    "storyTitle": "📖 Story Quests",
+    "completedTitle": "✅ Completed Quests",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Crystals",
+    "rewardEnergy": "+{amount} Energy"
   },
   "notifications": {
     "saved": "Game saved!",
@@ -237,5 +266,17 @@
     "reset": "Game reset!",
     "error": "Error!",
     "success": "Success!"
+  },
+  "logbook": {
+    "title": "📖 Logbook",
+    "dialogues": "💬 Dialogues",
+    "lore": "📜 Lore",
+    "cinematics": "🎬 Cinematics",
+    "close": "Close"
+  },
+  "footer": {
+    "clicks": "Clicks",
+    "cps": "CPS",
+    "echoes": "Echoes"
   }
 }

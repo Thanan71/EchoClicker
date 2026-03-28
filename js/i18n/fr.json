@@ -36,7 +36,10 @@
     "close": "Fermer",
     "back": "Retour",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Précédent",
+    "logbook": "📓 Journal",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Langue"
   },
   "combat": {
     "enemySide": "Ennemi",
@@ -72,7 +75,9 @@
     "routeLocked": "Route non débloquée !",
     "regionLocked": "Contrée non débloquée !",
     "newRoute": "Nouvelle route : {name} !",
-    "newRegion": "Nouvelle contrée débloquée : {name} !"
+    "newRegion": "Nouvelle contrée débloquée : {name} !",
+    "captureSuccess": "{name} capturé !",
+    "captureFailed": "Capture échouée !"
   },
   "map": {
     "title": "Carte du Monde",
@@ -99,7 +104,9 @@
     "optimalTeam": "Équipe Optimale",
     "reserves": "📦 Réserves",
     "addToParty": "Ajouter à l'équipe",
-    "removeFromParty": "Retirer de l'équipe"
+    "removeFromParty": "Retirer de l'équipe",
+    "primordial": "Primordial",
+    "addToReserve": "Ajouter aux réserves"
   },
   "pokedex": {
     "title": "Logbook des Échos",
@@ -110,7 +117,14 @@
     "captured": "Capturés",
     "total": "Total",
     "noEntry": "Aucune entrée",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "typeAll": "Tous les types",
+    "counter": "{caught}/{total}",
+    "noResults": "Aucun résultat",
+    "unknownEcho": "Écho Inconnu",
+    "notEncountered": "Non rencontré",
+    "notCaptured": "Non capturé",
+    "evolvesTo": "Évolue en {name}"
   },
   "hatchery": {
     "title": "Élevage",
@@ -124,7 +138,8 @@
     "createEgg": "🥚 Créer un œuf",
     "selectParents": "Sélection des parents",
     "parent1": "Parent 1",
-    "parent2": "Parent 2"
+    "parent2": "Parent 2",
+    "selectParent": "Sélectionner un parent"
   },
   "mine": {
     "title": "Mine Souterraine",
@@ -141,7 +156,9 @@
     "radar": "Radar",
     "remainingEnergy": "Énergie restante",
     "crystalsFound": "Cristaux trouvés",
-    "energyRegen": "+1 énergie toutes les 30 secondes"
+    "energyRegen": "+1 énergie toutes les 30 secondes",
+    "energyDepleted": "Énergie épuisée",
+    "recharge": "Recharger"
   },
   "shop": {
     "title": "Marché des Esprits",
@@ -173,7 +190,8 @@
     "autoSave": "Sauvegarde auto",
     "reset": "Réinitialiser",
     "export": "Exporter",
-    "import": "Importer"
+    "import": "Importer",
+    "saveBtn": "💾 Sauvegarder"
   },
   "echoes": {
     "1": { "name": "Boulette", "desc": "Une petite boule de mousse qui roule sans but." },
@@ -229,7 +247,19 @@
   },
   "quests": {
     "title": "📋 Quêtes",
-    "desc": "Complète des quêtes pour gagner des récompenses et progresser dans l'aventure !"
+    "desc": "Complète des quêtes pour gagner des récompenses et progresser dans l'aventure !",
+    "dailyEmpty": "Aucune quête quotidienne disponible",
+    "storyEmpty": "Aucune quête d'histoire disponible",
+    "noRewards": "Aucune récompense disponible",
+    "claim": "Réclamer",
+    "claimedRewards": "Récompenses réclamées",
+    "cannotClaim": "Impossible de réclamer",
+    "dailyTitle": "📋 Quêtes Quotidiennes",
+    "storyTitle": "📖 Quêtes d'Histoire",
+    "completedTitle": "✅ Quêtes Terminées",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Cristaux",
+    "rewardEnergy": "+{amount} Énergie"
   },
   "notifications": {
     "saved": "Partie sauvegardée !",
@@ -237,5 +267,17 @@
     "reset": "Partie réinitialisée !",
     "error": "Erreur !",
     "success": "Succès !"
+  },
+  "logbook": {
+    "title": "📖 Journal",
+    "dialogues": "💬 Dialogues",
+    "lore": "📜 Histoire",
+    "cinematics": "🎬 Cinématiques",
+    "close": "Fermer"
+  },
+  "footer": {
+    "clicks": "Clics",
+    "cps": "CPS",
+    "echoes": "Échos"
   }
 }
