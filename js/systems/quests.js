@@ -558,8 +558,10 @@ class QuestSystem {
     
     this.lastDailyReset = data.lastDailyReset;
     
-    // Vérifier si un reset quotidien est nécessaire
-    this.checkDailyReset();
+    // Vérifier si un reset quotidien est nécessaire seulement si pas de quêtes quotidiennes sauvegardées
+    if (!data.dailyQuests || data.dailyQuests.length === 0) {
+      this.checkDailyReset();
+    }
   }
 }
 

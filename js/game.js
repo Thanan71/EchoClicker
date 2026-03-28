@@ -13,7 +13,6 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
     async init() {
         await i18n.init();
         this.initState();
-        SaveSystem.load();
         this.setupEvents();
         this.setupEventBus();
         Mine.init(Game, UI, EventBus);
@@ -22,6 +21,7 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
         Combat.init(Game, UI, EventBus);
         questSystem.init();
         NarrativeSystem.init();
+        SaveSystem.load();
         UI.init();
         GameLoop.start(
             (dt) => this.update(dt),
