@@ -398,16 +398,79 @@ class QuestSystem {
       
       // Vérifier si les prérequis sont remplis
       if (q.prerequisites.length > 0) {
-        return q.prerequisites.every(prereqId => {
+        const prerequisitesMet = q.prerequisites.every(prereqId => {
           const prereqQuest = this.storyQuests.find(sq => sq.id === prereqId);
           return prereqQuest && prereqQuest.completed;
         });
+        
+        // Si les prérequis sont remplis et la quête n'est pas encore complétée,
+        // vérifier si l'objectif est déjà accompli
+        if (prerequisitesMet && !q.completed) {
+          this.checkExistingProgress(q);
+        }
+        
+        return prerequisitesMet;
       }
       
       return q.storyOrder === 1; // Première quête d'histoire toujours visible
     });
     
     return { daily: activeDaily, story: activeStory };
+  }
+
+  // Vérifie si le progrès existe déjà pour une quête
+  checkExistingProgress(quest) {
+    if (quest.completed) return;
+    
+    // Vérifier selon la catégorie de la quête
+    switch (quest.category) {
+      case QUEST_CATEGORIES.CAPTURE:
+        // Vérifier si le joueur a déjà capturé un Echo du type requis
+        if (quest.id.includes('shadow')) {
+          // Vérifier si un Echo de type Ombre a été capturé
+          if (Game.state && Game.state.caughtEchoes) {
+            const hasShadowEcho = Array.from(Game.state.caughtEchoes).some(echoId => {
+              const echoData = ECHOES_DB.find(e => e.id === echoId);
+              return echoData && echoData.type === 'Ombre';
+            });
+            
+            if (hasShadowEcho) {
+              quest.current = quest.target;
+              quest.completed = true;
+              EventBus.emit('quest:completed', quest);
+            }
+          }
+        }
+        break;
+        
+      case QUEST_CATEGORIES.LEVEL:
+        // Vérifier si le joueur a déjà un Echo au niveau requis
+        if (quest.id.includes('level_20')) {
+          if (Game.state && Game.state.party) {
+            const hasLevel20 = Game.state.party.some(echo => echo.level >= 20);
+            if (hasLevel20) {
+              quest.current = quest.target;
+              quest.completed = true;
+              EventBus.emit('quest:completed', quest);
+            }
+          }
+        }
+        break;
+        
+      case QUEST_CATEGORIES.COLLECTION:
+        // Vérifier si le joueur a déjà capturé le nombre requis d'Échos différents
+        if (quest.id.includes('collect_10')) {
+          if (Game.state && Game.state.caughtEchoes) {
+            const uniqueCount = Game.state.caughtEchoes.size;
+            if (uniqueCount >= 10) {
+              quest.current = quest.target;
+              quest.completed = true;
+              EventBus.emit('quest:completed', quest);
+            }
+          }
+        }
+        break;
+    }
   }
 
   // Récupère les quêtes complétées non réclamées
