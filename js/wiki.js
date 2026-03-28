@@ -19,18 +19,20 @@ function setupNavigation() {
 
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
+      for (const entry of entries) {
         if (entry.isIntersecting) {
-          navLinks.forEach((link) => {
+          for (const link of navLinks) {
             link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
-          });
+          }
         }
-      });
+      }
     },
     { threshold: 0.3, rootMargin: '-100px 0px -50% 0px' },
   );
 
-  sections.forEach((section) => observer.observe(section));
+  for (const section of sections) {
+    observer.observe(section);
+  }
 }
 
 function renderRoutes() {
@@ -41,7 +43,7 @@ function renderRoutes() {
 
   let html = '';
 
-  REGIONS.forEach((region) => {
+  for (const region of REGIONS) {
     html += `
             <div class="region-block">
                 <h3>${region.emoji} ${region.name}</h3>
@@ -57,7 +59,7 @@ function renderRoutes() {
                     <tbody>
         `;
 
-    region.routes.forEach((route) => {
+    for (const route of region.routes) {
       const echoesList = route.ids
         .map((id) => {
           const echo = ECHOES_DB.find((e) => e.id === id);
@@ -80,7 +82,7 @@ function renderRoutes() {
                     <td>${echoesList}</td>
                 </tr>
             `;
-    });
+    }
 
     html += `
                     </tbody>
@@ -94,7 +96,7 @@ function renderRoutes() {
                 }
             </div>
         `;
-  });
+  }
 
   container.innerHTML = html;
 }
@@ -121,7 +123,7 @@ function renderEchoes() {
             <tbody>
     `;
 
-  ECHOES_DB.forEach((echo) => {
+  for (const echo of ECHOES_DB) {
     const typeInfo = TYPES[echo.type];
     const evoText = echo.evo
       ? `➡️ ${ECHOES_DB.find((e) => e.id === echo.evo.to)?.name || '?'} (Nv. ${echo.evo.lv})`
@@ -148,7 +150,7 @@ function renderEchoes() {
                 <td>${echo.captureRate}%</td>
             </tr>
         `;
-  });
+  }
 
   html += '</tbody></table>';
   container.innerHTML = html;
@@ -172,7 +174,7 @@ function renderTypeChart() {
             <tbody>
     `;
 
-  Object.keys(TYPE_CHART).forEach((type) => {
+  for (const type of Object.keys(TYPE_CHART)) {
     const info = TYPES[type];
     const chart = TYPE_CHART[type];
 
@@ -201,7 +203,7 @@ function renderTypeChart() {
                 <td>${weakList}</td>
             </tr>
         `;
-  });
+  }
 
   html += '</tbody></table>';
   container.innerHTML = html;

@@ -100,38 +100,27 @@ export const SaveSystem = {
    * @param {Array} oldRegions - Regions de l'ancienne sauvegarde
    * @returns {Array} - Regions fusionnees
    */
-  mergeRegions(oldRegions) {
-    if (!oldRegions || !Array.isArray(oldRegions)) {
-      return Utils.deepClone(REGIONS);
+  _mergeRegionData(oldRegion, mergedRegions) {
+    const newRegion = mergedRegions.find((r) => r.id === oldRegion.id);
+    if (!newRegion) {
+      return;
     }
-
-    const mergedRegions = Utils.deepClone(REGIONS);
-
-    // Pour chaque region de l'ancienne sauvegarde
-    for (const oldRegion of oldRegions) {
-      const newRegion = mergedRegions.find((r) => r.id === oldRegion.id);
-      if (newRegion) {
-        // Preserver le statut unlocked et bossDefeated
-        newRegion.unlocked = oldRegion.unlocked;
-        newRegion.bossDefeated = oldRegion.bossDefeated;
-
-        // Fusionner les routes si elles existent
-        if (oldRegion.routes && Array.isArray(oldRegion.routes)) {
-          for (const oldRoute of oldRegion.routes) {
-            const newRoute = newRegion.routes.find((r) => r.id === oldRoute.id);
-            if (newRoute) {
-              newRoute.unlocked = oldRoute.unlocked;
-            }
-          }
+    newRegion.unlocked = oldRegion.unlocked;
+    newRegion.bossDefeated = oldRegion.bossDefeated;
+    if (oldRegion.routes && Array.isArray(oldRegion.routes)) {
+      for (const oldRoute of oldRegion.routes) {
+        const newRoute = newRegion.routes.find((r) => r.id === oldRoute.id);
+        if (newRoute) {
+          newRoute.unlocked = oldRoute.unlocked;
         }
       }
     }
+  },
 
-    // Propager le deblocage des regions base sur les boss vaincus
+  _propagateRegionUnlocks(mergedRegions) {
     for (let i = 0; i < mergedRegions.length - 1; i++) {
       const currentRegion = mergedRegions[i];
       const nextRegion = mergedRegions[i + 1];
-
       if (currentRegion.bossDefeated && !nextRegion.unlocked) {
         nextRegion.unlocked = true;
         if (nextRegion.routes && nextRegion.routes.length > 0) {
@@ -139,7 +128,17 @@ export const SaveSystem = {
         }
       }
     }
+  },
 
+  mergeRegions(oldRegions) {
+    if (!oldRegions || !Array.isArray(oldRegions)) {
+      return Utils.deepClone(REGIONS);
+    }
+    const mergedRegions = Utils.deepClone(REGIONS);
+    for (const oldRegion of oldRegions) {
+      this._mergeRegionData(oldRegion, mergedRegions);
+    }
+    this._propagateRegionUnlocks(mergedRegions);
     return mergedRegions;
   },
 
@@ -148,107 +147,107 @@ export const SaveSystem = {
    * @param {Object} data - Donnees de sauvegarde a migrer
    * @returns {Object} - Donnees migrees
    */
+  _migrateV3ToV4(migrated) {
+    if (!migrated.s) {
+      migrated.s = {};
+    }
+    if (!migrated.s.quests) {
+      migrated.s.quests = null;
+    }
+    if (!migrated.s.inventory) {
+      migrated.s.inventory = [];
+    }
+    if (!migrated.s.startTime) {
+      migrated.s.startTime = Date.now() - (migrated.s.playTime || 0) * 1000;
+    }
+    if (migrated.s.regions) {
+      migrated.s.regions = this.mergeRegions(migrated.s.regions);
+    }
+    migrated.v = 4;
+  },
+
+  _migrateV2ToV3(migrated) {
+    if (!migrated.s) {
+      migrated.s = {};
+    }
+    if (!migrated.s.mine) {
+      migrated.s.mine = null;
+    }
+    if (!migrated.s.hatchery) {
+      migrated.s.hatchery = null;
+    }
+    return this.migrateSave({ ...migrated, v: 3 });
+  },
+
+  _migrateV1ToV2(migrated) {
+    if (!migrated.s) {
+      migrated.s = {};
+    }
+    if (!migrated.s.boosts) {
+      migrated.s.boosts = {};
+    }
+    if (!migrated.s.regions) {
+      migrated.s.regions = Utils.deepClone(REGIONS);
+    }
+    return this.migrateSave({ ...migrated, v: 2 });
+  },
+
+  _ensureArrayField(obj, field) {
+    if (!Array.isArray(obj[field])) {
+      obj[field] = obj[field] instanceof Set ? [...obj[field]] : [];
+    }
+  },
+
+  _applyDefaults(obj, defaults) {
+    for (const [field, value] of Object.entries(defaults)) {
+      obj[field] = obj[field] ?? value;
+    }
+  },
+
+  _migrateV0ToV1(migrated) {
+    if (!migrated.s) {
+      migrated.s = {};
+    }
+    const s = migrated.s;
+    this._applyDefaults(s, {
+      energy: 0,
+      links: 5,
+      crystals: 0,
+      shards: 0,
+      totalEnergy: 0,
+      totalClicks: 0,
+      totalCaptures: 0,
+      uniqueCaptures: 0,
+      primordialCount: 0,
+      totalWins: 0,
+      bossesDefeated: 0,
+      regionsUnlocked: 1,
+      maxLevel: 1,
+      playTime: 0,
+      clickPower: GAME_CONFIG.ENERGY_PER_CLICK_BASE,
+      passiveIncome: GAME_CONFIG.PASSIVE_BASE,
+      currentRegion: 'foret',
+    });
+    this._ensureArrayField(s, 'seenEchoes');
+    this._ensureArrayField(s, 'caughtEchoes');
+    this._ensureArrayField(s, 'achievements');
+    return this.migrateSave({ ...migrated, v: 1 });
+  },
+
   migrateSave(data) {
     const migrated = { ...data };
-
-    // Migration de la version 3 vers 4
     if (data.v === 3) {
-      if (!migrated.s) {
-        migrated.s = {};
-      }
-      if (!migrated.s.quests) {
-        migrated.s.quests = null;
-      }
-      if (!migrated.s.inventory) {
-        migrated.s.inventory = [];
-      }
-      if (!migrated.s.startTime) {
-        migrated.s.startTime = Date.now() - (migrated.s.playTime || 0) * 1000;
-      }
-      if (migrated.s.regions) {
-        migrated.s.regions = this.mergeRegions(migrated.s.regions);
-      }
-      migrated.v = 4;
+      this._migrateV3ToV4(migrated);
     }
-
-    // Migration de la version 2 vers 3
     if (data.v === 2) {
-      if (!migrated.s) {
-        migrated.s = {};
-      }
-      if (!migrated.s.mine) {
-        migrated.s.mine = null;
-      }
-      if (!migrated.s.hatchery) {
-        migrated.s.hatchery = null;
-      }
-      return this.migrateSave({ ...migrated, v: 3 });
+      return this._migrateV2ToV3(migrated);
     }
-
-    // Migration de la version 1 vers 2
     if (data.v === 1) {
-      if (!migrated.s) {
-        migrated.s = {};
-      }
-      if (!migrated.s.boosts) {
-        migrated.s.boosts = {};
-      }
-      if (!migrated.s.regions) {
-        migrated.s.regions = Utils.deepClone(REGIONS);
-      }
-      return this.migrateSave({ ...migrated, v: 2 });
+      return this._migrateV1ToV2(migrated);
     }
-
-    // Migration de la version 0 ou sans version vers 1
     if (!data.v || data.v === 0) {
-      if (!migrated.s) {
-        migrated.s = {};
-      }
-
-      migrated.s.energy = migrated.s.energy ?? 0;
-      migrated.s.links = migrated.s.links ?? 5;
-      migrated.s.crystals = migrated.s.crystals ?? 0;
-      migrated.s.shards = migrated.s.shards ?? 0;
-      migrated.s.totalEnergy = migrated.s.totalEnergy ?? 0;
-      migrated.s.totalClicks = migrated.s.totalClicks ?? 0;
-      migrated.s.totalCaptures = migrated.s.totalCaptures ?? 0;
-      migrated.s.uniqueCaptures = migrated.s.uniqueCaptures ?? 0;
-      migrated.s.primordialCount = migrated.s.primordialCount ?? 0;
-      migrated.s.totalWins = migrated.s.totalWins ?? 0;
-      migrated.s.bossesDefeated = migrated.s.bossesDefeated ?? 0;
-      migrated.s.regionsUnlocked = migrated.s.regionsUnlocked ?? 1;
-      migrated.s.maxLevel = migrated.s.maxLevel ?? 1;
-      migrated.s.playTime = migrated.s.playTime ?? 0;
-      migrated.s.clickPower = migrated.s.clickPower ?? GAME_CONFIG.ENERGY_PER_CLICK_BASE;
-      migrated.s.passiveIncome = migrated.s.passiveIncome ?? GAME_CONFIG.PASSIVE_BASE;
-      migrated.s.currentRegion = migrated.s.currentRegion ?? 'foret';
-
-      // Convertir les Sets si necessaire
-      if (!Array.isArray(migrated.s.seenEchoes)) {
-        if (migrated.s.seenEchoes instanceof Set) {
-          migrated.s.seenEchoes = [...migrated.s.seenEchoes];
-        } else {
-          migrated.s.seenEchoes = [];
-        }
-      }
-      if (!Array.isArray(migrated.s.caughtEchoes)) {
-        if (migrated.s.caughtEchoes instanceof Set) {
-          migrated.s.caughtEchoes = [...migrated.s.caughtEchoes];
-        } else {
-          migrated.s.caughtEchoes = [];
-        }
-      }
-      if (!Array.isArray(migrated.s.achievements)) {
-        if (migrated.s.achievements instanceof Set) {
-          migrated.s.achievements = [...migrated.s.achievements];
-        } else {
-          migrated.s.achievements = [];
-        }
-      }
-
-      return this.migrateSave({ ...migrated, v: 1 });
+      return this._migrateV0ToV1(migrated);
     }
-
     return migrated;
   },
 

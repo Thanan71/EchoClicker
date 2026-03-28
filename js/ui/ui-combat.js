@@ -8,38 +8,40 @@ import { TYPES } from '../data/types.js';
 import { createEchoImageHTML } from './ui-core.js';
 
 export const UICombat = {
-  updateCombat() {
-    const set = (id, v) => {
-      const e = document.getElementById(id);
-      if (e) {
-        e.textContent = v;
-      }
-    };
-    const setHTML = (id, v) => {
-      const e = document.getElementById(id);
-      if (e) {
-        e.innerHTML = v;
-      }
-    };
-    const setStyle = (id, prop, v) => {
-      const e = document.getElementById(id);
-      if (e) {
-        e.style.setProperty(prop, v);
-      }
-    };
+  _setText(id, v) {
+    const e = document.getElementById(id);
+    if (e) {
+      e.textContent = v;
+    }
+  },
 
+  _setHTML(id, v) {
+    const e = document.getElementById(id);
+    if (e) {
+      e.innerHTML = v;
+    }
+  },
+
+  _setStyle(id, prop, v) {
+    const e = document.getElementById(id);
+    if (e) {
+      e.style.setProperty(prop, v);
+    }
+  },
+
+  _updateEnemyDisplay() {
     if (Combat.enemy) {
       const e = Combat.enemy;
       const primordialBadge = e.isPrimordial ? '<span class="shiny-badge">\u2B50</span>' : '';
       const imgHTML = createEchoImageHTML(e, 64);
-      setHTML(
+      this._setHTML(
         'enemy-sprite',
         `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`,
       );
-      set('enemy-name', e.bossName || e.name);
+      this._setText('enemy-name', e.bossName || e.name);
       const hpPct = Math.max(0, e.getHpPercent());
-      setStyle('enemy-hp-bar', '--hp-percent', `${hpPct}%`);
-      set('enemy-hp-text', `${Math.max(0, Math.floor(e.hp))}/${Math.floor(e.maxHp)}`);
+      this._setStyle('enemy-hp-bar', '--hp-percent', `${hpPct}%`);
+      this._setText('enemy-hp-text', `${Math.max(0, Math.floor(e.hp))}/${Math.floor(e.maxHp)}`);
       const t = TYPES[e.type];
       const et = document.getElementById('enemy-type');
       if (et) {
@@ -49,29 +51,31 @@ export const UICombat = {
       }
       document.getElementById('btn-capture-combat').disabled = false;
     } else {
-      set('enemy-sprite', '\u2753');
-      set('enemy-name', '???');
-      setStyle('enemy-hp-bar', '--hp-percent', '100%');
-      set('enemy-hp-text', '???/???');
+      this._setText('enemy-sprite', '\u2753');
+      this._setText('enemy-name', '???');
+      this._setStyle('enemy-hp-bar', '--hp-percent', '100%');
+      this._setText('enemy-hp-text', '???/???');
       const et = document.getElementById('enemy-type');
       if (et) {
         et.textContent = '';
       }
       document.getElementById('btn-capture-combat').disabled = true;
     }
+  },
 
+  _updatePlayerDisplay() {
     if (Combat.activeEcho) {
       const p = Combat.activeEcho;
       const primordialBadge = p.isPrimordial ? '<span class="shiny-badge">\u2B50</span>' : '';
       const imgHTML = createEchoImageHTML(p, 64);
-      setHTML(
+      this._setHTML(
         'player-sprite',
         `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`,
       );
-      set('player-name', p.name);
+      this._setText('player-name', p.name);
       const hpPct = Math.max(0, p.getHpPercent());
-      setStyle('player-hp-bar', '--hp-percent', `${hpPct}%`);
-      set('player-hp-text', `${Math.max(0, Math.floor(p.hp))}/${Math.floor(p.maxHp)}`);
+      this._setStyle('player-hp-bar', '--hp-percent', `${hpPct}%`);
+      this._setText('player-hp-text', `${Math.max(0, Math.floor(p.hp))}/${Math.floor(p.maxHp)}`);
       const t = TYPES[p.type];
       const pt = document.getElementById('player-type');
       if (pt) {
@@ -81,19 +85,24 @@ export const UICombat = {
       }
       document.getElementById('btn-tisser-coup').disabled = false;
       const dmg = p.calculateDamageAgainst(Combat.enemy || p) * GAME_CONFIG.COMBAT_CLICK_MULTIPLIER;
-      set('dmg-preview', i18n.t('combat.dmgClick', { dmg: dmg }));
+      this._setText('dmg-preview', i18n.t('combat.dmgClick', { dmg: dmg }));
     } else {
-      set('player-sprite', '\u2753');
-      set('player-name', 'Aucun Echo');
-      setStyle('player-hp-bar', '--hp-percent', '100%');
-      set('player-hp-text', '???/???');
+      this._setText('player-sprite', '\u2753');
+      this._setText('player-name', 'Aucun Echo');
+      this._setStyle('player-hp-bar', '--hp-percent', '100%');
+      this._setText('player-hp-text', '???/???');
       const pt = document.getElementById('player-type');
       if (pt) {
         pt.textContent = '';
       }
       document.getElementById('btn-tisser-coup').disabled = true;
-      set('dmg-preview', i18n.t('combat.dmgClickZero'));
+      this._setText('dmg-preview', i18n.t('combat.dmgClickZero'));
     }
+  },
+
+  updateCombat() {
+    this._updateEnemyDisplay();
+    this._updatePlayerDisplay();
   },
 
   addLog(type, message) {

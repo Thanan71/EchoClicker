@@ -15,7 +15,7 @@ export const UIShop = {
     const items = SHOP[activeCat] || [];
 
     let html = '';
-    items.forEach((item, index) => {
+    for (const [index, item] of items.entries()) {
       const canBuy =
         item.currency === 'energy'
           ? Game.state.energy >= item.price
@@ -26,11 +26,11 @@ export const UIShop = {
                 <div class="shop-item-price">${item.currency === 'shards' ? '\u2728' : '\u{1F48E}'} ${item.price}</div>
                 <button class="btn-buy" ${canBuy ? '' : 'disabled'} data-item-index="${index}">Acheter</button>
             </div>`;
-    });
+    }
     container.innerHTML = html;
 
     // Add event listeners to buy buttons
-    document.querySelectorAll('.btn-buy[data-item-index]').forEach((btn) => {
+    for (const btn of document.querySelectorAll('.btn-buy[data-item-index]')) {
       btn.addEventListener('click', () => {
         const index = Number.parseInt(btn.dataset.itemIndex);
         const item = items[index];
@@ -38,14 +38,16 @@ export const UIShop = {
           Game.buyItem(item);
         }
       });
-    });
+    }
 
-    document.querySelectorAll('.shop-cat').forEach((btn) => {
+    for (const btn of document.querySelectorAll('.shop-cat')) {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.shop-cat').forEach((b) => b.classList.remove('active'));
+        for (const b of document.querySelectorAll('.shop-cat')) {
+          b.classList.remove('active');
+        }
         btn.classList.add('active');
         this.renderShop();
       });
-    });
+    }
   },
 };

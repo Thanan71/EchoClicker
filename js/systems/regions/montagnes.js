@@ -135,6 +135,17 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawMountainPath(ctx, ra, rb, unlocked) {
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    ctx.lineTo(rb.x, rb.y);
+    ctx.strokeStyle = unlocked ? 'rgba(116, 185, 255, 0.4)' : 'rgba(100, 100, 100, 0.2)';
+    ctx.lineWidth = unlocked ? 3 : 2;
+    ctx.setLineDash(unlocked ? [] : [6, 6]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
   function drawMountainPaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -154,14 +165,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const ra = routes[a];
       const rb = routes[b];
       const unlocked = ra.route.unlocked && rb.route.unlocked;
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      ctx.lineTo(rb.x, rb.y);
-      ctx.strokeStyle = unlocked ? 'rgba(116, 185, 255, 0.4)' : 'rgba(100, 100, 100, 0.2)';
-      ctx.lineWidth = unlocked ? 3 : 2;
-      ctx.setLineDash(unlocked ? [] : [6, 6]);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawMountainPath(ctx, ra, rb, unlocked);
     }
   }
 

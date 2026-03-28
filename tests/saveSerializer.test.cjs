@@ -56,55 +56,65 @@ globalThis.SaveSerializer = {
     };
   },
 
+  _restorePrimitiveState(s, state) {
+    const primitiveDefaults = {
+      energy: 0,
+      links: 5,
+      crystals: 0,
+      shards: 0,
+      totalEnergy: 0,
+      totalClicks: 0,
+      totalCaptures: 0,
+      uniqueCaptures: 0,
+      primordialCount: 0,
+      totalWins: 0,
+      bossesDefeated: 0,
+      regionsUnlocked: 1,
+      maxLevel: 1,
+      playTime: 0,
+      startTime: Date.now(),
+      clickPower: GAME_CONFIG.ENERGY_PER_CLICK_BASE,
+      passiveIncome: GAME_CONFIG.PASSIVE_BASE,
+      currentRegion: 'foret',
+    };
+    for (const [key, defaultValue] of Object.entries(primitiveDefaults)) {
+      state[key] = s[key] ?? defaultValue;
+    }
+    state.regions = s.regions ?? Utils.deepClone(REGIONS);
+    state.boosts = s.boosts ?? {};
+    state.inventory = s.inventory || [];
+  },
+
+  _restoreCollections(s, state, Echo) {
+    state.party = (s.party || []).map((j) => Echo.fromJSON(j));
+    state.reserves = (s.reserves || []).map((j) => Echo.fromJSON(j));
+    state.seenEchoes = new Set(s.seenEchoes || []);
+    state.caughtEchoes = new Set(s.caughtEchoes || []);
+    state.achievements = new Set(s.achievements || []);
+  },
+
+  _restoreSystemHandlers(s, Mine, Hatchery, questSystem) {
+    if (s.mine) {
+      Mine.fromJSON(s.mine);
+    }
+    if (s.hatchery) {
+      Hatchery.fromJSON(s.hatchery);
+    }
+    if (s.quests) {
+      questSystem.fromJSON(s.quests);
+    }
+  },
+
   deserialize(data, state, systemHandlers) {
     try {
       if (!data?.s) {
         return false;
       }
-
       const s = data.s;
       const { Mine, Hatchery, questSystem, Echo } = systemHandlers;
-
-      state.energy = s.energy ?? 0;
-      state.links = s.links ?? 5;
-      state.crystals = s.crystals ?? 0;
-      state.shards = s.shards ?? 0;
-      state.totalEnergy = s.totalEnergy ?? 0;
-      state.totalClicks = s.totalClicks ?? 0;
-      state.totalCaptures = s.totalCaptures ?? 0;
-      state.uniqueCaptures = s.uniqueCaptures ?? 0;
-      state.primordialCount = s.primordialCount ?? 0;
-      state.totalWins = s.totalWins ?? 0;
-      state.bossesDefeated = s.bossesDefeated ?? 0;
-      state.regionsUnlocked = s.regionsUnlocked ?? 1;
-      state.maxLevel = s.maxLevel ?? 1;
-      state.playTime = s.playTime ?? 0;
-      state.startTime = s.startTime ?? Date.now();
-      state.clickPower = s.clickPower ?? GAME_CONFIG.ENERGY_PER_CLICK_BASE;
-      state.passiveIncome = s.passiveIncome ?? GAME_CONFIG.PASSIVE_BASE;
-      state.currentRegion = s.currentRegion ?? 'foret';
-      state.regions = s.regions ?? Utils.deepClone(REGIONS);
-      state.boosts = s.boosts ?? {};
-      state.inventory = s.inventory || [];
-
-      state.party = (s.party || []).map((j) => Echo.fromJSON(j));
-      state.reserves = (s.reserves || []).map((j) => Echo.fromJSON(j));
-
-      state.seenEchoes = new Set(s.seenEchoes || []);
-      state.caughtEchoes = new Set(s.caughtEchoes || []);
-      state.achievements = new Set(s.achievements || []);
-
-      if (s.mine) {
-        Mine.fromJSON(s.mine);
-      }
-      if (s.hatchery) {
-        Hatchery.fromJSON(s.hatchery);
-      }
-
-      if (s.quests) {
-        questSystem.fromJSON(s.quests);
-      }
-
+      this._restorePrimitiveState(s, state);
+      this._restoreCollections(s, state, Echo);
+      this._restoreSystemHandlers(s, Mine, Hatchery, questSystem);
       return true;
     } catch (_e) {
       return false;

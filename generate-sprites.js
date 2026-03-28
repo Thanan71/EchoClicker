@@ -19,7 +19,18 @@ const data = JSON.parse(fs.readFileSync(PIXELART_JSON, 'utf8'));
 // Modèle recommandé 2026 pour pixel art
 const MODEL_ID = 'de7d3faf-762f-48e0-b3b7-9d0ac3a3fcf3'; // Phoenix (meilleur pour cohérence)
 
-async function generateImage(prompt, filename) {
+const DONE_STATUSES = new Set([
+  'COMPLETED',
+  'COMPLETE',
+  'SUCCESS',
+  'SUCCEEDED',
+  'READY',
+  'FINISHED',
+  'DONE',
+  'OK',
+]);
+
+async function startGeneration(prompt) {
   const response = await fetch('https://cloud.leonardo.ai/api/rest/v1/generations', {
     method: 'POST',
     headers: {
@@ -28,7 +39,7 @@ async function generateImage(prompt, filename) {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      prompt: prompt,
+      prompt,
       modelId: MODEL_ID,
       num_images: 1,
       width: 512,
@@ -40,100 +51,91 @@ async function generateImage(prompt, filename) {
       scheduler: 'EULER_DISCRETE',
     }),
   });
-
   if (!response.ok) {
-    const _errText = await response.text().catch(() => '');
-    return false;
+    await response.text().catch(() => '');
+    return null;
   }
-
   const result = await response.json();
-  const generationId =
+  return (
     result?.sdGenerationJob?.generationId ||
     result?.sdGenerationJob?.id ||
     result?.generationId ||
-    result?.id;
+    result?.id ||
+    null
+  );
+}
 
-  if (!generationId) {
-    return false;
-  }
+function extractImageUrl(generation) {
+  const imageObj = generation.generated_images?.[0];
+  return (
+    imageObj?.url ||
+    imageObj?.imageUrl ||
+    imageObj?.image_url ||
+    imageObj?.downloadUrl ||
+    generation?.url ||
+    null
+  );
+}
 
-  const maxAttempts = 180; // jusqu'à ~9 minutes (3s * 180)
+async function pollGenerationStatus(generationId) {
+  const maxAttempts = 180;
   const delayMs = 3000;
-  // Leonardo renvoie parfois "COMPLETE" (sans D) selon les modèles/réponses.
-  // On accepte plusieurs variantes pour éviter les faux timeouts.
-  const doneStatuses = new Set([
-    'COMPLETED',
-    'COMPLETE',
-    'SUCCESS',
-    'SUCCEEDED',
-    'READY',
-    'FINISHED',
-    'DONE',
-    'OK',
-  ]);
-
   let lastStatus = null;
   for (let i = 0; i < maxAttempts; i++) {
     await new Promise((r) => setTimeout(r, delayMs));
-
     const statusRes = await fetch(
       `https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`,
-      {
-        headers: { authorization: `Bearer ${API_KEY}` },
-      },
+      { headers: { authorization: `Bearer ${API_KEY}` } },
     );
-
     if (!statusRes.ok) {
-      const _errText = await statusRes.text().catch(() => '');
+      await statusRes.text().catch(() => '');
       continue;
     }
-
     const statusData = await statusRes.json();
-
     const generation = statusData.generations_by_pk || statusData.generations?.[0];
-
     if (!generation) {
       continue;
     }
-
     const status =
       generation?.status || statusData?.status || generation?.state || statusData?.state;
-
     if (status !== lastStatus && status) {
       lastStatus = status;
     }
-
-    if (doneStatuses.has(status)) {
-      const imageObj = generation.generated_images?.[0];
-      const imageUrl =
-        imageObj?.url ||
-        imageObj?.imageUrl ||
-        imageObj?.image_url ||
-        imageObj?.downloadUrl ||
-        generation?.url;
-
-      if (!imageUrl) {
-        if (generation?.generated_images?.length) {
-        } else {
-        }
-        continue;
-      }
-
-      const imgRes = await fetch(imageUrl);
-      if (!imgRes.ok) {
-        const _errText = await imgRes.text().catch(() => '');
-        return false;
-      }
-
-      const buffer = await imgRes.arrayBuffer();
-      fs.writeFileSync(path.join(OUTPUT_DIR, filename), Buffer.from(buffer));
-      return true;
+    if (DONE_STATUSES.has(status)) {
+      return generation;
     }
     if (generation.status === 'FAILED' || status === 'FAILED' || status === 'ERROR') {
-      return false;
+      return null;
     }
   }
-  return false;
+  return null;
+}
+
+async function downloadImage(imageUrl, filename) {
+  const imgRes = await fetch(imageUrl);
+  if (!imgRes.ok) {
+    await imgRes.text().catch(() => '');
+    return false;
+  }
+  const buffer = await imgRes.arrayBuffer();
+  fs.writeFileSync(path.join(OUTPUT_DIR, filename), Buffer.from(buffer));
+  return true;
+}
+
+async function generateImage(prompt, filename) {
+  const generationId = await startGeneration(prompt);
+  if (!generationId) {
+    return false;
+  }
+  const generation = await pollGenerationStatus(generationId);
+  if (!generation) {
+    return false;
+  }
+  const imageUrl = extractImageUrl(generation);
+  if (!imageUrl) {
+    return false;
+  }
+  return downloadImage(imageUrl, filename);
 }
 
 // ====================== GÉNÉRATION ======================

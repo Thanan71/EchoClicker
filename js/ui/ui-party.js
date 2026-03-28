@@ -9,35 +9,42 @@ import { Game } from '../game.js';
 import { createEchoImageHTML, getEchoImagePathById } from './ui-core.js';
 
 export const UIParty = {
-  renderParty() {
-    const pg = document.getElementById('party-grid');
-    const rg = document.getElementById('reserves-grid');
-    if (!pg || !rg) {
-      return;
+  _renderFilledSlot(echo, isActive) {
+    const hpPct = echo.getHpPercent();
+    const imgHTML = createEchoImageHTML(echo, 48);
+    const hpColor =
+      hpPct < 30 ? 'var(--accent-red)' : hpPct < 60 ? 'var(--accent-gold)' : 'var(--accent-green)';
+    let html = `<div class="party-slot ${isActive ? 'active-combat' : ''}" data-echo-uid="${echo.uid}">`;
+    if (echo.isPrimordial) {
+      html += '<span class="primordial-badge">\u2B50</span>';
     }
+    html += `<div class="party-echo-icon">${imgHTML}</div>`;
+    html += `<div class="party-echo-name">${echo.name}</div>`;
+    html += `<div class="party-echo-level">${i18n.t('party.level', { level: echo.level })}</div>`;
+    html += `<div class="party-echo-hp" style="color:${hpColor}">\u2764\uFE0F ${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</div>`;
+    html += '</div>';
+    return html;
+  },
 
+  _renderEmptySlot() {
+    return `<div class="party-slot empty"><div class="party-echo-icon">\u2795</div><div class="party-echo-name">${i18n.t('party.vacant')}</div></div>`;
+  },
+
+  _renderPartySlots(pg) {
     let ph = '';
     for (let i = 0; i < 6; i++) {
       const echo = Game.state.party[i];
       if (echo) {
         const active = Combat.activeEcho?.uid === echo.uid;
-        const hpPct = echo.getHpPercent();
-        const imgHTML = createEchoImageHTML(echo, 48);
-        ph += `<div class="party-slot ${active ? 'active-combat' : ''}" data-echo-uid="${echo.uid}">`;
-        if (echo.isPrimordial) {
-          ph += '<span class="primordial-badge">\u2B50</span>';
-        }
-        ph += `<div class="party-echo-icon">${imgHTML}</div>`;
-        ph += `<div class="party-echo-name">${echo.name}</div>`;
-        ph += `<div class="party-echo-level">${i18n.t('party.level', { level: echo.level })}</div>`;
-        ph += `<div class="party-echo-hp" style="color:${hpPct < 30 ? 'var(--accent-red)' : hpPct < 60 ? 'var(--accent-gold)' : 'var(--accent-green)'}">\u2764\uFE0F ${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</div>`;
-        ph += '</div>';
+        ph += this._renderFilledSlot(echo, active);
       } else {
-        ph += `<div class="party-slot empty"><div class="party-echo-icon">\u2795</div><div class="party-echo-name">${i18n.t('party.vacant')}</div></div>`;
+        ph += this._renderEmptySlot();
       }
     }
     pg.innerHTML = ph;
+  },
 
+  _renderReserveSlots(rg) {
     let rh = '';
     for (const echo of Game.state.reserves) {
       const imgHTML = createEchoImageHTML(echo, 32);
@@ -47,22 +54,32 @@ export const UIParty = {
       rh = `<div style="color:var(--text-muted);padding:20px;text-align:center">${i18n.t('party.noReserve')}</div>`;
     }
     rg.innerHTML = rh;
+  },
 
-    // Add event listeners to party slots
-    document.querySelectorAll('.party-slot[data-echo-uid]').forEach((slot) => {
+  _attachSlotListeners() {
+    for (const slot of document.querySelectorAll('.party-slot[data-echo-uid]')) {
       slot.addEventListener('click', () => {
         const uid = slot.dataset.echoUid;
         this.showEchoDetail(uid);
       });
-    });
-
-    // Add event listeners to reserve slots
-    document.querySelectorAll('.reserve-slot[data-echo-uid]').forEach((slot) => {
+    }
+    for (const slot of document.querySelectorAll('.reserve-slot[data-echo-uid]')) {
       slot.addEventListener('click', () => {
         const uid = slot.dataset.echoUid;
         this.showEchoDetail(uid);
       });
-    });
+    }
+  },
+
+  renderParty() {
+    const pg = document.getElementById('party-grid');
+    const rg = document.getElementById('reserves-grid');
+    if (!pg || !rg) {
+      return;
+    }
+    this._renderPartySlots(pg);
+    this._renderReserveSlots(rg);
+    this._attachSlotListeners();
   },
 
   showEchoDetail(uid) {

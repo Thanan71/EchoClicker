@@ -114,7 +114,7 @@ globalThis.Hatchery = {
     }
 
     let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-    party.forEach((echo) => {
+    for (const echo of party) {
       const _t = TYPES[echo.type];
       const imgPath = getEchoImagePath(echo);
       html += `<div class="party-slot" onclick="Hatchery.setParent(${slotIndex}, '${echo.uid}')">
@@ -122,7 +122,7 @@ globalThis.Hatchery = {
                 <div class="party-echo-name">${echo.name}</div>
                 <div class="party-echo-level">Nv. ${echo.level}</div>
             </div>`;
-    });
+    }
     html += '</div>';
 
     this._ui.showModal('Sélectionner un parent', html);

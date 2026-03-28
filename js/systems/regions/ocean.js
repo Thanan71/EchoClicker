@@ -132,6 +132,21 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawOceanPath(ctx, ra, rb, unlocked, time, a, b) {
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    const cp1x = ra.x + (rb.x - ra.x) * 0.3 + Math.sin(time + a) * 10;
+    const cp1y = ra.y + (rb.y - ra.y) * 0.3 + Math.cos(time + b) * 10;
+    const cp2x = ra.x + (rb.x - ra.x) * 0.7 + Math.sin(time + b) * 10;
+    const cp2y = ra.y + (rb.y - ra.y) * 0.7 + Math.cos(time + a) * 10;
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, rb.x, rb.y);
+    ctx.strokeStyle = unlocked ? 'rgba(9, 132, 227, 0.4)' : 'rgba(100, 100, 100, 0.2)';
+    ctx.lineWidth = unlocked ? 3 : 2;
+    ctx.setLineDash(unlocked ? [] : [6, 6]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
   function drawOceanPaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -150,18 +165,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const ra = routes[a];
       const rb = routes[b];
       const unlocked = ra.route.unlocked && rb.route.unlocked;
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      const cp1x = ra.x + (rb.x - ra.x) * 0.3 + Math.sin(map.time + a) * 10;
-      const cp1y = ra.y + (rb.y - ra.y) * 0.3 + Math.cos(map.time + b) * 10;
-      const cp2x = ra.x + (rb.x - ra.x) * 0.7 + Math.sin(map.time + b) * 10;
-      const cp2y = ra.y + (rb.y - ra.y) * 0.7 + Math.cos(map.time + a) * 10;
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, rb.x, rb.y);
-      ctx.strokeStyle = unlocked ? 'rgba(9, 132, 227, 0.4)' : 'rgba(100, 100, 100, 0.2)';
-      ctx.lineWidth = unlocked ? 3 : 2;
-      ctx.setLineDash(unlocked ? [] : [6, 6]);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawOceanPath(ctx, ra, rb, unlocked, map.time, a, b);
     }
   }
 

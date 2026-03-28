@@ -117,6 +117,19 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawMauditePath(ctx, ra, rb, unlocked, time, a, b) {
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    const mx = (ra.x + rb.x) / 2 + Math.sin(time * 0.5 + a * 2) * 12;
+    const my = (ra.y + rb.y) / 2 + Math.cos(time * 0.7 + b) * 8;
+    ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
+    ctx.strokeStyle = unlocked ? 'rgba(100,60,150,0.5)' : 'rgba(60,40,80,0.2)';
+    ctx.lineWidth = unlocked ? 3 : 2;
+    ctx.setLineDash(unlocked ? [] : [8, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
   function drawMauditePaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -135,16 +148,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const ra = routes[a];
       const rb = routes[b];
       const ul = ra.route.unlocked && rb.route.unlocked;
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      const mx = (ra.x + rb.x) / 2 + Math.sin(map.time * 0.5 + a * 2) * 12;
-      const my = (ra.y + rb.y) / 2 + Math.cos(map.time * 0.7 + b) * 8;
-      ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
-      ctx.strokeStyle = ul ? 'rgba(100,60,150,0.5)' : 'rgba(60,40,80,0.2)';
-      ctx.lineWidth = ul ? 3 : 2;
-      ctx.setLineDash(ul ? [] : [8, 8]);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawMauditePath(ctx, ra, rb, ul, map.time, a, b);
     }
   }
 

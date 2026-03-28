@@ -332,8 +332,138 @@ export const MapCore = {
     return { current: 0, needed: 0, routeIndex: -1 };
   },
 
-  drawRoutes() {
+  _drawRouteGlow(r, color) {
     const ctx = this.ctx;
+    const glowRadius = 35 + Math.sin(this.time * 3) * 5;
+    const glow = ctx.createRadialGradient(r.x, r.y, 20, r.x, r.y, glowRadius);
+    glow.addColorStop(0, `${color}60`);
+    glow.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, glowRadius, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+  },
+
+  _drawRouteCircle(r, color, unlocked, isHovered) {
+    const ctx = this.ctx;
+    const lockedColor = '#1a1a2e';
+    const lockedBorderColor = '#3a3a5e';
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, 28, 0, Math.PI * 2);
+    if (unlocked) {
+      const bg = ctx.createRadialGradient(r.x - 8, r.y - 8, 0, r.x, r.y, 28);
+      bg.addColorStop(0, `${color}cc`);
+      bg.addColorStop(1, `${color}66`);
+      ctx.fillStyle = bg;
+    } else {
+      const lockedBg = ctx.createRadialGradient(r.x - 8, r.y - 8, 0, r.x, r.y, 28);
+      lockedBg.addColorStop(0, lockedColor);
+      lockedBg.addColorStop(1, '#0d0d1a');
+      ctx.fillStyle = lockedBg;
+    }
+    ctx.fill();
+    ctx.strokeStyle = unlocked ? color : lockedBorderColor;
+    ctx.lineWidth = isHovered ? 3 : 2;
+    ctx.stroke();
+  },
+
+  _drawLockedPattern(r) {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, 28, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.strokeStyle = 'rgba(100, 100, 140, 0.3)';
+    ctx.lineWidth = 1;
+    for (let i = -40; i < 40; i += 6) {
+      ctx.beginPath();
+      ctx.moveTo(r.x + i, r.y - 30);
+      ctx.lineTo(r.x + i + 20, r.y + 30);
+      ctx.stroke();
+    }
+    ctx.restore();
+  },
+
+  _drawRouteLabel(r, idx, unlocked) {
+    const ctx = this.ctx;
+    const lockedTextColor = '#4a4a6a';
+    ctx.font = 'bold 14px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = unlocked ? '#fff' : lockedTextColor;
+    ctx.fillText(idx + 1, r.x, r.y);
+    ctx.font = '10px Inter, sans-serif';
+    ctx.fillStyle = unlocked ? '#ccc' : lockedTextColor;
+    ctx.fillText(r.route.name, r.x, r.y + 40);
+  },
+
+  _drawRouteProgress(r, progress, _idx) {
+    const ctx = this.ctx;
+    const lockedBorderColor = '#3a3a5e';
+    const progressBarWidth = 50;
+    const progressBarHeight = 6;
+    const progressX = r.x - progressBarWidth / 2;
+    const progressY = r.y + 52;
+    const progressPercent = Math.min(1, progress.current / progress.needed);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.strokeStyle = lockedBorderColor;
+    ctx.lineWidth = 1;
+    this.roundRect(progressX, progressY, progressBarWidth, progressBarHeight, 3);
+    ctx.fill();
+    ctx.stroke();
+    if (progressPercent > 0) {
+      const fillWidth = progressBarWidth * progressPercent;
+      const gradient = ctx.createLinearGradient(progressX, 0, progressX + fillWidth, 0);
+      gradient.addColorStop(0, '#f59e0b');
+      gradient.addColorStop(1, '#fbbf24');
+      ctx.fillStyle = gradient;
+      this.roundRect(progressX, progressY, fillWidth, progressBarHeight, 3);
+      ctx.fill();
+    }
+    ctx.font = '9px Inter, sans-serif';
+    ctx.fillStyle = '#f59e0b';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${progress.current}/${progress.needed}`, r.x, progressY + progressBarHeight + 10);
+  },
+
+  _drawActiveIndicator(r) {
+    const ctx = this.ctx;
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, 32, 0, Math.PI * 2);
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  },
+
+  _drawLockIcon(r) {
+    const ctx = this.ctx;
+    ctx.font = '14px serif';
+    ctx.fillText('🔒', r.x, r.y);
+  },
+
+  _drawSingleRoute(r, idx, color, progress, isHovered, isActive, unlocked) {
+    if ((unlocked && isHovered) || isActive) {
+      this._drawRouteGlow(r, color);
+    }
+    this._drawRouteCircle(r, color, unlocked, isHovered);
+    if (!unlocked) {
+      this._drawLockedPattern(r);
+    }
+    this._drawRouteLabel(r, idx, unlocked);
+    if (!unlocked && progress.routeIndex === idx && progress.needed > 0) {
+      this._drawRouteProgress(r, progress, idx);
+    }
+    if (isActive) {
+      this._drawActiveIndicator(r);
+    }
+    if (!unlocked) {
+      this._drawLockIcon(r);
+    }
+  },
+
+  drawRoutes() {
     const routes = this.getRoutePositions();
     const color = this.getRegionColor();
     const progress = this.getCurrentRouteProgress();
@@ -342,100 +472,7 @@ export const MapCore = {
       const isHovered = this.hoveredLocation && this.hoveredLocation.route.id === r.route.id;
       const isActive = this._game.state.currentRoute?.id === r.route.id;
       const unlocked = r.route.unlocked;
-      const lockedColor = '#1a1a2e';
-      const lockedBorderColor = '#3a3a5e';
-      const lockedTextColor = '#4a4a6a';
-      if ((unlocked && isHovered) || isActive) {
-        const glowRadius = 35 + Math.sin(this.time * 3) * 5;
-        const glow = ctx.createRadialGradient(r.x, r.y, 20, r.x, r.y, glowRadius);
-        glow.addColorStop(0, `${color}60`);
-        glow.addColorStop(1, 'transparent');
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, glowRadius, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
-      }
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, 28, 0, Math.PI * 2);
-      if (unlocked) {
-        const bg = ctx.createRadialGradient(r.x - 8, r.y - 8, 0, r.x, r.y, 28);
-        bg.addColorStop(0, `${color}cc`);
-        bg.addColorStop(1, `${color}66`);
-        ctx.fillStyle = bg;
-      } else {
-        const lockedBg = ctx.createRadialGradient(r.x - 8, r.y - 8, 0, r.x, r.y, 28);
-        lockedBg.addColorStop(0, lockedColor);
-        lockedBg.addColorStop(1, '#0d0d1a');
-        ctx.fillStyle = lockedBg;
-      }
-      ctx.fill();
-      ctx.strokeStyle = unlocked ? color : lockedBorderColor;
-      ctx.lineWidth = isHovered ? 3 : 2;
-      ctx.stroke();
-      if (!unlocked) {
-        ctx.save();
-        ctx.clip();
-        ctx.strokeStyle = 'rgba(100, 100, 140, 0.3)';
-        ctx.lineWidth = 1;
-        for (let i = -40; i < 40; i += 6) {
-          ctx.beginPath();
-          ctx.moveTo(r.x + i, r.y - 30);
-          ctx.lineTo(r.x + i + 20, r.y + 30);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-      ctx.font = 'bold 14px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = unlocked ? '#fff' : lockedTextColor;
-      ctx.fillText(idx + 1, r.x, r.y);
-      ctx.font = '10px Inter, sans-serif';
-      ctx.fillStyle = unlocked ? '#ccc' : lockedTextColor;
-      ctx.fillText(r.route.name, r.x, r.y + 40);
-      if (!unlocked && progress.routeIndex === idx && progress.needed > 0) {
-        const progressBarWidth = 50;
-        const progressBarHeight = 6;
-        const progressX = r.x - progressBarWidth / 2;
-        const progressY = r.y + 52;
-        const progressPercent = Math.min(1, progress.current / progress.needed);
-        ctx.fillStyle = '#1a1a2e';
-        ctx.strokeStyle = lockedBorderColor;
-        ctx.lineWidth = 1;
-        this.roundRect(progressX, progressY, progressBarWidth, progressBarHeight, 3);
-        ctx.fill();
-        ctx.stroke();
-        if (progressPercent > 0) {
-          const fillWidth = progressBarWidth * progressPercent;
-          const gradient = ctx.createLinearGradient(progressX, 0, progressX + fillWidth, 0);
-          gradient.addColorStop(0, '#f59e0b');
-          gradient.addColorStop(1, '#fbbf24');
-          ctx.fillStyle = gradient;
-          this.roundRect(progressX, progressY, fillWidth, progressBarHeight, 3);
-          ctx.fill();
-        }
-        ctx.font = '9px Inter, sans-serif';
-        ctx.fillStyle = '#f59e0b';
-        ctx.textAlign = 'center';
-        ctx.fillText(
-          `${progress.current}/${progress.needed}`,
-          r.x,
-          progressY + progressBarHeight + 10,
-        );
-      }
-      if (isActive) {
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, 32, 0, Math.PI * 2);
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 4]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-      if (!unlocked) {
-        ctx.font = '14px serif';
-        ctx.fillText('🔒', r.x, r.y);
-      }
+      this._drawSingleRoute(r, idx, color, progress, isHovered, isActive, unlocked);
     }
     if (progress.routeIndex >= 0 && progress.needed > 0) {
       this.drawProgressIndicator(progress);

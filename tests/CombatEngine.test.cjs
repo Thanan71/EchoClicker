@@ -220,11 +220,11 @@ globalThis.CombatEngine = {
       xpGain *= 2;
     }
 
-    this._game.state.party.forEach((e) => {
+    for (const e of this._game.state.party) {
       if (e.isAlive()) {
         e.gainXp(Math.floor(xpGain / Math.max(1, this._game.state.party.length)));
       }
-    });
+    }
 
     const energyGain = s.enemy.level * 3 + (s.isBoss ? 100 : 0);
     this._game.state.energy += energyGain;

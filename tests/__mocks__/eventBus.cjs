@@ -24,13 +24,13 @@ const EventBus = {
     if (!this._listeners[event]) {
       return;
     }
-    this._listeners[event].forEach((cb) => {
+    for (const cb of this._listeners[event]) {
       try {
         cb(data);
-      } catch (e) {
-        console.error(`EventBus error [${event}]:`, e);
+      } catch (_e) {
+        // EventBus mock: errors silently ignored
       }
-    });
+    }
   },
 
   once(event, callback) {

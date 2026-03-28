@@ -123,6 +123,29 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawForestPath(ctx, ra, rb, unlocked, curve) {
+    const midX = (ra.x + rb.x) / 2 + curve.dx;
+    const midY = (ra.y + rb.y) / 2 + curve.dy;
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    ctx.quadraticCurveTo(midX, midY, rb.x, rb.y);
+    ctx.strokeStyle = unlocked ? 'rgba(85, 166, 48, 0.5)' : 'rgba(100, 100, 100, 0.2)';
+    ctx.lineWidth = unlocked ? 3 : 2;
+    ctx.setLineDash(unlocked ? [] : [8, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    if (unlocked) {
+      for (let t = 0.2; t < 1; t += 0.2) {
+        const px = ra.x + (rb.x - ra.x) * t + Math.sin(t * 10) * 5;
+        const py = ra.y + (rb.y - ra.y) * t + Math.cos(t * 10) * 5;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(139, 119, 101, 0.4)';
+        ctx.fill();
+      }
+    }
+  }
+
   function drawForestPaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -151,26 +174,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const rb = routes[b];
       const unlocked = ra.route.unlocked && rb.route.unlocked;
       const curve = curveOffsets[i % curveOffsets.length];
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      const midX = (ra.x + rb.x) / 2 + curve.dx;
-      const midY = (ra.y + rb.y) / 2 + curve.dy;
-      ctx.quadraticCurveTo(midX, midY, rb.x, rb.y);
-      ctx.strokeStyle = unlocked ? 'rgba(85, 166, 48, 0.5)' : 'rgba(100, 100, 100, 0.2)';
-      ctx.lineWidth = unlocked ? 3 : 2;
-      ctx.setLineDash(unlocked ? [] : [8, 8]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      if (unlocked) {
-        for (let t = 0.2; t < 1; t += 0.2) {
-          const px = ra.x + (rb.x - ra.x) * t + Math.sin(t * 10) * 5;
-          const py = ra.y + (rb.y - ra.y) * t + Math.cos(t * 10) * 5;
-          ctx.beginPath();
-          ctx.arc(px, py, 2, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(139, 119, 101, 0.4)';
-          ctx.fill();
-        }
-      }
+      drawForestPath(ctx, ra, rb, unlocked, curve);
     }
   }
 

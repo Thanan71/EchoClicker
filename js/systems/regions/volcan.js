@@ -149,6 +149,25 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawVolcanPath(ctx, ra, rb, unlocked, time, a) {
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    const mx = (ra.x + rb.x) / 2 + Math.sin(time + a) * 8;
+    const my = (ra.y + rb.y) / 2;
+    ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
+    ctx.strokeStyle = unlocked ? 'rgba(255,100,0,0.5)' : 'rgba(100,50,30,0.3)';
+    ctx.lineWidth = unlocked ? 4 : 2;
+    ctx.setLineDash(unlocked ? [] : [6, 6]);
+    ctx.stroke();
+    if (unlocked) {
+      ctx.shadowColor = 'rgba(255,60,0,0.4)';
+      ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+    ctx.setLineDash([]);
+  }
+
   function drawVolcanPaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -167,22 +186,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const ra = routes[a];
       const rb = routes[b];
       const ul = ra.route.unlocked && rb.route.unlocked;
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      const mx = (ra.x + rb.x) / 2 + Math.sin(map.time + a) * 8;
-      const my = (ra.y + rb.y) / 2;
-      ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
-      ctx.strokeStyle = ul ? 'rgba(255,100,0,0.5)' : 'rgba(100,50,30,0.3)';
-      ctx.lineWidth = ul ? 4 : 2;
-      ctx.setLineDash(ul ? [] : [6, 6]);
-      ctx.stroke();
-      if (ul) {
-        ctx.shadowColor = 'rgba(255,60,0,0.4)';
-        ctx.shadowBlur = 8;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      }
-      ctx.setLineDash([]);
+      drawVolcanPath(ctx, ra, rb, ul, map.time, a);
     }
   }
 

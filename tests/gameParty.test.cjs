@@ -92,7 +92,9 @@ globalThis.GameParty = {
     const newReserves = allEchoes.filter((e) => !partyUids.has(e.uid));
     this._state.reserves = newReserves;
 
-    this._state.party.forEach((e) => e.fullHeal());
+    for (const e of this._state.party) {
+      e.fullHeal();
+    }
 
     UI.renderParty();
     UI.toast(i18n.t('combat.optimalTeamCreated'), 'success');
@@ -308,17 +310,17 @@ describe('GameParty', () => {
 
     test('heals new party members', () => {
       GameParty.buildOptimalTeam();
-      mockState.party.forEach((e) => {
+      for (const e of mockState.party) {
         expect(e.fullHeal).toHaveBeenCalled();
-      });
+      }
     });
 
     test('moves non-selected echoes to reserves', () => {
       GameParty.buildOptimalTeam();
       const partyUids = new Set(mockState.party.map((e) => e.uid));
-      mockState.reserves.forEach((e) => {
+      for (const e of mockState.reserves) {
         expect(partyUids.has(e.uid)).toBe(false);
-      });
+      }
     });
   });
 });

@@ -74,41 +74,43 @@ export class Quest {
     return false;
   }
 
-  // Réclame les récompenses
+  _applyReward(reward) {
+    const handlers = {
+      xp: () => {
+        if (Game.state?.player) {
+          Game.state.player.xp = (Game.state.player.xp || 0) + reward.amount;
+        }
+      },
+      crystals: () => {
+        if (Game.state) {
+          Game.state.crystals = (Game.state.crystals || 0) + reward.amount;
+        }
+      },
+      energy: () => {
+        if (Game.state) {
+          Game.state.energy = (Game.state.energy || 0) + reward.amount;
+        }
+      },
+      item: () => {
+        if (Game.state?.inventory) {
+          Game.state.inventory.push(reward.item);
+        }
+      },
+    };
+    const handler = handlers[reward.type];
+    if (handler) {
+      handler();
+    }
+  }
+
   claimRewards() {
     if (!this.completed || this.claimed) {
       return false;
     }
-
     this.claimed = true;
-
-    // Appliquer les récompenses
     for (const reward of this.rewards) {
-      switch (reward.type) {
-        case 'xp':
-          if (Game.state?.player) {
-            Game.state.player.xp = (Game.state.player.xp || 0) + reward.amount;
-          }
-          break;
-        case 'crystals':
-          if (Game.state) {
-            Game.state.crystals = (Game.state.crystals || 0) + reward.amount;
-          }
-          break;
-        case 'energy':
-          if (Game.state) {
-            Game.state.energy = (Game.state.energy || 0) + reward.amount;
-          }
-          break;
-        case 'item':
-          // Logique pour ajouter un objet rare
-          if (Game.state?.inventory) {
-            Game.state.inventory.push(reward.item);
-          }
-          break;
-      }
+      this._applyReward(reward);
     }
-
     EventBus.emit('quest:rewardsClaimed', this);
     return true;
   }
@@ -370,46 +372,47 @@ export class QuestSystem {
     });
   }
 
+  _isQuestEligible(quest, category, data) {
+    if (quest.category !== category || quest.completed) {
+      return false;
+    }
+    if (quest.type === QUEST_TYPES.STORY && quest.prerequisites.length > 0) {
+      const prerequisitesMet = quest.prerequisites.every((prereqId) => {
+        const prereqQuest = this.storyQuests.find((q) => q.id === prereqId);
+        return prereqQuest?.completed;
+      });
+      if (!prerequisitesMet) {
+        return false;
+      }
+    }
+    return this._matchesCategoryFilter(quest, category, data);
+  }
+
+  _matchesCategoryFilter(quest, category, data) {
+    if (category === QUEST_CATEGORIES.CAPTURE) {
+      if (quest.id.includes('flore') && data.type !== 'FLORE') {
+        return false;
+      }
+      if (quest.id.includes('shadow') && data.type !== 'OMBRE') {
+        return false;
+      }
+    }
+    if (category === QUEST_CATEGORIES.LEVEL) {
+      if (quest.id.includes('level_10') && data.level < 10) {
+        return false;
+      }
+      if (quest.id.includes('level_20') && data.level < 20) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   // Met à jour les quêtes d'une catégorie
   updateQuests(category, data = {}) {
     const allQuests = [...this.dailyQuests, ...this.storyQuests];
-
     for (const quest of allQuests) {
-      if (quest.category === category && !quest.completed) {
-        // Vérifier les prérequis pour les quêtes d'histoire
-        if (quest.type === QUEST_TYPES.STORY && quest.prerequisites.length > 0) {
-          const prerequisitesMet = quest.prerequisites.every((prereqId) => {
-            const prereqQuest = this.storyQuests.find((q) => q.id === prereqId);
-            return prereqQuest?.completed;
-          });
-
-          if (!prerequisitesMet) {
-            continue;
-          }
-        }
-
-        // Logique spécifique par catégorie
-        switch (category) {
-          case QUEST_CATEGORIES.CAPTURE: {
-            if (quest.id.includes('flore') && data.type !== 'FLORE') {
-              continue;
-            }
-            if (quest.id.includes('shadow') && data.type !== 'OMBRE') {
-              continue;
-            }
-            break;
-          }
-          case QUEST_CATEGORIES.LEVEL: {
-            if (quest.id.includes('level_10') && data.level < 10) {
-              continue;
-            }
-            if (quest.id.includes('level_20') && data.level < 20) {
-              continue;
-            }
-            break;
-          }
-        }
-
+      if (this._isQuestEligible(quest, category, data)) {
         quest.updateProgress(1);
       }
     }
@@ -445,85 +448,73 @@ export class QuestSystem {
     return { daily: activeDaily, story: activeStory };
   }
 
+  _completeQuest(quest) {
+    quest.current = quest.target;
+    quest.completed = true;
+    EventBus.emit('quest:completed', quest);
+  }
+
+  _checkCaptureProgress(quest) {
+    if (quest.id.includes('shadow') && Game.state?.caughtEchoes) {
+      const hasShadowEcho = Array.from(Game.state.caughtEchoes).some((echoId) => {
+        const echoData = getEchoById(echoId);
+        return echoData && echoData.type === 'OMBRE';
+      });
+      if (hasShadowEcho) {
+        this._completeQuest(quest);
+      }
+    }
+  }
+
+  _checkLevelProgress(quest) {
+    if (quest.id.includes('level_20') && Game.state?.party) {
+      const hasLevel20 = Game.state.party.some((echo) => echo.level >= 20);
+      if (hasLevel20) {
+        this._completeQuest(quest);
+      }
+    }
+  }
+
+  _checkCollectionProgress(quest) {
+    if (quest.id.includes('collect_10') && Game.state?.caughtEchoes) {
+      if (Game.state.caughtEchoes.size >= 10) {
+        this._completeQuest(quest);
+      }
+    }
+  }
+
+  _checkBossProgress(quest) {
+    if (!Game.state?.regions) {
+      return;
+    }
+    if (quest.id.includes('boss_forest')) {
+      const region = Game.state.regions.find((r) => r.id === 'foret');
+      if (region?.bossDefeated) {
+        this._completeQuest(quest);
+      }
+    }
+    if (quest.id.includes('boss_cave')) {
+      const region = Game.state.regions.find((r) => r.id === 'foret_maudite');
+      if (region?.bossDefeated) {
+        this._completeQuest(quest);
+      }
+    }
+  }
+
   // Vérifie si le progrès existe déjà pour une quête
   checkExistingProgress(quest) {
     if (quest.completed) {
       return;
     }
-
-    // Vérifier selon la catégorie de la quête
-    switch (quest.category) {
-      case QUEST_CATEGORIES.CAPTURE:
-        // Vérifier si le joueur a déjà capturé un Echo du type requis
-        if (quest.id.includes('shadow')) {
-          // Vérifier si un Echo de type Ombre a été capturé
-          if (Game.state?.caughtEchoes) {
-            const hasShadowEcho = Array.from(Game.state.caughtEchoes).some((echoId) => {
-              const echoData = getEchoById(echoId);
-              return echoData && echoData.type === 'OMBRE';
-            });
-
-            if (hasShadowEcho) {
-              quest.current = quest.target;
-              quest.completed = true;
-              EventBus.emit('quest:completed', quest);
-            }
-          }
-        }
-        break;
-
-      case QUEST_CATEGORIES.LEVEL:
-        // Vérifier si le joueur a déjà un Echo au niveau requis
-        if (quest.id.includes('level_20')) {
-          if (Game.state?.party) {
-            const hasLevel20 = Game.state.party.some((echo) => echo.level >= 20);
-            if (hasLevel20) {
-              quest.current = quest.target;
-              quest.completed = true;
-              EventBus.emit('quest:completed', quest);
-            }
-          }
-        }
-        break;
-
-      case QUEST_CATEGORIES.COLLECTION:
-        // Vérifier si le joueur a déjà capturé le nombre requis d'Échos différents
-        if (quest.id.includes('collect_10')) {
-          if (Game.state?.caughtEchoes) {
-            const uniqueCount = Game.state.caughtEchoes.size;
-            if (uniqueCount >= 10) {
-              quest.current = quest.target;
-              quest.completed = true;
-              EventBus.emit('quest:completed', quest);
-            }
-          }
-        }
-        break;
-
-      case QUEST_CATEGORIES.BOSS: {
-        // Vérifier si le boss a déjà été vaincu
-        if (quest.id.includes('boss_forest')) {
-          if (Game.state?.regions) {
-            const region = Game.state.regions.find((r) => r.id === 'foret');
-            if (region?.bossDefeated) {
-              quest.current = quest.target;
-              quest.completed = true;
-              EventBus.emit('quest:completed', quest);
-            }
-          }
-        }
-        if (quest.id.includes('boss_cave')) {
-          if (Game.state?.regions) {
-            const region = Game.state.regions.find((r) => r.id === 'foret_maudite');
-            if (region?.bossDefeated) {
-              quest.current = quest.target;
-              quest.completed = true;
-              EventBus.emit('quest:completed', quest);
-            }
-          }
-        }
-        break;
-      }
+    const categoryCheckers = {
+      [QUEST_CATEGORIES.CAPTURE]: () => this._checkCaptureProgress(quest),
+      [QUEST_CATEGORIES.LEVEL]: () => this._checkLevelProgress(quest),
+      [QUEST_CATEGORIES.COLLECTION]: () => this._checkCollectionProgress(quest),
+      [QUEST_CATEGORIES.BOSS]: () => this._checkBossProgress(quest),
+    };
+    const checker = categoryCheckers[quest.category];
+    if (checker) {
+      checker();
     }
   }
 

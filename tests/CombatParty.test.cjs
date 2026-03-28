@@ -26,8 +26,12 @@ globalThis.CombatParty = {
   },
 
   healParty() {
-    this._game.state.party.forEach((e) => e.fullHeal());
-    this._game.state.reserves.forEach((e) => e.fullHeal());
+    for (const e of this._game.state.party) {
+      e.fullHeal();
+    }
+    for (const e of this._game.state.reserves) {
+      e.fullHeal();
+    }
   },
 };
 

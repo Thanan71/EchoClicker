@@ -78,8 +78,12 @@ export const UICore = {
 
   switchTab(tabId) {
     this.currentTab = tabId;
-    document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach((t) => t.classList.remove('active'));
+    for (const b of document.querySelectorAll('.nav-btn')) {
+      b.classList.remove('active');
+    }
+    for (const t of document.querySelectorAll('.tab-content')) {
+      t.classList.remove('active');
+    }
     document.querySelector(`.nav-btn[data-tab="${tabId}"]`)?.classList.add('active');
     document.getElementById(`tab-${tabId}`)?.classList.add('active');
     const renderers = {

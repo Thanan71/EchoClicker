@@ -152,26 +152,26 @@ globalThis.I18n = class I18n {
   }
 
   notifyListeners() {
-    this.listeners.forEach((callback) => {
+    for (const callback of this.listeners) {
       try {
         callback(this.currentLang);
       } catch (_error) {}
-    });
+    }
   }
 
   translateDOM() {
-    document.querySelectorAll('[data-i18n]').forEach((element) => {
+    for (const element of document.querySelectorAll('[data-i18n]')) {
       const key = element.getAttribute('data-i18n');
       element.textContent = this.t(key);
-    });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+    }
+    for (const element of document.querySelectorAll('[data-i18n-placeholder]')) {
       const key = element.getAttribute('data-i18n-placeholder');
       element.placeholder = this.t(key);
-    });
-    document.querySelectorAll('[data-i18n-title]').forEach((element) => {
+    }
+    for (const element of document.querySelectorAll('[data-i18n-title]')) {
       const key = element.getAttribute('data-i18n-title');
       element.title = this.t(key);
-    });
+    }
   }
 };
 

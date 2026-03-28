@@ -100,6 +100,49 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
     }
   },
 
+  _getCaptureRate(wildEcho) {
+    let rate = Utils.calculateCaptureRate(
+      wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
+      wildEcho.hp,
+      wildEcho.maxHp,
+    );
+    if (this.state.boosts.capture) {
+      rate *= 2;
+    }
+    return rate;
+  },
+
+  _handleCaptureSuccess(wildEcho, captured, isAuto) {
+    this.state.totalCaptures++;
+    if (!this.state.caughtEchoes.has(wildEcho.id)) {
+      this.state.uniqueCaptures++;
+    }
+    this.state.caughtEchoes.add(wildEcho.id);
+    if (wildEcho.isPrimordial) {
+      this.state.primordialCount++;
+    }
+    if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
+      this.addToParty(captured);
+    } else {
+      this.state.reserves.push(captured);
+    }
+    EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
+    EventBus.emit('echo:captured', captured);
+    const prefix = wildEcho.isPrimordial ? 'PRIMORDIAL ! ' : '';
+    const key = isAuto ? 'combat.autoCaptureSuccess' : 'combat.captureSuccess';
+    UI.addLog('capture', i18n.t(key, { name: prefix + wildEcho.name }));
+    UI.toast(i18n.t(key, { name: prefix + wildEcho.name }), 'success');
+  },
+
+  _handleCaptureFailure(wildEcho, isAuto) {
+    if (!isAuto) {
+      UI.addLog('info', i18n.t('combat.captureFailed'));
+      UI.toast(i18n.t('combat.captureFailed'), 'error');
+    } else {
+      UI.addLog('info', i18n.t('combat.autoCaptureFailed', { name: wildEcho.name }));
+    }
+  },
+
   captureEcho(wildEcho, options = {}) {
     const { isAuto = false } = options;
     if (!this.spendLinks(1)) {
@@ -110,47 +153,13 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
       }
       return false;
     }
-    let rate = Utils.calculateCaptureRate(
-      wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
-      wildEcho.hp,
-      wildEcho.maxHp,
-    );
-    if (this.state.boosts.capture) {
-      rate *= 2;
-    }
+    const rate = this._getCaptureRate(wildEcho);
     if (Utils.chance(rate)) {
       const captured = new Echo(getEchoById(wildEcho.id), wildEcho.level, wildEcho.isPrimordial);
-      this.state.totalCaptures++;
-      if (!this.state.caughtEchoes.has(wildEcho.id)) {
-        this.state.uniqueCaptures++;
-      }
-      this.state.caughtEchoes.add(wildEcho.id);
-      if (wildEcho.isPrimordial) {
-        this.state.primordialCount++;
-      }
-      if (this.state.party.length < GAME_CONFIG.MAX_PARTY) {
-        this.addToParty(captured);
-      } else {
-        this.state.reserves.push(captured);
-      }
-      EventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo: captured });
-      EventBus.emit('echo:captured', captured);
-      const prefix = wildEcho.isPrimordial ? 'PRIMORDIAL ! ' : '';
-      if (isAuto) {
-        UI.addLog('capture', i18n.t('combat.autoCaptureSuccess', { name: prefix + wildEcho.name }));
-        UI.toast(i18n.t('combat.autoCaptureSuccess', { name: prefix + wildEcho.name }), 'success');
-      } else {
-        UI.addLog('capture', i18n.t('combat.captureSuccess', { name: prefix + wildEcho.name }));
-        UI.toast(i18n.t('combat.captureSuccess', { name: prefix + wildEcho.name }), 'success');
-      }
+      this._handleCaptureSuccess(wildEcho, captured, isAuto);
       return true;
     }
-    if (!isAuto) {
-      UI.addLog('info', i18n.t('combat.captureFailed'));
-      UI.toast(i18n.t('combat.captureFailed'), 'error');
-    } else {
-      UI.addLog('info', i18n.t('combat.autoCaptureFailed', { name: wildEcho.name }));
-    }
+    this._handleCaptureFailure(wildEcho, isAuto);
     return false;
   },
 

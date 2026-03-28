@@ -380,10 +380,10 @@ describe('EventBus', () => {
         EventBus.on('bulk', h);
       }
       EventBus.emit('bulk', 'data');
-      handlers.forEach((h) => {
+      for (const h of handlers) {
         expect(h).toHaveBeenCalledTimes(1);
         expect(h).toHaveBeenCalledWith('data');
-      });
+      }
     });
   });
 
@@ -409,17 +409,17 @@ describe('EventBus', () => {
         'SAVE_COMPLETE',
         'TICK',
       ];
-      expectedKeys.forEach((key) => {
+      for (const key of expectedKeys) {
         expect(GAME_EVENTS).toHaveProperty(key);
         expect(typeof GAME_EVENTS[key]).toBe('string');
-      });
+      }
     });
 
     test('les valeurs sont des strings non vides', () => {
-      Object.entries(GAME_EVENTS).forEach(([_key, value]) => {
+      for (const [_key, value] of Object.entries(GAME_EVENTS)) {
         expect(value.length).toBeGreaterThan(0);
         expect(typeof value).toBe('string');
-      });
+      }
     });
 
     test('les valeurs sont uniques', () => {

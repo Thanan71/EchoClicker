@@ -60,38 +60,43 @@ globalThis.Quest = class Quest {
     return false;
   }
 
+  _applyReward(reward) {
+    const handlers = {
+      xp: () => {
+        if (Game.state?.player) {
+          Game.state.player.xp = (Game.state.player.xp || 0) + reward.amount;
+        }
+      },
+      crystals: () => {
+        if (Game.state) {
+          Game.state.crystals = (Game.state.crystals || 0) + reward.amount;
+        }
+      },
+      energy: () => {
+        if (Game.state) {
+          Game.state.energy = (Game.state.energy || 0) + reward.amount;
+        }
+      },
+      item: () => {
+        if (Game.state?.inventory) {
+          Game.state.inventory.push(reward.item);
+        }
+      },
+    };
+    const handler = handlers[reward.type];
+    if (handler) {
+      handler();
+    }
+  }
+
   claimRewards() {
     if (!this.completed || this.claimed) {
       return false;
     }
-
     this.claimed = true;
-
-    this.rewards.forEach((reward) => {
-      switch (reward.type) {
-        case 'xp':
-          if (Game.state?.player) {
-            Game.state.player.xp = (Game.state.player.xp || 0) + reward.amount;
-          }
-          break;
-        case 'crystals':
-          if (Game.state) {
-            Game.state.crystals = (Game.state.crystals || 0) + reward.amount;
-          }
-          break;
-        case 'energy':
-          if (Game.state) {
-            Game.state.energy = (Game.state.energy || 0) + reward.amount;
-          }
-          break;
-        case 'item':
-          if (Game.state?.inventory) {
-            Game.state.inventory.push(reward.item);
-          }
-          break;
-      }
-    });
-
+    for (const reward of this.rewards) {
+      this._applyReward(reward);
+    }
     EventBus.emit('quest:rewardsClaimed', this);
     return true;
   }
@@ -180,7 +185,7 @@ globalThis.QuestSystem = class QuestSystem {
   updateQuests(category, _data = {}) {
     const allQuests = [...this.dailyQuests, ...this.storyQuests];
 
-    allQuests.forEach((quest) => {
+    for (const quest of allQuests) {
       if (quest.category === category && !quest.completed) {
         if (quest.type === 'story' && quest.prerequisites.length > 0) {
           const prerequisitesMet = quest.prerequisites.every((prereqId) => {
@@ -189,13 +194,13 @@ globalThis.QuestSystem = class QuestSystem {
           });
 
           if (!prerequisitesMet) {
-            return;
+            continue;
           }
         }
 
         quest.updateProgress(1);
       }
-    });
+    }
   }
 
   getActiveQuests() {

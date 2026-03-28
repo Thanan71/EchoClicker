@@ -174,6 +174,36 @@ import { RegionRegistry } from './RegionRegistry.js';
     }
   }
 
+  function drawArcanePath(ctx, ra, rb, unlocked, time, a, b) {
+    ctx.beginPath();
+    ctx.moveTo(ra.x, ra.y);
+    const mx = (ra.x + rb.x) / 2 + Math.sin(time + a * 1.5) * 15;
+    const my = (ra.y + rb.y) / 2 + Math.cos(time * 1.2 + b) * 10;
+    ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
+    const al = unlocked ? 0.5 + Math.sin(time * 2 + a) * 0.15 : 0.2;
+    ctx.strokeStyle = unlocked ? `rgba(168,85,247,${al})` : 'rgba(80,50,120,0.2)';
+    ctx.lineWidth = unlocked ? 3 : 2;
+    ctx.setLineDash(unlocked ? [] : [6, 6]);
+    ctx.stroke();
+    if (unlocked) {
+      ctx.shadowColor = 'rgba(168,85,247,0.3)';
+      ctx.shadowBlur = 6;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+    ctx.setLineDash([]);
+    if (unlocked) {
+      for (let t = 0.25; t < 1; t += 0.25) {
+        const px = ra.x + (rb.x - ra.x) * t;
+        const py = ra.y + (rb.y - ra.y) * t + Math.sin(time * 2 + t * 10) * 3;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,170,255,${0.4 + Math.sin(time * 3 + t * 5) * 0.2})`;
+        ctx.fill();
+      }
+    }
+  }
+
   function drawArcanePaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
@@ -191,33 +221,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       const ra = routes[a];
       const rb = routes[b];
       const ul = ra.route.unlocked && rb.route.unlocked;
-      ctx.beginPath();
-      ctx.moveTo(ra.x, ra.y);
-      const mx = (ra.x + rb.x) / 2 + Math.sin(map.time + a * 1.5) * 15;
-      const my = (ra.y + rb.y) / 2 + Math.cos(map.time * 1.2 + b) * 10;
-      ctx.quadraticCurveTo(mx, my, rb.x, rb.y);
-      const al = ul ? 0.5 + Math.sin(map.time * 2 + a) * 0.15 : 0.2;
-      ctx.strokeStyle = ul ? `rgba(168,85,247,${al})` : 'rgba(80,50,120,0.2)';
-      ctx.lineWidth = ul ? 3 : 2;
-      ctx.setLineDash(ul ? [] : [6, 6]);
-      ctx.stroke();
-      if (ul) {
-        ctx.shadowColor = 'rgba(168,85,247,0.3)';
-        ctx.shadowBlur = 6;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      }
-      ctx.setLineDash([]);
-      if (ul) {
-        for (let t = 0.25; t < 1; t += 0.25) {
-          const px = ra.x + (rb.x - ra.x) * t;
-          const py = ra.y + (rb.y - ra.y) * t + Math.sin(map.time * 2 + t * 10) * 3;
-          ctx.beginPath();
-          ctx.arc(px, py, 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200,170,255,${0.4 + Math.sin(map.time * 3 + t * 5) * 0.2})`;
-          ctx.fill();
-        }
-      }
+      drawArcanePath(ctx, ra, rb, ul, map.time, a, b);
     }
   }
 

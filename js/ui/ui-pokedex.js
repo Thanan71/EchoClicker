@@ -13,33 +13,33 @@ export const UIPokedex = {
     const typeFiltersContainer = document.getElementById('type-filters');
     if (typeFiltersContainer) {
       let typeHtml = `<button class="type-filter-btn active" data-type="all">${i18n.t('pokedex.typeAll')}</button>`;
-      Object.entries(TYPES).forEach(([key, type]) => {
+      for (const [key, type] of Object.entries(TYPES)) {
         typeHtml += `<button class="type-filter-btn" data-type="${key}" style="--type-color:${type.color}">${type.emoji} ${type.name}</button>`;
-      });
+      }
       typeFiltersContainer.innerHTML = typeHtml;
     }
 
-    document.querySelectorAll('.filter-btn[data-filter]').forEach((btn) => {
+    for (const btn of document.querySelectorAll('.filter-btn[data-filter]')) {
       btn.addEventListener('click', () => {
-        document
-          .querySelectorAll('.filter-btn[data-filter]')
-          .forEach((b) => b.classList.remove('active'));
+        for (const b of document.querySelectorAll('.filter-btn[data-filter]')) {
+          b.classList.remove('active');
+        }
         btn.classList.add('active');
         this.pokedexStatusFilter = btn.dataset.filter;
         this.renderPokedex();
       });
-    });
+    }
 
-    document.querySelectorAll('.type-filter-btn[data-type]').forEach((btn) => {
+    for (const btn of document.querySelectorAll('.type-filter-btn[data-type]')) {
       btn.addEventListener('click', () => {
-        document
-          .querySelectorAll('.type-filter-btn[data-type]')
-          .forEach((b) => b.classList.remove('active'));
+        for (const b of document.querySelectorAll('.type-filter-btn[data-type]')) {
+          b.classList.remove('active');
+        }
         btn.classList.add('active');
         this.pokedexTypeFilter = btn.dataset.type === 'all' ? null : btn.dataset.type;
         this.renderPokedex();
       });
-    });
+    }
   },
 
   renderPokedex() {
@@ -73,7 +73,7 @@ export const UIPokedex = {
     }
 
     let html = '';
-    filteredEchoes.forEach((echo) => {
+    for (const echo of filteredEchoes) {
       const caught = Game.state.caughtEchoes.has(echo.id);
       const seen = Game.state.seenEchoes.has(echo.id);
       const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
@@ -89,7 +89,7 @@ export const UIPokedex = {
         html += '<div class="pokedex-echo-name">???</div>';
       }
       html += '</div>';
-    });
+    }
 
     if (filteredEchoes.length === 0) {
       html = `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">${i18n.t('pokedex.noResults')}</div>`;
@@ -98,12 +98,12 @@ export const UIPokedex = {
     grid.innerHTML = html;
 
     // Add event listeners to pokedex cards
-    document.querySelectorAll('.pokedex-card[data-echo-id]').forEach((card) => {
+    for (const card of document.querySelectorAll('.pokedex-card[data-echo-id]')) {
       card.addEventListener('click', () => {
         const echoId = Number.parseInt(card.dataset.echoId);
         this.showPokedexDetail(echoId);
       });
-    });
+    }
   },
 
   showPokedexDetail(id) {

@@ -20,11 +20,11 @@ const UI = {
 
   /** Reset de tous les mocks */
   reset() {
-    Object.keys(this).forEach((key) => {
+    for (const key of Object.keys(this)) {
       if (typeof this[key] === 'function' && this[key].mockClear) {
         this[key].mockClear();
       }
-    });
+    }
   },
 };
 

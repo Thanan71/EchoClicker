@@ -166,45 +166,29 @@ export const NarrativeSystem = {
   // Lore débloquable
   // ============================================
 
+  processLoreEntries(loreEntries, stats, state) {
+    for (const lore of loreEntries) {
+      if (this.state.unlockedLore.has(lore.id)) {
+        continue;
+      }
+      if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
+        this.unlockLore(lore);
+      }
+    }
+  },
+
   checkLoreUnlocks() {
     const Game = getGame();
     const stats = Game.getStats();
     const state = Game.state;
 
-    // Verifier le lore du monde
-    for (const lore of NARRATIVE_DATA.lore.world) {
-      if (this.state.unlockedLore.has(lore.id)) {
-        continue;
-      }
+    this.processLoreEntries(NARRATIVE_DATA.lore.world, stats, state);
 
-      if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
-        this.unlockLore(lore);
-      }
+    for (const lores of Object.values(NARRATIVE_DATA.lore.regions)) {
+      this.processLoreEntries(lores, stats, state);
     }
 
-    // Verifier le lore des regions
-    for (const [_regionId, lores] of Object.entries(NARRATIVE_DATA.lore.regions)) {
-      for (const lore of lores) {
-        if (this.state.unlockedLore.has(lore.id)) {
-          continue;
-        }
-
-        if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
-          this.unlockLore(lore);
-        }
-      }
-    }
-
-    // Verifier le lore des Echoes
-    for (const lore of NARRATIVE_DATA.lore.echoes) {
-      if (this.state.unlockedLore.has(lore.id)) {
-        continue;
-      }
-
-      if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
-        this.unlockLore(lore);
-      }
-    }
+    this.processLoreEntries(NARRATIVE_DATA.lore.echoes, stats, state);
   },
 
   checkUnlockCondition(condition, stats, state) {
@@ -317,6 +301,30 @@ export const NarrativeSystem = {
   // Logbook
   // ============================================
 
+  _collectFromArrayLore(entries) {
+    return entries.filter((lore) => this.state.unlockedLore.has(lore.id));
+  },
+
+  _collectFromRegionLore(regionCategories) {
+    const unlocked = [];
+    for (const regionLores of Object.values(regionCategories)) {
+      unlocked.push(...this._collectFromArrayLore(regionLores));
+    }
+    return unlocked;
+  },
+
+  _collectUnlockedLore() {
+    const unlockedLoreEntries = [];
+    for (const category of Object.values(NARRATIVE_DATA.lore)) {
+      if (Array.isArray(category)) {
+        unlockedLoreEntries.push(...this._collectFromArrayLore(category));
+      } else {
+        unlockedLoreEntries.push(...this._collectFromRegionLore(category));
+      }
+    }
+    return unlockedLoreEntries;
+  },
+
   getLogbookData() {
     const guide = NARRATIVE_DATA.guide;
     const allDialogues = [
@@ -326,25 +334,7 @@ export const NarrativeSystem = {
     ];
 
     const seenGuideDialogues = allDialogues.filter((d) => this.state.seenDialogues.has(d.id));
-
-    const unlockedLoreEntries = [];
-    for (const category of Object.values(NARRATIVE_DATA.lore)) {
-      if (Array.isArray(category)) {
-        for (const lore of category) {
-          if (this.state.unlockedLore.has(lore.id)) {
-            unlockedLoreEntries.push(lore);
-          }
-        }
-      } else {
-        for (const regionLores of Object.values(category)) {
-          for (const lore of regionLores) {
-            if (this.state.unlockedLore.has(lore.id)) {
-              unlockedLoreEntries.push(lore);
-            }
-          }
-        }
-      }
-    }
+    const unlockedLoreEntries = this._collectUnlockedLore();
 
     return {
       guideDialogues: seenGuideDialogues,
