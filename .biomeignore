@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build / dist
+dist/
+build/
+
+# Coverage
+coverage/
+
+# Assets (binary files, no linting needed)
+assets/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# Generated
+*.min.js
+*.min.css
+
+# Data files (large JSON, not source code)
+echoesData_*.json
