@@ -166,12 +166,33 @@ export const UICore = {
     showSettings() {
         this.showModal('\u2699\uFE0F ' + i18n.t('settings.title'), `
             <div style="display:flex;flex-direction:column;gap:12px">
-                <button class="btn-combat" onclick="SaveSystem.save();UI.toast(i18n.t('notifications.saved'),'success');UI.closeModal()">\u{1F4BE} ${i18n.t('buttons.save')}</button>
-                <button class="btn-combat secondary" onclick="Game.exportSave();UI.closeModal()">\u{1F4E4} ${i18n.t('settings.export')}</button>
-                <button class="btn-combat secondary" onclick="Game.importSave();UI.closeModal()">\u{1F4E5} ${i18n.t('settings.import')}</button>
-                <button class="btn-combat" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)" onclick="Game.resetGame()">\u{1F5D1}\uFE0F ${i18n.t('settings.reset')}</button>
+                <button class="btn-combat settings-save-btn">\u{1F4BE} ${i18n.t('buttons.save')}</button>
+                <button class="btn-combat secondary settings-export-btn">\u{1F4E4} ${i18n.t('settings.export')}</button>
+                <button class="btn-combat secondary settings-import-btn">\u{1F4E5} ${i18n.t('settings.import')}</button>
+                <button class="btn-combat settings-reset-btn" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)">\u{1F5D1}\uFE0F ${i18n.t('settings.reset')}</button>
             </div>
         `);
+
+        // Add event listeners to settings buttons
+        document.querySelector('.settings-save-btn')?.addEventListener('click', () => {
+            SaveSystem.save();
+            this.toast(i18n.t('notifications.saved'), 'success');
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-export-btn')?.addEventListener('click', () => {
+            Game.exportSave();
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-import-btn')?.addEventListener('click', () => {
+            Game.importSave();
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-reset-btn')?.addEventListener('click', () => {
+            Game.resetGame();
+        });
     },
 
     spawnParticle(event, text) {

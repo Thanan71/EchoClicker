@@ -7,7 +7,7 @@ import { ECHOES_DB } from '../data/echoesData.js';
 import { getEchoById } from '../data/constants.js';
 import { getEchoImagePathById } from './ui-core.js';
 import { Game } from '../game.js';
-import { UI } from './ui.js';
+import { UI } from '../ui.js';
 
 export const UIPokedex = {
     initPokedexFilters() {
@@ -64,7 +64,7 @@ export const UIPokedex = {
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePathById(echo.id);
-            html += `<div class="pokedex-card ${status}" onclick="UI.showPokedexDetail(${echo.id})">`;
+            html += `<div class="pokedex-card ${status}" data-echo-id="${echo.id}">`;
             html += `<span class="pokedex-number">#${echo.id.toString().padStart(3,'0')}</span>`;
             html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain">` : '\u2753'}</div>`;
             if (seen) {
@@ -81,6 +81,14 @@ export const UIPokedex = {
         }
 
         grid.innerHTML = html;
+
+        // Add event listeners to pokedex cards
+        document.querySelectorAll('.pokedex-card[data-echo-id]').forEach(card => {
+            card.addEventListener('click', () => {
+                const echoId = parseInt(card.dataset.echoId);
+                this.showPokedexDetail(echoId);
+            });
+        });
     },
 
     showPokedexDetail(id) {

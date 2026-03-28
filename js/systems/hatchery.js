@@ -9,6 +9,7 @@ import { GAME_EVENTS } from '../core/eventBus.js';
 import { Echo } from '../core/echo.js';
 import { getEchoById } from '../data/constants.js';
 import { Utils } from '../data/utils.js';
+import { getEchoImagePath } from '../ui/ui-core.js';
 
 export const Hatchery = {
     slots: [],
@@ -51,7 +52,7 @@ export const Hatchery = {
         party.forEach(echo => {
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePath(echo);
-            html += `<div class="party-slot" onclick="Hatchery.setParent(${slotIndex}, '${echo.uid}')">
+            html += `<div class="party-slot" data-echo-uid="${echo.uid}">
                 <div class="party-echo-icon">${echo.isPrimordial ? '⭐' : ''}<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain"></div>
                 <div class="party-echo-name">${echo.name}</div>
                 <div class="party-echo-level">Nv. ${echo.level}</div>
@@ -60,6 +61,14 @@ export const Hatchery = {
         html += '</div>';
 
         this._ui.showModal(i18n.t('hatchery.selectParent'), html);
+
+        // Add event listeners to party slots
+        document.querySelectorAll('.party-slot[data-echo-uid]').forEach(slot => {
+            slot.addEventListener('click', () => {
+                const uid = slot.dataset.echoUid;
+                this.setParent(slotIndex, uid);
+            });
+        });
     },
 
     setParent(slotIndex, uid) {
@@ -282,7 +291,7 @@ export const Hatchery = {
                     const progress = Math.min(100, (elapsed / slot.duration) * 100);
                     const isReady = remaining <= 0;
 
-                    html += `<div class="incubator-slot occupied" onclick="Hatchery.collectEgg(${i})">
+                    html += `<div class="incubator-slot occupied" data-slot-index="${i}">
                         <div class="incubator-egg">${isReady ? '✨' : '🥚'}</div>
                         <div class="incubator-progress">
                             <div class="progress-bar" style="width:${progress}%"></div>
@@ -296,6 +305,14 @@ export const Hatchery = {
                 }
             });
             slotsEl.innerHTML = html;
+
+            // Add event listeners to incubator slots
+            document.querySelectorAll('.incubator-slot[data-slot-index]').forEach(slot => {
+                slot.addEventListener('click', () => {
+                    const index = parseInt(slot.dataset.slotIndex);
+                    this.collectEgg(index);
+                });
+            });
         }
 
         // Mettre à jour les parents

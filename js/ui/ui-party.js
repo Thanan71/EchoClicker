@@ -21,7 +21,7 @@ export const UIParty = {
                 const active = Combat.activeEcho?.uid === echo.uid;
                 const hpPct = echo.getHpPercent();
                 const imgHTML = createEchoImageHTML(echo, 48);
-                ph += `<div class="party-slot ${active?'active-combat':''}" onclick="UI.showEchoDetail('${echo.uid}')">`;
+                ph += `<div class="party-slot ${active?'active-combat':''}" data-echo-uid="${echo.uid}">`;
                 if (echo.isPrimordial) ph += '<span class="primordial-badge">\u2B50</span>';
                 ph += `<div class="party-echo-icon">${imgHTML}</div>`;
                 ph += `<div class="party-echo-name">${echo.name}</div>`;
@@ -37,10 +37,26 @@ export const UIParty = {
         let rh = '';
         Game.state.reserves.forEach(echo => {
             const imgHTML = createEchoImageHTML(echo, 32);
-            rh += `<div class="reserve-slot" onclick="UI.showEchoDetail('${echo.uid}')" title="${echo.name} ${i18n.t('party.level', { level: echo.level })}">${echo.isPrimordial?'\u2B50':''}${imgHTML}</div>`;
+            rh += `<div class="reserve-slot" data-echo-uid="${echo.uid}" title="${echo.name} ${i18n.t('party.level', { level: echo.level })}">${echo.isPrimordial?'\u2B50':''}${imgHTML}</div>`;
         });
         if (!Game.state.reserves.length) rh = `<div style="color:var(--text-muted);padding:20px;text-align:center">${i18n.t('party.noReserve')}</div>`;
         rg.innerHTML = rh;
+
+        // Add event listeners to party slots
+        document.querySelectorAll('.party-slot[data-echo-uid]').forEach(slot => {
+            slot.addEventListener('click', () => {
+                const uid = slot.dataset.echoUid;
+                this.showEchoDetail(uid);
+            });
+        });
+
+        // Add event listeners to reserve slots
+        document.querySelectorAll('.reserve-slot[data-echo-uid]').forEach(slot => {
+            slot.addEventListener('click', () => {
+                const uid = slot.dataset.echoUid;
+                this.showEchoDetail(uid);
+            });
+        });
     },
 
     showEchoDetail(uid) {
@@ -76,9 +92,25 @@ export const UIParty = {
         }
 
         const footer = inParty
-            ? `<button class="btn-combat secondary" onclick="Game.removeFromParty('${uid}');UI.closeModal();UI.renderParty()">\u{1F4E6} ${i18n.t('party.reserveBtn')}</button>`
-            : `<button class="btn-combat" onclick="Game.moveToParty('${uid}');UI.closeModal();UI.renderParty()">\u{1F465} ${i18n.t('party.partyBtn')}</button>`;
+            ? `<button class="btn-combat secondary party-action-btn" data-action="remove" data-uid="${uid}">\u{1F4E6} ${i18n.t('party.reserveBtn')}</button>`
+            : `<button class="btn-combat party-action-btn" data-action="add" data-uid="${uid}">\u{1F465} ${i18n.t('party.partyBtn')}</button>`;
 
         this.showModal(echo.name, html, footer);
+
+        // Add event listener to action button
+        const actionBtn = document.querySelector('.party-action-btn');
+        if (actionBtn) {
+            actionBtn.addEventListener('click', () => {
+                const action = actionBtn.dataset.action;
+                const actionUid = actionBtn.dataset.uid;
+                if (action === 'remove') {
+                    Game.removeFromParty(actionUid);
+                } else {
+                    Game.moveToParty(actionUid);
+                }
+                this.closeModal();
+                this.renderParty();
+            });
+        }
     },
 };
