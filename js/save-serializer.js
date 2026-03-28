@@ -46,7 +46,8 @@ const SaveSerializer = {
                 inventory: state.inventory || [],
                 mine: systemState.mine,
                 hatchery: systemState.hatchery,
-                quests: systemState.quests
+                quests: systemState.quests,
+                narrative: systemState.narrative
             }
         };
     },
@@ -63,7 +64,7 @@ const SaveSerializer = {
             if (!data?.s) return false;
 
             const s = data.s;
-            const { Mine, Hatchery, questSystem, Echo } = systemHandlers;
+            const { Mine, Hatchery, questSystem, NarrativeSystem, Echo } = systemHandlers;
 
             state.energy = s.energy ?? 0;
             state.links = s.links ?? 5;
@@ -102,6 +103,11 @@ const SaveSerializer = {
             // Charger les quetes
             if (s.quests) {
                 questSystem.fromJSON(s.quests);
+            }
+
+            // Charger la narration
+            if (s.narrative) {
+                NarrativeSystem.fromJSON(s.narrative);
             }
 
             return true;
