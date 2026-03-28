@@ -5,8 +5,8 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
-const { Game, createMockGameState } = require('./__mocks__/game.cjs');
+const { EventBus } = require('./__mocks__/eventBus.cjs');
+const { Game } = require('./__mocks__/game.cjs');
 const { UI } = require('./__mocks__/ui.cjs');
 require('./helpers/setup.cjs');
 

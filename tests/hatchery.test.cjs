@@ -3,7 +3,7 @@
 // ============================================
 
 const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
-const { Game, createMockGameState } = require('./__mocks__/game.cjs');
+const { Game } = require('./__mocks__/game.cjs');
 const { UI } = require('./__mocks__/ui.cjs');
 
 // Mocks globaux

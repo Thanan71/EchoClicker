@@ -83,7 +83,7 @@ export class Quest {
     this.claimed = true;
 
     // Appliquer les récompenses
-    this.rewards.forEach((reward) => {
+    for (const reward of this.rewards) {
       switch (reward.type) {
         case 'xp':
           if (Game.state?.player) {
@@ -107,7 +107,7 @@ export class Quest {
           }
           break;
       }
-    });
+    }
 
     EventBus.emit('quest:rewardsClaimed', this);
     return true;
@@ -374,7 +374,7 @@ export class QuestSystem {
   updateQuests(category, data = {}) {
     const allQuests = [...this.dailyQuests, ...this.storyQuests];
 
-    allQuests.forEach((quest) => {
+    for (const quest of allQuests) {
       if (quest.category === category && !quest.completed) {
         // Vérifier les prérequis pour les quêtes d'histoire
         if (quest.type === QUEST_TYPES.STORY && quest.prerequisites.length > 0) {
@@ -384,7 +384,7 @@ export class QuestSystem {
           });
 
           if (!prerequisitesMet) {
-            return;
+            continue;
           }
         }
 
@@ -392,19 +392,19 @@ export class QuestSystem {
         switch (category) {
           case QUEST_CATEGORIES.CAPTURE: {
             if (quest.id.includes('flore') && data.type !== 'FLORE') {
-              return;
+              continue;
             }
             if (quest.id.includes('shadow') && data.type !== 'OMBRE') {
-              return;
+              continue;
             }
             break;
           }
           case QUEST_CATEGORIES.LEVEL: {
             if (quest.id.includes('level_10') && data.level < 10) {
-              return;
+              continue;
             }
             if (quest.id.includes('level_20') && data.level < 20) {
-              return;
+              continue;
             }
             break;
           }
@@ -412,7 +412,7 @@ export class QuestSystem {
 
         quest.updateProgress(1);
       }
-    });
+    }
   }
 
   // Récupère toutes les quêtes actives
@@ -581,12 +581,12 @@ export class QuestSystem {
         .filter((q) => q !== null);
 
       // Ajouter les quêtes d'histoire manquantes (nouvelles quêtes ajoutées après la sauvegarde)
-      STORY_QUEST_TEMPLATES.forEach((template) => {
+      for (const template of STORY_QUEST_TEMPLATES) {
         const existingQuest = this.storyQuests.find((q) => q.id === template.id);
         if (!existingQuest) {
           this.storyQuests.push(new Quest(template));
         }
-      });
+      }
     } else {
       // Pas de sauvegarde de quêtes d'histoire, initialiser depuis les templates
       this.loadStoryQuests();

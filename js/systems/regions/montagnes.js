@@ -74,7 +74,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.35, y: 0.7, s: 1, c: '#74b9ff' },
       { x: 0.65, y: 0.65, s: 1.2, c: '#a855f7' },
     ];
-    crystals.forEach((c) => {
+    for (const c of crystals) {
       const cx = c.x * map.width;
       const cy = c.y * map.height;
       const size = 12 * c.s;
@@ -99,7 +99,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.strokeStyle = 'rgba(255,255,255,0.5)';
       ctx.lineWidth = 1;
       ctx.stroke();
-    });
+    }
   }
 
   function drawSnowfall(map) {
@@ -147,9 +147,9 @@ import { RegionRegistry } from './RegionRegistry.js';
       [1, 4],
       [2, 4],
     ];
-    paths.forEach(([a, b]) => {
+    for (const [a, b] of paths) {
       if (!routes[a] || !routes[b]) {
-        return;
+        continue;
       }
       const ra = routes[a];
       const rb = routes[b];
@@ -162,7 +162,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.setLineDash(unlocked ? [] : [6, 6]);
       ctx.stroke();
       ctx.setLineDash([]);
-    });
+    }
   }
 
   RegionRegistry.register('montagnes', (map) => {

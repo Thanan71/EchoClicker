@@ -2,8 +2,8 @@
 // Tests unitaires - CombatParty (js/combat/CombatParty.js)
 // ============================================
 
-const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
-const { Game, createMockGameState } = require('./__mocks__/game.cjs');
+const { EventBus } = require('./__mocks__/eventBus.cjs');
+const { Game } = require('./__mocks__/game.cjs');
 const { UI } = require('./__mocks__/ui.cjs');
 
 // Définir CombatParty directement

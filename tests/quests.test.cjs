@@ -2,8 +2,8 @@
 // Tests unitaires - QuestSystem (js/systems/quests.js)
 // ============================================
 
-const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
-const { Game, createMockGameState } = require('./__mocks__/game.cjs');
+const { EventBus } = require('./__mocks__/eventBus.cjs');
+const { Game } = require('./__mocks__/game.cjs');
 
 // Mocks globaux
 globalThis.EventBus = EventBus;

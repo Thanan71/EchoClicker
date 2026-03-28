@@ -82,11 +82,9 @@ globalThis.I18n = class I18n {
 
   async setLanguage(lang) {
     try {
-      if (!this.translations[lang]) {
-        lang = this.fallbackLang;
-      }
-      this.currentLang = lang;
-      localStorage.setItem('echoclicker_lang', lang);
+      const selectedLang = this.translations[lang] ? lang : this.fallbackLang;
+      this.currentLang = selectedLang;
+      localStorage.setItem('echoclicker_lang', selectedLang);
       this.notifyListeners();
       return true;
     } catch (_error) {

@@ -24,14 +24,14 @@ export const UIAchievements = {
     }
 
     let html = '';
-    ACHIEVEMENTS.forEach((ach) => {
+    for (const ach of ACHIEVEMENTS) {
       const done = Game.state.achievements.has(ach.id);
       html += `<div class="achievement-card ${done ? 'unlocked' : 'locked'}">
                 <div class="achievement-icon">${ach.icon}</div>
                 <div class="achievement-info"><div class="achievement-name">${ach.name}</div><div class="achievement-desc">${ach.desc}</div></div>
                 ${done ? '<span style="color:var(--accent-gold)">\u2705</span>' : ''}
             </div>`;
-    });
+    }
     list.innerHTML = html;
   },
 };

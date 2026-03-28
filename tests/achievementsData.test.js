@@ -4,17 +4,18 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 // Charger le fichier et extraire ACHIEVEMENTS
 const achCode = fs.readFileSync(path.join(__dirname, '../js/data/achievements-data.js'), 'utf-8');
 
 // Créer un contexte pour capturer ACHIEVEMENTS
-const context = {};
+const sandbox = { context: { exports: {} } };
 const codeToEval = achCode
   .replace(/\bexport\b\s*/g, '')
   .replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
-eval(codeToEval);
-const ACHIEVEMENTS = context.ACHIEVEMENTS;
+vm.runInNewContext(codeToEval, sandbox);
+const ACHIEVEMENTS = sandbox.context.ACHIEVEMENTS;
 
 describe('achievements-data.js - Succès', () => {
   test('ACHIEVEMENTS est un tableau non vide', () => {

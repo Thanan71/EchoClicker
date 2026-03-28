@@ -74,9 +74,9 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.25, y: 0.1, s: 0.8 },
       { x: 0.75, y: 0.08, s: 0.9 },
     ];
-    trees.forEach((t) => {
+    for (const t of trees) {
       drawTree(map, t.x * map.width, t.y * map.height, 40 * t.s);
-    });
+    }
   }
 
   function drawGlowMushrooms(map) {
@@ -87,7 +87,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.45, y: 0.6 },
       { x: 0.7, y: 0.55 },
     ];
-    mushrooms.forEach((m) => {
+    for (const m of mushrooms) {
       const mx = m.x * map.width;
       const my = m.y * map.height;
       const pulse = 0.7 + Math.sin(map.time * 3 + mx) * 0.3;
@@ -104,7 +104,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.arc(mx, my, 6, Math.PI, 0);
       ctx.fillStyle = `rgba(200, 255, 150, ${pulse})`;
       ctx.fill();
-    });
+    }
   }
 
   function drawFireflies(map) {
@@ -142,9 +142,10 @@ import { RegionRegistry } from './RegionRegistry.js';
       { dx: 20, dy: 10 },
       { dx: -10, dy: -20 },
     ];
-    paths.forEach(([a, b], i) => {
+    for (let i = 0; i < paths.length; i++) {
+      const [a, b] = paths[i];
       if (!routes[a] || !routes[b]) {
-        return;
+        continue;
       }
       const ra = routes[a];
       const rb = routes[b];
@@ -170,7 +171,7 @@ import { RegionRegistry } from './RegionRegistry.js';
           ctx.fill();
         }
       }
-    });
+    }
   }
 
   RegionRegistry.register('foret', (map) => {

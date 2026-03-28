@@ -325,9 +325,8 @@ describe('EventBus', () => {
 
     test('listener auto-desinscrivant pendant emit', () => {
       const results = [];
-      let unsub;
       EventBus.on('evt', () => results.push('A'));
-      unsub = EventBus.on('evt', () => {
+      const unsub = EventBus.on('evt', () => {
         results.push('B');
         unsub();
       });

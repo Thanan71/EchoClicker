@@ -4,20 +4,21 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 // Charger le module et extraire les variables
 const configPath = path.join(__dirname, '..', 'js', 'data', 'game-config.js');
 const configCode = fs.readFileSync(configPath, 'utf-8');
 
 // Créer un contexte pour capturer les variables
-const context = {};
+const sandbox = { context: { exports: {} } };
 const codeToEval = configCode
   .replace(/\bexport\b\s*/g, '')
   .replace('const GAME_CONFIG', 'context.GAME_CONFIG')
   .replace('const SHOP', 'context.SHOP');
-eval(codeToEval);
-const GAME_CONFIG = context.GAME_CONFIG;
-const SHOP = context.SHOP;
+vm.runInNewContext(codeToEval, sandbox);
+const GAME_CONFIG = sandbox.context.GAME_CONFIG;
+const SHOP = sandbox.context.SHOP;
 
 describe('GAME_CONFIG', () => {
   test('is defined and is an object', () => {

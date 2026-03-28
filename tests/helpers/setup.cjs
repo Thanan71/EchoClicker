@@ -67,6 +67,7 @@ globalThis.GAME_EVENTS = {
 
 // Charger echo.js et exposer Echo/generateWildEcho sur globalThis
 const fs = require('node:fs');
+const vm = require('node:vm');
 const echoPath = require('node:path').join(__dirname, '..', '..', 'js', 'core', 'echo.js');
 const echoCode = fs.readFileSync(echoPath, 'utf-8');
 // Remplacer les imports/exports ES6 et patcher la classe et la fonction
@@ -83,7 +84,7 @@ const patchedCode = echoCode
     /^export function generateWildEcho\(/m,
     'globalThis.generateWildEcho = function generateWildEcho(',
   );
-eval(patchedCode);
+vm.runInNewContext(patchedCode, globalThis);
 
 module.exports = {
   EventBus,

@@ -39,10 +39,10 @@ export const UIParty = {
     pg.innerHTML = ph;
 
     let rh = '';
-    Game.state.reserves.forEach((echo) => {
+    for (const echo of Game.state.reserves) {
       const imgHTML = createEchoImageHTML(echo, 32);
       rh += `<div class="reserve-slot" data-echo-uid="${echo.uid}" title="${echo.name} ${i18n.t('party.level', { level: echo.level })}">${echo.isPrimordial ? '\u2B50' : ''}${imgHTML}</div>`;
-    });
+    }
     if (!Game.state.reserves.length) {
       rh = `<div style="color:var(--text-muted);padding:20px;text-align:center">${i18n.t('party.noReserve')}</div>`;
     }

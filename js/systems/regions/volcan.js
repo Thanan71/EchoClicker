@@ -80,14 +80,15 @@ import { RegionRegistry } from './RegionRegistry.js';
 
   function drawVolcanRocks(map) {
     const ctx = map.ctx;
-    [
+    const rocks = [
       { x: 0.1, y: 0.55, s: 18 },
       { x: 0.85, y: 0.6, s: 22 },
       { x: 0.15, y: 0.8, s: 15 },
       { x: 0.8, y: 0.75, s: 20 },
       { x: 0.6, y: 0.85, s: 16 },
       { x: 0.4, y: 0.7, s: 14 },
-    ].forEach((r) => {
+    ];
+    for (const r of rocks) {
       const rx = r.x * map.width;
       const ry = r.y * map.height;
       ctx.beginPath();
@@ -105,7 +106,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.strokeStyle = 'rgba(255,80,0,0.3)';
       ctx.lineWidth = 1;
       ctx.stroke();
-    });
+    }
   }
 
   function drawEmbers(map) {
@@ -151,16 +152,17 @@ import { RegionRegistry } from './RegionRegistry.js';
   function drawVolcanPaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
-    [
+    const paths = [
       [0, 1],
       [1, 2],
       [0, 3],
       [3, 4],
       [2, 3],
       [1, 4],
-    ].forEach(([a, b]) => {
+    ];
+    for (const [a, b] of paths) {
       if (!routes[a] || !routes[b]) {
-        return;
+        continue;
       }
       const ra = routes[a];
       const rb = routes[b];
@@ -181,7 +183,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         ctx.shadowBlur = 0;
       }
       ctx.setLineDash([]);
-    });
+    }
   }
 
   RegionRegistry.register('volcan', (map) => {

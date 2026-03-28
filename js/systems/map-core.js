@@ -238,7 +238,7 @@ export const MapCore = {
 
   drawParticles() {
     const ctx = this.ctx;
-    this.particles.forEach((p) => {
+    for (const p of this.particles) {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
       ctx.fillStyle =
@@ -247,7 +247,7 @@ export const MapCore = {
           .toString(16)
           .padStart(2, '0');
       ctx.fill();
-    });
+    }
   },
 
   // ============================================
@@ -337,7 +337,8 @@ export const MapCore = {
     const routes = this.getRoutePositions();
     const color = this.getRegionColor();
     const progress = this.getCurrentRouteProgress();
-    routes.forEach((r, idx) => {
+    for (let idx = 0; idx < routes.length; idx++) {
+      const r = routes[idx];
       const isHovered = this.hoveredLocation && this.hoveredLocation.route.id === r.route.id;
       const isActive = this._game.state.currentRoute?.id === r.route.id;
       const unlocked = r.route.unlocked;
@@ -435,7 +436,7 @@ export const MapCore = {
         ctx.font = '14px serif';
         ctx.fillText('🔒', r.x, r.y);
       }
-    });
+    }
     if (progress.routeIndex >= 0 && progress.needed > 0) {
       this.drawProgressIndicator(progress);
     }

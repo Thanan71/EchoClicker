@@ -27,7 +27,9 @@ const EventBus = {
     this._listeners[event].forEach((cb) => {
       try {
         cb(data);
-      } catch (_e) {}
+      } catch (e) {
+        console.error(`EventBus error [${event}]:`, e);
+      }
     });
   },
 

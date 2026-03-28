@@ -6,14 +6,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function loadScript(filePath) {
-  const code = fs.readFileSync(filePath, 'utf-8');
-  const context = {};
-  vm.createContext(context);
-  vm.runInContext(code, context);
-  return context;
-}
-
 // Charger echoesData pour avoir ECHOES_DB
 const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
 const echoesContext = { ECHOES_DB: undefined };

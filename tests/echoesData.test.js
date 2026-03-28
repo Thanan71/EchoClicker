@@ -6,14 +6,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-function loadScript(filePath) {
-  const code = fs.readFileSync(filePath, 'utf-8');
-  const context = {};
-  vm.createContext(context);
-  vm.runInContext(code, context);
-  return context;
-}
-
 // Charger types.js pour avoir TYPES et RARITY_COLORS
 const typesCode = fs.readFileSync(path.join(__dirname, '../js/data/types.js'), 'utf-8');
 const typesContext = { TYPES: undefined, RARITY_COLORS: undefined, TYPE_CHART: undefined };

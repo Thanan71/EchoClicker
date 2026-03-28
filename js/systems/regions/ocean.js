@@ -72,7 +72,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.7, y: 0.3, dir: -1, speed: 0.4, size: 10, color: '#ffd93d' },
       { x: 0.5, y: 0.6, dir: 1, speed: 0.25, size: 14, color: '#6bcb77' },
     ];
-    fish.forEach((f) => {
+    for (const f of fish) {
       const fx = ((f.x * map.width + map.time * f.speed * 50 * f.dir) % (map.width + 40)) - 20;
       const fy = f.y * map.height + Math.sin(map.time * 2 + fx * 0.01) * 15;
       ctx.save();
@@ -93,7 +93,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.fillStyle = '#fff';
       ctx.fill();
       ctx.restore();
-    });
+    }
   }
 
   function drawCorals(map) {
@@ -104,7 +104,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.65, y: 0.88, type: 'branch' },
       { x: 0.85, y: 0.92, type: 'fan' },
     ];
-    corals.forEach((c) => {
+    for (const c of corals) {
       const cx = c.x * map.width;
       const cy = c.y * map.height;
       if (c.type === 'branch') {
@@ -129,7 +129,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         ctx.fillStyle = '#be2edd';
         ctx.fill();
       }
-    });
+    }
   }
 
   function drawOceanPaths(map) {
@@ -143,9 +143,9 @@ import { RegionRegistry } from './RegionRegistry.js';
       [1, 3],
       [2, 4],
     ];
-    paths.forEach(([a, b]) => {
+    for (const [a, b] of paths) {
       if (!routes[a] || !routes[b]) {
-        return;
+        continue;
       }
       const ra = routes[a];
       const rb = routes[b];
@@ -162,7 +162,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.setLineDash(unlocked ? [] : [6, 6]);
       ctx.stroke();
       ctx.setLineDash([]);
-    });
+    }
   }
 
   RegionRegistry.register('ocean', (map) => {

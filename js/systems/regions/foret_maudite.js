@@ -41,7 +41,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       { x: 0.3, y: 0.08, s: 0.8 },
       { x: 0.72, y: 0.1, s: 0.85 },
     ];
-    trees.forEach((t) => {
+    for (const t of trees) {
       const tx = t.x * map.width;
       const ty = t.y * map.height;
       const s = 35 * t.s;
@@ -66,18 +66,19 @@ import { RegionRegistry } from './RegionRegistry.js';
       glow.addColorStop(1, 'transparent');
       ctx.fillStyle = glow;
       ctx.fillRect(tx - s, ty - s, s * 2, s * 2);
-    });
+    }
   }
 
   function drawMushrooms(map) {
     const ctx = map.ctx;
-    [
+    const mushrooms = [
       { x: 0.25, y: 0.5 },
       { x: 0.55, y: 0.45 },
       { x: 0.4, y: 0.7 },
       { x: 0.7, y: 0.6 },
       { x: 0.15, y: 0.4 },
-    ].forEach((m) => {
+    ];
+    for (const m of mushrooms) {
       const mx = m.x * map.width;
       const my = m.y * map.height;
       const pulse = 0.6 + Math.sin(map.time * 2.5 + mx) * 0.4;
@@ -97,7 +98,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.arc(mx + 4, my - 2, 1, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(150,255,100,${pulse * 0.8})`;
       ctx.fill();
-    });
+    }
   }
 
   function drawMist(map) {
@@ -119,16 +120,17 @@ import { RegionRegistry } from './RegionRegistry.js';
   function drawMauditePaths(map) {
     const ctx = map.ctx;
     const routes = map.getRoutePositions();
-    [
+    const paths = [
       [0, 1],
       [1, 2],
       [0, 3],
       [3, 4],
       [2, 3],
       [1, 4],
-    ].forEach(([a, b]) => {
+    ];
+    for (const [a, b] of paths) {
       if (!routes[a] || !routes[b]) {
-        return;
+        continue;
       }
       const ra = routes[a];
       const rb = routes[b];
@@ -143,7 +145,7 @@ import { RegionRegistry } from './RegionRegistry.js';
       ctx.setLineDash(ul ? [] : [8, 8]);
       ctx.stroke();
       ctx.setLineDash([]);
-    });
+    }
   }
 
   RegionRegistry.register('foret_maudite', (map) => {
