@@ -105,7 +105,14 @@
     "addToParty": "Add to party",
     "removeFromParty": "Remove from party",
     "primordial": "Primordial",
-    "addToReserve": "Add to reserve"
+    "addToReserve": "Add to reserve",
+    "levelLabel": "Level",
+    "vacant": "Empty",
+    "noReserve": "No Echo in reserves",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Evolves into {name} at level {level}",
+    "reserveBtn": "Reserve",
+    "partyBtn": "Party"
   },
   "pokedex": {
     "title": "Echo Logbook",
@@ -201,36 +208,126 @@
     "saveBtn": "💾 Save"
   },
   "echoes": {
-    "1": { "name": "Mossling", "desc": "A small ball of moss that rolls aimlessly." },
-    "2": { "name": "Leafrix", "desc": "A magical sprout that pulses with green light." },
-    "3": { "name": "Sylvaguard", "desc": "A living tree whose roots sing." },
-    "4": { "name": "Glimmerfly", "desc": "A magical firefly that lights up the paths." },
-    "5": { "name": "Luminara", "desc": "A light fairy that dances between rays." },
-    "6": { "name": "Leafwind", "desc": "A living leaf that flies with the wind." },
-    "7": { "name": "Cyclorath", "desc": "A conscious whirlwind that sucks everything in." },
-    "8": { "name": "Shroomlet", "desc": "A mushroom that releases sleep-inducing spores." },
-    "9": { "name": "Toxishroom", "desc": "A giant mushroom whose spores are toxic." },
-    "10": { "name": "Songbird", "desc": "A bird whose song heals wounds." },
-    "11": { "name": "Shadelet", "desc": "A mini shadow that mimics others' movements." },
-    "12": { "name": "Droplet", "desc": "A magical drop of water that never evaporates." },
-    "13": { "name": "Frostlet", "desc": "A snowflake that never melts." },
-    "14": { "name": "Glaceling", "desc": "A living block of ice that freezes everything it touches." },
-    "15": { "name": "Glacius", "desc": "An ice dragon that creates blizzards." },
-    "16": { "name": "Crystaline", "desc": "A small crystal that sings when touched." },
-    "17": { "name": "Crystalame", "desc": "A pure crystal entity that refracts light." },
-    "18": { "name": "Diamantor", "desc": "A nearly indestructible diamond golem." },
-    "19": { "name": "Sparklet", "desc": "A conscious spark that runs on crystals." },
-    "20": { "name": "Thunderex", "desc": "A lightning beast that strikes like thunder." },
-    "21": { "name": "Rocklett", "desc": "An animated rock that rolls down slopes." },
-    "22": { "name": "Mountagnor", "desc": "A living mountain whose steps shake the earth." },
-    "23": { "name": "Wavelet", "desc": "A small conscious wave that plays in currents." },
-    "24": { "name": "Tsunamis", "desc": "A titanic wave that devours everything." },
-    "25": { "name": "Jellyshock", "desc": "A luminous jellyfish that electrocutes its prey." },
-    "26": { "name": "Krakos", "desc": "An ancient kraken that rules the abyss." },
-    "27": { "name": "Coralblade", "desc": "A living coral that creates protective reefs." },
-    "28": { "name": "Sirenlet", "desc": "A playful siren that attracts sailors." },
-    "29": { "name": "Arcanette", "desc": "An arcane spark that appears during rituals." },
-    "30": { "name": "Chaoslet", "desc": "A mini chaos vortex that distorts the air." }
+    "1": {
+      "name": "Mossling",
+      "desc": "A small ball of moss that rolls aimlessly."
+    },
+    "2": {
+      "name": "Leafrix",
+      "desc": "A magical sprout that pulses with green light."
+    },
+    "3": {
+      "name": "Sylvaguard",
+      "desc": "A living tree whose roots sing."
+    },
+    "4": {
+      "name": "Glimmerfly",
+      "desc": "A magical firefly that lights up the paths."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "A light fairy that dances between rays."
+    },
+    "6": {
+      "name": "Leafwind",
+      "desc": "A living leaf that flies with the wind."
+    },
+    "7": {
+      "name": "Cyclorath",
+      "desc": "A conscious whirlwind that sucks everything in."
+    },
+    "8": {
+      "name": "Shroomlet",
+      "desc": "A mushroom that releases sleep-inducing spores."
+    },
+    "9": {
+      "name": "Toxishroom",
+      "desc": "A giant mushroom whose spores are toxic."
+    },
+    "10": {
+      "name": "Songbird",
+      "desc": "A bird whose song heals wounds."
+    },
+    "11": {
+      "name": "Shadelet",
+      "desc": "A mini shadow that mimics others' movements."
+    },
+    "12": {
+      "name": "Droplet",
+      "desc": "A magical drop of water that never evaporates."
+    },
+    "13": {
+      "name": "Frostlet",
+      "desc": "A snowflake that never melts."
+    },
+    "14": {
+      "name": "Glaceling",
+      "desc": "A living block of ice that freezes everything it touches."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "An ice dragon that creates blizzards."
+    },
+    "16": {
+      "name": "Crystaline",
+      "desc": "A small crystal that sings when touched."
+    },
+    "17": {
+      "name": "Crystalame",
+      "desc": "A pure crystal entity that refracts light."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "A nearly indestructible diamond golem."
+    },
+    "19": {
+      "name": "Sparklet",
+      "desc": "A conscious spark that runs on crystals."
+    },
+    "20": {
+      "name": "Thunderex",
+      "desc": "A lightning beast that strikes like thunder."
+    },
+    "21": {
+      "name": "Rocklett",
+      "desc": "An animated rock that rolls down slopes."
+    },
+    "22": {
+      "name": "Mountagnor",
+      "desc": "A living mountain whose steps shake the earth."
+    },
+    "23": {
+      "name": "Wavelet",
+      "desc": "A small conscious wave that plays in currents."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "A titanic wave that devours everything."
+    },
+    "25": {
+      "name": "Jellyshock",
+      "desc": "A luminous jellyfish that electrocutes its prey."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "An ancient kraken that rules the abyss."
+    },
+    "27": {
+      "name": "Coralblade",
+      "desc": "A living coral that creates protective reefs."
+    },
+    "28": {
+      "name": "Sirenlet",
+      "desc": "A playful siren that attracts sailors."
+    },
+    "29": {
+      "name": "Arcanette",
+      "desc": "An arcane spark that appears during rituals."
+    },
+    "30": {
+      "name": "Chaoslet",
+      "desc": "A mini chaos vortex that distorts the air."
+    }
   },
   "types": {
     "FLORE": "Flora",

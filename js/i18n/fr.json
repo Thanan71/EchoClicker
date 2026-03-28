@@ -106,7 +106,14 @@
     "addToParty": "Ajouter à l'équipe",
     "removeFromParty": "Retirer de l'équipe",
     "primordial": "Primordial",
-    "addToReserve": "Ajouter aux réserves"
+    "addToReserve": "Ajouter aux réserves",
+    "levelLabel": "Niveau",
+    "vacant": "Vide",
+    "noReserve": "Aucun Echo en réserve",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Évolue en {name} au niveau {level}",
+    "reserveBtn": "Réserve",
+    "partyBtn": "Équipe"
   },
   "pokedex": {
     "title": "Logbook des Échos",
@@ -202,36 +209,126 @@
     "saveBtn": "💾 Sauvegarder"
   },
   "echoes": {
-    "1": { "name": "Boulette", "desc": "Une petite boule de mousse qui roule sans but." },
-    "2": { "name": "Feuillame", "desc": "Une pousse magique qui pulse de lumière verte." },
-    "3": { "name": "Sylvegard", "desc": "Un arbre vivant dont les racines chantent." },
-    "4": { "name": "Luciolette", "desc": "Une luciole magique qui éclaire les sentiers." },
-    "5": { "name": "Luminara", "desc": "Une fée de lumière qui danse entre les rayons." },
-    "6": { "name": "Mouchrel", "desc": "Une feuille vivante qui vole au gré du vent." },
-    "7": { "name": "Tourbillame", "desc": "Un tourbillon conscient qui aspire tout." },
-    "8": { "name": "Champignou", "desc": "Un champignon qui libère des spores endormantes." },
-    "9": { "name": "Toxishroom", "desc": "Un champignon géant dont les spores sont toxiques." },
-    "10": { "name": "Rossignuit", "desc": "Un oiseau dont le chant apaise les blessures." },
-    "11": { "name": "OmbretteMini", "desc": "Une mini-ombre qui imite les mouvements des autres." },
-    "12": { "name": "Gouttette", "desc": "Une goutte d'eau magique qui ne s'évapore jamais." },
-    "13": { "name": "Gelurette", "desc": "Un flocon de neige qui ne fond jamais." },
-    "14": { "name": "Gelacine", "desc": "Un bloc de glace vivant qui gèle tout contact." },
-    "15": { "name": "Glacius", "desc": "Un dragon de glace qui crée des blizzards." },
-    "16": { "name": "Cristaline", "desc": "Un petit cristal qui chante quand on le touche." },
-    "17": { "name": "Cristalame", "desc": "Une entité de cristaux purs qui réfracte la lumière." },
-    "18": { "name": "Diamantor", "desc": "Un golem de diamant quasi indestructible." },
-    "19": { "name": "Etincelle", "desc": "Une étincelle consciente qui court sur les cristaux." },
-    "20": { "name": "Foudrex", "desc": "Un fauve de foudre qui frappe comme la foudre." },
-    "21": { "name": "Rochette", "desc": "Un rocher animé qui dévale les pentes." },
-    "22": { "name": "Montagnor", "desc": "Une montagne vivante dont les pas font trembler la terre." },
-    "23": { "name": "Vaguelette", "desc": "Une petite vague consciente qui joue dans les courants." },
-    "24": { "name": "Tsunamis", "desc": "Une vague titanesque qui dévore tout." },
-    "25": { "name": "Medusoir", "desc": "Une méduse lumineuse qui électrise ses proies." },
-    "26": { "name": "Krakos", "desc": "Un kraken ancien qui règne sur les abysses." },
-    "27": { "name": "Corailame", "desc": "Un corail vivant qui crée des récifs protecteurs." },
-    "28": { "name": "Sirenette", "desc": "Une sirène espiègle qui attire les marins." },
-    "29": { "name": "Arcanette", "desc": "Une étincelle arcanique qui apparaît lors des rituels." },
-    "30": { "name": "ChaotineMini", "desc": "Un mini vortex de chaos qui déforme l'air." }
+    "1": {
+      "name": "Boulette",
+      "desc": "Une petite boule de mousse qui roule sans but."
+    },
+    "2": {
+      "name": "Feuillame",
+      "desc": "Une pousse magique qui pulse de lumière verte."
+    },
+    "3": {
+      "name": "Sylvegard",
+      "desc": "Un arbre vivant dont les racines chantent."
+    },
+    "4": {
+      "name": "Luciolette",
+      "desc": "Une luciole magique qui éclaire les sentiers."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "Une fée de lumière qui danse entre les rayons."
+    },
+    "6": {
+      "name": "Mouchrel",
+      "desc": "Une feuille vivante qui vole au gré du vent."
+    },
+    "7": {
+      "name": "Tourbillame",
+      "desc": "Un tourbillon conscient qui aspire tout."
+    },
+    "8": {
+      "name": "Champignou",
+      "desc": "Un champignon qui libère des spores endormantes."
+    },
+    "9": {
+      "name": "Toxishroom",
+      "desc": "Un champignon géant dont les spores sont toxiques."
+    },
+    "10": {
+      "name": "Rossignuit",
+      "desc": "Un oiseau dont le chant apaise les blessures."
+    },
+    "11": {
+      "name": "OmbretteMini",
+      "desc": "Une mini-ombre qui imite les mouvements des autres."
+    },
+    "12": {
+      "name": "Gouttette",
+      "desc": "Une goutte d'eau magique qui ne s'évapore jamais."
+    },
+    "13": {
+      "name": "Gelurette",
+      "desc": "Un flocon de neige qui ne fond jamais."
+    },
+    "14": {
+      "name": "Gelacine",
+      "desc": "Un bloc de glace vivant qui gèle tout contact."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "Un dragon de glace qui crée des blizzards."
+    },
+    "16": {
+      "name": "Cristaline",
+      "desc": "Un petit cristal qui chante quand on le touche."
+    },
+    "17": {
+      "name": "Cristalame",
+      "desc": "Une entité de cristaux purs qui réfracte la lumière."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "Un golem de diamant quasi indestructible."
+    },
+    "19": {
+      "name": "Etincelle",
+      "desc": "Une étincelle consciente qui court sur les cristaux."
+    },
+    "20": {
+      "name": "Foudrex",
+      "desc": "Un fauve de foudre qui frappe comme la foudre."
+    },
+    "21": {
+      "name": "Rochette",
+      "desc": "Un rocher animé qui dévale les pentes."
+    },
+    "22": {
+      "name": "Montagnor",
+      "desc": "Une montagne vivante dont les pas font trembler la terre."
+    },
+    "23": {
+      "name": "Vaguelette",
+      "desc": "Une petite vague consciente qui joue dans les courants."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "Une vague titanesque qui dévore tout."
+    },
+    "25": {
+      "name": "Medusoir",
+      "desc": "Une méduse lumineuse qui électrise ses proies."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "Un kraken ancien qui règne sur les abysses."
+    },
+    "27": {
+      "name": "Corailame",
+      "desc": "Un corail vivant qui crée des récifs protecteurs."
+    },
+    "28": {
+      "name": "Sirenette",
+      "desc": "Une sirène espiègle qui attire les marins."
+    },
+    "29": {
+      "name": "Arcanette",
+      "desc": "Une étincelle arcanique qui apparaît lors des rituels."
+    },
+    "30": {
+      "name": "ChaotineMini",
+      "desc": "Un mini vortex de chaos qui déforme l'air."
+    }
   },
   "types": {
     "FLORE": "Flore",

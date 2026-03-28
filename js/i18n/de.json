@@ -105,7 +105,14 @@
     "addToParty": "Zum Team hinzufügen",
     "removeFromParty": "Aus dem Team entfernen",
     "primordial": "Primordial",
-    "addToReserve": "Zu Reserven hinzufügen"
+    "addToReserve": "Zu Reserven hinzufügen",
+    "levelLabel": "Stufe",
+    "vacant": "Leer",
+    "noReserve": "Kein Echo in Reserven",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Entwickelt sich zu {name} auf Stufe {level}",
+    "reserveBtn": "Reserve",
+    "partyBtn": "Team"
   },
   "pokedex": {
     "title": "Echo-Logbuch",
@@ -200,36 +207,126 @@
     "import": "Importieren"
   },
   "echoes": {
-    "1": { "name": "Moosling", "desc": "Eine kleine Mooskugel, die ziellos rollt." },
-    "2": { "name": "Blattflamme", "desc": "Ein magischer Spross, der mit grünem Licht pulsiert." },
-    "3": { "name": "Waldwächter", "desc": "Ein lebender Baum, dessen Wurzeln singen." },
-    "4": { "name": "Glühwürmchen", "desc": "Ein magisches Glühwürmchen, das die Wege beleuchtet." },
-    "5": { "name": "Luminara", "desc": "Eine Lichtfee, die zwischen den Strahlen tanzt." },
-    "6": { "name": "Blätterwind", "desc": "Ein lebendes Blatt, das im Wind fliegt." },
-    "7": { "name": "Wirbelsturm", "desc": "Ein bewusster Wirbelsturm, der alles einsaugt." },
-    "8": { "name": "Pilzling", "desc": "Ein Pilz, der einschlafende Sporen freisetzt." },
-    "9": { "name": "Toxipilz", "desc": "Ein riesiger Pilz, dessen Sporen giftig sind." },
-    "10": { "name": "Nachtigall", "desc": "Ein Vogel, dessen Gesang Wunden heilt." },
-    "11": { "name": "Schattling", "desc": "Ein Mini-Schatten, der die Bewegungen anderer nachahmt." },
-    "12": { "name": "Tropfeling", "desc": "Ein magischer Wassertropfen, der nie verdunstet." },
-    "13": { "name": "Flockling", "desc": "Eine Schneeflocke, die nie schmilzt." },
-    "14": { "name": "Frostling", "desc": "Ein lebender Eisblock, der jeden Kontakt einfriert." },
-    "15": { "name": "Glacius", "desc": "Ein Eisdrache, der Schneestürme erzeugt." },
-    "16": { "name": "Kristalline", "desc": "Ein kleiner Kristall, der beim Berühren singt." },
-    "17": { "name": "Kristallklinge", "desc": "Ein reines Kristallwesen, das Licht bricht." },
-    "18": { "name": "Diamantor", "desc": "Ein nahezu unzerstörbarer Diamantgolem." },
-    "19": { "name": "Fünkchen", "desc": "Ein bewusster Funke, der auf Kristallen läuft." },
-    "20": { "name": "Donnerex", "desc": "Ein Blitzwesen, das wie der Donner zuschlägt." },
-    "21": { "name": "Steinling", "desc": "Ein animierter Fels, der Hänge hinunterrollt." },
-    "22": { "name": "Bergnor", "desc": "Ein lebender Berg, dessen Schritte die Erde erbeben lassen." },
-    "23": { "name": "Wellchen", "desc": "Eine kleine bewusste Welle, die in Strömungen spielt." },
-    "24": { "name": "Tsunamis", "desc": "Eine titanische Welle, die alles verschlingt." },
-    "25": { "name": "Quallenschock", "desc": "Eine leuchtende Qualle, die ihre Beute elektrokiert." },
-    "26": { "name": "Krakos", "desc": "Ein alter Krake, der über den Abgrund herrscht." },
-    "27": { "name": "Korallenklinge", "desc": "Eine lebende Koralle, die schützende Riffe bildet." },
-    "28": { "name": "Sirenette", "desc": "Eine verspielte Sirene, die Seeleute anlockt." },
-    "29": { "name": "Arkanette", "desc": "Ein arkaner Funke, der während Ritualen erscheint." },
-    "30": { "name": "Chaosling", "desc": "Ein Mini-Chaoswirbel, der die Luft verzerrt." }
+    "1": {
+      "name": "Moosling",
+      "desc": "Eine kleine Mooskugel, die ziellos rollt."
+    },
+    "2": {
+      "name": "Blattflamme",
+      "desc": "Ein magischer Spross, der mit grünem Licht pulsiert."
+    },
+    "3": {
+      "name": "Waldwächter",
+      "desc": "Ein lebender Baum, dessen Wurzeln singen."
+    },
+    "4": {
+      "name": "Glühwürmchen",
+      "desc": "Ein magisches Glühwürmchen, das die Wege beleuchtet."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "Eine Lichtfee, die zwischen den Strahlen tanzt."
+    },
+    "6": {
+      "name": "Blätterwind",
+      "desc": "Ein lebendes Blatt, das im Wind fliegt."
+    },
+    "7": {
+      "name": "Wirbelsturm",
+      "desc": "Ein bewusster Wirbelsturm, der alles einsaugt."
+    },
+    "8": {
+      "name": "Pilzling",
+      "desc": "Ein Pilz, der einschlafende Sporen freisetzt."
+    },
+    "9": {
+      "name": "Toxipilz",
+      "desc": "Ein riesiger Pilz, dessen Sporen giftig sind."
+    },
+    "10": {
+      "name": "Nachtigall",
+      "desc": "Ein Vogel, dessen Gesang Wunden heilt."
+    },
+    "11": {
+      "name": "Schattling",
+      "desc": "Ein Mini-Schatten, der die Bewegungen anderer nachahmt."
+    },
+    "12": {
+      "name": "Tropfeling",
+      "desc": "Ein magischer Wassertropfen, der nie verdunstet."
+    },
+    "13": {
+      "name": "Flockling",
+      "desc": "Eine Schneeflocke, die nie schmilzt."
+    },
+    "14": {
+      "name": "Frostling",
+      "desc": "Ein lebender Eisblock, der jeden Kontakt einfriert."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "Ein Eisdrache, der Schneestürme erzeugt."
+    },
+    "16": {
+      "name": "Kristalline",
+      "desc": "Ein kleiner Kristall, der beim Berühren singt."
+    },
+    "17": {
+      "name": "Kristallklinge",
+      "desc": "Ein reines Kristallwesen, das Licht bricht."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "Ein nahezu unzerstörbarer Diamantgolem."
+    },
+    "19": {
+      "name": "Fünkchen",
+      "desc": "Ein bewusster Funke, der auf Kristallen läuft."
+    },
+    "20": {
+      "name": "Donnerex",
+      "desc": "Ein Blitzwesen, das wie der Donner zuschlägt."
+    },
+    "21": {
+      "name": "Steinling",
+      "desc": "Ein animierter Fels, der Hänge hinunterrollt."
+    },
+    "22": {
+      "name": "Bergnor",
+      "desc": "Ein lebender Berg, dessen Schritte die Erde erbeben lassen."
+    },
+    "23": {
+      "name": "Wellchen",
+      "desc": "Eine kleine bewusste Welle, die in Strömungen spielt."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "Eine titanische Welle, die alles verschlingt."
+    },
+    "25": {
+      "name": "Quallenschock",
+      "desc": "Eine leuchtende Qualle, die ihre Beute elektrokiert."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "Ein alter Krake, der über den Abgrund herrscht."
+    },
+    "27": {
+      "name": "Korallenklinge",
+      "desc": "Eine lebende Koralle, die schützende Riffe bildet."
+    },
+    "28": {
+      "name": "Sirenette",
+      "desc": "Eine verspielte Sirene, die Seeleute anlockt."
+    },
+    "29": {
+      "name": "Arkanette",
+      "desc": "Ein arkaner Funke, der während Ritualen erscheint."
+    },
+    "30": {
+      "name": "Chaosling",
+      "desc": "Ein Mini-Chaoswirbel, der die Luft verzerrt."
+    }
   },
   "types": {
     "FLORE": "Flora",

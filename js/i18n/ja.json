@@ -107,7 +107,14 @@
     "addToParty": "パーティに追加",
     "removeFromParty": "パーティから外す",
     "primordial": "プライモーディアル",
-    "addToReserve": "リザーブに追加"
+    "addToReserve": "リザーブに追加",
+    "levelLabel": "レベル",
+    "vacant": "空き",
+    "noReserve": "リザーブにエコーがいない",
+    "primordialBonus": "プライモーディアル (+10%)",
+    "evolution": "レベル{level}で{name}に進化",
+    "reserveBtn": "リザーブ",
+    "partyBtn": "パーティ"
   },
   "pokedex": {
     "title": "エコーログブック",
