@@ -15,7 +15,8 @@ const SaveSystem = {
             const systemState = {
                 mine: Mine.toJSON(),
                 hatchery: Hatchery.toJSON(),
-                quests: questSystem.toJSON()
+                quests: questSystem.toJSON(),
+                narrative: NarrativeSystem.toJSON()
             };
             const saveData = SaveSerializer.serialize(Game.state, systemState);
             localStorage.setItem(this.KEY, JSON.stringify(saveData));
@@ -31,7 +32,8 @@ const SaveSystem = {
         const systemState = {
             mine: Mine.toJSON(),
             hatchery: Hatchery.toJSON(),
-            quests: questSystem.toJSON()
+            quests: questSystem.toJSON(),
+            narrative: NarrativeSystem.toJSON()
         };
         return SaveSerializer.serialize(Game.state, systemState);
     },
@@ -244,6 +246,7 @@ const SaveSystem = {
                 Mine,
                 Hatchery,
                 questSystem,
+                NarrativeSystem,
                 Echo
             });
         } catch (e) {

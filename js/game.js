@@ -21,6 +21,7 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
         MapSystem.init(Game, UI, EventBus);
         Combat.init(Game, UI, EventBus);
         questSystem.init();
+        NarrativeSystem.init();
         UI.init();
         GameLoop.start(
             (dt) => this.update(dt),
@@ -29,6 +30,7 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
         setInterval(() => SaveSystem.save(), GAME_CONFIG.AUTO_SAVE_INTERVAL);
         i18n.translateDOM();
         UI.toast(i18n.t('game.welcome'), 'info');
+        EventBus.emit(GAME_EVENTS.GAME_START);
     },
 
     update(dt) {
@@ -200,6 +202,7 @@ const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
             });
         }
         document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast(i18n.t('notifications.saved'), 'success'); });
+        document.getElementById('btn-logbook').addEventListener('click', () => NarrativeSystem.showLogbook());
         document.getElementById('btn-settings').addEventListener('click', () => UI.showSettings());
         const btnLang = document.getElementById('btn-lang');
         const langDropdown = document.getElementById('lang-dropdown');
