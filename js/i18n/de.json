@@ -60,7 +60,9 @@
     "partyFull": "Team voll! (max 6)",
     "optimalTeamCreated": "⚡ Optimales Team erstellt!",
     "newTeam": "Neues Team: {names}",
-    "dmgPreview": "{min} - {max} DMG"
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClick": "+{dmg} SCHADEN",
+    "dmgClickZero": "+0 Schaden"
   },
   "capture": {
     "title": "🔮 Fangzone",
@@ -76,7 +78,9 @@
     "routeLocked": "Route nicht freigeschaltet!",
     "regionLocked": "Region nicht freigeschaltet!",
     "newRoute": "Neue Route: {name}!",
-    "newRegion": "Neue Region freigeschaltet: {name}!"
+    "newRegion": "Neue Region freigeschaltet: {name}!",
+    "captureSuccessDisplay": "✨ Fang erfolgreich!",
+    "captureFailedDisplay": "💥 Fang fehlgeschlagen!"
   },
   "map": {
     "title": "Weltkarte",

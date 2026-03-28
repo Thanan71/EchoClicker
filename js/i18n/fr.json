@@ -59,7 +59,9 @@
     "noEchoAvailable": "Aucun Écho disponible !",
     "partyFull": "Équipe pleine ! (max 6)",
     "optimalTeamCreated": "⚡ Équipe optimale créée !",
-    "newTeam": "Nouvelle équipe: {names}"
+    "newTeam": "Nouvelle équipe: {names}",
+    "dmgClick": "+{dmg} dégâts",
+    "dmgClickZero": "+0 dégât"
   },
   "capture": {
     "title": "🔮 Zone de Capture",
@@ -77,7 +79,9 @@
     "newRoute": "Nouvelle route : {name} !",
     "newRegion": "Nouvelle contrée débloquée : {name} !",
     "captureSuccess": "{name} capturé !",
-    "captureFailed": "Capture échouée !"
+    "captureFailed": "Capture échouée !",
+    "captureSuccessDisplay": "✨ Capture réussie !",
+    "captureFailedDisplay": "💥 Capture échouée !"
   },
   "map": {
     "title": "Carte du Monde",

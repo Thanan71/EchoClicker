@@ -60,7 +60,9 @@
     "partyFull": "パーティがいっぱい！（最大6体）",
     "optimalTeamCreated": "⚡ 最適なチームを作成した！",
     "newTeam": "新しいチーム：{names}",
-    "dmgPreview": "{min} - {max} DMG"
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClick": "+{dmg}ダメージ",
+    "dmgClickZero": "+0 ダメージ"
   },
   "capture": {
     "title": "🔮 キャプチャゾーン",
@@ -78,7 +80,9 @@
     "newRoute": "新しいルート：{name}！",
     "newRegion": "新しい地域を解放：{name}！",
     "captureSuccess": "{name}をキャプチャした！",
-    "captureFailed": "キャプチャ失敗！"
+    "captureFailed": "キャプチャ失敗！",
+    "captureSuccessDisplay": "✨ キャプチャ成功！",
+    "captureFailedDisplay": "💥 キャプチャ失敗！"
   },
   "map": {
     "title": "ワールドマップ",

@@ -60,7 +60,9 @@
     "partyFull": "¡Equipo completo! (máx 6)",
     "optimalTeamCreated": "¡⚡ Equipo óptimo creado!",
     "newTeam": "Nuevo equipo: {names}",
-    "dmgPreview": "{min} - {max} DMG"
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClick": "+{dmg} DAÑO",
+    "dmgClickZero": "+0 daño"
   },
   "capture": {
     "title": "🔮 Zona de Captura",
@@ -76,7 +78,9 @@
     "routeLocked": "¡Ruta no desbloqueada!",
     "regionLocked": "¡Región no desbloqueada!",
     "newRoute": "¡Nueva ruta: {name}!",
-    "newRegion": "¡Nueva región desbloqueada: {name}!"
+    "newRegion": "¡Nueva región desbloqueada: {name}!",
+    "captureSuccessDisplay": "✨ ¡Captura exitosa!",
+    "captureFailedDisplay": "💥 ¡Captura fallida!"
   },
   "map": {
     "title": "Mapa del Mundo",
