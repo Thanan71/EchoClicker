@@ -18,9 +18,7 @@ function loadScript(filePath) {
 const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
 const echoesContext = { ECHOES_DB: undefined };
 echoesContext.echoesContext = echoesContext; // self-reference for VM
-const echoesCodeToEval = echoesCode
-    .replace(/\bexport\b\s*/g, '')
-    .replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+const echoesCodeToEval = echoesCode.replace(/\bexport\b\s*/g, '').replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
 vm.createContext(echoesContext);
 vm.runInContext(echoesCodeToEval, echoesContext);
 const ECHOES_DB = echoesContext.ECHOES_DB;
@@ -29,16 +27,15 @@ const ECHOES_DB = echoesContext.ECHOES_DB;
 const regionsCode = fs.readFileSync(path.join(__dirname, '../js/data/regions-data.js'), 'utf-8');
 const regionsContext = { REGIONS: undefined };
 regionsContext.regionsContext = regionsContext; // self-reference for VM
-const regionsCodeToEval = regionsCode
-    .replace(/\bexport\b\s*/g, '')
-    .replace('const REGIONS', 'regionsContext.REGIONS');
+const regionsCodeToEval = regionsCode.replace(/\bexport\b\s*/g, '').replace('const REGIONS', 'regionsContext.REGIONS');
 vm.createContext(regionsContext);
 vm.runInContext(regionsCodeToEval, regionsContext);
 const REGIONS = regionsContext.REGIONS;
 
 // Charger constants
 const constantsPath = path.join(__dirname, '../js/data/constants.js');
-const constantsCode = fs.readFileSync(constantsPath, 'utf-8')
+const constantsCode = fs
+    .readFileSync(constantsPath, 'utf-8')
     .replace(/\bexport\b\s*/g, '')
     .replace(/^import \{ ECHOES_DB \} from '.*';$/m, '// ECHOES_DB from context')
     .replace(/^import \{ REGIONS \} from '.*';$/m, '// REGIONS from context');
@@ -79,7 +76,7 @@ describe('getEchoById', () => {
 
     test('returns the same object as direct array search', () => {
         const testId = ECHOES_DB[5].id;
-        const directResult = ECHOES_DB.find(e => e.id === testId);
+        const directResult = ECHOES_DB.find((e) => e.id === testId);
         const helperResult = getEchoById(testId);
         expect(helperResult).toBe(directResult);
     });
@@ -122,7 +119,7 @@ describe('getRegionById', () => {
 
     test('returns the same object as direct array search', () => {
         const testId = REGIONS[2].id;
-        const directResult = REGIONS.find(r => r.id === testId);
+        const directResult = REGIONS.find((r) => r.id === testId);
         const helperResult = getRegionById(testId);
         expect(helperResult).toBe(directResult);
     });

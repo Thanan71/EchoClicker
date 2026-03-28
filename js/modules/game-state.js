@@ -36,7 +36,7 @@ export const GameState = {
             regions: Utils.deepClone(REGIONS),
             boosts: {},
             inventory: [], // Inventaire pour les objets de quêtes
-            startTime: Date.now()
+            startTime: Date.now(),
         };
     },
 
@@ -51,7 +51,7 @@ export const GameState = {
             maxLevel: this.state.maxLevel,
             bossesDefeated: this.state.bossesDefeated,
             regionsUnlocked: this.state.regionsUnlocked,
-            playTime: Math.floor(this.state.playTime)
+            playTime: Math.floor(this.state.playTime),
         };
-    }
+    },
 };

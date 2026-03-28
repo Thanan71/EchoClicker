@@ -10,9 +10,9 @@ import { UI } from '../ui.js';
 export const GameRoutes = {
     // === Routes & Régions ===
     selectRoute(routeId) {
-        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        const region = this.state.regions.find((r) => r.id === this.state.currentRegion);
         if (!region) return;
-        const route = region.routes.find(r => r.id === routeId);
+        const route = region.routes.find((r) => r.id === routeId);
         if (!route || !route.unlocked) {
             UI.toast(i18n.t('capture.routeLocked'), 'warning');
             return;
@@ -25,7 +25,7 @@ export const GameRoutes = {
     },
 
     selectRegion(regionId) {
-        const region = this.state.regions.find(r => r.id === regionId);
+        const region = this.state.regions.find((r) => r.id === regionId);
         if (!region || !region.unlocked) {
             UI.toast(i18n.t('capture.regionLocked'), 'warning');
             return;
@@ -37,9 +37,9 @@ export const GameRoutes = {
     },
 
     unlockNextRoute() {
-        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        const region = this.state.regions.find((r) => r.id === this.state.currentRegion);
         if (!region) return;
-        const idx = region.routes.findIndex(r => r.id === this.state.currentRoute?.id);
+        const idx = region.routes.findIndex((r) => r.id === this.state.currentRoute?.id);
         if (idx < region.routes.length - 1) {
             const nextRoute = region.routes[idx + 1];
             if (!nextRoute.unlocked) {
@@ -51,7 +51,7 @@ export const GameRoutes = {
     },
 
     defeatBoss() {
-        const region = this.state.regions.find(r => r.id === this.state.currentRegion);
+        const region = this.state.regions.find((r) => r.id === this.state.currentRegion);
         if (!region) return;
         region.bossDefeated = true;
         this.state.bossesDefeated++;
@@ -60,7 +60,7 @@ export const GameRoutes = {
         // Émettre l'événement pour les quêtes
         EventBus.emit('boss:defeated', { id: this.state.currentRegion });
 
-        const idx = this.state.regions.findIndex(r => r.id === this.state.currentRegion);
+        const idx = this.state.regions.findIndex((r) => r.id === this.state.currentRegion);
         if (idx < this.state.regions.length - 1) {
             const next = this.state.regions[idx + 1];
             next.unlocked = true;
@@ -71,5 +71,5 @@ export const GameRoutes = {
         } else {
             UI.toast(i18n.t('notifications.success'), 'success');
         }
-    }
+    },
 };

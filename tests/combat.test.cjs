@@ -14,35 +14,56 @@ let mockEngine, mockCapture, mockAuto, mockParty;
 
 function createSubModuleMocks() {
     mockEngine = {
-        _state: null, _game: null, _ui: null, _eventBus: null, _onEnemyDefeated: null,
-        init: jest.fn(function({ state, game, ui, eventBus, onEnemyDefeated }) {
-            this._state = state; this._game = game; this._ui = ui;
-            this._eventBus = eventBus; this._onEnemyDefeated = onEnemyDefeated;
+        _state: null,
+        _game: null,
+        _ui: null,
+        _eventBus: null,
+        _onEnemyDefeated: null,
+        init: jest.fn(function ({ state, game, ui, eventBus, onEnemyDefeated }) {
+            this._state = state;
+            this._game = game;
+            this._ui = ui;
+            this._eventBus = eventBus;
+            this._onEnemyDefeated = onEnemyDefeated;
         }),
-        startCombat: jest.fn(), spawnEnemy: jest.fn(), spawnBoss: jest.fn(),
-        playerClick: jest.fn(), endCombat: jest.fn(), autoAttack: jest.fn(),
-        onEnemyDefeated: jest.fn(), onPlayerFainted: jest.fn()
+        startCombat: jest.fn(),
+        spawnEnemy: jest.fn(),
+        spawnBoss: jest.fn(),
+        playerClick: jest.fn(),
+        endCombat: jest.fn(),
+        autoAttack: jest.fn(),
+        onEnemyDefeated: jest.fn(),
+        onPlayerFainted: jest.fn(),
     };
     mockCapture = {
-        _state: null, _game: null, _ui: null,
-        init: jest.fn(function({ state, game, ui }) {
-            this._state = state; this._game = game; this._ui = ui;
+        _state: null,
+        _game: null,
+        _ui: null,
+        init: jest.fn(function ({ state, game, ui }) {
+            this._state = state;
+            this._game = game;
+            this._ui = ui;
         }),
-        attemptCapture: jest.fn(), autoCaptureNewEcho: jest.fn()
+        attemptCapture: jest.fn(),
+        autoCaptureNewEcho: jest.fn(),
     };
     mockAuto = {
         _state: null,
-        init: jest.fn(function({ state }) { this._state = state; }),
-        update: jest.fn()
+        init: jest.fn(function ({ state }) {
+            this._state = state;
+        }),
+        update: jest.fn(),
     };
     mockParty = {
-        _state: null, _game: null,
-        init: jest.fn(function({ state, game }) {
-            this._state = state; this._game = game;
+        _state: null,
+        _game: null,
+        init: jest.fn(function ({ state, game }) {
+            this._state = state;
+            this._game = game;
         }),
         getActiveEcho: jest.fn(() => null),
         getNextAliveEcho: jest.fn(() => null),
-        healParty: jest.fn()
+        healParty: jest.fn(),
     };
 }
 
@@ -59,13 +80,22 @@ function loadCombat() {
         .replace(/^import \{ CombatParty \} from '.*';$/m, '// CombatParty from arg')
         .replace(/^import \{ GAME_CONFIG \} from '.*';$/m, '// GAME_CONFIG from global')
         .replace(/^export const Combat =/m, 'const Combat =');
-    const loader = new Function('CombatEngine', 'CombatCapture', 'CombatAuto', 'CombatParty', 'GAME_CONFIG', patchedCode + '; return Combat;');
+    const loader = new Function(
+        'CombatEngine',
+        'CombatCapture',
+        'CombatAuto',
+        'CombatParty',
+        'GAME_CONFIG',
+        patchedCode + '; return Combat;',
+    );
     Combat = loader(mockEngine, mockCapture, mockAuto, mockParty, globalThis.GAME_CONFIG);
 }
 
 describe('Combat (facade)', () => {
     beforeEach(() => {
-        EventBus.reset(); Game.reset(); UI.reset();
+        EventBus.reset();
+        Game.reset();
+        UI.reset();
         loadCombat();
         Combat.init(Game, UI, EventBus);
     });

@@ -10,9 +10,7 @@ const achCode = fs.readFileSync(path.join(__dirname, '../js/data/achievements-da
 
 // Créer un contexte pour capturer ACHIEVEMENTS
 const context = {};
-const codeToEval = achCode
-    .replace(/\bexport\b\s*/g, '')
-    .replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
+const codeToEval = achCode.replace(/\bexport\b\s*/g, '').replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
 eval(codeToEval);
 const ACHIEVEMENTS = context.ACHIEVEMENTS;
 
@@ -23,11 +21,11 @@ describe('achievements-data.js - Succès', () => {
     });
 
     test('IDs uniques', () => {
-        const ids = ACHIEVEMENTS.map(a => a.id);
+        const ids = ACHIEVEMENTS.map((a) => a.id);
         expect(new Set(ids).size).toBe(ids.length);
     });
 
-    test.each(ACHIEVEMENTS.map(a => [a.id, a]))(
+    test.each(ACHIEVEMENTS.map((a) => [a.id, a]))(
         'succès "%s" a id, name, desc, icon, cond fonctionnelle',
         (_, ach) => {
             expect(typeof ach.id).toBe('string');
@@ -39,7 +37,7 @@ describe('achievements-data.js - Succès', () => {
             expect(typeof ach.icon).toBe('string');
             expect(ach.icon.length).toBeGreaterThan(0);
             expect(typeof ach.cond).toBe('function');
-        }
+        },
     );
 
     test('cond fonctionne avec un état vide (retourne un booléen)', () => {
@@ -53,7 +51,7 @@ describe('achievements-data.js - Succès', () => {
             maxLevel: 0,
             bossesDefeated: 0,
             regionsUnlocked: 0,
-            playTime: 0
+            playTime: 0,
         };
         for (const ach of ACHIEVEMENTS) {
             const result = ach.cond(mockState);
@@ -72,7 +70,7 @@ describe('achievements-data.js - Succès', () => {
             maxLevel: 999999,
             bossesDefeated: 999999,
             regionsUnlocked: 999999,
-            playTime: 999999
+            playTime: 999999,
         };
         for (const ach of ACHIEVEMENTS) {
             expect(ach.cond(highState)).toBe(true);

@@ -52,34 +52,48 @@ export const Combat = {
             game: gameRef,
             ui: uiRef,
             eventBus: eventBusRef,
-            onEnemyDefeated: () => this._handleEnemyDefeated()
+            onEnemyDefeated: () => this._handleEnemyDefeated(),
         });
 
         this._capture.init({
             state,
             game: gameRef,
-            ui: uiRef
+            ui: uiRef,
         });
 
         this._auto.init({ state });
 
         this._party.init({
             state,
-            game: gameRef
+            game: gameRef,
         });
     },
 
     // === Delegation publique (API existante preservee) ===
 
-    startCombat(route) { this._engine.startCombat(route); },
-    spawnEnemy(route) { this._engine.spawnEnemy(route); },
-    playerClick() { this._engine.playerClick(); },
-    attemptCapture() { this._capture.attemptCapture(); },
-    healParty() { this._party.healParty(); },
-    endCombat() { this._engine.endCombat(); },
+    startCombat(route) {
+        this._engine.startCombat(route);
+    },
+    spawnEnemy(route) {
+        this._engine.spawnEnemy(route);
+    },
+    playerClick() {
+        this._engine.playerClick();
+    },
+    attemptCapture() {
+        this._capture.attemptCapture();
+    },
+    healParty() {
+        this._party.healParty();
+    },
+    endCombat() {
+        this._engine.endCombat();
+    },
 
     /** Appelle a chaque tick de jeu */
-    update(dt) { this._auto.update(dt); },
+    update(dt) {
+        this._auto.update(dt);
+    },
 
     // === Logique interne de la facade ===
 
@@ -97,5 +111,5 @@ export const Combat = {
         }
 
         if (route) setTimeout(() => this._engine.spawnEnemy(route), 500);
-    }
+    },
 };

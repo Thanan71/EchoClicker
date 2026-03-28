@@ -4,17 +4,17 @@
 
 // Mocks globaux
 globalThis.GAME_CONFIG = {
-    MAX_PARTY: 6
+    MAX_PARTY: 6,
 };
 
 globalThis.UI = {
     toast: jest.fn(),
     renderParty: jest.fn(),
-    addLog: jest.fn()
+    addLog: jest.fn(),
 };
 
 globalThis.i18n = {
-    t: jest.fn((key) => key)
+    t: jest.fn((key) => key),
 };
 
 // Définir GameParty directement
@@ -34,7 +34,7 @@ globalThis.GameParty = {
             return;
         }
 
-        const scoredEchoes = allEchoes.map(echo => {
+        const scoredEchoes = allEchoes.map((echo) => {
             let score = 0;
 
             score += echo.maxHp * 0.3;
@@ -45,12 +45,12 @@ globalThis.GameParty = {
             score += echo.level * 5;
 
             const rarityBonus = {
-                'common': 0,
-                'uncommon': 20,
-                'rare': 50,
-                'epic': 100,
-                'legendary': 200,
-                'mythical': 300
+                common: 0,
+                uncommon: 20,
+                rare: 50,
+                epic: 100,
+                legendary: 200,
+                mythical: 300,
             };
             score += rarityBonus[echo.rarity] || 0;
 
@@ -80,19 +80,19 @@ globalThis.GameParty = {
 
         this._state.party = newParty;
 
-        const partyUids = new Set(newParty.map(e => e.uid));
-        const newReserves = allEchoes.filter(e => !partyUids.has(e.uid));
+        const partyUids = new Set(newParty.map((e) => e.uid));
+        const newReserves = allEchoes.filter((e) => !partyUids.has(e.uid));
         this._state.reserves = newReserves;
 
-        this._state.party.forEach(e => e.fullHeal());
+        this._state.party.forEach((e) => e.fullHeal());
 
         UI.renderParty();
         UI.toast(i18n.t('combat.optimalTeamCreated'), 'success');
-        UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map(e => e.name).join(', ') }));
+        UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map((e) => e.name).join(', ') }));
     },
 
     removeFromParty(uid) {
-        const idx = this._state.party.findIndex(e => e.uid === uid);
+        const idx = this._state.party.findIndex((e) => e.uid === uid);
         if (idx === -1) return false;
         const echo = this._state.party.splice(idx, 1)[0];
         this._state.reserves.push(echo);
@@ -104,7 +104,7 @@ globalThis.GameParty = {
             UI.toast(i18n.t('combat.partyFull'), 'warning');
             return false;
         }
-        const idx = this._state.reserves.findIndex(e => e.uid === uid);
+        const idx = this._state.reserves.findIndex((e) => e.uid === uid);
         if (idx === -1) return false;
         const echo = this._state.reserves.splice(idx, 1)[0];
         this._state.party.push(echo);
@@ -116,8 +116,8 @@ globalThis.GameParty = {
     },
 
     findEcho(uid) {
-        return this.getAllEchoes().find(e => e.uid === uid);
-    }
+        return this.getAllEchoes().find((e) => e.uid === uid);
+    },
 };
 
 describe('GameParty', () => {
@@ -139,7 +139,7 @@ describe('GameParty', () => {
             maxHp: 100,
             atk: 20,
             def: 10,
-            spd: 15
+            spd: 15,
         };
         mockEcho2 = {
             uid: 'echo-2',
@@ -153,7 +153,7 @@ describe('GameParty', () => {
             maxHp: 150,
             atk: 30,
             def: 20,
-            spd: 20
+            spd: 20,
         };
         mockEcho3 = {
             uid: 'echo-3',
@@ -167,12 +167,12 @@ describe('GameParty', () => {
             maxHp: 80,
             atk: 15,
             def: 8,
-            spd: 12
+            spd: 12,
         };
 
         mockState = {
             party: [mockEcho1],
-            reserves: [mockEcho2, mockEcho3]
+            reserves: [mockEcho2, mockEcho3],
         };
 
         GameParty._state = mockState;
@@ -205,7 +205,7 @@ describe('GameParty', () => {
         test('removes echo from party by uid', () => {
             const result = GameParty.removeFromParty('echo-1');
             expect(result).toBe(true);
-            expect(mockState.party.find(e => e.uid === 'echo-1')).toBeUndefined();
+            expect(mockState.party.find((e) => e.uid === 'echo-1')).toBeUndefined();
         });
 
         test('moves removed echo to reserves', () => {
@@ -224,7 +224,7 @@ describe('GameParty', () => {
             const result = GameParty.moveToParty('echo-2');
             expect(result).toBe(true);
             expect(mockState.party).toContain(mockEcho2);
-            expect(mockState.reserves.find(e => e.uid === 'echo-2')).toBeUndefined();
+            expect(mockState.reserves.find((e) => e.uid === 'echo-2')).toBeUndefined();
         });
 
         test('returns false if party is full', () => {
@@ -294,15 +294,15 @@ describe('GameParty', () => {
 
         test('heals new party members', () => {
             GameParty.buildOptimalTeam();
-            mockState.party.forEach(e => {
+            mockState.party.forEach((e) => {
                 expect(e.fullHeal).toHaveBeenCalled();
             });
         });
 
         test('moves non-selected echoes to reserves', () => {
             GameParty.buildOptimalTeam();
-            const partyUids = new Set(mockState.party.map(e => e.uid));
-            mockState.reserves.forEach(e => {
+            const partyUids = new Set(mockState.party.map((e) => e.uid));
+            mockState.reserves.forEach((e) => {
                 expect(partyUids.has(e.uid)).toBe(false);
             });
         });

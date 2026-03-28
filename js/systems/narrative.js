@@ -24,7 +24,7 @@ export const NarrativeSystem = {
         unlockedLore: new Set(),
         seenCinematics: new Set(),
         currentGuideDialogue: null,
-        dialogueQueue: []
+        dialogueQueue: [],
     },
 
     init() {
@@ -39,7 +39,7 @@ export const NarrativeSystem = {
         EventBus.on('party:full', () => this.triggerGuideDialogue('party_full'));
         EventBus.on('echo:evolved', () => this.triggerGuideDialogue('first_evolution'));
         EventBus.on('boss:first', () => this.triggerGuideDialogue('first_boss'));
-        
+
         // Evenements
         EventBus.on('echo:captured', (echo) => {
             if (echo.isPrimordial || echo.isShiny) {
@@ -69,21 +69,23 @@ export const NarrativeSystem = {
         let dialogue = null;
 
         // Chercher dans les introductions
-        dialogue = guide.dialogues.introduction.find(d => d.trigger === trigger && !this.state.seenDialogues.has(d.id));
+        dialogue = guide.dialogues.introduction.find(
+            (d) => d.trigger === trigger && !this.state.seenDialogues.has(d.id),
+        );
         if (dialogue) {
             this.showGuideDialogue(dialogue);
             return;
         }
 
         // Chercher dans les astuces
-        dialogue = guide.dialogues.tips.find(d => d.trigger === trigger && !this.state.seenDialogues.has(d.id));
+        dialogue = guide.dialogues.tips.find((d) => d.trigger === trigger && !this.state.seenDialogues.has(d.id));
         if (dialogue) {
             this.showGuideDialogue(dialogue);
             return;
         }
 
         // Chercher dans les evenements
-        dialogue = guide.dialogues.events.find(d => d.trigger === trigger && !this.state.seenDialogues.has(d.id));
+        dialogue = guide.dialogues.events.find((d) => d.trigger === trigger && !this.state.seenDialogues.has(d.id));
         if (dialogue) {
             this.showGuideDialogue(dialogue);
             return;
@@ -100,7 +102,7 @@ export const NarrativeSystem = {
             `<div class="narrative-dialogue">
                 <p class="dialogue-text">${dialogue.text}</p>
             </div>`,
-            `<button class="btn-combat modal-continue-btn">Continuer</button>`
+            `<button class="btn-combat modal-continue-btn">Continuer</button>`,
         );
 
         // Add event listener to the continue button
@@ -126,7 +128,7 @@ export const NarrativeSystem = {
 
         return {
             name: bossData.name,
-            text: dialogue
+            text: dialogue,
         };
     },
 
@@ -140,7 +142,7 @@ export const NarrativeSystem = {
             `<div class="narrative-dialogue boss-dialogue">
                 <p class="dialogue-text">"${dialogue.text}"</p>
             </div>`,
-            `<button class="btn-combat modal-action-btn">${isBefore ? 'Combattre' : 'Continuer'}</button>`
+            `<button class="btn-combat modal-action-btn">${isBefore ? 'Combattre' : 'Continuer'}</button>`,
         );
 
         // Add event listener to the action button
@@ -162,9 +164,9 @@ export const NarrativeSystem = {
         const state = Game.state;
 
         // Verifier le lore du monde
-        NARRATIVE_DATA.lore.world.forEach(lore => {
+        NARRATIVE_DATA.lore.world.forEach((lore) => {
             if (this.state.unlockedLore.has(lore.id)) return;
-            
+
             if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
                 this.unlockLore(lore);
             }
@@ -172,9 +174,9 @@ export const NarrativeSystem = {
 
         // Verifier le lore des regions
         Object.entries(NARRATIVE_DATA.lore.regions).forEach(([regionId, lores]) => {
-            lores.forEach(lore => {
+            lores.forEach((lore) => {
                 if (this.state.unlockedLore.has(lore.id)) return;
-                
+
                 if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
                     this.unlockLore(lore);
                 }
@@ -182,9 +184,9 @@ export const NarrativeSystem = {
         });
 
         // Verifier le lore des Echoes
-        NARRATIVE_DATA.lore.echoes.forEach(lore => {
+        NARRATIVE_DATA.lore.echoes.forEach((lore) => {
             if (this.state.unlockedLore.has(lore.id)) return;
-            
+
             if (this.checkUnlockCondition(lore.unlockCondition, stats, state)) {
                 this.unlockLore(lore);
             }
@@ -200,10 +202,10 @@ export const NarrativeSystem = {
             case 'unique_captures':
                 return stats.uniqueCaptures >= condition.value;
             case 'region':
-                const region = state.regions.find(r => r.id === condition.value);
+                const region = state.regions.find((r) => r.id === condition.value);
                 return region && region.unlocked;
             case 'boss_defeated':
-                const regionBoss = state.regions.find(r => r.id === condition.value);
+                const regionBoss = state.regions.find((r) => r.id === condition.value);
                 return regionBoss && regionBoss.bossDefeated;
             case 'primordial_captured':
                 return stats.primordialCount > 0;
@@ -214,15 +216,15 @@ export const NarrativeSystem = {
 
     unlockLore(lore) {
         this.state.unlockedLore.add(lore.id);
-        
+
         getUI().toast(`📖 Nouveau lore débloqué : ${lore.title}`, 'info');
-        
+
         EventBus.emit('narrative:lore_unlocked', lore);
     },
 
     checkInitialLore() {
         // Debloquer le lore initial
-        const initialLore = NARRATIVE_DATA.lore.world.find(l => l.unlockCondition.type === 'start');
+        const initialLore = NARRATIVE_DATA.lore.world.find((l) => l.unlockCondition.type === 'start');
         if (initialLore && !this.state.unlockedLore.has(initialLore.id)) {
             this.state.unlockedLore.add(initialLore.id);
         }
@@ -250,7 +252,7 @@ export const NarrativeSystem = {
         }
 
         const scene = cinematic.scenes[sceneIndex];
-        
+
         getUI().showModal(
             `🎬 ${cinematic.title}`,
             `<div class="narrative-cinematic">
@@ -260,13 +262,13 @@ export const NarrativeSystem = {
                 </div>
             </div>`,
             `<button class="btn-combat secondary cinematic-skip-btn">Passer</button>
-             <button class="btn-combat cinematic-next-btn">Suivant</button>`
+             <button class="btn-combat cinematic-next-btn">Suivant</button>`,
         );
 
         // Add event listeners to cinematic buttons
         const skipBtn = document.querySelector('.cinematic-skip-btn');
         const nextBtn = document.querySelector('.cinematic-next-btn');
-        
+
         if (skipBtn) {
             skipBtn.addEventListener('click', () => this.skipCinematic());
         }
@@ -277,7 +279,7 @@ export const NarrativeSystem = {
 
     nextCinematicScene(cinematicTitle, nextIndex) {
         // Trouver la cinematique par son titre
-        const cinematic = Object.values(NARRATIVE_DATA.cinematics).find(c => c.title === cinematicTitle);
+        const cinematic = Object.values(NARRATIVE_DATA.cinematics).find((c) => c.title === cinematicTitle);
         if (cinematic) {
             this.showCinematicScene(cinematic, nextIndex);
         }
@@ -293,25 +295,21 @@ export const NarrativeSystem = {
 
     getLogbookData() {
         const guide = NARRATIVE_DATA.guide;
-        const allDialogues = [
-            ...guide.dialogues.introduction,
-            ...guide.dialogues.tips,
-            ...guide.dialogues.events
-        ];
+        const allDialogues = [...guide.dialogues.introduction, ...guide.dialogues.tips, ...guide.dialogues.events];
 
-        const seenGuideDialogues = allDialogues.filter(d => this.state.seenDialogues.has(d.id));
-        
+        const seenGuideDialogues = allDialogues.filter((d) => this.state.seenDialogues.has(d.id));
+
         const unlockedLoreEntries = [];
-        Object.values(NARRATIVE_DATA.lore).forEach(category => {
+        Object.values(NARRATIVE_DATA.lore).forEach((category) => {
             if (Array.isArray(category)) {
-                category.forEach(lore => {
+                category.forEach((lore) => {
                     if (this.state.unlockedLore.has(lore.id)) {
                         unlockedLoreEntries.push(lore);
                     }
                 });
             } else {
-                Object.values(category).forEach(regionLores => {
-                    regionLores.forEach(lore => {
+                Object.values(category).forEach((regionLores) => {
+                    regionLores.forEach((lore) => {
                         if (this.state.unlockedLore.has(lore.id)) {
                             unlockedLoreEntries.push(lore);
                         }
@@ -323,13 +321,13 @@ export const NarrativeSystem = {
         return {
             guideDialogues: seenGuideDialogues,
             lore: unlockedLoreEntries,
-            cinematics: this.state.seenCinematics
+            cinematics: this.state.seenCinematics,
         };
     },
 
     showLogbook() {
         const data = this.getLogbookData();
-        
+
         let html = `
             <div class="logbook-container">
                 <div class="logbook-tabs">
@@ -343,12 +341,16 @@ export const NarrativeSystem = {
             </div>
         `;
 
-        UI.showModal(i18n.t('logbook.title'), html, `<button class="btn-combat secondary logbook-close-btn">${i18n.t('logbook.close')}</button>`);
+        UI.showModal(
+            i18n.t('logbook.title'),
+            html,
+            `<button class="btn-combat secondary logbook-close-btn">${i18n.t('logbook.close')}</button>`,
+        );
 
         // Add event listeners to logbook tabs
-        document.querySelectorAll('.logbook-tab').forEach(tab => {
+        document.querySelectorAll('.logbook-tab').forEach((tab) => {
             tab.addEventListener('click', (e) => {
-                document.querySelectorAll('.logbook-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.logbook-tab').forEach((t) => t.classList.remove('active'));
                 e.target.classList.add('active');
                 this.switchLogbookTab(e.target.dataset.tab);
             });
@@ -386,11 +388,15 @@ export const NarrativeSystem = {
         return `
             <div class="logbook-section">
                 <h3>Dialogues du Tisseur Ancien</h3>
-                ${dialogues.map(d => `
+                ${dialogues
+                    .map(
+                        (d) => `
                     <div class="logbook-entry">
                         <p class="entry-text">${d.text}</p>
                     </div>
-                `).join('')}
+                `,
+                    )
+                    .join('')}
             </div>
         `;
     },
@@ -403,12 +409,16 @@ export const NarrativeSystem = {
         return `
             <div class="logbook-section">
                 <h3>Entrées de Lore</h3>
-                ${loreEntries.map(lore => `
+                ${loreEntries
+                    .map(
+                        (lore) => `
                     <div class="logbook-entry lore-entry">
                         <h4 class="entry-title">${lore.title}</h4>
                         <p class="entry-text">${lore.text}</p>
                     </div>
-                `).join('')}
+                `,
+                    )
+                    .join('')}
             </div>
         `;
     },
@@ -418,19 +428,25 @@ export const NarrativeSystem = {
             return '<p class="logbook-empty">Aucune cinematique vue pour le moment.</p>';
         }
 
-        const cinematicEntries = Array.from(cinematics).map(id => {
-            return NARRATIVE_DATA.cinematics[id];
-        }).filter(Boolean);
+        const cinematicEntries = Array.from(cinematics)
+            .map((id) => {
+                return NARRATIVE_DATA.cinematics[id];
+            })
+            .filter(Boolean);
 
         return `
             <div class="logbook-section">
                 <h3>Cinematiques</h3>
-                ${cinematicEntries.map(c => `
+                ${cinematicEntries
+                    .map(
+                        (c) => `
                     <div class="logbook-entry cinematic-entry">
                         <h4 class="entry-title">🎬 ${c.title}</h4>
                         <p class="entry-text">${c.scenes.length} scenes</p>
                     </div>
-                `).join('')}
+                `,
+                    )
+                    .join('')}
             </div>
         `;
     },
@@ -443,15 +459,15 @@ export const NarrativeSystem = {
         return {
             seenDialogues: [...this.state.seenDialogues],
             unlockedLore: [...this.state.unlockedLore],
-            seenCinematics: [...this.state.seenCinematics]
+            seenCinematics: [...this.state.seenCinematics],
         };
     },
 
     fromJSON(data) {
         if (!data) return;
-        
+
         this.state.seenDialogues = new Set(data.seenDialogues || []);
         this.state.unlockedLore = new Set(data.unlockedLore || []);
         this.state.seenCinematics = new Set(data.seenCinematics || []);
-    }
+    },
 };

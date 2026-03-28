@@ -17,7 +17,7 @@ class I18n {
     async init() {
         // Charger toutes les traductions
         await this.loadAllTranslations();
-        
+
         // Déterminer la langue sauvegardée ou par défaut
         const savedLang = localStorage.getItem('echoclicker_lang') || 'fr';
         this.setLanguage(savedLang);
@@ -94,22 +94,22 @@ class I18n {
 
     getLanguageName(lang) {
         const names = {
-            'fr': 'Français',
-            'en': 'English',
-            'es': 'Español',
-            'de': 'Deutsch',
-            'ja': '日本語'
+            fr: 'Français',
+            en: 'English',
+            es: 'Español',
+            de: 'Deutsch',
+            ja: '日本語',
         };
         return names[lang] || lang;
     }
 
     getLanguageFlag(lang) {
         const flags = {
-            'fr': '🇫🇷',
-            'en': '🇬🇧',
-            'es': '🇪🇸',
-            'de': '🇩🇪',
-            'ja': '🇯🇵'
+            fr: '🇫🇷',
+            en: '🇬🇧',
+            es: '🇪🇸',
+            de: '🇩🇪',
+            ja: '🇯🇵',
         };
         return flags[lang] || '🏳️';
     }
@@ -119,7 +119,7 @@ class I18n {
     }
 
     notifyListeners() {
-        this.listeners.forEach(callback => {
+        this.listeners.forEach((callback) => {
             try {
                 callback(this.currentLang);
             } catch (error) {
@@ -129,15 +129,15 @@ class I18n {
     }
 
     translateDOM() {
-        document.querySelectorAll('[data-i18n]').forEach(element => {
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
             const key = element.getAttribute('data-i18n');
             element.textContent = this.t(key);
         });
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
             const key = element.getAttribute('data-i18n-placeholder');
             element.placeholder = this.t(key);
         });
-        document.querySelectorAll('[data-i18n-title]').forEach(element => {
+        document.querySelectorAll('[data-i18n-title]').forEach((element) => {
             const key = element.getAttribute('data-i18n-title');
             element.title = this.t(key);
         });

@@ -14,23 +14,20 @@ describe('types.js - Structure des types', () => {
             expect(Object.keys(TYPES).length).toBeGreaterThan(0);
         });
 
-        test.each(Object.entries(TYPES))(
-            'type "%s" a name, color (hex), emoji',
-            (typeKey, typeData) => {
-                expect(typeData).toHaveProperty('name');
-                expect(typeData).toHaveProperty('color');
-                expect(typeData).toHaveProperty('emoji');
-                expect(typeof typeData.name).toBe('string');
-                expect(typeData.name.length).toBeGreaterThan(0);
-                expect(typeData.color).toMatch(/^#[0-9a-fA-F]{6}$/);
-                expect(typeof typeData.emoji).toBe('string');
-                expect(typeData.emoji.length).toBeGreaterThan(0);
-            }
-        );
+        test.each(Object.entries(TYPES))('type "%s" a name, color (hex), emoji', (typeKey, typeData) => {
+            expect(typeData).toHaveProperty('name');
+            expect(typeData).toHaveProperty('color');
+            expect(typeData).toHaveProperty('emoji');
+            expect(typeof typeData.name).toBe('string');
+            expect(typeData.name.length).toBeGreaterThan(0);
+            expect(typeData.color).toMatch(/^#[0-9a-fA-F]{6}$/);
+            expect(typeof typeData.emoji).toBe('string');
+            expect(typeData.emoji.length).toBeGreaterThan(0);
+        });
 
         test('les noms et couleurs de types sont uniques', () => {
-            const names = Object.values(TYPES).map(t => t.name);
-            const colors = Object.values(TYPES).map(t => t.color);
+            const names = Object.values(TYPES).map((t) => t.name);
+            const colors = Object.values(TYPES).map((t) => t.color);
             expect(new Set(names).size).toBe(names.length);
             expect(new Set(colors).size).toBe(colors.length);
         });
@@ -83,7 +80,7 @@ describe('types.js - Structure des types', () => {
 
         test('pas de strong ET weak contre le meme type', () => {
             for (const chart of Object.values(TYPE_CHART)) {
-                expect(chart.strong.filter(t => chart.weak.includes(t))).toEqual([]);
+                expect(chart.strong.filter((t) => chart.weak.includes(t))).toEqual([]);
             }
         });
 

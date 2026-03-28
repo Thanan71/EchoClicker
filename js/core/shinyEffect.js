@@ -11,64 +11,64 @@ export const ShinyEffect = {
             saturate: 1.5,
             brightness: 1.2,
             contrast: 1.1,
-            sparkleColor: '#FFD700'
+            sparkleColor: '#FFD700',
         },
         uncommon: {
             hueRotate: 180,
             saturate: 1.4,
             brightness: 1.3,
             contrast: 1.15,
-            sparkleColor: '#00FFFF'
+            sparkleColor: '#00FFFF',
         },
         rare: {
             hueRotate: 280,
             saturate: 1.6,
             brightness: 1.4,
             contrast: 1.2,
-            sparkleColor: '#FF00FF'
+            sparkleColor: '#FF00FF',
         },
         epic: {
             hueRotate: 30,
             saturate: 1.8,
             brightness: 1.5,
             contrast: 1.25,
-            sparkleColor: '#FF4500'
+            sparkleColor: '#FF4500',
         },
         legendary: {
             hueRotate: 120,
             saturate: 2.0,
             brightness: 1.6,
             contrast: 1.3,
-            sparkleColor: '#00FF00'
+            sparkleColor: '#00FF00',
         },
         mythical: {
             hueRotate: 60,
             saturate: 2.2,
             brightness: 1.7,
             contrast: 1.35,
-            sparkleColor: '#FF69B4'
-        }
+            sparkleColor: '#FF69B4',
+        },
     },
 
     // Appliquer l'effet shiny à un élément img
     applyShinyEffect(imgElement, rarity = 'common') {
         if (!imgElement) return;
-        
+
         const config = this.SHINY_CONFIGS[rarity] || this.SHINY_CONFIGS.common;
-        
+
         const filter = `hue-rotate(${config.hueRotate}deg) saturate(${config.saturate}) brightness(${config.brightness}) contrast(${config.contrast})`;
-        
+
         imgElement.style.filter = filter;
         imgElement.classList.add('shiny-sprite');
         imgElement.dataset.shinyRarity = rarity;
-        
+
         return filter;
     },
 
     // Créer un wrapper avec effet shiny et particules
     createShinyWrapper(imgSrc, echoData, size = 64) {
         const config = this.SHINY_CONFIGS[echoData.rarity] || this.SHINY_CONFIGS.common;
-        
+
         const wrapper = document.createElement('div');
         wrapper.className = 'shiny-wrapper';
         wrapper.style.cssText = `position: relative; display: inline-block; width: ${size}px; height: ${size}px;`;
@@ -81,7 +81,8 @@ export const ShinyEffect = {
 
         const sparkleContainer = document.createElement('div');
         sparkleContainer.className = 'shiny-sparkles';
-        sparkleContainer.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;';
+        sparkleContainer.style.cssText =
+            'position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;';
 
         for (let i = 0; i < 6; i++) {
             const sparkle = document.createElement('div');
@@ -101,17 +102,18 @@ export const ShinyEffect = {
         if (!imgElement) return;
 
         const config = this.SHINY_CONFIGS[rarity] || this.SHINY_CONFIGS.common;
-        
+
         this.applyShinyEffect(imgElement, rarity);
 
         if (animate) {
             imgElement.style.animation = 'shinyPulse 2s ease-in-out infinite';
-            
+
             const parent = imgElement.parentElement;
             if (parent && !parent.querySelector('.shiny-sparkles')) {
                 const sparkleContainer = document.createElement('div');
                 sparkleContainer.className = 'shiny-sparkles';
-                sparkleContainer.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;';
+                sparkleContainer.style.cssText =
+                    'position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden;';
 
                 for (let i = 0; i < 4; i++) {
                     const sparkle = document.createElement('div');
@@ -131,7 +133,7 @@ export const ShinyEffect = {
     // Retirer l'effet shiny
     removeShiny(imgElement) {
         if (!imgElement) return;
-        
+
         imgElement.style.filter = '';
         imgElement.style.animation = '';
         imgElement.classList.remove('shiny-sprite');
@@ -223,7 +225,7 @@ export const ShinyEffect = {
         `;
 
         document.head.appendChild(styles);
-    }
+    },
 };
 
 // Initialiser les styles au chargement

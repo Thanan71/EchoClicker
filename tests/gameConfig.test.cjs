@@ -124,7 +124,7 @@ describe('SHOP', () => {
             expect(SHOP.links.length).toBeGreaterThan(0);
         });
 
-        test.each(SHOP.links.map(l => [l.id, l]))(
+        test.each(SHOP.links.map((l) => [l.id, l]))(
             'link "%s" has id, name, icon, price, currency, amount',
             (_, link) => {
                 expect(typeof link.id).toBe('string');
@@ -137,11 +137,11 @@ describe('SHOP', () => {
                 expect(link.currency).toBe('energy');
                 expect(typeof link.amount).toBe('number');
                 expect(link.amount).toBeGreaterThan(0);
-            }
+            },
         );
 
         test('link IDs are unique', () => {
-            const ids = SHOP.links.map(l => l.id);
+            const ids = SHOP.links.map((l) => l.id);
             expect(new Set(ids).size).toBe(ids.length);
         });
     });
@@ -152,7 +152,7 @@ describe('SHOP', () => {
             expect(SHOP.boosts.length).toBeGreaterThan(0);
         });
 
-        test.each(SHOP.boosts.map(b => [b.id, b]))(
+        test.each(SHOP.boosts.map((b) => [b.id, b]))(
             'boost "%s" has id, name, icon, price, currency, duration, type',
             (_, boost) => {
                 expect(typeof boost.id).toBe('string');
@@ -167,11 +167,11 @@ describe('SHOP', () => {
                 expect(boost.duration).toBeGreaterThan(0);
                 expect(typeof boost.type).toBe('string');
                 expect(boost.type.length).toBeGreaterThan(0);
-            }
+            },
         );
 
         test('boost IDs are unique', () => {
-            const ids = SHOP.boosts.map(b => b.id);
+            const ids = SHOP.boosts.map((b) => b.id);
             expect(new Set(ids).size).toBe(ids.length);
         });
     });
@@ -182,22 +182,19 @@ describe('SHOP', () => {
             expect(SHOP.items.length).toBeGreaterThan(0);
         });
 
-        test.each(SHOP.items.map(i => [i.id, i]))(
-            'item "%s" has id, name, icon, price, currency',
-            (_, item) => {
-                expect(typeof item.id).toBe('string');
-                expect(item.id.length).toBeGreaterThan(0);
-                expect(typeof item.name).toBe('string');
-                expect(item.name.length).toBeGreaterThan(0);
-                expect(typeof item.icon).toBe('string');
-                expect(typeof item.price).toBe('number');
-                expect(item.price).toBeGreaterThan(0);
-                expect(item.currency).toBe('energy');
-            }
-        );
+        test.each(SHOP.items.map((i) => [i.id, i]))('item "%s" has id, name, icon, price, currency', (_, item) => {
+            expect(typeof item.id).toBe('string');
+            expect(item.id.length).toBeGreaterThan(0);
+            expect(typeof item.name).toBe('string');
+            expect(item.name.length).toBeGreaterThan(0);
+            expect(typeof item.icon).toBe('string');
+            expect(typeof item.price).toBe('number');
+            expect(item.price).toBeGreaterThan(0);
+            expect(item.currency).toBe('energy');
+        });
 
         test('item IDs are unique', () => {
-            const ids = SHOP.items.map(i => i.id);
+            const ids = SHOP.items.map((i) => i.id);
             expect(new Set(ids).size).toBe(ids.length);
         });
     });
@@ -205,9 +202,9 @@ describe('SHOP', () => {
     describe('All SHOP IDs are globally unique', () => {
         test('no duplicate IDs across links, boosts, items', () => {
             const allIds = [
-                ...SHOP.links.map(l => l.id),
-                ...SHOP.boosts.map(b => b.id),
-                ...SHOP.items.map(i => i.id)
+                ...SHOP.links.map((l) => l.id),
+                ...SHOP.boosts.map((b) => b.id),
+                ...SHOP.items.map((i) => i.id),
             ];
             expect(new Set(allIds).size).toBe(allIds.length);
         });

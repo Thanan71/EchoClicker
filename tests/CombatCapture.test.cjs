@@ -8,7 +8,7 @@ const { UI } = require('./__mocks__/ui.cjs');
 
 // Mock CombatEngine
 globalThis.CombatEngine = {
-    spawnEnemy: jest.fn()
+    spawnEnemy: jest.fn(),
 };
 
 // Définir CombatCapture directement
@@ -41,7 +41,7 @@ globalThis.CombatCapture = {
         const s = this._state;
         if (!s.enemy) return;
         this._game.captureEcho(s.enemy, { isAuto: true });
-    }
+    },
 };
 
 describe('CombatCapture', () => {
@@ -58,8 +58,8 @@ describe('CombatCapture', () => {
             enemy: {
                 uid: 'enemy-1',
                 name: 'WildEcho',
-                id: 1
-            }
+                id: 1,
+            },
         };
 
         Game.captureEcho = jest.fn(() => true);
@@ -100,11 +100,11 @@ describe('CombatCapture', () => {
         test('spawns new enemy on successful capture', () => {
             jest.useFakeTimers();
             Game.captureEcho.mockReturnValue(true);
-            
+
             CombatCapture.attemptCapture();
-            
+
             jest.advanceTimersByTime(500);
-            
+
             expect(CombatEngine.spawnEnemy).toHaveBeenCalledWith(Game.state.currentRoute);
             jest.useRealTimers();
         });
@@ -112,11 +112,11 @@ describe('CombatCapture', () => {
         test('does not spawn new enemy on failed capture', () => {
             jest.useFakeTimers();
             Game.captureEcho.mockReturnValue(false);
-            
+
             CombatCapture.attemptCapture();
-            
+
             jest.advanceTimersByTime(500);
-            
+
             expect(CombatEngine.spawnEnemy).not.toHaveBeenCalled();
             jest.useRealTimers();
         });

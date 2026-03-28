@@ -3,17 +3,17 @@
 // ============================================
 
 const TYPE_CHART = {
-    FEU:     { strong: ['FLORE','GLACE','CRISTAL'], weak: ['OCEAN','TERRE','CHAOS'] },
-    GLACE:   { strong: ['VENT','FLORE','TERRE'],    weak: ['FEU','FOUDRE','ARCANE'] },
-    VENT:    { strong: ['FLORE','ARCANE'],          weak: ['FOUDRE','CRISTAL','TERRE'] },
-    OCEAN:   { strong: ['FEU','TERRE','CHAOS'],     weak: ['FLORE','FOUDRE','GLACE'] },
-    TERRE:   { strong: ['FEU','FOUDRE','CRISTAL'],  weak: ['OCEAN','FLORE','GLACE'] },
+    FEU: { strong: ['FLORE', 'GLACE', 'CRISTAL'], weak: ['OCEAN', 'TERRE', 'CHAOS'] },
+    GLACE: { strong: ['VENT', 'FLORE', 'TERRE'], weak: ['FEU', 'FOUDRE', 'ARCANE'] },
+    VENT: { strong: ['FLORE', 'ARCANE'], weak: ['FOUDRE', 'CRISTAL', 'TERRE'] },
+    OCEAN: { strong: ['FEU', 'TERRE', 'CHAOS'], weak: ['FLORE', 'FOUDRE', 'GLACE'] },
+    TERRE: { strong: ['FEU', 'FOUDRE', 'CRISTAL'], weak: ['OCEAN', 'FLORE', 'GLACE'] },
 };
 
 const GAME_CONFIG = { CAPTURE_HP_BONUS: 40, XP_BASE: 50, XP_GROWTH: 1.15 };
 
 const TYPES = {
-    FEU:   { name: 'Feu',   color: '#ff6b35', emoji: '🔥' },
+    FEU: { name: 'Feu', color: '#ff6b35', emoji: '🔥' },
     GLACE: { name: 'Glace', color: '#74b9ff', emoji: '❄️' },
     OCEAN: { name: 'Océan', color: '#0984e3', emoji: '🌊' },
     FLORE: { name: 'Flore', color: '#55a630', emoji: '🌿' },
@@ -22,22 +22,32 @@ const TYPES = {
 const Utils = {
     formatNumber(num) {
         if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
-        if (num >= 1e9)  return (num / 1e9).toFixed(1) + 'B';
-        if (num >= 1e6)  return (num / 1e6).toFixed(1) + 'M';
-        if (num >= 1e3)  return (num / 1e3).toFixed(1) + 'K';
+        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
         return Math.floor(num).toString();
     },
     formatTime(seconds) {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
         const s = Math.floor(seconds % 60);
-        return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     },
-    randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; },
-    randFloat(min, max) { return Math.random() * (max - min) + min; },
-    chance(percent) { return Math.random() * 100 < percent; },
-    clamp(value, min, max) { return Math.max(min, Math.min(max, value)); },
-    lerp(a, b, t) { return a + (b - a) * t; },
+    randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    randFloat(min, max) {
+        return Math.random() * (max - min) + min;
+    },
+    chance(percent) {
+        return Math.random() * 100 < percent;
+    },
+    clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    },
+    lerp(a, b, t) {
+        return a + (b - a) * t;
+    },
     calculateDamage(attackerAtk, attackerType, defenderDef, defenderType, level) {
         const base = Math.max(1, attackerAtk - defenderDef * 0.5);
         const levelMult = 1 + level * 0.05;
@@ -53,16 +63,28 @@ const Utils = {
         return 1;
     },
     calculateCaptureRate(baseRate, currentHp, maxHp) {
-        const hpFactor = 1 - (currentHp / maxHp);
-        const rate = baseRate + (hpFactor * GAME_CONFIG.CAPTURE_HP_BONUS);
+        const hpFactor = 1 - currentHp / maxHp;
+        const rate = baseRate + hpFactor * GAME_CONFIG.CAPTURE_HP_BONUS;
         return this.clamp(rate, 5, 95);
     },
-    xpForLevel(level) { return Math.floor(GAME_CONFIG.XP_BASE * Math.pow(GAME_CONFIG.XP_GROWTH, level - 1)); },
-    statsAtLevel(baseStat, level) { return baseStat + level * 3; },
-    deepClone(obj) { return JSON.parse(JSON.stringify(obj)); },
-    getTypeColor(typeName) { return TYPES[typeName]?.color || '#888'; },
-    getTypeEmoji(typeName) { return TYPES[typeName]?.emoji || '❓'; },
-    uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2); },
+    xpForLevel(level) {
+        return Math.floor(GAME_CONFIG.XP_BASE * Math.pow(GAME_CONFIG.XP_GROWTH, level - 1));
+    },
+    statsAtLevel(baseStat, level) {
+        return baseStat + level * 3;
+    },
+    deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    },
+    getTypeColor(typeName) {
+        return TYPES[typeName]?.color || '#888';
+    },
+    getTypeEmoji(typeName) {
+        return TYPES[typeName]?.emoji || '❓';
+    },
+    uid() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    },
 };
 
 describe('Utils', () => {
@@ -93,16 +115,28 @@ describe('Utils', () => {
     });
 
     describe('formatTime', () => {
-        test('formats zero as 00:00:00', () => { expect(Utils.formatTime(0)).toBe('00:00:00'); });
-        test('formats seconds only', () => { expect(Utils.formatTime(45)).toBe('00:00:45'); });
-        test('formats minutes and seconds', () => { expect(Utils.formatTime(125)).toBe('00:02:05'); });
-        test('formats hours, minutes, and seconds', () => { expect(Utils.formatTime(3661)).toBe('01:01:01'); });
+        test('formats zero as 00:00:00', () => {
+            expect(Utils.formatTime(0)).toBe('00:00:00');
+        });
+        test('formats seconds only', () => {
+            expect(Utils.formatTime(45)).toBe('00:00:45');
+        });
+        test('formats minutes and seconds', () => {
+            expect(Utils.formatTime(125)).toBe('00:02:05');
+        });
+        test('formats hours, minutes, and seconds', () => {
+            expect(Utils.formatTime(3661)).toBe('01:01:01');
+        });
         test('pads with leading zeros', () => {
             expect(Utils.formatTime(5)).toBe('00:00:05');
             expect(Utils.formatTime(65)).toBe('00:01:05');
         });
-        test('handles large values (23:59:59)', () => { expect(Utils.formatTime(86399)).toBe('23:59:59'); });
-        test('floors fractional seconds', () => { expect(Utils.formatTime(1.9)).toBe('00:00:01'); });
+        test('handles large values (23:59:59)', () => {
+            expect(Utils.formatTime(86399)).toBe('23:59:59');
+        });
+        test('floors fractional seconds', () => {
+            expect(Utils.formatTime(1.9)).toBe('00:00:01');
+        });
     });
 
     describe('randInt', () => {
@@ -114,7 +148,9 @@ describe('Utils', () => {
                 expect(Number.isInteger(val)).toBe(true);
             }
         });
-        test('returns min when min === max', () => { expect(Utils.randInt(7, 7)).toBe(7); });
+        test('returns min when min === max', () => {
+            expect(Utils.randInt(7, 7)).toBe(7);
+        });
         test('handles negative ranges', () => {
             for (let i = 0; i < 50; i++) {
                 const val = Utils.randInt(-10, -5);
@@ -123,7 +159,9 @@ describe('Utils', () => {
             }
         });
         test('handles zero range', () => {
-            for (let i = 0; i < 50; i++) { expect(Utils.randInt(0, 0)).toBe(0); }
+            for (let i = 0; i < 50; i++) {
+                expect(Utils.randInt(0, 0)).toBe(0);
+            }
         });
     });
 
@@ -142,27 +180,49 @@ describe('Utils', () => {
                 expect(val).toBeLessThan(-1);
             }
         });
-        test('returns a number', () => { expect(typeof Utils.randFloat(0, 10)).toBe('number'); });
+        test('returns a number', () => {
+            expect(typeof Utils.randFloat(0, 10)).toBe('number');
+        });
     });
 
     describe('chance', () => {
         test('always returns false for 0%', () => {
-            for (let i = 0; i < 50; i++) { expect(Utils.chance(0)).toBe(false); }
+            for (let i = 0; i < 50; i++) {
+                expect(Utils.chance(0)).toBe(false);
+            }
         });
         test('always returns true for 100%', () => {
-            for (let i = 0; i < 50; i++) { expect(Utils.chance(100)).toBe(true); }
+            for (let i = 0; i < 50; i++) {
+                expect(Utils.chance(100)).toBe(true);
+            }
         });
-        test('returns boolean', () => { expect(typeof Utils.chance(50)).toBe('boolean'); });
-        test('returns true for percent > 100', () => { expect(Utils.chance(200)).toBe(true); });
-        test('returns false for negative percent', () => { expect(Utils.chance(-10)).toBe(false); });
+        test('returns boolean', () => {
+            expect(typeof Utils.chance(50)).toBe('boolean');
+        });
+        test('returns true for percent > 100', () => {
+            expect(Utils.chance(200)).toBe(true);
+        });
+        test('returns false for negative percent', () => {
+            expect(Utils.chance(-10)).toBe(false);
+        });
     });
 
     describe('clamp', () => {
-        test('returns value when within bounds', () => { expect(Utils.clamp(5, 0, 10)).toBe(5); });
-        test('clamps to min when value is below', () => { expect(Utils.clamp(-5, 0, 10)).toBe(0); });
-        test('clamps to max when value is above', () => { expect(Utils.clamp(15, 0, 10)).toBe(10); });
-        test('returns min when value equals min', () => { expect(Utils.clamp(0, 0, 10)).toBe(0); });
-        test('returns max when value equals max', () => { expect(Utils.clamp(10, 0, 10)).toBe(10); });
+        test('returns value when within bounds', () => {
+            expect(Utils.clamp(5, 0, 10)).toBe(5);
+        });
+        test('clamps to min when value is below', () => {
+            expect(Utils.clamp(-5, 0, 10)).toBe(0);
+        });
+        test('clamps to max when value is above', () => {
+            expect(Utils.clamp(15, 0, 10)).toBe(10);
+        });
+        test('returns min when value equals min', () => {
+            expect(Utils.clamp(0, 0, 10)).toBe(0);
+        });
+        test('returns max when value equals max', () => {
+            expect(Utils.clamp(10, 0, 10)).toBe(10);
+        });
         test('works with negative bounds', () => {
             expect(Utils.clamp(-5, -10, -1)).toBe(-5);
             expect(Utils.clamp(-15, -10, -1)).toBe(-10);
@@ -175,12 +235,24 @@ describe('Utils', () => {
     });
 
     describe('lerp', () => {
-        test('returns a when t=0', () => { expect(Utils.lerp(10, 20, 0)).toBe(10); });
-        test('returns b when t=1', () => { expect(Utils.lerp(10, 20, 1)).toBe(20); });
-        test('returns midpoint when t=0.5', () => { expect(Utils.lerp(0, 100, 0.5)).toBe(50); });
-        test('extrapolates beyond t=1', () => { expect(Utils.lerp(0, 100, 2)).toBe(200); });
-        test('extrapolates below t=0', () => { expect(Utils.lerp(0, 100, -1)).toBe(-100); });
-        test('works with negative values', () => { expect(Utils.lerp(-10, 10, 0.5)).toBe(0); });
+        test('returns a when t=0', () => {
+            expect(Utils.lerp(10, 20, 0)).toBe(10);
+        });
+        test('returns b when t=1', () => {
+            expect(Utils.lerp(10, 20, 1)).toBe(20);
+        });
+        test('returns midpoint when t=0.5', () => {
+            expect(Utils.lerp(0, 100, 0.5)).toBe(50);
+        });
+        test('extrapolates beyond t=1', () => {
+            expect(Utils.lerp(0, 100, 2)).toBe(200);
+        });
+        test('extrapolates below t=0', () => {
+            expect(Utils.lerp(0, 100, -1)).toBe(-100);
+        });
+        test('works with negative values', () => {
+            expect(Utils.lerp(-10, 10, 0.5)).toBe(0);
+        });
     });
 
     describe('getEffectiveness', () => {
@@ -272,7 +344,9 @@ describe('Utils', () => {
     });
 
     describe('xpForLevel', () => {
-        test('level 1 returns XP_BASE', () => { expect(Utils.xpForLevel(1)).toBe(50); });
+        test('level 1 returns XP_BASE', () => {
+            expect(Utils.xpForLevel(1)).toBe(50);
+        });
         test('increases with level', () => {
             expect(Utils.xpForLevel(2)).toBeGreaterThan(Utils.xpForLevel(1));
         });
@@ -290,14 +364,20 @@ describe('Utils', () => {
     });
 
     describe('statsAtLevel', () => {
-        test('level 1 returns baseStat + 3', () => { expect(Utils.statsAtLevel(10, 1)).toBe(13); });
+        test('level 1 returns baseStat + 3', () => {
+            expect(Utils.statsAtLevel(10, 1)).toBe(13);
+        });
         test('scales linearly with level', () => {
             expect(Utils.statsAtLevel(10, 1)).toBe(13);
             expect(Utils.statsAtLevel(10, 5)).toBe(25);
             expect(Utils.statsAtLevel(10, 10)).toBe(40);
         });
-        test('returns baseStat at level 0', () => { expect(Utils.statsAtLevel(50, 0)).toBe(50); });
-        test('works with zero baseStat', () => { expect(Utils.statsAtLevel(0, 5)).toBe(15); });
+        test('returns baseStat at level 0', () => {
+            expect(Utils.statsAtLevel(50, 0)).toBe(50);
+        });
+        test('works with zero baseStat', () => {
+            expect(Utils.statsAtLevel(0, 5)).toBe(15);
+        });
     });
 
     describe('deepClone', () => {
@@ -363,11 +443,17 @@ describe('Utils', () => {
     });
 
     describe('uid', () => {
-        test('returns a string', () => { expect(typeof Utils.uid()).toBe('string'); });
-        test('returns non-empty string', () => { expect(Utils.uid().length).toBeGreaterThan(0); });
+        test('returns a string', () => {
+            expect(typeof Utils.uid()).toBe('string');
+        });
+        test('returns non-empty string', () => {
+            expect(Utils.uid().length).toBeGreaterThan(0);
+        });
         test('generates unique values', () => {
             const ids = new Set();
-            for (let i = 0; i < 100; i++) { ids.add(Utils.uid()); }
+            for (let i = 0; i < 100; i++) {
+                ids.add(Utils.uid());
+            }
             expect(ids.size).toBe(100);
         });
         test('contains base-36 characters', () => {

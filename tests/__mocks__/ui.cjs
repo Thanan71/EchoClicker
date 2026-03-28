@@ -22,12 +22,12 @@ const UI = {
 
     /** Reset de tous les mocks */
     reset() {
-        Object.keys(this).forEach(key => {
+        Object.keys(this).forEach((key) => {
             if (typeof this[key] === 'function' && this[key].mockClear) {
                 this[key].mockClear();
             }
         });
-    }
+    },
 };
 
 module.exports = { UI };

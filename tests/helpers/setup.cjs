@@ -21,8 +21,8 @@ globalThis.Utils = {
     chance: jest.fn((percent) => Math.random() * 100 < percent),
     xpForLevel: jest.fn((level) => Math.floor(100 * Math.pow(1.2, level - 1))),
     calculateDamage: jest.fn((atk, atkType, def, defType, level) => {
-        return Math.max(1, Math.floor((atk * level / 50 + 2) * (100 / (100 + def))));
-    })
+        return Math.max(1, Math.floor(((atk * level) / 50 + 2) * (100 / (100 + def))));
+    }),
 };
 
 // GAME_CONFIG mock
@@ -30,7 +30,7 @@ globalThis.GAME_CONFIG = {
     PRIMORDIAL_CHANCE: 0.05,
     AUTO_SAVE_INTERVAL: 30000,
     MAX_PARTY_SIZE: 6,
-    BASE_CLICK_POWER: 1
+    BASE_CLICK_POWER: 1,
 };
 
 // i18n mock
@@ -38,7 +38,7 @@ globalThis.i18n = {
     t: jest.fn((key) => key),
     init: jest.fn(() => Promise.resolve()),
     translateDOM: jest.fn(),
-    setLanguage: jest.fn(() => Promise.resolve())
+    setLanguage: jest.fn(() => Promise.resolve()),
 };
 
 // getEchoById mock (utilisé par Echo.js)
@@ -46,23 +46,23 @@ globalThis.getEchoById = jest.fn((id) => null);
 
 // GAME_EVENTS global (Echo.js l'utilise directement)
 globalThis.GAME_EVENTS = {
-    ENERGY_CHANGED:    'energy_changed',
-    LINKS_CHANGED:     'links_changed',
-    CLICK:             'click',
-    COMBAT_START:      'combat_start',
-    COMBAT_END:        'combat_end',
-    ENEMY_DEFEATED:    'enemy_defeated',
-    ECHO_CAPTURED:     'echo_captured',
-    ECHO_LEVELED_UP:   'echo_leveled_up',
-    ECHO_EVOLVED:      'echo_evolved',
-    ECHO_FAINTED:      'echo_fainted',
-    BOSS_DEFEATED:     'boss_defeated',
-    ROUTE_UNLOCKED:    'route_unlocked',
-    REGION_UNLOCKED:   'region_unlocked',
+    ENERGY_CHANGED: 'energy_changed',
+    LINKS_CHANGED: 'links_changed',
+    CLICK: 'click',
+    COMBAT_START: 'combat_start',
+    COMBAT_END: 'combat_end',
+    ENEMY_DEFEATED: 'enemy_defeated',
+    ECHO_CAPTURED: 'echo_captured',
+    ECHO_LEVELED_UP: 'echo_leveled_up',
+    ECHO_EVOLVED: 'echo_evolved',
+    ECHO_FAINTED: 'echo_fainted',
+    BOSS_DEFEATED: 'boss_defeated',
+    ROUTE_UNLOCKED: 'route_unlocked',
+    REGION_UNLOCKED: 'region_unlocked',
     ACHIEVEMENT_UNLOCKED: 'achievement_unlocked',
-    ITEM_PURCHASED:    'item_purchased',
-    SAVE_COMPLETE:     'save_complete',
-    TICK:              'tick'
+    ITEM_PURCHASED: 'item_purchased',
+    SAVE_COMPLETE: 'save_complete',
+    TICK: 'tick',
 };
 
 // Charger echo.js et exposer Echo/generateWildEcho sur globalThis
@@ -87,5 +87,5 @@ module.exports = {
     UI,
     localStorageMock,
     mockDateNow,
-    restoreDateNow
+    restoreDateNow,
 };

@@ -17,18 +17,18 @@ globalThis.CombatParty = {
     },
 
     getActiveEcho() {
-        return this._game.state.party.find(e => e.isAlive()) || null;
+        return this._game.state.party.find((e) => e.isAlive()) || null;
     },
 
     getNextAliveEcho() {
         const s = this._state;
-        return this._game.state.party.find(e => e.isAlive() && e.uid !== s.activeEcho.uid) || null;
+        return this._game.state.party.find((e) => e.isAlive() && e.uid !== s.activeEcho.uid) || null;
     },
 
     healParty() {
-        this._game.state.party.forEach(e => e.fullHeal());
-        this._game.state.reserves.forEach(e => e.fullHeal());
-    }
+        this._game.state.party.forEach((e) => e.fullHeal());
+        this._game.state.reserves.forEach((e) => e.fullHeal());
+    },
 };
 
 describe('CombatParty', () => {
@@ -45,23 +45,23 @@ describe('CombatParty', () => {
             uid: 'echo-1',
             name: 'Echo1',
             isAlive: jest.fn(() => true),
-            fullHeal: jest.fn()
+            fullHeal: jest.fn(),
         };
         mockEcho2 = {
             uid: 'echo-2',
             name: 'Echo2',
             isAlive: jest.fn(() => true),
-            fullHeal: jest.fn()
+            fullHeal: jest.fn(),
         };
         mockEcho3 = {
             uid: 'echo-3',
             name: 'Echo3',
             isAlive: jest.fn(() => false),
-            fullHeal: jest.fn()
+            fullHeal: jest.fn(),
         };
 
         mockState = {
-            activeEcho: mockEcho1
+            activeEcho: mockEcho1,
         };
 
         Game.state.party = [mockEcho1, mockEcho2, mockEcho3];
@@ -146,9 +146,9 @@ describe('CombatParty', () => {
         test('calls fullHeal on all reserve echoes', () => {
             const reserveEcho = { uid: 'reserve-1', fullHeal: jest.fn() };
             Game.state.reserves = [reserveEcho];
-            
+
             CombatParty.healParty();
-            
+
             expect(reserveEcho.fullHeal).toHaveBeenCalled();
         });
 

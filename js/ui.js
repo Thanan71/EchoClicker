@@ -23,5 +23,5 @@ export const UI = Object.assign(
     UIPokedex,
     UIShop,
     UIQuests,
-    UIAchievements
+    UIAchievements,
 );

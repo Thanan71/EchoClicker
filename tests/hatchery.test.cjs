@@ -8,25 +8,25 @@ const { UI } = require('./__mocks__/ui.cjs');
 
 // Mocks globaux
 globalThis.GAME_CONFIG = {
-    MAX_PARTY: 6
+    MAX_PARTY: 6,
 };
 
 globalThis.TYPES = {
     FEU: { name: 'Feu', color: '#ff6b35', emoji: '🔥' },
     OCEAN: { name: 'Océan', color: '#0984e3', emoji: '🌊' },
-    FLORE: { name: 'Flore', color: '#55a630', emoji: '🌿' }
+    FLORE: { name: 'Flore', color: '#55a630', emoji: '🌿' },
 };
 
 globalThis.ECHOES_DB = [
     { id: 1, name: 'Echo1', type: 'FEU', rarity: 'common', baseHp: 30, baseAtk: 15, baseDef: 10, baseSpd: 12 },
     { id: 2, name: 'Echo2', type: 'OCEAN', rarity: 'uncommon', baseHp: 40, baseAtk: 20, baseDef: 15, baseSpd: 14 },
-    { id: 3, name: 'Echo3', type: 'FLORE', rarity: 'rare', baseHp: 50, baseAtk: 25, baseDef: 20, baseSpd: 16 }
+    { id: 3, name: 'Echo3', type: 'FLORE', rarity: 'rare', baseHp: 50, baseAtk: 25, baseDef: 20, baseSpd: 16 },
 ];
 
-globalThis.getEchoById = jest.fn((id) => ECHOES_DB.find(e => e.id === id));
+globalThis.getEchoById = jest.fn((id) => ECHOES_DB.find((e) => e.id === id));
 globalThis.getEchoImagePath = jest.fn((echo) => `assets/echos/echo_${echo.id}.png`);
 
-globalThis.Echo = jest.fn(function(data, level, isPrimordial) {
+globalThis.Echo = jest.fn(function (data, level, isPrimordial) {
     this.uid = 'echo-' + Math.random().toString(36).substr(2, 9);
     this.id = data.id;
     this.name = data.name;
@@ -45,14 +45,14 @@ globalThis.Utils = {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
         const s = Math.floor(seconds % 60);
-        return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    })
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }),
 };
 
 // Mock document
 globalThis.document = {
     getElementById: jest.fn(() => null),
-    addEventListener: jest.fn()
+    addEventListener: jest.fn(),
 };
 
 // Définir Hatchery directement
@@ -87,7 +87,7 @@ globalThis.Hatchery = {
         }
 
         let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-        party.forEach(echo => {
+        party.forEach((echo) => {
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePath(echo);
             html += `<div class="party-slot" onclick="Hatchery.setParent(${slotIndex}, '${echo.uid}')">
@@ -126,7 +126,7 @@ globalThis.Hatchery = {
     },
 
     hasFreeSlot() {
-        return this.slots.some(s => s === null);
+        return this.slots.some((s) => s === null);
     },
 
     breed() {
@@ -144,16 +144,16 @@ globalThis.Hatchery = {
         const p2 = this.parents[1];
 
         const offspring = this.calculateOffspring(p1, p2);
-        
-        const slotIndex = this.slots.findIndex(s => s === null);
+
+        const slotIndex = this.slots.findIndex((s) => s === null);
         const incubationTime = this.getIncubationTime(offspring.rarity);
-        
+
         this.slots[slotIndex] = {
             egg: offspring,
             startTime: Date.now(),
             duration: incubationTime,
             parent1: p1.id,
-            parent2: p2.id
+            parent2: p2.id,
         };
 
         this.parents = [null, null];
@@ -164,17 +164,16 @@ globalThis.Hatchery = {
 
     calculateOffspring(p1, p2) {
         const type = this.determineOffspringType(p1, p2);
-        
-        const possibleEchoes = ECHOES_DB.filter(e => e.type === type);
-        
-        const avgRarity = this.getAverageRarity(p1, p2);
-        const filteredEchoes = possibleEchoes.filter(e => 
-            this.getRarityWeight(e.rarity) <= avgRarity + 1
-        );
 
-        const chosen = filteredEchoes.length > 0 
-            ? filteredEchoes[Math.floor(Math.random() * filteredEchoes.length)]
-            : possibleEchoes[0];
+        const possibleEchoes = ECHOES_DB.filter((e) => e.type === type);
+
+        const avgRarity = this.getAverageRarity(p1, p2);
+        const filteredEchoes = possibleEchoes.filter((e) => this.getRarityWeight(e.rarity) <= avgRarity + 1);
+
+        const chosen =
+            filteredEchoes.length > 0
+                ? filteredEchoes[Math.floor(Math.random() * filteredEchoes.length)]
+                : possibleEchoes[0];
 
         const primordialChance = (p1.isPrimordial ? 0.02 : 0) + (p2.isPrimordial ? 0.02 : 0) + 0.005;
         const isPrimordial = Math.random() < primordialChance;
@@ -193,17 +192,17 @@ globalThis.Hatchery = {
             baseHp: chosen.baseHp,
             baseAtk: chosen.baseAtk,
             baseDef: chosen.baseDef,
-            baseSpd: chosen.baseSpd
+            baseSpd: chosen.baseSpd,
         };
     },
 
     determineOffspringType(p1, p2) {
         if (p1.type === p2.type) return p1.type;
-        
+
         const rand = Math.random();
         if (rand < 0.45) return p1.type;
         if (rand < 0.9) return p2.type;
-        
+
         const types = Object.keys(TYPES);
         return types[Math.floor(Math.random() * types.length)];
     },
@@ -219,7 +218,7 @@ globalThis.Hatchery = {
             rare: 3,
             epic: 4,
             legendary: 5,
-            mythical: 6
+            mythical: 6,
         };
         return weights[rarity] || 1;
     },
@@ -231,7 +230,7 @@ globalThis.Hatchery = {
             rare: 120000,
             epic: 300000,
             legendary: 600000,
-            mythical: 900000
+            mythical: 900000,
         };
         return times[rarity] || 30000;
     },
@@ -250,11 +249,7 @@ globalThis.Hatchery = {
         if (!slot) return;
 
         const eggData = slot.egg;
-        const echo = new Echo(
-            getEchoById(eggData.id),
-            eggData.level,
-            eggData.isPrimordial
-        );
+        const echo = new Echo(getEchoById(eggData.id), eggData.level, eggData.isPrimordial);
 
         if (this._game.state.party.length < GAME_CONFIG.MAX_PARTY) {
             this._game.addToParty(echo);
@@ -268,7 +263,7 @@ globalThis.Hatchery = {
 
         const prefix = echo.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
         this._ui.toast(`${prefix}🥚 ${echo.name} est éclos !`, 'success');
-        
+
         this._eventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo });
 
         this.slots[index] = null;
@@ -330,7 +325,7 @@ globalThis.Hatchery = {
 
         const p1 = document.getElementById('parent-1');
         const p2 = document.getElementById('parent-2');
-        
+
         if (p1) {
             if (this.parents[0]) {
                 const imgPath1 = getEchoImagePath(this.parents[0]);
@@ -363,7 +358,7 @@ globalThis.Hatchery = {
     toJSON() {
         return {
             slots: this.slots,
-            parents: this.parents.map(p => p ? p.uid : null)
+            parents: this.parents.map((p) => (p ? p.uid : null)),
         };
     },
 
@@ -372,12 +367,12 @@ globalThis.Hatchery = {
             this.slots = data.slots || Array(this.maxSlots).fill(null);
             if (data.parents) {
                 this.parents = [
-                    data.parents[0] ? (this._game.findEcho(data.parents[0]) || null) : null,
-                    data.parents[1] ? (this._game.findEcho(data.parents[1]) || null) : null
+                    data.parents[0] ? this._game.findEcho(data.parents[0]) || null : null,
+                    data.parents[1] ? this._game.findEcho(data.parents[1]) || null : null,
                 ];
             }
         }
-    }
+    },
 };
 
 describe('Hatchery', () => {
@@ -413,7 +408,7 @@ describe('Hatchery', () => {
         test('initializes slots array', () => {
             Hatchery.init(Game, UI, EventBus);
             expect(Hatchery.slots.length).toBe(4);
-            expect(Hatchery.slots.every(s => s === null)).toBe(true);
+            expect(Hatchery.slots.every((s) => s === null)).toBe(true);
         });
 
         test('stores dependencies', () => {
@@ -530,9 +525,9 @@ describe('Hatchery', () => {
         test('returns slots and parents', () => {
             Hatchery.slots = [{ egg: { id: 1 } }, null, null, null];
             Hatchery.parents = [{ uid: 'p1' }, null];
-            
+
             const json = Hatchery.toJSON();
-            
+
             expect(json.slots).toEqual(Hatchery.slots);
             expect(json.parents).toEqual(['p1', null]);
         });
@@ -542,11 +537,11 @@ describe('Hatchery', () => {
         test('restores slots from data', () => {
             const data = {
                 slots: [{ egg: { id: 1 } }, null, null, null],
-                parents: [null, null]
+                parents: [null, null],
             };
-            
+
             Hatchery.fromJSON(data);
-            
+
             expect(Hatchery.slots).toEqual(data.slots);
         });
 

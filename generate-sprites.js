@@ -23,9 +23,9 @@ async function generateImage(prompt, filename) {
     const response = await fetch('https://cloud.leonardo.ai/api/rest/v1/generations', {
         method: 'POST',
         headers: {
-            'accept': 'application/json',
-            'authorization': `Bearer ${API_KEY}`,
-            'content-type': 'application/json'
+            accept: 'application/json',
+            authorization: `Bearer ${API_KEY}`,
+            'content-type': 'application/json',
         },
         body: JSON.stringify({
             prompt: prompt,
@@ -37,22 +37,21 @@ async function generateImage(prompt, filename) {
             presetStyle: 'PIXEL_ART',
             guidance_scale: 8,
             num_inference_steps: 35,
-            scheduler: 'EULER_DISCRETE'
-        })
+            scheduler: 'EULER_DISCRETE',
+        }),
     });
 
     if (!response.ok) {
         const errText = await response.text().catch(() => '');
-        console.error(`❌ POST échoué pour ${filename} (HTTP ${response.status}). ${errText ? `Body: ${errText.slice(0, 400)}` : ''}`);
+        console.error(
+            `❌ POST échoué pour ${filename} (HTTP ${response.status}). ${errText ? `Body: ${errText.slice(0, 400)}` : ''}`,
+        );
         return false;
     }
 
     const result = await response.json();
     const generationId =
-        result?.sdGenerationJob?.generationId ||
-        result?.sdGenerationJob?.id ||
-        result?.generationId ||
-        result?.id;
+        result?.sdGenerationJob?.generationId || result?.sdGenerationJob?.id || result?.generationId || result?.id;
 
     if (!generationId) {
         console.error(`❌ Impossible de lancer ${filename}`);
@@ -69,15 +68,17 @@ async function generateImage(prompt, filename) {
 
     let lastStatus = null;
     for (let i = 0; i < maxAttempts; i++) {
-        await new Promise(r => setTimeout(r, delayMs));
+        await new Promise((r) => setTimeout(r, delayMs));
 
         const statusRes = await fetch(`https://cloud.leonardo.ai/api/rest/v1/generations/${generationId}`, {
-            headers: { authorization: `Bearer ${API_KEY}` }
+            headers: { authorization: `Bearer ${API_KEY}` },
         });
 
         if (!statusRes.ok) {
             const errText = await statusRes.text().catch(() => '');
-            console.error(`⚠️  Statut HTTP ${statusRes.status} pour ${filename}. ${errText ? `Body: ${errText.slice(0, 300)}` : ''}`);
+            console.error(
+                `⚠️  Statut HTTP ${statusRes.status} pour ${filename}. ${errText ? `Body: ${errText.slice(0, 300)}` : ''}`,
+            );
             continue;
         }
 
@@ -87,11 +88,7 @@ async function generateImage(prompt, filename) {
 
         if (!generation) continue;
 
-        const status =
-            generation?.status ||
-            statusData?.status ||
-            generation?.state ||
-            statusData?.state;
+        const status = generation?.status || statusData?.status || generation?.state || statusData?.state;
 
         if (status !== lastStatus && status) {
             console.log(`   📍 ${filename}: status=${status} (essai ${i + 1}/${maxAttempts})`);
@@ -101,11 +98,7 @@ async function generateImage(prompt, filename) {
         if (doneStatuses.has(status)) {
             const imageObj = generation.generated_images?.[0];
             const imageUrl =
-                imageObj?.url ||
-                imageObj?.imageUrl ||
-                imageObj?.image_url ||
-                imageObj?.downloadUrl ||
-                generation?.url;
+                imageObj?.url || imageObj?.imageUrl || imageObj?.image_url || imageObj?.downloadUrl || generation?.url;
 
             if (!imageUrl) {
                 console.error(`⛔ ${filename}: ${status} mais URL d'image introuvable.`);
@@ -120,7 +113,9 @@ async function generateImage(prompt, filename) {
             const imgRes = await fetch(imageUrl);
             if (!imgRes.ok) {
                 const errText = await imgRes.text().catch(() => '');
-                console.error(`❌ Téléchargement image échoué pour ${filename} (HTTP ${imgRes.status}). ${errText ? `Body: ${errText.slice(0, 300)}` : ''}`);
+                console.error(
+                    `❌ Téléchargement image échoué pour ${filename} (HTTP ${imgRes.status}). ${errText ? `Body: ${errText.slice(0, 300)}` : ''}`,
+                );
                 return false;
             }
 
@@ -143,17 +138,15 @@ const echoStart = Number(process.env.ECHO_START || 0);
 const echoLimit = Number(process.env.ECHO_LIMIT || data.echoes.length);
 
 // Filtrer les échos qui n'ont pas encore été générés (ou dont les fichiers manquent)
-const echoesToGenerate = data.echoes
-    .slice(echoStart, echoStart + echoLimit)
-    .filter(echo => {
-        const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
-        const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
-        const baseExists = fs.existsSync(path.join(OUTPUT_DIR, baseFilename));
-        const shinyExists = fs.existsSync(path.join(OUTPUT_DIR, shinyFilename));
-        
-        // Garder l'écho si pas marqué généré OU si un des fichiers manque
-        return echo.generated !== true || !baseExists || !shinyExists;
-    });
+const echoesToGenerate = data.echoes.slice(echoStart, echoStart + echoLimit).filter((echo) => {
+    const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
+    const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
+    const baseExists = fs.existsSync(path.join(OUTPUT_DIR, baseFilename));
+    const shinyExists = fs.existsSync(path.join(OUTPUT_DIR, shinyFilename));
+
+    // Garder l'écho si pas marqué généré OU si un des fichiers manque
+    return echo.generated !== true || !baseExists || !shinyExists;
+});
 
 console.log(`🚀 Démarrage génération Leonardo AI (${echoesToGenerate.length} échos à traiter)...\n`);
 
@@ -163,7 +156,7 @@ console.log('📸 Phase 1/2 : Génération des sprites normaux (non-shiny)...\n'
 for (const echo of echoesToGenerate) {
     const baseFilename = `echo_${echo.id.toString().padStart(3, '0')}.png`;
     const baseFilepath = path.join(OUTPUT_DIR, baseFilename);
-    
+
     // Vérifier si le fichier existe déjà
     if (fs.existsSync(baseFilepath)) {
         console.log(`⏭️  ${baseFilename} existe déjà, passage au suivant`);
@@ -172,12 +165,12 @@ for (const echo of echoesToGenerate) {
 
     const basePrompt = echo.pixelArtPrompt;
     const okBase = await generateImage(basePrompt, baseFilename);
-    
+
     if (okBase) {
         echo.generatedBase = true;
     }
-    
-    await new Promise(r => setTimeout(r, 1000)); // petite pause
+
+    await new Promise((r) => setTimeout(r, 1000)); // petite pause
 }
 
 // ===== DEUXIÈME PASSE : Générer tous les sprites SHINY =====
@@ -186,7 +179,7 @@ console.log('\n✨ Phase 2/2 : Génération des sprites shiny...\n');
 for (const echo of echoesToGenerate) {
     const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
     const shinyFilepath = path.join(OUTPUT_DIR, shinyFilename);
-    
+
     // Vérifier si le fichier existe déjà
     if (fs.existsSync(shinyFilepath)) {
         console.log(`⏭️  ${shinyFilename} existe déjà, passage au suivant`);
@@ -194,14 +187,16 @@ for (const echo of echoesToGenerate) {
     }
 
     const basePrompt = echo.pixelArtPrompt;
-    const shinyPrompt = basePrompt + ", shiny variant, glowing aura, luminous edges, inverted vibrant colors, sparkling particles, premium quality, high contrast";
+    const shinyPrompt =
+        basePrompt +
+        ', shiny variant, glowing aura, luminous edges, inverted vibrant colors, sparkling particles, premium quality, high contrast';
     const okShiny = await generateImage(shinyPrompt, shinyFilename);
-    
+
     if (okShiny) {
         echo.generatedShiny = true;
     }
-    
-    await new Promise(r => setTimeout(r, 1000)); // petite pause
+
+    await new Promise((r) => setTimeout(r, 1000)); // petite pause
 }
 
 // Marquer comme généré seulement si les deux variantes sont OK
@@ -210,7 +205,7 @@ for (const echo of echoesToGenerate) {
     const shinyFilename = `echo_${echo.id.toString().padStart(3, '0')}_shiny.png`;
     const baseExists = fs.existsSync(path.join(OUTPUT_DIR, baseFilename));
     const shinyExists = fs.existsSync(path.join(OUTPUT_DIR, shinyFilename));
-    
+
     if (baseExists && shinyExists) {
         echo.generated = true;
         echo.generatedAt = echo.generatedAt || new Date().toISOString();
@@ -228,7 +223,7 @@ console.log('✅ echoesData_pixelArt.json mis à jour');
 if (fs.existsSync(GAME_DATA_FILE)) {
     let code = fs.readFileSync(GAME_DATA_FILE, 'utf8');
 
-    data.echoes.forEach(echo => {
+    data.echoes.forEach((echo) => {
         const id = echo.id;
         const spritePath = `assets/echos/echo_${id.toString().padStart(3, '0')}.png`;
         const shinyPath = `assets/echos/echo_${id.toString().padStart(3, '0')}_shiny.png`;
@@ -246,7 +241,10 @@ if (fs.existsSync(GAME_DATA_FILE)) {
 } else {
     console.log('⚠️  js/data/echoesData.js non trouvé → création d’un fichier mis à jour');
     const updatedData = { ECHOES_DATA: data.echoes };
-    fs.writeFileSync('./js/data/echoesData_updated.js', `export const ECHOES_DATA = ${JSON.stringify(data.echoes, null, 2)};`);
+    fs.writeFileSync(
+        './js/data/echoesData_updated.js',
+        `export const ECHOES_DATA = ${JSON.stringify(data.echoes, null, 2)};`,
+    );
 }
 
 console.log('\n🎉 TOUT EST TERMINÉ !');

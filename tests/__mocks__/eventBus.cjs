@@ -13,13 +13,17 @@ const EventBus = {
 
     off(event, callback) {
         if (!this._listeners[event]) return;
-        this._listeners[event] = this._listeners[event].filter(cb => cb !== callback);
+        this._listeners[event] = this._listeners[event].filter((cb) => cb !== callback);
     },
 
     emit(event, data) {
         if (!this._listeners[event]) return;
-        this._listeners[event].forEach(cb => {
-            try { cb(data); } catch(e) { console.error(`EventBus error [${event}]:`, e); }
+        this._listeners[event].forEach((cb) => {
+            try {
+                cb(data);
+            } catch (e) {
+                console.error(`EventBus error [${event}]:`, e);
+            }
         });
     },
 
@@ -49,29 +53,29 @@ const EventBus = {
 
     /** Retourne tous les noms d'événements avec des listeners */
     getEventNames() {
-        return Object.keys(this._listeners).filter(k => this._listeners[k].length > 0);
-    }
+        return Object.keys(this._listeners).filter((k) => this._listeners[k].length > 0);
+    },
 };
 
 // Reproduire les constantes d'événements
 const GAME_EVENTS = {
-    ENERGY_CHANGED:    'energy_changed',
-    LINKS_CHANGED:     'links_changed',
-    CLICK:             'click',
-    COMBAT_START:      'combat_start',
-    COMBAT_END:        'combat_end',
-    ENEMY_DEFEATED:    'enemy_defeated',
-    ECHO_CAPTURED:     'echo_captured',
-    ECHO_LEVELED_UP:   'echo_leveled_up',
-    ECHO_EVOLVED:      'echo_evolved',
-    ECHO_FAINTED:      'echo_fainted',
-    BOSS_DEFEATED:     'boss_defeated',
-    ROUTE_UNLOCKED:    'route_unlocked',
-    REGION_UNLOCKED:   'region_unlocked',
+    ENERGY_CHANGED: 'energy_changed',
+    LINKS_CHANGED: 'links_changed',
+    CLICK: 'click',
+    COMBAT_START: 'combat_start',
+    COMBAT_END: 'combat_end',
+    ENEMY_DEFEATED: 'enemy_defeated',
+    ECHO_CAPTURED: 'echo_captured',
+    ECHO_LEVELED_UP: 'echo_leveled_up',
+    ECHO_EVOLVED: 'echo_evolved',
+    ECHO_FAINTED: 'echo_fainted',
+    BOSS_DEFEATED: 'boss_defeated',
+    ROUTE_UNLOCKED: 'route_unlocked',
+    REGION_UNLOCKED: 'region_unlocked',
     ACHIEVEMENT_UNLOCKED: 'achievement_unlocked',
-    ITEM_PURCHASED:    'item_purchased',
-    SAVE_COMPLETE:     'save_complete',
-    TICK:              'tick'
+    ITEM_PURCHASED: 'item_purchased',
+    SAVE_COMPLETE: 'save_complete',
+    TICK: 'tick',
 };
 
 module.exports = { EventBus, GAME_EVENTS };

@@ -28,7 +28,7 @@ export const SaveSystem = {
                 mine: Mine.toJSON(),
                 hatchery: Hatchery.toJSON(),
                 quests: questSystem.toJSON(),
-                narrative: NarrativeSystem.toJSON()
+                narrative: NarrativeSystem.toJSON(),
             };
             const saveData = SaveSerializer.serialize(Game.state, systemState);
             localStorage.setItem(this.KEY, JSON.stringify(saveData));
@@ -45,7 +45,7 @@ export const SaveSystem = {
             mine: Mine.toJSON(),
             hatchery: Hatchery.toJSON(),
             quests: questSystem.toJSON(),
-            narrative: NarrativeSystem.toJSON()
+            narrative: NarrativeSystem.toJSON(),
         };
         return SaveSerializer.serialize(Game.state, systemState);
     },
@@ -112,7 +112,7 @@ export const SaveSystem = {
 
         // Pour chaque region de l'ancienne sauvegarde
         for (const oldRegion of oldRegions) {
-            const newRegion = mergedRegions.find(r => r.id === oldRegion.id);
+            const newRegion = mergedRegions.find((r) => r.id === oldRegion.id);
             if (newRegion) {
                 // Preserver le statut unlocked et bossDefeated
                 newRegion.unlocked = oldRegion.unlocked;
@@ -121,7 +121,7 @@ export const SaveSystem = {
                 // Fusionner les routes si elles existent
                 if (oldRegion.routes && Array.isArray(oldRegion.routes)) {
                     for (const oldRoute of oldRegion.routes) {
-                        const newRoute = newRegion.routes.find(r => r.id === oldRoute.id);
+                        const newRoute = newRegion.routes.find((r) => r.id === oldRoute.id);
                         if (newRoute) {
                             newRoute.unlocked = oldRoute.unlocked;
                         }
@@ -140,7 +140,9 @@ export const SaveSystem = {
                 if (nextRegion.routes && nextRegion.routes.length > 0) {
                     nextRegion.routes[0].unlocked = true;
                 }
-                console.log(`Migration: region ${nextRegion.name} debloquee car le boss de ${currentRegion.name} est vaincu`);
+                console.log(
+                    `Migration: region ${nextRegion.name} debloquee car le boss de ${currentRegion.name} est vaincu`,
+                );
             }
         }
 
@@ -259,7 +261,7 @@ export const SaveSystem = {
                 Hatchery,
                 questSystem,
                 NarrativeSystem,
-                Echo
+                Echo,
             });
         } catch (e) {
             console.error('Load data error:', e);
@@ -285,7 +287,10 @@ export const SaveSystem = {
                 data = this.migrateSave(data);
 
                 if (typeof UI !== 'undefined' && UI.toast) {
-                    UI.toast(`Sauvegarde migree de la version ${originalVersion} vers ${this.CURRENT_VERSION}`, 'success');
+                    UI.toast(
+                        `Sauvegarde migree de la version ${originalVersion} vers ${this.CURRENT_VERSION}`,
+                        'success',
+                    );
                 }
             }
 
@@ -316,7 +321,7 @@ export const SaveSystem = {
         for (const oldKey of this.OLD_KEYS) {
             localStorage.removeItem(oldKey);
         }
-    }
+    },
 };
 
 // Note: Game.loadGame est defini dans game.js pour eviter les erreurs de reference

@@ -55,7 +55,7 @@ globalThis.GameCurrency = {
                 delete this._state.boosts[key];
             }
         }
-    }
+    },
 };
 
 describe('GameCurrency', () => {
@@ -71,7 +71,7 @@ describe('GameCurrency', () => {
             clickPower: 1,
             passiveIncome: 0.1,
             party: [],
-            boosts: {}
+            boosts: {},
         };
 
         GameCurrency._state = mockState;
@@ -207,7 +207,7 @@ describe('GameCurrency', () => {
         test('removes expired boosts', () => {
             mockState.boosts = {
                 xp: { endTime: Date.now() - 1000 },
-                capture: { endTime: Date.now() + 60000 }
+                capture: { endTime: Date.now() + 60000 },
             };
 
             GameCurrency.updateBoosts(0.05);
@@ -219,7 +219,7 @@ describe('GameCurrency', () => {
         test('keeps active boosts', () => {
             mockState.boosts = {
                 xp: { endTime: Date.now() + 60000 },
-                capture: { endTime: Date.now() + 60000 }
+                capture: { endTime: Date.now() + 60000 },
             };
 
             GameCurrency.updateBoosts(0.05);

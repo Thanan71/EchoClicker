@@ -1,34 +1,39 @@
 {
-  "name": "echoclicker",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Un jeu clicker/collector dans un univers dark fantasy où vous capturez et collectionnez des créatures magiques appelées **Échos**.",
-  "main": "generate-sprites.js",
-  "scripts": {
-    "test": "jest",
-    "remove-bg": "node remove-backgrounds.js",
-    "remove-bg-single": "node remove-backgrounds.js --file="
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Thanan71/EchoClicker.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Thanan71/EchoClicker/issues"
-  },
-  "homepage": "https://github.com/Thanan71/EchoClicker#readme",
-  "dependencies": {
-    "@imgly/background-removal-node": "^1.4.5",
-    "dotenv": "^17.3.1",
-    "node-fetch": "^3.3.2",
-    "sharp": "^0.34.5"
-  },
-  "devDependencies": {
-    "@jest/globals": "^30.3.0",
-    "jest": "^30.3.0",
-    "jest-environment-jsdom": "^30.3.0"
-  }
+    "name": "echoclicker",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Un jeu clicker/collector dans un univers dark fantasy où vous capturez et collectionnez des créatures magiques appelées **Échos**.",
+    "main": "generate-sprites.js",
+    "scripts": {
+        "test": "jest",
+        "remove-bg": "node remove-backgrounds.js",
+        "remove-bg-single": "node remove-backgrounds.js --file=",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "format": "biome format --write .",
+        "format:check": "biome format ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Thanan71/EchoClicker.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Thanan71/EchoClicker/issues"
+    },
+    "homepage": "https://github.com/Thanan71/EchoClicker#readme",
+    "dependencies": {
+        "@imgly/background-removal-node": "^1.4.5",
+        "dotenv": "^17.3.1",
+        "node-fetch": "^3.3.2",
+        "sharp": "^0.34.5"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
+        "@jest/globals": "^30.3.0",
+        "jest": "^30.3.0",
+        "jest-environment-jsdom": "^30.3.0"
+    }
 }

@@ -28,7 +28,7 @@ export const GameLoop = {
 
     _loop(timestamp) {
         if (!this._running) return;
-        this._rafId = requestAnimationFrame(t => this._loop(t));
+        this._rafId = requestAnimationFrame((t) => this._loop(t));
 
         const delta = timestamp - this._lastTime;
         this._lastTime = timestamp;
@@ -54,5 +54,5 @@ export const GameLoop = {
 
     isRunning() {
         return this._running;
-    }
+    },
 };

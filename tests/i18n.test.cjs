@@ -6,38 +6,45 @@
 const localStorageMock = {
     store: {},
     getItem: jest.fn((key) => localStorageMock.store[key] || null),
-    setItem: jest.fn((key, value) => { localStorageMock.store[key] = value; }),
-    removeItem: jest.fn((key) => { delete localStorageMock.store[key]; }),
-    clear: jest.fn(() => { localStorageMock.store = {}; })
+    setItem: jest.fn((key, value) => {
+        localStorageMock.store[key] = value;
+    }),
+    removeItem: jest.fn((key) => {
+        delete localStorageMock.store[key];
+    }),
+    clear: jest.fn(() => {
+        localStorageMock.store = {};
+    }),
 };
 Object.defineProperty(globalThis, 'localStorage', {
     value: localStorageMock,
-    writable: true
+    writable: true,
 });
 
 // Mock fetch
 globalThis.fetch = jest.fn(() =>
     Promise.resolve({
         ok: true,
-        json: () => Promise.resolve({
-            ui: { test: 'Test' },
-            combat: { victory: 'Victoire!' }
-        })
-    })
+        json: () =>
+            Promise.resolve({
+                ui: { test: 'Test' },
+                combat: { victory: 'Victoire!' },
+            }),
+    }),
 );
 
 // Mock document
 globalThis.document = {
     readyState: 'complete',
     addEventListener: jest.fn(),
-    querySelectorAll: jest.fn(() => [])
+    querySelectorAll: jest.fn(() => []),
 };
 
 // Mock console
 globalThis.console = {
     log: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn()
+    error: jest.fn(),
 };
 
 // Définir I18n directement
@@ -53,7 +60,7 @@ globalThis.I18n = class I18n {
 
     async init() {
         await this.loadAllTranslations();
-        
+
         const savedLang = localStorage.getItem('echoclicker_lang') || 'fr';
         this.setLanguage(savedLang);
         this.loaded = true;
@@ -129,22 +136,22 @@ globalThis.I18n = class I18n {
 
     getLanguageName(lang) {
         const names = {
-            'fr': 'Français',
-            'en': 'English',
-            'es': 'Español',
-            'de': 'Deutsch',
-            'ja': '日本語'
+            fr: 'Français',
+            en: 'English',
+            es: 'Español',
+            de: 'Deutsch',
+            ja: '日本語',
         };
         return names[lang] || lang;
     }
 
     getLanguageFlag(lang) {
         const flags = {
-            'fr': '🇫🇷',
-            'en': '🇬🇧',
-            'es': '🇪🇸',
-            'de': '🇩🇪',
-            'ja': '🇯🇵'
+            fr: '🇫🇷',
+            en: '🇬🇧',
+            es: '🇪🇸',
+            de: '🇩🇪',
+            ja: '🇯🇵',
         };
         return flags[lang] || '🏳️';
     }
@@ -154,7 +161,7 @@ globalThis.I18n = class I18n {
     }
 
     notifyListeners() {
-        this.listeners.forEach(callback => {
+        this.listeners.forEach((callback) => {
             try {
                 callback(this.currentLang);
             } catch (error) {
@@ -164,15 +171,15 @@ globalThis.I18n = class I18n {
     }
 
     translateDOM() {
-        document.querySelectorAll('[data-i18n]').forEach(element => {
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
             const key = element.getAttribute('data-i18n');
             element.textContent = this.t(key);
         });
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
             const key = element.getAttribute('data-i18n-placeholder');
             element.placeholder = this.t(key);
         });
-        document.querySelectorAll('[data-i18n-title]').forEach(element => {
+        document.querySelectorAll('[data-i18n-title]').forEach((element) => {
             const key = element.getAttribute('data-i18n-title');
             element.title = this.t(key);
         });
@@ -189,12 +196,12 @@ describe('I18n', () => {
         i18n.translations = {
             fr: {
                 ui: { test: 'Test FR', hello: 'Bonjour {name}!' },
-                combat: { victory: 'Victoire!' }
+                combat: { victory: 'Victoire!' },
             },
             en: {
                 ui: { test: 'Test EN', hello: 'Hello {name}!' },
-                combat: { victory: 'Victory!' }
-            }
+                combat: { victory: 'Victory!' },
+            },
         };
         i18n.currentLang = 'fr';
         i18n.listeners = [];

@@ -20,18 +20,18 @@ export const UIPokedex = {
             typeFiltersContainer.innerHTML = typeHtml;
         }
 
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+        document.querySelectorAll('.filter-btn[data-filter]').forEach((btn) => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.filter-btn[data-filter]').forEach((b) => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.pokedexStatusFilter = btn.dataset.filter;
                 this.renderPokedex();
             });
         });
 
-        document.querySelectorAll('.type-filter-btn[data-type]').forEach(btn => {
+        document.querySelectorAll('.type-filter-btn[data-type]').forEach((btn) => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.type-filter-btn[data-type]').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.type-filter-btn[data-type]').forEach((b) => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.pokedexTypeFilter = btn.dataset.type === 'all' ? null : btn.dataset.type;
                 this.renderPokedex();
@@ -43,7 +43,7 @@ export const UIPokedex = {
         const grid = document.getElementById('pokedex-grid');
         if (!grid) return;
 
-        const filteredEchoes = ECHOES_DB.filter(echo => {
+        const filteredEchoes = ECHOES_DB.filter((echo) => {
             const caught = Game.state.caughtEchoes.has(echo.id);
             const seen = Game.state.seenEchoes.has(echo.id);
             let statusMatch = true;
@@ -55,17 +55,21 @@ export const UIPokedex = {
         });
 
         const counterEl = document.getElementById('pokedex-counter');
-        if (counterEl) counterEl.textContent = i18n.t('pokedex.counter', { caught: filteredEchoes.length, total: ECHOES_DB.length });
+        if (counterEl)
+            counterEl.textContent = i18n.t('pokedex.counter', {
+                caught: filteredEchoes.length,
+                total: ECHOES_DB.length,
+            });
 
         let html = '';
-        filteredEchoes.forEach(echo => {
+        filteredEchoes.forEach((echo) => {
             const caught = Game.state.caughtEchoes.has(echo.id);
             const seen = Game.state.seenEchoes.has(echo.id);
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePathById(echo.id);
             html += `<div class="pokedex-card ${status}" data-echo-id="${echo.id}">`;
-            html += `<span class="pokedex-number">#${echo.id.toString().padStart(3,'0')}</span>`;
+            html += `<span class="pokedex-number">#${echo.id.toString().padStart(3, '0')}</span>`;
             html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain">` : '\u2753'}</div>`;
             if (seen) {
                 html += `<div class="pokedex-echo-name">${echo.name}</div>`;
@@ -83,7 +87,7 @@ export const UIPokedex = {
         grid.innerHTML = html;
 
         // Add event listeners to pokedex cards
-        document.querySelectorAll('.pokedex-card[data-echo-id]').forEach(card => {
+        document.querySelectorAll('.pokedex-card[data-echo-id]').forEach((card) => {
             card.addEventListener('click', () => {
                 const echoId = parseInt(card.dataset.echoId);
                 this.showPokedexDetail(echoId);
@@ -95,7 +99,10 @@ export const UIPokedex = {
         const echo = getEchoById(id);
         if (!echo) return;
         if (!Game.state.seenEchoes.has(id)) {
-            this.showModal(i18n.t('pokedex.unknownEcho'), `<p style="text-align:center;color:var(--text-muted)">${i18n.t('pokedex.notEncountered')}</p>`);
+            this.showModal(
+                i18n.t('pokedex.unknownEcho'),
+                `<p style="text-align:center;color:var(--text-muted)">${i18n.t('pokedex.notEncountered')}</p>`,
+            );
             return;
         }
         const t = TYPES[echo.type];
@@ -112,12 +119,12 @@ export const UIPokedex = {
             <div class="stat"><span class="stat-label">${i18n.t('pokedex.stats.atk')}</span><span class="stat-value">${echo.baseAtk}</span></div>
             <div class="stat"><span class="stat-label">${i18n.t('pokedex.stats.def')}</span><span class="stat-value">${echo.baseDef}</span></div>
         </div>
-        <div style="text-align:center;margin:8px 0"><span style="color:${caught?'var(--accent-green)':'var(--accent-red)'}">${caught?'\u2705 ' + i18n.t('pokedex.capturedLabel'):'\u274C ' + i18n.t('pokedex.notCapturedLabel')}</span></div>`;
+        <div style="text-align:center;margin:8px 0"><span style="color:${caught ? 'var(--accent-green)' : 'var(--accent-red)'}">${caught ? '\u2705 ' + i18n.t('pokedex.capturedLabel') : '\u274C ' + i18n.t('pokedex.notCapturedLabel')}</span></div>`;
         if (echo.evo) {
             const evo = getEchoById(echo.evo.to);
             const evoImgPath = evo ? getEchoImagePathById(evo.id) : '';
-            html += `<div style="text-align:center;color:var(--accent-gold)">${i18n.t('pokedex.evolvesToLevel', { name: evo?.name||'?', level: echo.evo.lv })}</div>`;
+            html += `<div style="text-align:center;color:var(--accent-gold)">${i18n.t('pokedex.evolvesToLevel', { name: evo?.name || '?', level: echo.evo.lv })}</div>`;
         }
-        this.showModal(`#${echo.id.toString().padStart(3,'0')} - ${echo.name}`, html);
+        this.showModal(`#${echo.id.toString().padStart(3, '0')} - ${echo.name}`, html);
     },
 };

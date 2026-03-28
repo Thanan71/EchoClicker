@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function() {
+(function () {
     function drawStarrySky(map) {
         const ctx = map.ctx;
         const w = map.width;
@@ -72,9 +72,9 @@ import { RegionRegistry } from './RegionRegistry.js';
             { x: 0.5, y: 0.5, s: 2, c: '#a855f7' },
             { x: 0.8, y: 0.55, s: 1.3, c: '#06b6d4' },
             { x: 0.35, y: 0.7, s: 1, c: '#74b9ff' },
-            { x: 0.65, y: 0.65, s: 1.2, c: '#a855f7' }
+            { x: 0.65, y: 0.65, s: 1.2, c: '#a855f7' },
         ];
-        crystals.forEach(c => {
+        crystals.forEach((c) => {
             const cx = c.x * map.width;
             const cy = c.y * map.height;
             const size = 12 * c.s;
@@ -138,19 +138,32 @@ import { RegionRegistry } from './RegionRegistry.js';
     function drawMountainPaths(map) {
         const ctx = map.ctx;
         const routes = map.getRoutePositions();
-        const paths = [[0,1],[1,2],[0,3],[3,4],[1,3],[1,4],[2,4]];
+        const paths = [
+            [0, 1],
+            [1, 2],
+            [0, 3],
+            [3, 4],
+            [1, 3],
+            [1, 4],
+            [2, 4],
+        ];
         paths.forEach(([a, b]) => {
             if (!routes[a] || !routes[b]) return;
-            const ra = routes[a], rb = routes[b];
+            const ra = routes[a],
+                rb = routes[b];
             const unlocked = ra.route.unlocked && rb.route.unlocked;
-            ctx.beginPath(); ctx.moveTo(ra.x, ra.y); ctx.lineTo(rb.x, rb.y);
+            ctx.beginPath();
+            ctx.moveTo(ra.x, ra.y);
+            ctx.lineTo(rb.x, rb.y);
             ctx.strokeStyle = unlocked ? 'rgba(116, 185, 255, 0.4)' : 'rgba(100, 100, 100, 0.2)';
             ctx.lineWidth = unlocked ? 3 : 2;
-            ctx.setLineDash(unlocked ? [] : [6, 6]); ctx.stroke(); ctx.setLineDash([]);
+            ctx.setLineDash(unlocked ? [] : [6, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
         });
     }
 
-    RegionRegistry.register('montagnes', function(map) {
+    RegionRegistry.register('montagnes', function (map) {
         drawStarrySky(map);
         drawMountainRange(map);
         drawCrystals(map);

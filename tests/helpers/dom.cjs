@@ -9,11 +9,19 @@ const localStorageMock = (() => {
     let store = {};
     return {
         getItem: jest.fn((key) => store[key] || null),
-        setItem: jest.fn((key, value) => { store[key] = String(value); }),
-        removeItem: jest.fn((key) => { delete store[key]; }),
-        clear: jest.fn(() => { store = {}; }),
-        get length() { return Object.keys(store).length; },
-        key: jest.fn((index) => Object.keys(store)[index] || null)
+        setItem: jest.fn((key, value) => {
+            store[key] = String(value);
+        }),
+        removeItem: jest.fn((key) => {
+            delete store[key];
+        }),
+        clear: jest.fn(() => {
+            store = {};
+        }),
+        get length() {
+            return Object.keys(store).length;
+        },
+        key: jest.fn((index) => Object.keys(store)[index] || null),
     };
 })();
 
@@ -21,7 +29,7 @@ const localStorageMock = (() => {
 if (typeof globalThis.localStorage === 'undefined') {
     Object.defineProperty(globalThis, 'localStorage', {
         value: localStorageMock,
-        writable: true
+        writable: true,
     });
 }
 
@@ -45,5 +53,5 @@ const restoreDateNow = () => {
 module.exports = {
     localStorageMock,
     mockDateNow,
-    restoreDateNow
+    restoreDateNow,
 };

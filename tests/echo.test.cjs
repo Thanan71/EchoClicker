@@ -19,7 +19,7 @@ const mockEchoData = {
         baseAtk: 15,
         baseDef: 10,
         baseSpd: 12,
-        evo: { to: 'inferno', lv: 10 }
+        evo: { to: 'inferno', lv: 10 },
     },
     evolved: {
         id: 'inferno',
@@ -32,7 +32,7 @@ const mockEchoData = {
         baseAtk: 30,
         baseDef: 20,
         baseSpd: 18,
-        evo: null
+        evo: null,
     },
     noEvo: {
         id: 'blob',
@@ -45,8 +45,8 @@ const mockEchoData = {
         baseAtk: 12,
         baseDef: 14,
         baseSpd: 8,
-        evo: null
-    }
+        evo: null,
+    },
 };
 
 // Helper pour configurer getEchoById avec les données mock
@@ -254,9 +254,12 @@ describe('Echo', () => {
             const echo = new Echo(mockEchoData.base, 1);
             echo.gainXp(echo.xpToNext);
             expect(listener).toHaveBeenCalledTimes(1);
-            expect(listener).toHaveBeenCalledWith(expect.objectContaining({
-                echo: echo, level: 2
-            }));
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    echo: echo,
+                    level: 2,
+                }),
+            );
         });
 
         test('can level up multiple times in one gainXp call', () => {
@@ -331,9 +334,12 @@ describe('Echo', () => {
             EventBus.on(GAME_EVENTS.ECHO_EVOLVED, listener);
             const echo = new Echo(mockEchoData.base, 10);
             echo.evolve();
-            expect(listener).toHaveBeenCalledWith(expect.objectContaining({
-                echo: echo, oldName: 'Flamby'
-            }));
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    echo: echo,
+                    oldName: 'Flamby',
+                }),
+            );
         });
 
         test('does nothing when no evolution data', () => {
@@ -481,9 +487,11 @@ describe('Echo', () => {
             const defender = new Echo(mockEchoData.noEvo, 5);
             attacker.calculateDamageAgainst(defender);
             expect(Utils.calculateDamage).toHaveBeenCalledWith(
-                attacker.atk, attacker.type,
-                defender.def, defender.type,
-                attacker.level
+                attacker.atk,
+                attacker.type,
+                defender.def,
+                defender.type,
+                attacker.level,
             );
         });
 
@@ -562,9 +570,18 @@ describe('Echo', () => {
         test('falls back to json data when getEchoById returns null', () => {
             globalThis.getEchoById.mockReturnValue(null);
             const json = {
-                id: 'x', name: 'X', type: 'FEU', emoji: '?',
-                baseHp: 10, baseAtk: 5, baseDef: 5, baseSpd: 5,
-                level: 1, uid: 'u2', hp: 10, isPrimordial: false
+                id: 'x',
+                name: 'X',
+                type: 'FEU',
+                emoji: '?',
+                baseHp: 10,
+                baseAtk: 5,
+                baseDef: 5,
+                baseSpd: 5,
+                level: 1,
+                uid: 'u2',
+                hp: 10,
+                isPrimordial: false,
             };
             const restored = Echo.fromJSON(json);
             expect(restored.id).toBe('x');
