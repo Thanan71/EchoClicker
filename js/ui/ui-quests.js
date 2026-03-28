@@ -122,11 +122,11 @@ const UIQuests = {
     claimQuestReward(questId) {
         const success = questSystem.claimQuestRewards(questId);
         if (success) {
-            this.toast('\u{1F381} Recompenses reclamees !', 'success');
+            UI.toast('\u{1F381} Recompenses reclamees !', 'success');
             this.renderQuests();
-            this.updateCurrencies();
+            UI.updateCurrencies();
         } else {
-            this.toast('\u274C Impossible de reclamer les recompenses', 'error');
+            UI.toast('\u274C Impossible de reclamer les recompenses', 'error');
         }
     },
 };

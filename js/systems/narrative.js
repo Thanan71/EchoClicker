@@ -370,7 +370,7 @@ const NarrativeSystem = {
         }
 
         const cinematicEntries = Array.from(cinematics).map(id => {
-            return Object.values(NARRATIVE_DATA.cinematics).find(c => c.title === id || Object.keys(NARRATIVE_DATA.cinematics).find(k => k === id));
+            return NARRATIVE_DATA.cinematics[id];
         }).filter(Boolean);
 
         return `

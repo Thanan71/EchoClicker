@@ -430,7 +430,7 @@ class QuestSystem {
           // Vérifier si un Echo de type Ombre a été capturé
           if (Game.state && Game.state.caughtEchoes) {
             const hasShadowEcho = Array.from(Game.state.caughtEchoes).some(echoId => {
-              const echoData = ECHOES_DB.find(e => e.id === echoId);
+              const echoData = getEchoById(echoId);
               return echoData && echoData.type === 'Ombre';
             });
             
@@ -463,6 +463,30 @@ class QuestSystem {
           if (Game.state && Game.state.caughtEchoes) {
             const uniqueCount = Game.state.caughtEchoes.size;
             if (uniqueCount >= 10) {
+              quest.current = quest.target;
+              quest.completed = true;
+              EventBus.emit('quest:completed', quest);
+            }
+          }
+        }
+        break;
+        
+      case QUEST_CATEGORIES.BOSS:
+        // Vérifier si le boss a déjà été vaincu
+        if (quest.id.includes('boss_forest')) {
+          if (Game.state && Game.state.regions) {
+            const region = Game.state.regions.find(r => r.id === 'foret');
+            if (region && region.bossDefeated) {
+              quest.current = quest.target;
+              quest.completed = true;
+              EventBus.emit('quest:completed', quest);
+            }
+          }
+        }
+        if (quest.id.includes('boss_cave')) {
+          if (Game.state && Game.state.regions) {
+            const region = Game.state.regions.find(r => r.id === 'foret_maudite');
+            if (region && region.bossDefeated) {
               quest.current = quest.target;
               quest.completed = true;
               EventBus.emit('quest:completed', quest);
@@ -513,7 +537,7 @@ class QuestSystem {
     }
     
     // Restaurer les quêtes d'histoire
-    if (data.storyQuests && data.storyQuests.length > 0) {
+    if (data.storyQuests) {
       // Charger depuis la sauvegarde
       this.storyQuests = data.storyQuests.map(savedQuest => {
         const template = STORY_QUEST_TEMPLATES.find(t => t.id === savedQuest.id);
