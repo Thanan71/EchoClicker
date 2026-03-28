@@ -123,7 +123,15 @@
     "unknownEcho": "Unknown Echo",
     "notEncountered": "Not encountered",
     "notCaptured": "Not captured",
-    "evolvesTo": "Evolves into {name}"
+    "evolvesTo": "Evolves into {name}",
+    "stats": {
+      "hp": "HP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Captured",
+    "notCapturedLabel": "Not captured",
+    "evolvesToLevel": "Evolves into {name} at level {level}"
   },
   "hatchery": {
     "title": "Hatchery",

@@ -124,7 +124,15 @@
     "unknownEcho": "Écho Inconnu",
     "notEncountered": "Non rencontré",
     "notCaptured": "Non capturé",
-    "evolvesTo": "Évolue en {name}"
+    "evolvesTo": "Évolue en {name}",
+    "stats": {
+      "hp": "PV",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Capturé",
+    "notCapturedLabel": "Non capturé",
+    "evolvesToLevel": "Évolue en {name} au niveau {level}"
   },
   "hatchery": {
     "title": "Élevage",

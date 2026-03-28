@@ -123,7 +123,15 @@
     "unknownEcho": "Eco Desconocido",
     "notEncountered": "No encontrado",
     "notCaptured": "No capturado",
-    "evolvesTo": "Evoluciona a {name}"
+    "evolvesTo": "Evoluciona a {name}",
+    "stats": {
+      "hp": "HP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Capturado",
+    "notCapturedLabel": "No capturado",
+    "evolvesToLevel": "Evoluciona a {name} en el nivel {level}"
   },
   "hatchery": {
     "title": "Incubadora",

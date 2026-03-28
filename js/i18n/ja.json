@@ -125,7 +125,15 @@
     "unknownEcho": "不明なエコー",
     "notEncountered": "未遭遇",
     "notCaptured": "未キャプチャ",
-    "evolvesTo": "{name}に進化"
+    "evolvesTo": "{name}に進化",
+    "stats": {
+      "hp": "HP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "キャプチャ済み",
+    "notCapturedLabel": "未キャプチャ",
+    "evolvesToLevel": "レベル{level}で{name}に進化"
   },
   "hatchery": {
     "title": "孵化施設",
