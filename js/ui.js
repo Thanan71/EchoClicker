@@ -14,14 +14,14 @@ import { UIRoutes } from './ui/ui-routes.js';
 import { UIShop } from './ui/ui-shop.js';
 
 export const UI = Object.assign(
-    {},
-    UICore,
-    UIRoutes,
-    UICombat,
-    UIParty,
-    UICapture,
-    UIPokedex,
-    UIShop,
-    UIQuests,
-    UIAchievements,
+  {},
+  UICore,
+  UIRoutes,
+  UICombat,
+  UIParty,
+  UICapture,
+  UIPokedex,
+  UIShop,
+  UIQuests,
+  UIAchievements,
 );

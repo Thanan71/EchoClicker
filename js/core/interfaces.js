@@ -63,7 +63,7 @@
  * @param {IEventBus} eventBusRef - Référence au bus d'événements
  */
 export function injectDependencies(system, gameRef, uiRef, eventBusRef) {
-    system._game = gameRef;
-    system._ui = uiRef;
-    system._eventBus = eventBusRef;
+  system._game = gameRef;
+  system._ui = uiRef;
+  system._eventBus = eventBusRef;
 }

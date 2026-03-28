@@ -5,25 +5,27 @@
 import { questSystem } from '../systems/quests.js';
 
 export const UIQuests = {
-    renderQuests() {
-        const dailyContainer = document.getElementById('daily-quests');
-        const storyContainer = document.getElementById('story-quests');
-        const completedContainer = document.getElementById('completed-quests');
+  renderQuests() {
+    const dailyContainer = document.getElementById('daily-quests');
+    const storyContainer = document.getElementById('story-quests');
+    const completedContainer = document.getElementById('completed-quests');
 
-        if (!dailyContainer || !storyContainer || !completedContainer) return;
+    if (!dailyContainer || !storyContainer || !completedContainer) {
+      return;
+    }
 
-        const { daily, story } = questSystem.getActiveQuests();
-        const completedUnclaimed = questSystem.getCompletedUnclaimedQuests();
+    const { daily, story } = questSystem.getActiveQuests();
+    const completedUnclaimed = questSystem.getCompletedUnclaimedQuests();
 
-        let dailyHtml = '';
-        if (daily.length === 0) {
-            dailyHtml = `<div class="quest-empty">${i18n.t('quests.dailyEmpty')}</div>`;
-        } else {
-            daily.forEach((quest) => {
-                const progress = Math.min(quest.current, quest.target);
-                const percent = (progress / quest.target) * 100;
-                const isCompleted = quest.completed;
-                dailyHtml += `
+    let dailyHtml = '';
+    if (daily.length === 0) {
+      dailyHtml = `<div class="quest-empty">${i18n.t('quests.dailyEmpty')}</div>`;
+    } else {
+      daily.forEach((quest) => {
+        const progress = Math.min(quest.current, quest.target);
+        const percent = (progress / quest.target) * 100;
+        const isCompleted = quest.completed;
+        dailyHtml += `
                 <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4CB}</div>
@@ -41,33 +43,37 @@ export const UIQuests = {
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards
-                            .map((r) => {
-                                if (r.type === 'xp')
-                                    return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
-                                if (r.type === 'crystals')
-                                    return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
-                                if (r.type === 'energy')
-                                    return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
-                                if (r.type === 'item')
-                                    return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
-                                return '';
-                            })
-                            .join('')}
+                          .map((r) => {
+                            if (r.type === 'xp') {
+                              return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'crystals') {
+                              return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'energy') {
+                              return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'item') {
+                              return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
+                            }
+                            return '';
+                          })
+                          .join('')}
                     </div>
                 </div>`;
-            });
-        }
-        dailyContainer.innerHTML = dailyHtml;
+      });
+    }
+    dailyContainer.innerHTML = dailyHtml;
 
-        let storyHtml = '';
-        if (story.length === 0) {
-            storyHtml = `<div class="quest-empty">${i18n.t('quests.storyEmpty')}</div>`;
-        } else {
-            story.forEach((quest) => {
-                const progress = Math.min(quest.current, quest.target);
-                const percent = (progress / quest.target) * 100;
-                const isCompleted = quest.completed;
-                storyHtml += `
+    let storyHtml = '';
+    if (story.length === 0) {
+      storyHtml = `<div class="quest-empty">${i18n.t('quests.storyEmpty')}</div>`;
+    } else {
+      story.forEach((quest) => {
+        const progress = Math.min(quest.current, quest.target);
+        const percent = (progress / quest.target) * 100;
+        const isCompleted = quest.completed;
+        storyHtml += `
                 <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4D6}</div>
@@ -85,30 +91,34 @@ export const UIQuests = {
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards
-                            .map((r) => {
-                                if (r.type === 'xp')
-                                    return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
-                                if (r.type === 'crystals')
-                                    return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
-                                if (r.type === 'energy')
-                                    return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
-                                if (r.type === 'item')
-                                    return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
-                                return '';
-                            })
-                            .join('')}
+                          .map((r) => {
+                            if (r.type === 'xp') {
+                              return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'crystals') {
+                              return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'energy') {
+                              return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'item') {
+                              return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
+                            }
+                            return '';
+                          })
+                          .join('')}
                     </div>
                 </div>`;
-            });
-        }
-        storyContainer.innerHTML = storyHtml;
+      });
+    }
+    storyContainer.innerHTML = storyHtml;
 
-        let completedHtml = '';
-        if (completedUnclaimed.length === 0) {
-            completedHtml = `<div class="quest-empty">${i18n.t('quests.noRewards')}</div>`;
-        } else {
-            completedUnclaimed.forEach((quest) => {
-                completedHtml += `
+    let completedHtml = '';
+    if (completedUnclaimed.length === 0) {
+      completedHtml = `<div class="quest-empty">${i18n.t('quests.noRewards')}</div>`;
+    } else {
+      completedUnclaimed.forEach((quest) => {
+        completedHtml += `
                 <div class="quest-card completed" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u2705</div>
@@ -120,30 +130,34 @@ export const UIQuests = {
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards
-                            .map((r) => {
-                                if (r.type === 'xp')
-                                    return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
-                                if (r.type === 'crystals')
-                                    return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
-                                if (r.type === 'energy')
-                                    return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
-                                if (r.type === 'item')
-                                    return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
-                                return '';
-                            })
-                            .join('')}
+                          .map((r) => {
+                            if (r.type === 'xp') {
+                              return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'crystals') {
+                              return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'energy') {
+                              return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
+                            }
+                            if (r.type === 'item') {
+                              return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
+                            }
+                            return '';
+                          })
+                          .join('')}
                     </div>
                 </div>`;
-            });
-        }
-        completedContainer.innerHTML = completedHtml;
+      });
+    }
+    completedContainer.innerHTML = completedHtml;
 
-        // Add event listeners to claim buttons
-        document.querySelectorAll('.quest-claim-btn').forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                const questId = e.target.dataset.questId;
-                questSystem.claimQuestRewards(questId);
-            });
-        });
-    },
+    // Add event listeners to claim buttons
+    document.querySelectorAll('.quest-claim-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const questId = e.target.dataset.questId;
+        questSystem.claimQuestRewards(questId);
+      });
+    });
+  },
 };

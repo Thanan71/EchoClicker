@@ -7,7 +7,7 @@ const { Game } = require('../__mocks__/game');
 const { UI } = require('../__mocks__/ui');
 
 beforeEach(() => {
-    EventBus.reset();
-    Game.reset();
-    UI.reset();
+  EventBus.reset();
+  Game.reset();
+  UI.reset();
 });
