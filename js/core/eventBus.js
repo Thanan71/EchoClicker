@@ -27,7 +27,10 @@ export const EventBus = {
     for (const cb of this._listeners[event]) {
       try {
         cb(data);
-      } catch (_e) {}
+      } catch (e) {
+        // biome-ignore lint/suspicious/noConsole: error logging for EventBus
+        console.error(`EventBus error [${event}]:`, e);
+      }
     }
   },
 

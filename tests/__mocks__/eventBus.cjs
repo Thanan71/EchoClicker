@@ -27,8 +27,9 @@ const EventBus = {
     for (const cb of this._listeners[event]) {
       try {
         cb(data);
-      } catch (_e) {
-        // EventBus mock: errors silently ignored
+      } catch (e) {
+        // biome-ignore lint/suspicious/noConsole: error logging for EventBus
+        console.error(`EventBus error [${event}]:`, e);
       }
     }
   },
