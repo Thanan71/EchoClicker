@@ -513,12 +513,22 @@ class QuestSystem {
     }
     
     // Restaurer les quêtes d'histoire
-    if (data.storyQuests) {
+    if (data.storyQuests && data.storyQuests.length > 0) {
+      // Charger depuis la sauvegarde
       this.storyQuests = data.storyQuests.map(savedQuest => {
         const template = STORY_QUEST_TEMPLATES.find(t => t.id === savedQuest.id);
         return template ? Quest.fromJSON(savedQuest, template) : null;
       }).filter(q => q !== null);
+      
+      // Ajouter les quêtes d'histoire manquantes (nouvelles quêtes ajoutées après la sauvegarde)
+      STORY_QUEST_TEMPLATES.forEach(template => {
+        const existingQuest = this.storyQuests.find(q => q.id === template.id);
+        if (!existingQuest) {
+          this.storyQuests.push(new Quest(template));
+        }
+      });
     } else {
+      // Pas de sauvegarde de quêtes d'histoire, initialiser depuis les templates
       this.loadStoryQuests();
     }
     
