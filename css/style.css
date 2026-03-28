@@ -2021,3 +2021,154 @@ body {
         width: 100%;
     }
 }
+
+/* ============================================
+   Narrative Logbook
+   ============================================ */
+
+.logbook-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.logbook-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.logbook-tab {
+    background: var(--bg-tertiary);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-body);
+}
+
+.logbook-tab:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.logbook-tab.active {
+    background: var(--accent-purple);
+    color: white;
+    border-color: var(--accent-purple);
+}
+
+.logbook-content {
+    background: var(--bg-card);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.logbook-section h3 {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    color: var(--accent-gold);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.logbook-entry {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(139, 92, 246, 0.1);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin-bottom: 12px;
+    transition: var(--transition-fast);
+}
+
+.logbook-entry:hover {
+    border-color: var(--accent-purple);
+    background: var(--bg-tertiary);
+}
+
+.logbook-entry .entry-title {
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    color: var(--accent-cyan);
+    margin-bottom: 6px;
+}
+
+.logbook-entry .entry-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.logbook-empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px;
+    font-style: italic;
+}
+
+.lore-entry {
+    border-left: 3px solid var(--accent-gold);
+}
+
+.cinematic-entry {
+    border-left: 3px solid var(--accent-pink);
+}
+
+/* Narrative Dialogues */
+.narrative-dialogue {
+    text-align: center;
+    padding: 20px;
+}
+
+.narrative-dialogue .dialogue-text {
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.boss-dialogue .dialogue-text {
+    color: var(--accent-red);
+    font-weight: 600;
+}
+
+/* Narrative Cinematics */
+.narrative-cinematic {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.narrative-cinematic .cinematic-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.cinematic-progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    transition: var(--transition-fast);
+}
+
+.progress-dot.active {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 8px var(--glow-purple);
+}
