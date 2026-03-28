@@ -10,7 +10,7 @@ export const GAME_CONFIG = {
   MAX_PARTY: 6, // Max d'Échos en équipe
   CAPTURE_BASE_RATE: 30, // Taux de capture de base (%)
   CAPTURE_HP_BONUS: 40, // Bonus de capture quand HP bas (%)
-  PRIMORDIAL_CHANCE: 0.005, // 0.5% de chance Primordial
+  PRIMORDIAL_CHANCE: 0.05, // 0.5% de chance Primordial
   XP_BASE: 50, // XP de base pour niveau 1
   XP_GROWTH: 1.15, // Croissance XP par niveau
   KILLS_FOR_ROUTE: 10, // Kills pour débloquer route suivante
