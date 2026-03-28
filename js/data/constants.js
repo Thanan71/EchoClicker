@@ -10,10 +10,14 @@
 import { ECHOES_DB } from './echoesData.js';
 import { REGIONS } from './regions-data.js';
 
-// Helpers
+// Lookup Maps pour O(1) au lieu de O(n)
+const ECHOES_MAP = new Map(ECHOES_DB.map((e) => [e.id, e]));
+const REGIONS_MAP = new Map(REGIONS.map((r) => [r.id, r]));
+
+// Helpers - O(1) lookup via Map
 export function getEchoById(id) {
-  return ECHOES_DB.find((e) => e.id === id);
+  return ECHOES_MAP.get(id);
 }
 export function getRegionById(id) {
-  return REGIONS.find((r) => r.id === id);
+  return REGIONS_MAP.get(id);
 }

@@ -12,6 +12,7 @@ export const GameParty = {
       return false;
     }
     this.state.party.push(echo);
+    this.invalidatePassiveIncomeCache();
     return true;
   },
 
@@ -95,6 +96,7 @@ export const GameParty = {
       e.fullHeal();
     }
 
+    this.invalidatePassiveIncomeCache();
     UI.renderParty();
     UI.toast(i18n.t('combat.optimalTeamCreated'), 'success');
     UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map((e) => e.name).join(', ') }));
@@ -107,6 +109,7 @@ export const GameParty = {
     }
     const echo = this.state.party.splice(idx, 1)[0];
     this.state.reserves.push(echo);
+    this.invalidatePassiveIncomeCache();
     return true;
   },
 
@@ -121,6 +124,7 @@ export const GameParty = {
     }
     const echo = this.state.reserves.splice(idx, 1)[0];
     this.state.party.push(echo);
+    this.invalidatePassiveIncomeCache();
     return true;
   },
 

@@ -43,6 +43,8 @@ export const UICore = {
   captureWildEcho: null,
   pokedexStatusFilter: 'all',
   pokedexTypeFilter: null,
+  _lastBoostsUpdate: 0,
+  _lastBoostsHash: '',
 
   init() {
     this.renderRoutes();
@@ -116,8 +118,22 @@ export const UICore = {
     if (!container) {
       return;
     }
-    let html = '';
     const now = Date.now();
+    // Ne mettre à jour que toutes les secondes pour économiser le DOM
+    if (now - this._lastBoostsUpdate < 1000) {
+      return;
+    }
+    // Créer un hash des boosts actifs pour détecter les changements
+    const activeBoosts = Object.entries(Game.state.boosts)
+      .filter(([, boost]) => boost?.endTime && now < boost.endTime)
+      .map(([type, boost]) => `${type}:${Math.ceil((boost.endTime - now) / 1000)}`)
+      .join(',');
+    if (activeBoosts === this._lastBoostsHash) {
+      return;
+    }
+    this._lastBoostsUpdate = now;
+    this._lastBoostsHash = activeBoosts;
+    let html = '';
     const boostTypes = {
       xp: { icon: '\u{1F4C8}', name: 'XP', cssClass: 'xp' },
       capture: { icon: '\u{1F3AF}', name: 'Capture', cssClass: 'capture' },

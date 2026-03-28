@@ -4,7 +4,7 @@
 
 // Paramètres de jeu
 export const GAME_CONFIG = {
-  TICK_RATE: 50, // ms entre chaque tick (20 ticks/sec)
+  TICK_RATE: 75, // ms entre chaque tick (~13 ticks/sec)
   PASSIVE_BASE: 0.1, // Énergie passive de base par tick
   CPS_WINDOW: 5000, // Fenêtre de calcul du CPS (ms)
   MAX_PARTY: 6, // Max d'Échos en équipe

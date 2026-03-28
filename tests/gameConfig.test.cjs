@@ -95,8 +95,8 @@ describe('GAME_CONFIG', () => {
   });
 
   describe('Specific values', () => {
-    test('TICK_RATE is 50ms (20 ticks/sec)', () => {
-      expect(GAME_CONFIG.TICK_RATE).toBe(50);
+    test('TICK_RATE is 75ms (~13 ticks/sec)', () => {
+      expect(GAME_CONFIG.TICK_RATE).toBe(75);
     });
 
     test('MAX_PARTY is 6', () => {
