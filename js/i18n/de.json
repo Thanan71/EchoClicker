@@ -273,5 +273,12 @@
     "reset": "Spiel zurückgesetzt!",
     "error": "Fehler!",
     "success": "Erfolg!"
+  },
+  "logbook": {
+    "title": "📖 Logbuch",
+    "dialogues": "💬 Dialoge",
+    "lore": "📜 Geschichte",
+    "cinematics": "🎬 Kinofilme",
+    "close": "Schließen"
   }
 }

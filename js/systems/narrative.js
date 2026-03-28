@@ -295,9 +295,9 @@ const NarrativeSystem = {
         let html = `
             <div class="logbook-container">
                 <div class="logbook-tabs">
-                    <button class="logbook-tab active" onclick="NarrativeSystem.switchLogbookTab('guide')">📜 Dialogues</button>
-                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('lore')">📖 Lore</button>
-                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('cinematics')">🎬 Cinematiques</button>
+                    <button class="logbook-tab active" onclick="NarrativeSystem.switchLogbookTab('guide')">${i18n.t('logbook.dialogues')}</button>
+                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('lore')">${i18n.t('logbook.lore')}</button>
+                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('cinematics')">${i18n.t('logbook.cinematics')}</button>
                 </div>
                 <div class="logbook-content" id="logbook-content">
                     ${this.renderLogbookGuide(data.guideDialogues)}
@@ -305,7 +305,7 @@ const NarrativeSystem = {
             </div>
         `;
 
-        UI.showModal('📕 Logbook', html, '<button class="btn-combat secondary" onclick="UI.closeModal()">Fermer</button>');
+        UI.showModal(i18n.t('logbook.title'), html, `<button class="btn-combat secondary" onclick="UI.closeModal()">${i18n.t('logbook.close')}</button>`);
     },
 
     switchLogbookTab(tab) {
