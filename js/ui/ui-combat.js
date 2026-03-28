@@ -5,6 +5,7 @@
 import { Combat } from '../combat.js';
 import { GAME_CONFIG } from '../data/game-config.js';
 import { TYPES } from '../data/types.js';
+import { Game } from '../game.js';
 import { createEchoImageHTML } from './ui-core.js';
 
 export const UICombat = {
@@ -38,7 +39,8 @@ export const UICombat = {
         'enemy-sprite',
         `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`,
       );
-      this._setText('enemy-name', e.bossName || e.name);
+      const enemyName = e.bossName || i18n.t(`echoes.${e.id}.name`) || e.name;
+      this._setText('enemy-name', enemyName);
       const hpPct = Math.max(0, e.getHpPercent());
       this._setStyle('enemy-hp-bar', '--hp-percent', `${hpPct}%`);
       this._setText('enemy-hp-text', `${Math.max(0, Math.floor(e.hp))}/${Math.floor(e.maxHp)}`);
@@ -72,7 +74,8 @@ export const UICombat = {
         'player-sprite',
         `<div style="position:relative;display:inline-block">${primordialBadge}${imgHTML}</div>`,
       );
-      this._setText('player-name', p.name);
+      const playerName = i18n.t(`echoes.${p.id}.name`) || p.name;
+      this._setText('player-name', playerName);
       const hpPct = Math.max(0, p.getHpPercent());
       this._setStyle('player-hp-bar', '--hp-percent', `${hpPct}%`);
       this._setText('player-hp-text', `${Math.max(0, Math.floor(p.hp))}/${Math.floor(p.maxHp)}`);
@@ -103,6 +106,65 @@ export const UICombat = {
   updateCombat() {
     this._updateEnemyDisplay();
     this._updatePlayerDisplay();
+    this._updateTeamPanel();
+  },
+
+  _updateTeamPanel() {
+    const teamList = document.getElementById('team-panel-list');
+    if (!teamList) {
+      return;
+    }
+
+    const party = Game.state.party;
+    if (!party || party.length === 0) {
+      teamList.innerHTML = '<p class="team-empty">Aucun Écho dans l\'équipe</p>';
+      return;
+    }
+
+    let html = '';
+    for (const echo of party) {
+      const isActive = Combat.activeEcho && Combat.activeEcho.uid === echo.uid;
+      const isFainted = !echo.isAlive();
+      const type = TYPES[echo.type];
+
+      const hpPercent = echo.getHpPercent();
+      const xpPercent = (echo.xp / echo.xpToNext) * 100;
+
+      const primordialBadge = echo.isPrimordial ? '<span class="shiny-badge">\u2B50</span>' : '';
+
+      const echoImgHTML = createEchoImageHTML(echo, 32);
+      const echoName = i18n.t(`echoes.${echo.id}.name`) || echo.name;
+      html += `
+        <div class="team-member ${isActive ? 'active' : ''} ${isFainted ? 'fainted' : ''}">
+          <div class="team-member-header">
+            <span class="team-member-icon">${echoImgHTML}</span>
+            <div class="team-member-info">
+              <div class="team-member-name">${echoName} ${primordialBadge}</div>
+              <div class="team-member-level">Niv. ${echo.level}</div>
+            </div>
+          </div>
+          <div class="team-member-bars">
+            <div class="team-bar-container">
+              <span class="team-bar-label">PV</span>
+              <div class="team-bar">
+                <div class="team-bar-fill hp" style="width: ${hpPercent}%"></div>
+              </div>
+              <span class="team-bar-text">${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</span>
+            </div>
+            <div class="team-bar-container">
+              <span class="team-bar-label">XP</span>
+              <div class="team-bar">
+                <div class="team-bar-fill xp" style="width: ${xpPercent}%"></div>
+              </div>
+              <span class="team-bar-text">${Math.floor(echo.xp)}/${Math.floor(echo.xpToNext)}</span>
+            </div>
+          </div>
+          <span class="team-member-type" style="background: ${type.color}; color: #fff">${type.emoji} ${type.name}</span>
+        </div>
+      `;
+    }
+
+    teamList.innerHTML = html;
   },
 
   addLog(type, message) {

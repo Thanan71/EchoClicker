@@ -81,9 +81,10 @@ export const UIPokedex = {
       const imgPath = getEchoImagePathById(echo.id);
       html += `<div class="pokedex-card ${status}" data-echo-id="${echo.id}">`;
       html += `<span class="pokedex-number">#${echo.id.toString().padStart(3, '0')}</span>`;
-      html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain">` : '\u2753'}</div>`;
+      const echoName = i18n.t(`echoes.${echo.id}.name`) || echo.name;
+      html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echoName}" style="width:48px;height:48px;object-fit:contain">` : '\u2753'}</div>`;
       if (seen) {
-        html += `<div class="pokedex-echo-name">${echo.name}</div>`;
+        html += `<div class="pokedex-echo-name">${echoName}</div>`;
         html += `<span class="pokedex-echo-type" style="background:${t.color};color:#fff">${t.emoji} ${t.name}</span>`;
       } else {
         html += '<div class="pokedex-echo-name">???</div>';
@@ -121,9 +122,10 @@ export const UIPokedex = {
     const t = TYPES[echo.type];
     const caught = Game.state.caughtEchoes.has(id);
     const imgPath = getEchoImagePathById(echo.id);
+    const echoName = i18n.t(`echoes.${echo.id}.name`) || echo.name;
     let html = `<div style="text-align:center">
-            <div style="margin:10px 0"><img src="${imgPath}" alt="${echo.name}" style="width:128px;height:128px;object-fit:contain"></div>
-            <h3 style="font-family:var(--font-title)">${echo.name}</h3>
+            <div style="margin:10px 0"><img src="${imgPath}" alt="${echoName}" style="width:128px;height:128px;object-fit:contain"></div>
+            <h3 style="font-family:var(--font-title)">${echoName}</h3>
             <span class="type-badge" style="background:${t.color};color:#fff;padding:4px 12px;border-radius:12px">${t.emoji} ${t.name}</span>
             <p style="color:var(--text-secondary);margin:12px 0;font-style:italic">${echo.desc}</p>
         </div>
@@ -138,6 +140,6 @@ export const UIPokedex = {
       const _evoImgPath = evo ? getEchoImagePathById(evo.id) : '';
       html += `<div style="text-align:center;color:var(--accent-gold)">${i18n.t('pokedex.evolvesToLevel', { name: evo?.name || '?', level: echo.evo.lv })}</div>`;
     }
-    this.showModal(`#${echo.id.toString().padStart(3, '0')} - ${echo.name}`, html);
+    this.showModal(`#${echo.id.toString().padStart(3, '0')} - ${echoName}`, html);
   },
 };

@@ -61,7 +61,8 @@
     "optimalTeamCreated": "⚡ Équipe optimale créée !",
     "newTeam": "Nouvelle équipe: {names}",
     "dmgClick": "+{dmg} dégâts",
-    "dmgClickZero": "+0 dégât"
+    "dmgClickZero": "+0 dégât",
+    "yourTeam": "Ton Équipe"
   },
   "capture": {
     "title": "🔮 Zone de Capture",
@@ -335,6 +336,158 @@
     "30": {
       "name": "ChaotineMini",
       "desc": "Un mini vortex de chaos qui déforme l'air."
+    },
+    "31": {
+      "name": "Braise",
+      "desc": "Une braise vivante qui roule dans la lave."
+    },
+    "32": {
+      "name": "Flammide",
+      "desc": "Une flamme consciente qui consume tout sur son passage."
+    },
+    "33": {
+      "name": "Infernus",
+      "desc": "Un démon de feu qui fait trembler les volcans."
+    },
+    "34": {
+      "name": "Scorielle",
+      "desc": "Un morceau de roche volcanique animé par la chaleur."
+    },
+    "35": {
+      "name": "Magmior",
+      "desc": "Un golem de magma qui laisse un sillon de feu."
+    },
+    "36": {
+      "name": "Chaotik",
+      "desc": "Une anomalie chaotique qui distord la réalité."
+    },
+    "37": {
+      "name": "Vortexia",
+      "desc": "Un vortex de chaos pur qui aspire l'énergie."
+    },
+    "38": {
+      "name": "Pyrodrak",
+      "desc": "Un dragon des enfers qui crache des flammes dévoreuses."
+    },
+    "39": {
+      "name": "Cendrille",
+      "desc": "Un nuage de cendres conscient qui aveugle ses proies."
+    },
+    "40": {
+      "name": "Obsidiame",
+      "desc": "Une entité d'obsidienne quasi indestructible."
+    },
+    "41": {
+      "name": "Ombrette",
+      "desc": "Une ombre maléfique qui se cache entre les arbres morts."
+    },
+    "42": {
+      "name": "Spectralis",
+      "desc": "Un spectre qui hante la forêt maudite depuis des siècles."
+    },
+    "43": {
+      "name": "Nuitshade",
+      "desc": "Une entité d'ombre pure qui éteint toute lumière."
+    },
+    "44": {
+      "name": "Morbillon",
+      "desc": "Une plante carnivère corrompue par l'ombre."
+    },
+    "45": {
+      "name": "Viperoak",
+      "desc": "Un arbre maudit dont les branches sont des serpents."
+    },
+    "46": {
+      "name": "Necroflore",
+      "desc": "Une fleur de mort qui se nourrit des âmes perdues."
+    },
+    "47": {
+      "name": "Champitox",
+      "desc": "Un champignon toxique dont les spores corrompent tout."
+    },
+    "48": {
+      "name": "Ombrelune",
+      "desc": "Une créature lunaire qui tire sa puissance de la nuit."
+    },
+    "49": {
+      "name": "Spectrillon",
+      "desc": "Un petit œil spectral qui observe depuis les ombres."
+    },
+    "50": {
+      "name": "Creepvine",
+      "desc": "Une vigne rampante qui étrangle tout ce qu'elle touche."
+    },
+    "51": {
+      "name": "Lumiette",
+      "desc": "Une petite boule de lumière qui flotte dans les cieux."
+    },
+    "52": {
+      "name": "Aurorella",
+      "desc": "Une fée de lumière australe qui danse dans le ciel."
+    },
+    "53": {
+      "name": "Seraphiel",
+      "desc": "Un ange de lumière qui protège les cieux éthérés."
+    },
+    "54": {
+      "name": "Zephyrion",
+      "desc": "Un esprit du vent qui vole à travers les nuages."
+    },
+    "55": {
+      "name": "Tempestia",
+      "desc": "Une tornade consciente qui dévaste tout sur son passage."
+    },
+    "56": {
+      "name": "Celestino",
+      "desc": "Un petit être céleste qui apporte la joie partout."
+    },
+    "57": {
+      "name": "Nimbus",
+      "desc": "Un nuage vivant qui crée des orages à volonté."
+    },
+    "58": {
+      "name": "Solarius",
+      "desc": "Une étoile vivante dont la lumière perce les ténèbres."
+    },
+    "59": {
+      "name": "Ailedevent",
+      "desc": "Un oiseau de tempête qui plane au-dessus des nuages."
+    },
+    "60": {
+      "name": "Eclairoz",
+      "desc": "Une étincelle divine qui aveugle les ennemis."
+    },
+    "61": {
+      "name": "Arcafox",
+      "desc": "Un renard arcanique dont la queue brille de magie."
+    },
+    "62": {
+      "name": "Mystigard",
+      "desc": "Un gardien mystique qui protège les secrets arcaniques."
+    },
+    "63": {
+      "name": "Archanos",
+      "desc": "Un archimage arcanique dont le pouvoir transcende la réalité."
+    },
+    "64": {
+      "name": "Cristalite",
+      "desc": "Un cristal conscient qui réfracte la magie ambiante."
+    },
+    "65": {
+      "name": "Prismatik",
+      "desc": "Un prisme vivant qui décompose la lumière en arcs-en-ciel."
+    },
+    "66": {
+      "name": "Runestone",
+      "desc": "Une pierre runique gravée d'anciens symboles magiques."
+    },
+    "67": {
+      "name": "Cristallus",
+      "desc": "Un dragon de cristal dont les écailles brillent de magie pure."
+    },
+    "68": {
+      "name": "Arcanexus",
+      "desc": "Le nexus de toute magie arcanique, une entité cosmique."
     }
   },
   "types": {
@@ -392,5 +545,82 @@
     "clicks": "Clics",
     "cps": "CPS",
     "echoes": "Échos"
+  },
+  "wiki": {
+    "title": "📖 Wiki EchoClicker",
+    "backToGame": "⬅️ Retour au jeu",
+    "nav": {
+      "introduction": "Introduction",
+      "hatcherySystem": "Système d'élevage",
+      "mapRoutes": "Carte & Routes",
+      "typeChart": "Table des types",
+      "echoEncyclopedia": "Encyclopédie des Échos"
+    },
+    "intro": {
+      "title": "⚡ Introduction",
+      "desc1": "Bienvenue dans le monde d'EchoClicker !",
+      "desc2": "Dans ce guide, vous apprendrez comment fonctionnent les routes.",
+      "mainObjectives": "Objectifs principaux",
+      "capture": "Capturer",
+      "captureDesc": "Utilisez vos Liens d'Aether pour capturer des Échos sauvages.",
+      "fight": "Combattre",
+      "fightDesc": "Combattez des Échos sur les routes pour gagner de l'expérience.",
+      "evolve": "Évoluer",
+      "evolveDesc": "Entraînez vos Échos pour qu'ils atteignent de nouveaux niveaux.",
+      "collect": "Collectionner",
+      "collectDesc": "Remplissez votre journal en découvrant tous les Échos."
+    },
+    "hatchery": {
+      "title": "🥚 Système d'élevage (Incubateur)",
+      "desc": "L'incubateur vous permet de croiser deux Échos.",
+      "howItWorks": "Comment ça marche ?",
+      "step1": "Sélectionnez deux parents dans votre équipe ou vos réserves.",
+      "step2": "Assurez-vous d'avoir un slot d'incubation libre (max 4).",
+      "step3": "Lancez l'incubation. Le temps dépend de la rareté.",
+      "step4": "Récupérez votre nouvel Écho une fois l'incubation terminée !",
+      "incubationTimes": "Temps d'incubation",
+      "rarity": "Rareté",
+      "time": "Temps",
+      "common": "Commun",
+      "uncommon": "Peu commun",
+      "rare": "Rare",
+      "epic": "Épique",
+      "legendary": "Légendaire",
+      "mythical": "Mythique",
+      "time30s": "30 secondes",
+      "time1m": "1 minute",
+      "time2m": "2 minutes",
+      "time5m": "5 minutes",
+      "time10m": "10 minutes",
+      "time15m": "15 minutes"
+    },
+    "routes": {
+      "title": "🗺️ Carte & Routes",
+      "desc": "Le monde est divisé en plusieurs régions.",
+      "colRoute": "Route",
+      "colLevels": "Niveaux",
+      "colEchoes": "Échos disponibles",
+      "level": "Nv. {level}",
+      "boss": "Boss :"
+    },
+    "types": {
+      "title": "🌀 Table des types",
+      "desc": "Chaque Écho a un type qui détermine ses forces et faiblesses.",
+      "colType": "Type",
+      "colStrong": "Fort contre (x1.5)",
+      "colWeak": "Faible contre (x0.5)"
+    },
+    "echoes": {
+      "title": "📖 Encyclopédie des Échos",
+      "desc": "Liste complète de tous les Échos connus dans la région actuelle.",
+      "colIcon": "Icône",
+      "colName": "Nom",
+      "colType": "Type",
+      "colRarity": "Rareté",
+      "colStats": "Stats de base",
+      "colEvolution": "Évolution",
+      "colCaptureRate": "Taux de capture",
+      "none": "Aucune"
+    }
   }
 }

@@ -19,7 +19,8 @@ export const UIParty = {
       html += '<span class="primordial-badge">\u2B50</span>';
     }
     html += `<div class="party-echo-icon">${imgHTML}</div>`;
-    html += `<div class="party-echo-name">${echo.name}</div>`;
+    const echoName = i18n.t(`echoes.${echo.id}.name`) || echo.name;
+    html += `<div class="party-echo-name">${echoName}</div>`;
     html += `<div class="party-echo-level">${i18n.t('party.level', { level: echo.level })}</div>`;
     html += `<div class="party-echo-hp" style="color:${hpColor}">\u2764\uFE0F ${Math.floor(echo.hp)}/${Math.floor(echo.maxHp)}</div>`;
     html += '</div>';
@@ -48,7 +49,8 @@ export const UIParty = {
     let rh = '';
     for (const echo of Game.state.reserves) {
       const imgHTML = createEchoImageHTML(echo, 32);
-      rh += `<div class="reserve-slot" data-echo-uid="${echo.uid}" title="${echo.name} ${i18n.t('party.level', { level: echo.level })}">${echo.isPrimordial ? '\u2B50' : ''}${imgHTML}</div>`;
+      const echoName = i18n.t(`echoes.${echo.id}.name`) || echo.name;
+      rh += `<div class="reserve-slot" data-echo-uid="${echo.uid}" title="${echoName} ${i18n.t('party.level', { level: echo.level })}">${echo.isPrimordial ? '\u2B50' : ''}${imgHTML}</div>`;
     }
     if (!Game.state.reserves.length) {
       rh = `<div style="color:var(--text-muted);padding:20px;text-align:center">${i18n.t('party.noReserve')}</div>`;
@@ -96,7 +98,7 @@ export const UIParty = {
                 ${echo.isPrimordial ? '<span class="shiny-badge">\u2B50</span>' : ''}
                 ${imgHTML}
             </div>
-            <h3 style="font-family:var(--font-title)">${echo.name}</h3>
+            <h3 style="font-family:var(--font-title)">${i18n.t(`echoes.${echo.id}.name`) || echo.name}</h3>
             <span class="type-badge" style="background:${t.color};color:#fff;padding:4px 12px;border-radius:12px;font-size:0.8rem">${t.emoji} ${t.name}</span>
             ${echo.isPrimordial ? `<div style="color:var(--accent-gold);margin-top:8px">\u2728 ${i18n.t('party.primordialBonus')}</div>` : ''}
             <p style="color:var(--text-secondary);margin:12px 0;font-style:italic">${echo.description}</p>

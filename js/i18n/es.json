@@ -336,6 +336,158 @@
     "30": {
       "name": "Caosito",
       "desc": "Un mini vórtice de caos que distorsiona el aire."
+    },
+    "31": {
+      "name": "Brasa",
+      "desc": "Una brasa viviente que rueda en la lava."
+    },
+    "32": {
+      "name": "Flámida",
+      "desc": "Una llama consciente que consume todo a su paso."
+    },
+    "33": {
+      "name": "Infernal",
+      "desc": "Un demonio de fuego que hace temblar los volcanes."
+    },
+    "34": {
+      "name": "Escorielle",
+      "desc": "Un trozo de roca volcánica animado por el calor."
+    },
+    "35": {
+      "name": "Magmior",
+      "desc": "Un golem de magma que deja un surco de fuego."
+    },
+    "36": {
+      "name": "Caótik",
+      "desc": "Una anomalía caótica que distorsiona la realidad."
+    },
+    "37": {
+      "name": "Vortexia",
+      "desc": "Un vórtice de caos puro que absorbe energía."
+    },
+    "38": {
+      "name": "Pirodrak",
+      "desc": "Un dragón infernal que escupe llamas devoradoras."
+    },
+    "39": {
+      "name": "Ceniza",
+      "desc": "Una nube de ceniza consciente que ciega a sus presas."
+    },
+    "40": {
+      "name": "Obsidiana",
+      "desc": "Una entidad de obsidiana casi indestructible."
+    },
+    "41": {
+      "name": "Sombrilla",
+      "desc": "Una sombra malévola que se esconde entre los árboles muertos."
+    },
+    "42": {
+      "name": "Espectral",
+      "desc": "Un espectro que ha atormentado el bosque maldito durante siglos."
+    },
+    "43": {
+      "name": "Nocturna",
+      "desc": "Una entidad de sombra pura que apaga toda luz."
+    },
+    "44": {
+      "name": "Morbillón",
+      "desc": "Una planta carnívora corrompida por la sombra."
+    },
+    "45": {
+      "name": "Viperoak",
+      "desc": "Un árbol maldito cuyas ramas son serpientes."
+    },
+    "46": {
+      "name": "Necroflor",
+      "desc": "Una flor de muerte que se alimenta de almas perdidas."
+    },
+    "47": {
+      "name": "Champitox",
+      "desc": "Un champiñón tóxico cuyas esporas corrompen todo."
+    },
+    "48": {
+      "name": "Sombraluna",
+      "desc": "Una criatura lunar que obtiene poder de la noche."
+    },
+    "49": {
+      "name": "Espectrillo",
+      "desc": "Un pequeño ojo espectral que observa desde las sombras."
+    },
+    "50": {
+      "name": "Hiedra",
+      "desc": "Una enredadera rastrera que estrangula todo lo que toca."
+    },
+    "51": {
+      "name": "Luminita",
+      "desc": "Una pequeña bola de luz que flota en los cielos."
+    },
+    "52": {
+      "name": "Aurora",
+      "desc": "Un hada de luz austral que danza en el cielo."
+    },
+    "53": {
+      "name": "Serafín",
+      "desc": "Un ángel de luz que protege los cielos etéreos."
+    },
+    "54": {
+      "name": "Céfiro",
+      "desc": "Un espíritu del viento que vuela a través de las nubes."
+    },
+    "55": {
+      "name": "Tempestad",
+      "desc": "Un tornado consciente que devasta todo a su paso."
+    },
+    "56": {
+      "name": "Celestial",
+      "desc": "Un pequeño ser celestial que lleva alegría a todas partes."
+    },
+    "57": {
+      "name": "Nimbo",
+      "desc": "Una nube viviente que crea tormentas a voluntad."
+    },
+    "58": {
+      "name": "Solaris",
+      "desc": "Una estrella viviente cuya luz atraviesa las tinieblas."
+    },
+    "59": {
+      "name": "Ala de Viento",
+      "desc": "Un pájaro de tormenta que planea sobre las nubes."
+    },
+    "60": {
+      "name": "Relámpago",
+      "desc": "Una chispa divina que ciega a los enemigos."
+    },
+    "61": {
+      "name": "Zorro Arcano",
+      "desc": "Un zorro arcano cuya cola brilla con magia."
+    },
+    "62": {
+      "name": "Místico",
+      "desc": "Un guardián místico que protege los secretos arcanos."
+    },
+    "63": {
+      "name": "Archimago",
+      "desc": "Un archimago arcano cuyo poder trasciende la realidad."
+    },
+    "64": {
+      "name": "Cristalito",
+      "desc": "Un cristal consciente que refracta la magia ambiental."
+    },
+    "65": {
+      "name": "Prismático",
+      "desc": "Un prisma viviente que descompone la luz en arcoíris."
+    },
+    "66": {
+      "name": "Piedra Rúnica",
+      "desc": "Una piedra rúnica grabada con antiguos símbolos mágicos."
+    },
+    "67": {
+      "name": "Cristalino",
+      "desc": "Un dragón de cristal cuyas escamas brillan con magia pura."
+    },
+    "68": {
+      "name": "Arcanexus",
+      "desc": "El nexo de toda magia arcana, una entidad cósmica."
     }
   },
   "types": {
@@ -393,5 +545,82 @@
     "clicks": "Clics",
     "cps": "CPS",
     "echoes": "Ecos"
+  },
+  "wiki": {
+    "title": "📖 Wiki EchoClicker",
+    "backToGame": "⬅️ Volver al juego",
+    "nav": {
+      "introduction": "Introducción",
+      "hatcherySystem": "Sistema de incubadora",
+      "mapRoutes": "Mapa y Rutas",
+      "typeChart": "Tabla de tipos",
+      "echoEncyclopedia": "Enciclopedia de Ecos"
+    },
+    "intro": {
+      "title": "⚡ Introducción",
+      "desc1": "¡Bienvenido al mundo de EchoClicker!",
+      "desc2": "En esta guía, aprenderás cómo funcionan las rutas.",
+      "mainObjectives": "Objetivos principales",
+      "capture": "Capturar",
+      "captureDesc": "Usa tus Enlaces Aether para capturar Ecos salvajes.",
+      "fight": "Luchar",
+      "fightDesc": "Lucha contra Ecos en las rutas para ganar experiencia.",
+      "evolve": "Evolucionar",
+      "evolveDesc": "Entrena a tus Ecos para que alcancen nuevos niveles.",
+      "collect": "Coleccionar",
+      "collectDesc": "Llena tu registro descubriendo todos los Ecos."
+    },
+    "hatchery": {
+      "title": "🥚 Sistema de incubadora",
+      "desc": "La incubadora te permite cruzar dos Ecos.",
+      "howItWorks": "¿Cómo funciona?",
+      "step1": "Selecciona dos padres de tu equipo o reservas.",
+      "step2": "Asegúrate de tener un slot de incubación libre (máx 4).",
+      "step3": "Inicia la incubación. El tiempo depende de la rareza.",
+      "step4": "¡Recoge tu nuevo Eco una vez completada la incubación!",
+      "incubationTimes": "Tiempos de incubación",
+      "rarity": "Rareza",
+      "time": "Tiempo",
+      "common": "Común",
+      "uncommon": "Poco común",
+      "rare": "Raro",
+      "epic": "Épico",
+      "legendary": "Legendario",
+      "mythical": "Mítico",
+      "time30s": "30 segundos",
+      "time1m": "1 minuto",
+      "time2m": "2 minutos",
+      "time5m": "5 minutos",
+      "time10m": "10 minutos",
+      "time15m": "15 minutos"
+    },
+    "routes": {
+      "title": "🗺️ Mapa y Rutas",
+      "desc": "El mundo está dividido en varias regiones.",
+      "colRoute": "Ruta",
+      "colLevels": "Niveles",
+      "colEchoes": "Ecos disponibles",
+      "level": "Nv. {level}",
+      "boss": "Jefe:"
+    },
+    "types": {
+      "title": "🌀 Tabla de tipos",
+      "desc": "Cada Eco tiene un tipo que determina sus fortalezas y debilidades.",
+      "colType": "Tipo",
+      "colStrong": "Fuerte contra (x1.5)",
+      "colWeak": "Débil contra (x0.5)"
+    },
+    "echoes": {
+      "title": "📖 Enciclopedia de Ecos",
+      "desc": "Lista completa de todos los Ecos conocidos en la región actual.",
+      "colIcon": "Icono",
+      "colName": "Nombre",
+      "colType": "Tipo",
+      "colRarity": "Rareza",
+      "colStats": "Stats base",
+      "colEvolution": "Evolución",
+      "colCaptureRate": "Tasa de captura",
+      "none": "Ninguna"
+    }
   }
 }

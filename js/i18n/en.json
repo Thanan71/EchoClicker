@@ -336,6 +336,158 @@
     "30": {
       "name": "Chaoslet",
       "desc": "A mini chaos vortex that distorts the air."
+    },
+    "31": {
+      "name": "Ember",
+      "desc": "A living ember that rolls in lava."
+    },
+    "32": {
+      "name": "Flammide",
+      "desc": "A conscious flame that consumes everything in its path."
+    },
+    "33": {
+      "name": "Infernus",
+      "desc": "A fire demon that makes volcanoes tremble."
+    },
+    "34": {
+      "name": "Scorielle",
+      "desc": "A piece of volcanic rock animated by heat."
+    },
+    "35": {
+      "name": "Magmior",
+      "desc": "A magma golem that leaves a trail of fire."
+    },
+    "36": {
+      "name": "Chaotik",
+      "desc": "A chaotic anomaly that distorts reality."
+    },
+    "37": {
+      "name": "Vortexia",
+      "desc": "A pure chaos vortex that absorbs energy."
+    },
+    "38": {
+      "name": "Pyrodrak",
+      "desc": "An infernal dragon that spits devouring flames."
+    },
+    "39": {
+      "name": "Cendrille",
+      "desc": "A conscious ash cloud that blinds its prey."
+    },
+    "40": {
+      "name": "Obsidiame",
+      "desc": "A nearly indestructible obsidian entity."
+    },
+    "41": {
+      "name": "Ombrette",
+      "desc": "An evil shadow that hides among dead trees."
+    },
+    "42": {
+      "name": "Spectralis",
+      "desc": "A specter that has haunted the cursed forest for centuries."
+    },
+    "43": {
+      "name": "Nuitshade",
+      "desc": "A pure shadow entity that extinguishes all light."
+    },
+    "44": {
+      "name": "Morbillon",
+      "desc": "A carnivorous plant corrupted by shadow."
+    },
+    "45": {
+      "name": "Viperoak",
+      "desc": "A cursed tree whose branches are serpents."
+    },
+    "46": {
+      "name": "Necroflore",
+      "desc": "A death flower that feeds on lost souls."
+    },
+    "47": {
+      "name": "Champitox",
+      "desc": "A toxic mushroom whose spores corrupt everything."
+    },
+    "48": {
+      "name": "Ombrelune",
+      "desc": "A lunar creature that draws power from the night."
+    },
+    "49": {
+      "name": "Spectrillon",
+      "desc": "A small spectral eye that watches from the shadows."
+    },
+    "50": {
+      "name": "Creepvine",
+      "desc": "A creeping vine that strangles everything it touches."
+    },
+    "51": {
+      "name": "Lumiette",
+      "desc": "A small ball of light that floats in the skies."
+    },
+    "52": {
+      "name": "Aurorella",
+      "desc": "A southern light fairy that dances in the sky."
+    },
+    "53": {
+      "name": "Seraphiel",
+      "desc": "An angel of light that protects the ethereal skies."
+    },
+    "54": {
+      "name": "Zephyrion",
+      "desc": "A wind spirit that flies through the clouds."
+    },
+    "55": {
+      "name": "Tempestia",
+      "desc": "A conscious tornado that devastates everything in its path."
+    },
+    "56": {
+      "name": "Celestino",
+      "desc": "A small celestial being that brings joy everywhere."
+    },
+    "57": {
+      "name": "Nimbus",
+      "desc": "A living cloud that creates storms at will."
+    },
+    "58": {
+      "name": "Solarius",
+      "desc": "A living star whose light pierces darkness."
+    },
+    "59": {
+      "name": "Ailedevent",
+      "desc": "A storm bird that soars above the clouds."
+    },
+    "60": {
+      "name": "Eclairoz",
+      "desc": "A divine spark that blinds enemies."
+    },
+    "61": {
+      "name": "Arcafox",
+      "desc": "An arcane fox whose tail glows with magic."
+    },
+    "62": {
+      "name": "Mystigard",
+      "desc": "A mystical guardian that protects arcane secrets."
+    },
+    "63": {
+      "name": "Archanos",
+      "desc": "An arcane archmage whose power transcends reality."
+    },
+    "64": {
+      "name": "Cristalite",
+      "desc": "A conscious crystal that refracts ambient magic."
+    },
+    "65": {
+      "name": "Prismatik",
+      "desc": "A living prism that decomposes light into rainbows."
+    },
+    "66": {
+      "name": "Runestone",
+      "desc": "A runic stone engraved with ancient magical symbols."
+    },
+    "67": {
+      "name": "Cristallus",
+      "desc": "A crystal dragon whose scales shine with pure magic."
+    },
+    "68": {
+      "name": "Arcanexus",
+      "desc": "The nexus of all arcane magic, a cosmic entity."
     }
   },
   "types": {
@@ -393,5 +545,82 @@
     "clicks": "Clicks",
     "cps": "CPS",
     "echoes": "Echoes"
+  },
+  "wiki": {
+    "title": "📖 EchoClicker Wiki",
+    "backToGame": "⬅️ Back to game",
+    "nav": {
+      "introduction": "Introduction",
+      "hatcherySystem": "Hatchery System",
+      "mapRoutes": "Map & Routes",
+      "typeChart": "Type Chart",
+      "echoEncyclopedia": "Echo Encyclopedia"
+    },
+    "intro": {
+      "title": "⚡ Introduction",
+      "desc1": "Welcome to the world of EchoClicker!",
+      "desc2": "In this guide, you will learn how routes work.",
+      "mainObjectives": "Main Objectives",
+      "capture": "Capture",
+      "captureDesc": "Use your Aether Links to capture wild Echoes.",
+      "fight": "Fight",
+      "fightDesc": "Fight Echoes on routes to gain experience.",
+      "evolve": "Evolve",
+      "evolveDesc": "Train your Echoes to reach new levels.",
+      "collect": "Collect",
+      "collectDesc": "Fill your logbook by discovering all Echoes."
+    },
+    "hatchery": {
+      "title": "🥚 Hatchery System (Incubator)",
+      "desc": "The incubator allows you to breed two Echoes.",
+      "howItWorks": "How does it work?",
+      "step1": "Select two parents from your party or reserves.",
+      "step2": "Make sure you have a free incubation slot (max 4).",
+      "step3": "Start the incubation. Time depends on rarity.",
+      "step4": "Collect your new Echo once incubation is complete!",
+      "incubationTimes": "Incubation Times",
+      "rarity": "Rarity",
+      "time": "Time",
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "mythical": "Mythical",
+      "time30s": "30 seconds",
+      "time1m": "1 minute",
+      "time2m": "2 minutes",
+      "time5m": "5 minutes",
+      "time10m": "10 minutes",
+      "time15m": "15 minutes"
+    },
+    "routes": {
+      "title": "🗺️ Map & Routes",
+      "desc": "The world is divided into several regions.",
+      "colRoute": "Route",
+      "colLevels": "Levels",
+      "colEchoes": "Available Echoes",
+      "level": "Lv. {level}",
+      "boss": "Boss:"
+    },
+    "types": {
+      "title": "🌀 Type Chart",
+      "desc": "Each Echo has a type that determines its strengths and weaknesses.",
+      "colType": "Type",
+      "colStrong": "Strong against (x1.5)",
+      "colWeak": "Weak against (x0.5)"
+    },
+    "echoes": {
+      "title": "📖 Echo Encyclopedia",
+      "desc": "Complete list of all known Echoes in the current region.",
+      "colIcon": "Icon",
+      "colName": "Name",
+      "colType": "Type",
+      "colRarity": "Rarity",
+      "colStats": "Base Stats",
+      "colEvolution": "Evolution",
+      "colCaptureRate": "Capture Rate",
+      "none": "None"
+    }
   }
 }

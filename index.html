@@ -78,82 +78,95 @@
             <!-- Adventure Tab (Combat + Map) -->
             <section class="tab-content active" id="tab-map">
                 <div class="adventure-layout">
-                    <!-- Top: Combat -->
-                    <div class="adventure-combat">
-                        <div class="combat-arena">
-                            <div class="combat-field">
-                                <div class="combat-side enemy-side">
-                                    <div class="combat-label" data-i18n="combat.enemySide">Ennemi</div>
-                                    <div class="echo-sprite" id="enemy-sprite">❓</div>
-                                    <div class="echo-name" id="enemy-name">???</div>
-                                    <div class="hp-bar-container">
-                                        <div class="hp-bar" id="enemy-hp-bar">
-                                            <span class="hp-text" id="enemy-hp-text">???/???</span>
+                    <!-- Left Column: Combat + Map -->
+                    <div class="adventure-main">
+                        <!-- Combat -->
+                        <div class="adventure-combat">
+                            <div class="combat-arena">
+                                <div class="combat-field">
+                                    <div class="combat-side enemy-side">
+                                        <div class="combat-label" data-i18n="combat.enemySide">Ennemi</div>
+                                        <div class="echo-sprite" id="enemy-sprite">❓</div>
+                                        <div class="echo-name" id="enemy-name">???</div>
+                                        <div class="hp-bar-container">
+                                            <div class="hp-bar" id="enemy-hp-bar">
+                                                <span class="hp-text" id="enemy-hp-text">???/???</span>
+                                            </div>
                                         </div>
+                                        <div class="type-badge" id="enemy-type"></div>
                                     </div>
-                                    <div class="type-badge" id="enemy-type"></div>
-                                </div>
-                                <div class="combat-vs">⚡</div>
-                                <div class="combat-side player-side">
-                                    <div class="combat-label" data-i18n="combat.playerSide">Ton Écho</div>
-                                    <div class="echo-sprite" id="player-sprite">❓</div>
-                                    <div class="echo-name" id="player-name">???</div>
-                                    <div class="hp-bar-container">
-                                        <div class="hp-bar player-hp" id="player-hp-bar">
-                                            <span class="hp-text" id="player-hp-text">???/???</span>
+                                    <div class="combat-vs">⚡</div>
+                                    <div class="combat-side player-side">
+                                        <div class="combat-label" data-i18n="combat.playerSide">Ton Écho</div>
+                                        <div class="echo-sprite" id="player-sprite">❓</div>
+                                        <div class="echo-name" id="player-name" >???</div>
+                                        <div class="hp-bar-container">
+                                            <div class="hp-bar player-hp" id="player-hp-bar">
+                                                <span class="hp-text" id="player-hp-text">???/???</span>
+                                            </div>
                                         </div>
+                                        <div class="type-badge" id="player-type"></div>
                                     </div>
-                                    <div class="type-badge" id="player-type"></div>
+                                </div>
+                                <div class="combat-log" id="combat-log">
+                                    <p class="log-entry" data-i18n="game.welcomeCombat">Bienvenue, Tisseur de Liens ! Choisis une route sur la carte pour commencer l'aventure.</p>
+                                </div>
+                                <div class="combat-actions">
+                                    <button class="btn-combat" id="btn-tisser-coup" disabled>
+                                        <span data-i18n="buttons.attack">Coup de Tisseur</span>
+                                        <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
+                                    </button>
+                                    <button class="btn-combat" id="btn-capture-combat" disabled>
+                                        <span data-i18n="buttons.capture">Lancer un Lien</span>
+                                    </button>
+                                    <button class="btn-combat secondary" id="btn-flee">
+                                        <span data-i18n="buttons.flee">Fuir</span>
+                                    </button>
+                                </div>
+                                <div class="auto-options">
+                                    <label class="auto-toggle">
+                                        <input type="checkbox" id="auto-capture-toggle">
+                                        <span class="toggle-slider"></span>
+                                        <span class="toggle-label" data-i18n="combat.autoCapture">🔮 Auto-Capture Nouveaux</span>
+                                    </label>
+                                </div>
+                                <div class="click-particles" id="click-particles"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Map -->
+                        <div class="adventure-map">
+                            <div class="map-container">
+                                <canvas id="map-canvas"></canvas>
+                                <div class="map-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: var(--accent-green)"></span>
+                                        <span data-i18n="map.unlocked">Débloqué</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color locked"></span>
+                                        <span data-i18n="map.locked">Verrouillé</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color" style="background: var(--accent-gold)"></span>
+                                        <span data-i18n="map.activeRoute">Route active</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="combat-log" id="combat-log">
-                                <p class="log-entry" data-i18n="game.welcomeCombat">Bienvenue, Tisseur de Liens ! Choisis une route sur la carte pour commencer l'aventure.</p>
+                            <div class="region-info" id="region-info">
+                                <h3 id="region-name" data-i18n="map.selectRegion">Sélectionne une contrée</h3>
+                                <p id="region-desc" data-i18n="map.selectRegionDesc">Clique sur une contrée ou une route de la carte pour commencer l'aventure.</p>
                             </div>
-                            <div class="combat-actions">
-                                <button class="btn-combat" id="btn-tisser-coup" disabled>
-                                    <span data-i18n="buttons.attack">Coup de Tisseur</span>
-                                    <span class="dmg-preview" id="dmg-preview">+0 dégâts</span>
-                                </button>
-                                <button class="btn-combat" id="btn-capture-combat" disabled>
-                                    <span data-i18n="buttons.capture">Lancer un Lien</span>
-                                </button>
-                                <button class="btn-combat secondary" id="btn-flee">
-                                    <span data-i18n="buttons.flee">Fuir</span>
-                                </button>
-                            </div>
-                            <div class="auto-options">
-                                <label class="auto-toggle">
-                                    <input type="checkbox" id="auto-capture-toggle">
-                                    <span class="toggle-slider"></span>
-                                    <span class="toggle-label" data-i18n="combat.autoCapture">🔮 Auto-Capture Nouveaux</span>
-                                </label>
-                            </div>
-                            <div class="click-particles" id="click-particles"></div>
                         </div>
                     </div>
                     
-                    <!-- Bottom: Map -->
-                    <div class="adventure-map">
-                        <div class="map-container">
-                            <canvas id="map-canvas"></canvas>
-                            <div class="map-legend">
-                                <div class="legend-item">
-                                    <span class="legend-color" style="background: var(--accent-green)"></span>
-                                    <span data-i18n="map.unlocked">Débloqué</span>
-                                </div>
-                                <div class="legend-item">
-                                    <span class="legend-color locked"></span>
-                                    <span data-i18n="map.locked">Verrouillé</span>
-                                </div>
-                                <div class="legend-item">
-                                    <span class="legend-color" style="background: var(--accent-gold)"></span>
-                                    <span data-i18n="map.activeRoute">Route active</span>
-                                </div>
+                    <!-- Right Column: Team Panel -->
+                    <div class="adventure-team">
+                        <div class="combat-team-panel" id="combat-team-panel">
+                            <h3 class="team-panel-title" data-i18n="combat.yourTeam">👥 Ton Équipe</h3>
+                            <div class="team-panel-list" id="team-panel-list">
+                                <!-- Team members will be generated by JS -->
                             </div>
-                        </div>
-                        <div class="region-info" id="region-info">
-                            <h3 id="region-name" data-i18n="map.selectRegion">Sélectionne une contrée</h3>
-                            <p id="region-desc" data-i18n="map.selectRegionDesc">Clique sur une contrée ou une route de la carte pour commencer l'aventure.</p>
                         </div>
                     </div>
                 </div>
