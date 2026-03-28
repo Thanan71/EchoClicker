@@ -5,6 +5,7 @@
   "description": "Un jeu clicker/collector dans un univers dark fantasy où vous capturez et collectionnez des créatures magiques appelées **Échos**.",
   "main": "generate-sprites.js",
   "scripts": {
+    "serve": "npx http-server .",
     "test": "jest",
     "remove-bg": "node remove-backgrounds.js",
     "remove-bg-single": "node remove-backgrounds.js --file=",

@@ -6,6 +6,9 @@
 import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 
 export const GameCurrency = {
+  _cachedPassiveIncome: null,
+  _passiveIncomeDirty: true,
+
   // === Monnaies ===
   spendEnergy(amount) {
     if (this.state.energy < amount) {
@@ -41,6 +44,10 @@ export const GameCurrency = {
   },
 
   getPassiveIncome() {
+    // Utiliser le cache si valide
+    if (!this._passiveIncomeDirty && this._cachedPassiveIncome !== null) {
+      return this._cachedPassiveIncome;
+    }
     let income = this.state.passiveIncome;
     // Bonus par Écho en équipe
     income += this.state.party.length * 0.05;
@@ -52,7 +59,15 @@ export const GameCurrency = {
     if (this.state.boosts.energy) {
       income *= 2;
     }
+    // Mettre en cache le résultat
+    this._cachedPassiveIncome = income;
+    this._passiveIncomeDirty = false;
     return income;
+  },
+
+  // Invalider le cache du revenu passif (à appeler quand la composition de l'équipe change)
+  invalidatePassiveIncomeCache() {
+    this._passiveIncomeDirty = true;
   },
 
   // === Boosts ===

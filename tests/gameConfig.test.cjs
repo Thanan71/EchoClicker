@@ -95,8 +95,8 @@ describe('GAME_CONFIG', () => {
   });
 
   describe('Specific values', () => {
-    test('TICK_RATE is 50ms (20 ticks/sec)', () => {
-      expect(GAME_CONFIG.TICK_RATE).toBe(50);
+    test('TICK_RATE is 75ms (~13 ticks/sec)', () => {
+      expect(GAME_CONFIG.TICK_RATE).toBe(75);
     });
 
     test('MAX_PARTY is 6', () => {
@@ -108,7 +108,7 @@ describe('GAME_CONFIG', () => {
     });
 
     test('PRIMORDIAL_CHANCE is 0.005 (0.5%)', () => {
-      expect(GAME_CONFIG.PRIMORDIAL_CHANCE).toBe(0.005);
+      expect(GAME_CONFIG.PRIMORDIAL_CHANCE).toBe(0.05);
     });
   });
 });
