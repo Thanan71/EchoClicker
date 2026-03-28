@@ -2,7 +2,10 @@
 // UIRoutes - Rendu carte et routes
 // ============================================
 
-const UIRoutes = {
+import { Game } from '../game.js';
+import { MapSystem } from '../systems/map.js';
+
+export const UIRoutes = {
     renderRoutes() {
         const region = Game.state.regions.find(r => r.id === Game.state.currentRegion);
         if (!region) return;

@@ -2,7 +2,7 @@
 // ÉchoClicker - Types élémentaires & Table de type
 // ============================================
 
-const TYPES = {
+export const TYPES = {
     FEU:     { name: 'Feu',     color: '#ff6b35', emoji: '🔥' },
     GLACE:   { name: 'Glace',   color: '#74b9ff', emoji: '❄️' },
     VENT:    { name: 'Vent',    color: '#a8e6cf', emoji: '🌪️' },
@@ -19,7 +19,7 @@ const TYPES = {
 
 // Table des faiblesses/résistances (multiplicateur de dégâts)
 // Règle: si A est strong contre B, alors B est weak contre A
-const TYPE_CHART = {
+export const TYPE_CHART = {
     FEU: {
         strong: ['FLORE', 'GLACE'],
         weak:   ['OCEAN', 'TERRE', 'CRISTAL']
@@ -71,7 +71,7 @@ const TYPE_CHART = {
 };
 
 // Couleurs de rareté
-const RARITY_COLORS = {
+export const RARITY_COLORS = {
     common:    '#a0a0c0',
     uncommon:  '#55a630',
     rare:      '#3b82f6',

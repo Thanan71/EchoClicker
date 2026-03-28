@@ -3,14 +3,18 @@
  * Gère les quêtes quotidiennes et les quêtes d'histoire
  */
 
+import { EventBus } from '../core/eventBus.js';
+import { getEchoById } from '../data/constants.js';
+import { Game } from '../game.js';
+
 // Types de quêtes
-const QUEST_TYPES = {
+export const QUEST_TYPES = {
   DAILY: 'daily',
   STORY: 'story'
 };
 
 // Catégories de quêtes
-const QUEST_CATEGORIES = {
+export const QUEST_CATEGORIES = {
   CAPTURE: 'capture',
   LEVEL: 'level',
   COMBAT: 'combat',
@@ -20,7 +24,7 @@ const QUEST_CATEGORIES = {
 };
 
 // Structure d'une quête
-class Quest {
+export class Quest {
   constructor({
     id,
     name,
@@ -126,7 +130,7 @@ class Quest {
 }
 
 // Templates de quêtes quotidiennes
-const DAILY_QUEST_TEMPLATES = [
+export const DAILY_QUEST_TEMPLATES = [
   {
     id: 'daily_capture_flore',
     name: 'Chasseur de Flore',
@@ -202,7 +206,7 @@ const DAILY_QUEST_TEMPLATES = [
 ];
 
 // Templates de quêtes d'histoire
-const STORY_QUEST_TEMPLATES = [
+export const STORY_QUEST_TEMPLATES = [
   {
     id: 'story_boss_forest',
     name: 'Le Gardien de la Forêt',
@@ -278,7 +282,7 @@ const STORY_QUEST_TEMPLATES = [
 ];
 
 // Classe principale du système de quêtes
-class QuestSystem {
+export class QuestSystem {
   constructor() {
     this.dailyQuests = [];
     this.storyQuests = [];
@@ -566,7 +570,4 @@ class QuestSystem {
 }
 
 // Instance singleton
-const questSystem = new QuestSystem();
-
-// Make questSystem globally available
-window.questSystem = questSystem;
+export const questSystem = new QuestSystem();

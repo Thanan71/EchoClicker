@@ -2,7 +2,16 @@
 // ÉchoClicker - Système d'Élevage / Incubateur
 // ============================================
 
-const Hatchery = {
+import { TYPES } from '../data/types.js';
+import { ECHOES_DB } from '../data/echoesData.js';
+import { GAME_CONFIG } from '../data/game-config.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { Echo } from '../core/echo.js';
+import { getEchoById } from '../data/constants.js';
+import { Utils } from '../data/utils.js';
+import { getEchoImagePath } from '../ui/ui-core.js';
+
+export const Hatchery = {
     slots: [],
     maxSlots: 4,
     parents: [null, null],
@@ -43,7 +52,7 @@ const Hatchery = {
         party.forEach(echo => {
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePath(echo);
-            html += `<div class="party-slot" onclick="Hatchery.setParent(${slotIndex}, '${echo.uid}')">
+            html += `<div class="party-slot" data-echo-uid="${echo.uid}">
                 <div class="party-echo-icon">${echo.isPrimordial ? '⭐' : ''}<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain"></div>
                 <div class="party-echo-name">${echo.name}</div>
                 <div class="party-echo-level">Nv. ${echo.level}</div>
@@ -51,7 +60,15 @@ const Hatchery = {
         });
         html += '</div>';
 
-        this._ui.showModal('Sélectionner un parent', html);
+        this._ui.showModal(i18n.t('hatchery.selectParent'), html);
+
+        // Add event listeners to party slots
+        document.querySelectorAll('.party-slot[data-echo-uid]').forEach(slot => {
+            slot.addEventListener('click', () => {
+                const uid = slot.dataset.echoUid;
+                this.setParent(slotIndex, uid);
+            });
+        });
     },
 
     setParent(slotIndex, uid) {
@@ -274,7 +291,7 @@ const Hatchery = {
                     const progress = Math.min(100, (elapsed / slot.duration) * 100);
                     const isReady = remaining <= 0;
 
-                    html += `<div class="incubator-slot occupied" onclick="Hatchery.collectEgg(${i})">
+                    html += `<div class="incubator-slot occupied" data-slot-index="${i}">
                         <div class="incubator-egg">${isReady ? '✨' : '🥚'}</div>
                         <div class="incubator-progress">
                             <div class="progress-bar" style="width:${progress}%"></div>
@@ -288,6 +305,14 @@ const Hatchery = {
                 }
             });
             slotsEl.innerHTML = html;
+
+            // Add event listeners to incubator slots
+            document.querySelectorAll('.incubator-slot[data-slot-index]').forEach(slot => {
+                slot.addEventListener('click', () => {
+                    const index = parseInt(slot.dataset.slotIndex);
+                    this.collectEgg(index);
+                });
+            });
         }
 
         // Mettre à jour les parents
@@ -297,12 +322,12 @@ const Hatchery = {
         if (p1) {
             if (this.parents[0]) {
                 const imgPath1 = getEchoImagePath(this.parents[0]);
-                p1.innerHTML = `<span class="slot-label">Parent 1</span>
+                p1.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent1')}</span>
                     <div class="slot-content"><img src="${imgPath1}" alt="${this.parents[0].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[0].name}</div>`;
                 p1.classList.add('filled');
             } else {
-                p1.innerHTML = `<span class="slot-label">Parent 1</span><div class="slot-content">+</div>`;
+                p1.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent1')}</span><div class="slot-content">+</div>`;
                 p1.classList.remove('filled');
             }
         }
@@ -310,12 +335,12 @@ const Hatchery = {
         if (p2) {
             if (this.parents[1]) {
                 const imgPath2 = getEchoImagePath(this.parents[1]);
-                p2.innerHTML = `<span class="slot-label">Parent 2</span>
+                p2.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent2')}</span>
                     <div class="slot-content"><img src="${imgPath2}" alt="${this.parents[1].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[1].name}</div>`;
                 p2.classList.add('filled');
             } else {
-                p2.innerHTML = `<span class="slot-label">Parent 2</span><div class="slot-content">+</div>`;
+                p2.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent2')}</span><div class="slot-content">+</div>`;
                 p2.classList.remove('filled');
             }
         }

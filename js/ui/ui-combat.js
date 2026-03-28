@@ -2,7 +2,12 @@
 // UICombat - Rendu combat
 // ============================================
 
-const UICombat = {
+import { TYPES } from '../data/types.js';
+import { GAME_CONFIG } from '../data/game-config.js';
+import { createEchoImageHTML } from './ui-core.js';
+import { Combat } from '../combat.js';
+
+export const UICombat = {
     updateCombat() {
         const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
         const setHTML = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };
@@ -43,14 +48,14 @@ const UICombat = {
             if (pt) { pt.textContent = `${t.emoji} ${t.name}`; pt.style.background = t.color; pt.style.color = '#fff'; }
             document.getElementById('btn-tisser-coup').disabled = false;
             const dmg = p.calculateDamageAgainst(Combat.enemy || p) * GAME_CONFIG.COMBAT_CLICK_MULTIPLIER;
-            set('dmg-preview', `+${dmg} degats`);
+            set('dmg-preview', i18n.t('combat.dmgClick', { dmg: dmg }));
         } else {
             set('player-sprite', '\u2753'); set('player-name', 'Aucun Echo');
             setStyle('player-hp-bar', '--hp-percent', '100%');
             set('player-hp-text', '???/???');
             const pt = document.getElementById('player-type'); if (pt) pt.textContent = '';
             document.getElementById('btn-tisser-coup').disabled = true;
-            set('dmg-preview', '+0 degats');
+            set('dmg-preview', i18n.t('combat.dmgClickZero'));
         }
     },
 

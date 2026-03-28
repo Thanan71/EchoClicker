@@ -69,10 +69,14 @@ globalThis.GAME_EVENTS = {
 const fs = require('fs');
 const echoPath = require('path').join(__dirname, '..', '..', 'js', 'core', 'echo.js');
 const echoCode = fs.readFileSync(echoPath, 'utf-8');
-// Remplacer "class Echo" par "globalThis.Echo = class Echo" et la fonction
+// Remplacer les imports/exports ES6 et patcher la classe et la fonction
 const patchedCode = echoCode
-    .replace(/^class Echo \{/m, 'globalThis.Echo = class Echo {')
-    .replace(/^function generateWildEcho\(/m, 'globalThis.generateWildEcho = function generateWildEcho(');
+    .replace(/^import \{ Utils \} from '.*';$/m, '// Utils from global')
+    .replace(/^import \{ getEchoById \} from '.*';$/m, '// getEchoById from global')
+    .replace(/^import \{ GAME_CONFIG \} from '.*';$/m, '// GAME_CONFIG from global')
+    .replace(/^import \{ EventBus, GAME_EVENTS \} from '.*';$/m, '// EventBus, GAME_EVENTS from global')
+    .replace(/^export class Echo \{/m, 'globalThis.Echo = class Echo {')
+    .replace(/^export function generateWildEcho\(/m, 'globalThis.generateWildEcho = function generateWildEcho(');
 eval(patchedCode);
 
 module.exports = {

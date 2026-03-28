@@ -44,11 +44,11 @@
                     <!-- Boosts actifs affichés ici -->
                 </div>
                 <button class="btn-icon" id="btn-save" data-i18n-title="buttons.save" title="Sauvegarder">💾</button>
-                <button class="btn-icon" id="btn-logbook" title="Logbook">📕</button>
-                <a href="wiki.html" class="btn-icon" title="Wiki" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">📖</a>
+                <button class="btn-icon" id="btn-logbook" data-i18n-title="buttons.logbook" title="Logbook">📕</button>
+                <a href="wiki.html" class="btn-icon" data-i18n-title="buttons.wiki" title="Wiki" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">📖</a>
                 <button class="btn-icon" id="btn-settings" data-i18n-title="buttons.settings" title="Paramètres">⚙️</button>
                 <div class="lang-selector">
-                    <button class="btn-icon" id="btn-lang" title="Language">🌐</button>
+                    <button class="btn-icon" id="btn-lang" data-i18n-title="buttons.language" title="Language">🌐</button>
                     <div class="lang-dropdown" id="lang-dropdown">
                         <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
                         <button class="lang-option" data-lang="en">🇬🇧 English</button>
@@ -244,21 +244,21 @@
                 <p class="tab-desc" data-i18n="quests.desc">Complète des quêtes pour gagner des récompenses et progresser dans l'aventure !</p>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">📋 Quêtes Quotidiennes</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.dailyTitle">📋 Quêtes Quotidiennes</h3>
                     <div id="daily-quests">
                         <!-- Quêtes quotidiennes générées par JS -->
                     </div>
                 </div>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">📖 Quêtes d'Histoire</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.storyTitle">📖 Quêtes d'Histoire</h3>
                     <div id="story-quests">
                         <!-- Quêtes d'histoire générées par JS -->
                     </div>
                 </div>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">✅ Récompenses à réclamer</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.rewardsTitle">✅ Récompenses à réclamer</h3>
                     <div id="completed-quests">
                         <!-- Quêtes complétées générées par JS -->
                     </div>
@@ -350,9 +350,9 @@
         <footer id="game-footer">
             <div class="footer-stats">
                 <span><span id="play-time">00:00:00</span></span>
-                <span><span id="total-clicks">0</span> clics</span>
-                <span><span id="cps-display">0.0</span> CPS</span>
-                <span><span id="total-echoes">0</span> Échos</span>
+                <span><span id="total-clicks">0</span> <span data-i18n="footer.clicks">clics</span></span>
+                <span><span id="cps-display">0.0</span> <span data-i18n="footer.cps">CPS</span></span>
+                <span><span id="total-echoes">0</span> <span data-i18n="footer.echoes">Échos</span></span>
             </div>
             <div class="footer-right">
                 <span>v0.2.0 Alpha</span>
@@ -376,73 +376,13 @@
     <div id="toast-container"></div>
 
     <!-- ============================================
-         Scripts - Chargement modulaire par couches
+         Scripts - Chargement ES6 Modules
          ============================================ -->
-
-    <!-- Couche Données (aucune dépendance interne) -->
+    
+    <!-- i18n (chargé séparément car pas encore converti en module) -->
     <script src="js/i18n/i18n.js"></script>
-    <script src="js/data/types.js"></script>
-    <script src="js/data/game-config.js"></script>
-    <script src="js/data/regions-data.js"></script>
-    <script src="js/data/achievements-data.js"></script>
-    <script src="js/data/narrative-data.js"></script>
-    <script src="js/data/constants.js"></script>
-    <script src="js/data/utils.js"></script>
-    <script src="js/data/echoesData.js"></script>
-
-    <!-- Couche Noyau (infrastructure du jeu) -->
-    <script src="js/core/eventBus.js"></script>
-    <script src="js/core/interfaces.js"></script>
-    <script src="js/core/echo.js"></script>
-    <script src="js/core/gameLoop.js"></script>
-    <script src="js/core/shinyEffect.js"></script>
-
-    <!-- Couche Modules Game SRP (dépend de Données + Noyau) -->
-    <script src="js/modules/game-state.js"></script>
-    <script src="js/modules/game-party.js"></script>
-    <script src="js/modules/game-currency.js"></script>
-    <script src="js/modules/game-routes.js"></script>
-
-    <!-- Couche Systèmes (dépend de Données + Noyau) -->
-    <script src="js/systems/mine.js"></script>
-    <script src="js/systems/hatchery.js"></script>
-    <script src="js/systems/narrative.js"></script>
-    <script src="js/systems/regions/RegionRegistry.js"></script>
-    <script src="js/systems/regions/foret.js"></script>
-    <script src="js/systems/regions/montagnes.js"></script>
-    <script src="js/systems/regions/ocean.js"></script>
-    <script src="js/systems/regions/volcan.js"></script>
-    <script src="js/systems/regions/foret_maudite.js"></script>
-    <script src="js/systems/regions/ciel_ethere.js"></script>
-    <script src="js/systems/regions/dimension_arcane.js"></script>
-    <script src="js/systems/map-core.js"></script>
-    <script src="js/systems/map.js"></script>
-    <script src="js/systems/quests.js"></script>
-
-    <!-- Couche Logique Métier (dépend de Systèmes) -->
-    <script src="js/combat/CombatEngine.js"></script>
-    <script src="js/combat/CombatCapture.js"></script>
-    <script src="js/combat/CombatAuto.js"></script>
-    <script src="js/combat/CombatParty.js"></script>
-    <script src="js/combat.js"></script>
-    <script src="js/save-serializer.js"></script>
-    <script src="js/save.js"></script>
-
-    <!-- Couche Présentation (dépend de tout le reste) -->
-    <script src="js/ui/ui-core.js"></script>
-    <script src="js/ui/ui-routes.js"></script>
-    <script src="js/ui/ui-combat.js"></script>
-    <script src="js/ui/ui-party.js"></script>
-    <script src="js/ui/ui-capture.js"></script>
-    <script src="js/ui/ui-pokedex.js"></script>
-    <script src="js/ui/ui-shop.js"></script>
-    <script src="js/ui/ui-quests.js"></script>
-    <script src="js/ui/ui-achievements.js"></script>
-
-    <!-- Combinateur UI (fusionne tous les sous-modules en un seul objet UI) -->
-    <script src="js/ui.js"></script>
-
-    <!-- Orchestrateur (dernier - dépend de toutes les couches) -->
-    <script src="js/game.js"></script>
+    
+    <!-- Point d'entrée principal (modules ES6) -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

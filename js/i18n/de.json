@@ -36,7 +36,10 @@
     "close": "Schließen",
     "back": "Zurück",
     "next": "Weiter",
-    "previous": "Zurück"
+    "previous": "Zurück",
+    "logbook": "📓 Logbuch",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Sprache"
   },
   "combat": {
     "enemySide": "Gegner",
@@ -56,7 +59,10 @@
     "noEchoAvailable": "Kein Echo verfügbar!",
     "partyFull": "Team voll! (max 6)",
     "optimalTeamCreated": "⚡ Optimales Team erstellt!",
-    "newTeam": "Neues Team: {names}"
+    "newTeam": "Neues Team: {names}",
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClick": "+{dmg} SCHADEN",
+    "dmgClickZero": "+0 Schaden"
   },
   "capture": {
     "title": "🔮 Fangzone",
@@ -72,7 +78,11 @@
     "routeLocked": "Route nicht freigeschaltet!",
     "regionLocked": "Region nicht freigeschaltet!",
     "newRoute": "Neue Route: {name}!",
-    "newRegion": "Neue Region freigeschaltet: {name}!"
+    "newRegion": "Neue Region freigeschaltet: {name}!",
+    "captureSuccessDisplay": "✨ Fang erfolgreich!",
+    "captureFailedDisplay": "💥 Fang fehlgeschlagen!",
+    "captureSuccess": "{name} gefangen!",
+    "captureFailed": "Fang fehlgeschlagen!"
   },
   "map": {
     "title": "Weltkarte",
@@ -99,7 +109,16 @@
     "optimalTeam": "Optimales Team",
     "reserves": "📦 Reserven",
     "addToParty": "Zum Team hinzufügen",
-    "removeFromParty": "Aus dem Team entfernen"
+    "removeFromParty": "Aus dem Team entfernen",
+    "primordial": "Primordial",
+    "addToReserve": "Zu Reserven hinzufügen",
+    "levelLabel": "Stufe",
+    "vacant": "Leer",
+    "noReserve": "Kein Echo in Reserven",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Entwickelt sich zu {name} auf Stufe {level}",
+    "reserveBtn": "Reserve",
+    "partyBtn": "Team"
   },
   "pokedex": {
     "title": "Echo-Logbuch",
@@ -110,7 +129,22 @@
     "captured": "Gefangen",
     "total": "Gesamt",
     "noEntry": "Kein Eintrag",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "typeAll": "Alle Typen",
+    "counter": "{caught}/{total}",
+    "noResults": "Keine Ergebnisse",
+    "unknownEcho": "Unbekanntes Echo",
+    "notEncountered": "Nicht begegnet",
+    "notCaptured": "Nicht gefangen",
+    "evolvesTo": "Entwickelt sich zu {name}",
+    "stats": {
+      "hp": "KP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Gefangen",
+    "notCapturedLabel": "Nicht gefangen",
+    "evolvesToLevel": "Entwickelt sich zu {name} auf Stufe {level}"
   },
   "hatchery": {
     "title": "Zucht",
@@ -124,7 +158,8 @@
     "createEgg": "🥚 Ei erstellen",
     "selectParents": "Eltern auswählen",
     "parent1": "Elternteil 1",
-    "parent2": "Elternteil 2"
+    "parent2": "Elternteil 2",
+    "selectParent": "Elternteil auswählen"
   },
   "mine": {
     "title": "Untergrundmine",
@@ -141,7 +176,12 @@
     "radar": "Radar",
     "remainingEnergy": "Verbleibende Energie",
     "crystalsFound": "Kristalle gefunden",
-    "energyRegen": "+1 Energie alle 30 Sekunden"
+    "energyRegen": "+1 Energie alle 30 Sekunden",
+    "energyDepleted": "Energie aufgebraucht",
+    "recharge": "Aufladen",
+    "energyNotEnough": "Nicht genug Minenenergie!",
+    "energyDepletedWait": "Minenenergie aufgebraucht! Warten oder Nachladung kaufen.",
+    "rechargeSuccess": "⛏️ +{amount} Minenenergie!"
   },
   "shop": {
     "title": "Geistermarkt",
@@ -173,39 +213,130 @@
     "autoSave": "Auto-Speichern",
     "reset": "Zurücksetzen",
     "export": "Exportieren",
-    "import": "Importieren"
+    "import": "Importieren",
+    "saveBtn": "💾 Speichern"
   },
   "echoes": {
-    "1": { "name": "Moosling", "desc": "Eine kleine Mooskugel, die ziellos rollt." },
-    "2": { "name": "Blattflamme", "desc": "Ein magischer Spross, der mit grünem Licht pulsiert." },
-    "3": { "name": "Waldwächter", "desc": "Ein lebender Baum, dessen Wurzeln singen." },
-    "4": { "name": "Glühwürmchen", "desc": "Ein magisches Glühwürmchen, das die Wege beleuchtet." },
-    "5": { "name": "Luminara", "desc": "Eine Lichtfee, die zwischen den Strahlen tanzt." },
-    "6": { "name": "Blätterwind", "desc": "Ein lebendes Blatt, das im Wind fliegt." },
-    "7": { "name": "Wirbelsturm", "desc": "Ein bewusster Wirbelsturm, der alles einsaugt." },
-    "8": { "name": "Pilzling", "desc": "Ein Pilz, der einschlafende Sporen freisetzt." },
-    "9": { "name": "Toxipilz", "desc": "Ein riesiger Pilz, dessen Sporen giftig sind." },
-    "10": { "name": "Nachtigall", "desc": "Ein Vogel, dessen Gesang Wunden heilt." },
-    "11": { "name": "Schattling", "desc": "Ein Mini-Schatten, der die Bewegungen anderer nachahmt." },
-    "12": { "name": "Tropfeling", "desc": "Ein magischer Wassertropfen, der nie verdunstet." },
-    "13": { "name": "Flockling", "desc": "Eine Schneeflocke, die nie schmilzt." },
-    "14": { "name": "Frostling", "desc": "Ein lebender Eisblock, der jeden Kontakt einfriert." },
-    "15": { "name": "Glacius", "desc": "Ein Eisdrache, der Schneestürme erzeugt." },
-    "16": { "name": "Kristalline", "desc": "Ein kleiner Kristall, der beim Berühren singt." },
-    "17": { "name": "Kristallklinge", "desc": "Ein reines Kristallwesen, das Licht bricht." },
-    "18": { "name": "Diamantor", "desc": "Ein nahezu unzerstörbarer Diamantgolem." },
-    "19": { "name": "Fünkchen", "desc": "Ein bewusster Funke, der auf Kristallen läuft." },
-    "20": { "name": "Donnerex", "desc": "Ein Blitzwesen, das wie der Donner zuschlägt." },
-    "21": { "name": "Steinling", "desc": "Ein animierter Fels, der Hänge hinunterrollt." },
-    "22": { "name": "Bergnor", "desc": "Ein lebender Berg, dessen Schritte die Erde erbeben lassen." },
-    "23": { "name": "Wellchen", "desc": "Eine kleine bewusste Welle, die in Strömungen spielt." },
-    "24": { "name": "Tsunamis", "desc": "Eine titanische Welle, die alles verschlingt." },
-    "25": { "name": "Quallenschock", "desc": "Eine leuchtende Qualle, die ihre Beute elektrokiert." },
-    "26": { "name": "Krakos", "desc": "Ein alter Krake, der über den Abgrund herrscht." },
-    "27": { "name": "Korallenklinge", "desc": "Eine lebende Koralle, die schützende Riffe bildet." },
-    "28": { "name": "Sirenette", "desc": "Eine verspielte Sirene, die Seeleute anlockt." },
-    "29": { "name": "Arkanette", "desc": "Ein arkaner Funke, der während Ritualen erscheint." },
-    "30": { "name": "Chaosling", "desc": "Ein Mini-Chaoswirbel, der die Luft verzerrt." }
+    "1": {
+      "name": "Moosling",
+      "desc": "Eine kleine Mooskugel, die ziellos rollt."
+    },
+    "2": {
+      "name": "Blattflamme",
+      "desc": "Ein magischer Spross, der mit grünem Licht pulsiert."
+    },
+    "3": {
+      "name": "Waldwächter",
+      "desc": "Ein lebender Baum, dessen Wurzeln singen."
+    },
+    "4": {
+      "name": "Glühwürmchen",
+      "desc": "Ein magisches Glühwürmchen, das die Wege beleuchtet."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "Eine Lichtfee, die zwischen den Strahlen tanzt."
+    },
+    "6": {
+      "name": "Blätterwind",
+      "desc": "Ein lebendes Blatt, das im Wind fliegt."
+    },
+    "7": {
+      "name": "Wirbelsturm",
+      "desc": "Ein bewusster Wirbelsturm, der alles einsaugt."
+    },
+    "8": {
+      "name": "Pilzling",
+      "desc": "Ein Pilz, der einschlafende Sporen freisetzt."
+    },
+    "9": {
+      "name": "Toxipilz",
+      "desc": "Ein riesiger Pilz, dessen Sporen giftig sind."
+    },
+    "10": {
+      "name": "Nachtigall",
+      "desc": "Ein Vogel, dessen Gesang Wunden heilt."
+    },
+    "11": {
+      "name": "Schattling",
+      "desc": "Ein Mini-Schatten, der die Bewegungen anderer nachahmt."
+    },
+    "12": {
+      "name": "Tropfeling",
+      "desc": "Ein magischer Wassertropfen, der nie verdunstet."
+    },
+    "13": {
+      "name": "Flockling",
+      "desc": "Eine Schneeflocke, die nie schmilzt."
+    },
+    "14": {
+      "name": "Frostling",
+      "desc": "Ein lebender Eisblock, der jeden Kontakt einfriert."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "Ein Eisdrache, der Schneestürme erzeugt."
+    },
+    "16": {
+      "name": "Kristalline",
+      "desc": "Ein kleiner Kristall, der beim Berühren singt."
+    },
+    "17": {
+      "name": "Kristallklinge",
+      "desc": "Ein reines Kristallwesen, das Licht bricht."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "Ein nahezu unzerstörbarer Diamantgolem."
+    },
+    "19": {
+      "name": "Fünkchen",
+      "desc": "Ein bewusster Funke, der auf Kristallen läuft."
+    },
+    "20": {
+      "name": "Donnerex",
+      "desc": "Ein Blitzwesen, das wie der Donner zuschlägt."
+    },
+    "21": {
+      "name": "Steinling",
+      "desc": "Ein animierter Fels, der Hänge hinunterrollt."
+    },
+    "22": {
+      "name": "Bergnor",
+      "desc": "Ein lebender Berg, dessen Schritte die Erde erbeben lassen."
+    },
+    "23": {
+      "name": "Wellchen",
+      "desc": "Eine kleine bewusste Welle, die in Strömungen spielt."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "Eine titanische Welle, die alles verschlingt."
+    },
+    "25": {
+      "name": "Quallenschock",
+      "desc": "Eine leuchtende Qualle, die ihre Beute elektrokiert."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "Ein alter Krake, der über den Abgrund herrscht."
+    },
+    "27": {
+      "name": "Korallenklinge",
+      "desc": "Eine lebende Koralle, die schützende Riffe bildet."
+    },
+    "28": {
+      "name": "Sirenette",
+      "desc": "Eine verspielte Sirene, die Seeleute anlockt."
+    },
+    "29": {
+      "name": "Arkanette",
+      "desc": "Ein arkaner Funke, der während Ritualen erscheint."
+    },
+    "30": {
+      "name": "Chaosling",
+      "desc": "Ein Mini-Chaoswirbel, der die Luft verzerrt."
+    }
   },
   "types": {
     "FLORE": "Flora",
@@ -229,7 +360,20 @@
   },
   "quests": {
     "title": "📋 Aufgaben",
-    "desc": "Erfülle Aufgaben, um Belohnungen zu erhalten und im Abenteuer voranzukommen!"
+    "desc": "Erfülle Aufgaben, um Belohnungen zu erhalten und im Abenteuer voranzukommen!",
+    "dailyEmpty": "Keine täglichen Aufgaben verfügbar",
+    "storyEmpty": "Keine Story-Aufgaben verfügbar",
+    "noRewards": "Keine Belohnungen verfügbar",
+    "claim": "Einfordern",
+    "claimedRewards": "Eingeforderte Belohnungen",
+    "cannotClaim": "Kann nicht eingefordert werden",
+    "dailyTitle": "📋 Tägliche Aufgaben",
+    "storyTitle": "📖 Story-Aufgaben",
+    "completedTitle": "✅ Abgeschlossene Aufgaben",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Kristalle",
+    "rewardEnergy": "+{amount} Energie",
+    "rewardsTitle": "✅ Einzufordernde Belohnungen"
   },
   "notifications": {
     "saved": "Spiel gespeichert!",
@@ -237,5 +381,94 @@
     "reset": "Spiel zurückgesetzt!",
     "error": "Fehler!",
     "success": "Erfolg!"
+  },
+  "footer": {
+    "clicks": "Klicks",
+    "cps": "KPS",
+    "echoes": "Echos"
+  },
+  "logbook": {
+    "title": "📖 Logbuch",
+    "dialogues": "💬 Dialoge",
+    "lore": "📜 Geschichte",
+    "cinematics": "🎬 Kinofilme",
+    "close": "Schließen"
+  },
+  "wiki": {
+    "title": "📖 EchoClicker Wiki",
+    "backToGame": "⬅️ Zurück zum Spiel",
+    "nav": {
+      "introduction": "Einführung",
+      "hatcherySystem": "Zuchtsystem",
+      "mapRoutes": "Karte & Routen",
+      "typeChart": "Typentabelle",
+      "echoEncyclopedia": "Echo-Enzyklopädie"
+    },
+    "intro": {
+      "title": "⚡ Einführung",
+      "desc1": "Willkommen in der Welt von EchoClicker!",
+      "desc2": "In diesem Leitfaden erfährst du, wie Routen funktionieren.",
+      "mainObjectives": "Hauptziele",
+      "capture": "Fangen",
+      "captureDesc": "Nutze deine Aether-Verbindungen, um wilde Echos zu fangen.",
+      "fight": "Kämpfen",
+      "fightDesc": "Kämpfe gegen Echos auf Routen, um Erfahrung zu sammeln.",
+      "evolve": "Entwickeln",
+      "evolveDesc": "Trainiere deine Echos, damit sie neue Stufen erreichen.",
+      "collect": "Sammeln",
+      "collectDesc": "Fülle dein Logbuch, indem du alle Echos entdeckst."
+    },
+    "hatchery": {
+      "title": "🥚 Zuchtsystem (Inkubator)",
+      "desc": "Der Inkubator ermöglicht es dir, zwei Echos zu kreuzen.",
+      "howItWorks": "Wie funktioniert es?",
+      "step1": "Wähle zwei Elternteile aus deinem Team oder deinen Reserven.",
+      "step2": "Stelle sicher, dass du einen freien Inkubationsslot hast (max. 4).",
+      "step3": "Starte die Inkubation. Die Zeit hängt von der Seltenheit ab.",
+      "step4": "Hole dein neues Echo ab, sobald die Inkubation abgeschlossen ist!",
+      "incubationTimes": "Inkubationszeiten",
+      "rarity": "Seltenheit",
+      "time": "Zeit",
+      "common": "Common",
+      "uncommon": "Uncommon",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "mythical": "Mythical",
+      "time30s": "30 Sekunden",
+      "time1m": "1 Minute",
+      "time2m": "2 Minuten",
+      "time5m": "5 Minuten",
+      "time10m": "10 Minuten",
+      "time15m": "15 Minuten"
+    },
+    "routes": {
+      "title": "🗺️ Karte & Routen",
+      "desc": "Die Welt ist in mehrere Regionen unterteilt.",
+      "colRoute": "Route",
+      "colLevels": "Stufen",
+      "colEchoes": "Verfübare Echos",
+      "level": "St. {level}",
+      "boss": "Boss:"
+    },
+    "types": {
+      "title": "🌀 Typentabelle",
+      "desc": "Jedes Echo hat einen Typ, der Stärken und Schwächen bestimmt.",
+      "colType": "Typ",
+      "colStrong": "Stark gegen (x1.5)",
+      "colWeak": "Schwach gegen (x0.5)"
+    },
+    "echoes": {
+      "title": "📖 Echo-Enzyklopädie",
+      "desc": "Vollständige Liste aller bekannten Echos in der aktuellen Region.",
+      "colIcon": "Symbol",
+      "colName": "Name",
+      "colType": "Typ",
+      "colRarity": "Seltenheit",
+      "colStats": "Basis-Stats",
+      "colEvolution": "Entwicklung",
+      "colCaptureRate": "Fangrate",
+      "none": "Keine"
+    }
   }
 }

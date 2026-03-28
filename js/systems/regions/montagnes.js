@@ -2,6 +2,8 @@
 // MONTAGNES CRISTALLINES
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawStarrySky(map) {
         const ctx = map.ctx;

@@ -2,7 +2,14 @@
 // CombatEngine - Logique de combat (spawn, enemy, damage, rewards)
 // ============================================
 
-const CombatEngine = {
+import { GAME_CONFIG } from '../data/game-config.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { Echo, generateWildEcho } from '../core/echo.js';
+import { getEchoById } from '../data/constants.js';
+import { CombatParty } from './CombatParty.js';
+import { CombatCapture } from './CombatCapture.js';
+
+export const CombatEngine = {
     _state: null,
     _game: null,
     _ui: null,

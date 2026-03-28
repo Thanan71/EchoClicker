@@ -10,7 +10,9 @@ const achCode = fs.readFileSync(path.join(__dirname, '../js/data/achievements-da
 
 // Créer un contexte pour capturer ACHIEVEMENTS
 const context = {};
-const codeToEval = achCode.replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
+const codeToEval = achCode
+    .replace(/\bexport\b\s*/g, '')
+    .replace('const ACHIEVEMENTS', 'context.ACHIEVEMENTS');
 eval(codeToEval);
 const ACHIEVEMENTS = context.ACHIEVEMENTS;
 

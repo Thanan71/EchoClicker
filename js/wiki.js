@@ -1,6 +1,10 @@
 // ============================================
-// ÉchoClicker - Wiki Logic
+// ÉchoClicker - Wiki Logic (Module ES6)
 // ============================================
+
+import { TYPES, TYPE_CHART, RARITY_COLORS } from './data/types.js';
+import { REGIONS } from './data/regions-data.js';
+import { ECHOES_DB } from './data/echoesData.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     renderRoutes();
@@ -29,7 +33,7 @@ function setupNavigation() {
 
 function renderRoutes() {
     const container = document.getElementById('routes-content');
-    if (!container || typeof REGIONS === 'undefined' || typeof ECHOES_DB === 'undefined') return;
+    if (!container) return;
 
     let html = '';
 
@@ -87,7 +91,7 @@ function renderRoutes() {
 
 function renderEchoes() {
     const container = document.getElementById('echoes-content');
-    if (!container || typeof ECHOES_DB === 'undefined') return;
+    if (!container) return;
 
     let html = `
         <table class="wiki-table">
@@ -140,7 +144,7 @@ function renderEchoes() {
 
 function renderTypeChart() {
     const container = document.getElementById('types-content');
-    if (!container || typeof TYPE_CHART === 'undefined') return;
+    if (!container) return;
 
     let html = `
         <table class="wiki-table">

@@ -2,11 +2,18 @@
 // UIPokedex - Rendu Pokedex
 // ============================================
 
-const UIPokedex = {
+import { TYPES } from '../data/types.js';
+import { ECHOES_DB } from '../data/echoesData.js';
+import { getEchoById } from '../data/constants.js';
+import { getEchoImagePathById } from './ui-core.js';
+import { Game } from '../game.js';
+import { UI } from '../ui.js';
+
+export const UIPokedex = {
     initPokedexFilters() {
         const typeFiltersContainer = document.getElementById('type-filters');
         if (typeFiltersContainer) {
-            let typeHtml = '<button class="type-filter-btn active" data-type="all">Tous</button>';
+            let typeHtml = `<button class="type-filter-btn active" data-type="all">${i18n.t('pokedex.typeAll')}</button>`;
             Object.entries(TYPES).forEach(([key, type]) => {
                 typeHtml += `<button class="type-filter-btn" data-type="${key}" style="--type-color:${type.color}">${type.emoji} ${type.name}</button>`;
             });
@@ -48,7 +55,7 @@ const UIPokedex = {
         });
 
         const counterEl = document.getElementById('pokedex-counter');
-        if (counterEl) counterEl.textContent = `${filteredEchoes.length} / ${ECHOES_DB.length} Echos`;
+        if (counterEl) counterEl.textContent = i18n.t('pokedex.counter', { caught: filteredEchoes.length, total: ECHOES_DB.length });
 
         let html = '';
         filteredEchoes.forEach(echo => {
@@ -57,7 +64,7 @@ const UIPokedex = {
             const status = caught ? 'caught' : seen ? 'seen' : 'unseen';
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePathById(echo.id);
-            html += `<div class="pokedex-card ${status}" onclick="UI.showPokedexDetail(${echo.id})">`;
+            html += `<div class="pokedex-card ${status}" data-echo-id="${echo.id}">`;
             html += `<span class="pokedex-number">#${echo.id.toString().padStart(3,'0')}</span>`;
             html += `<div class="pokedex-echo-icon">${seen ? `<img src="${imgPath}" alt="${echo.name}" style="width:48px;height:48px;object-fit:contain">` : '\u2753'}</div>`;
             if (seen) {
@@ -70,17 +77,25 @@ const UIPokedex = {
         });
 
         if (filteredEchoes.length === 0) {
-            html = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">Aucun Echo trouve avec ces filtres</div>';
+            html = `<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px">${i18n.t('pokedex.noResults')}</div>`;
         }
 
         grid.innerHTML = html;
+
+        // Add event listeners to pokedex cards
+        document.querySelectorAll('.pokedex-card[data-echo-id]').forEach(card => {
+            card.addEventListener('click', () => {
+                const echoId = parseInt(card.dataset.echoId);
+                this.showPokedexDetail(echoId);
+            });
+        });
     },
 
     showPokedexDetail(id) {
         const echo = getEchoById(id);
         if (!echo) return;
         if (!Game.state.seenEchoes.has(id)) {
-            this.showModal('Echo Inconnu', '<p style="text-align:center;color:var(--text-muted)">Non rencontre.</p>');
+            this.showModal(i18n.t('pokedex.unknownEcho'), `<p style="text-align:center;color:var(--text-muted)">${i18n.t('pokedex.notEncountered')}</p>`);
             return;
         }
         const t = TYPES[echo.type];
@@ -93,15 +108,15 @@ const UIPokedex = {
             <p style="color:var(--text-secondary);margin:12px 0;font-style:italic">${echo.desc}</p>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0">
-            <div class="stat"><span class="stat-label">HP</span><span class="stat-value">${echo.baseHp}</span></div>
-            <div class="stat"><span class="stat-label">ATK</span><span class="stat-value">${echo.baseAtk}</span></div>
-            <div class="stat"><span class="stat-label">DEF</span><span class="stat-value">${echo.baseDef}</span></div>
+            <div class="stat"><span class="stat-label">${i18n.t('pokedex.stats.hp')}</span><span class="stat-value">${echo.baseHp}</span></div>
+            <div class="stat"><span class="stat-label">${i18n.t('pokedex.stats.atk')}</span><span class="stat-value">${echo.baseAtk}</span></div>
+            <div class="stat"><span class="stat-label">${i18n.t('pokedex.stats.def')}</span><span class="stat-value">${echo.baseDef}</span></div>
         </div>
-        <div style="text-align:center;margin:8px 0"><span style="color:${caught?'var(--accent-green)':'var(--accent-red)'}">${caught?'\u2705 Capture':'\u274C Non capture'}</span></div>`;
+        <div style="text-align:center;margin:8px 0"><span style="color:${caught?'var(--accent-green)':'var(--accent-red)'}">${caught?'\u2705 ' + i18n.t('pokedex.capturedLabel'):'\u274C ' + i18n.t('pokedex.notCapturedLabel')}</span></div>`;
         if (echo.evo) {
             const evo = getEchoById(echo.evo.to);
             const evoImgPath = evo ? getEchoImagePathById(evo.id) : '';
-            html += `<div style="text-align:center;color:var(--accent-gold)">\u{1F4C8} Evolue en ${evo?`<img src="${evoImgPath}" alt="${evo.name}" style="width:24px;height:24px;object-fit:contain;vertical-align:middle">`:''} ${evo?.name||'?'} au niveau ${echo.evo.lv}</div>`;
+            html += `<div style="text-align:center;color:var(--accent-gold)">${i18n.t('pokedex.evolvesToLevel', { name: evo?.name||'?', level: echo.evo.lv })}</div>`;
         }
         this.showModal(`#${echo.id.toString().padStart(3,'0')} - ${echo.name}`, html);
     },

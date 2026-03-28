@@ -2,7 +2,9 @@
 // ÉchoClicker - Système de Mine Souterraine
 // ============================================
 
-const Mine = {
+import { GAME_CONFIG } from '../data/game-config.js';
+
+export const Mine = {
     grid: [],
     gridSize: 48,
     energy: 100,
@@ -82,7 +84,7 @@ const Mine = {
 
         const tool = this.tools[this.currentTool];
         if (this.energy < tool.cost) {
-            this._ui.toast('Pas assez d\'énergie de mine !', 'error');
+            this._ui.toast(i18n.t('mine.energyNotEnough'), 'error');
             return;
         }
 
@@ -152,13 +154,13 @@ const Mine = {
             } else if (tile.reward === 'gem') {
                 this._game.state.crystals += reward.value;
             }
-            this._ui.toast(`${reward.emoji} +${reward.value} !`, 'success');
+            this._ui.toast(i18n.t('mine.found', { item: `${reward.emoji} +${reward.value}` }), 'success');
         }
     },
 
     checkEnergy() {
         if (this.energy <= 0) {
-            this._ui.toast('Énergie de mine épuisée ! Attendez ou achetez un rechargement.', 'warning');
+            this._ui.toast(i18n.t('mine.energyDepletedWait'), 'warning');
         }
     },
 
@@ -176,7 +178,7 @@ const Mine = {
     rechargeEnergy(amount = 50) {
         this.energy = Math.min(this.maxEnergy, this.energy + amount);
         this.updateDisplay();
-        this._ui.toast(`⛏️ +${amount} énergie de mine !`, 'success');
+        this._ui.toast(i18n.t('mine.rechargeSuccess', { amount }), 'success');
     },
 
     reset() {
@@ -203,9 +205,17 @@ const Mine = {
                 content = this.rewards[tile.reward].emoji;
             }
             
-            html += `<div class="${classes}" onclick="Mine.dig(${i})">${content}</div>`;
+            html += `<div class="${classes}" data-tile-index="${i}">${content}</div>`;
         });
         grid.innerHTML = html;
+
+        // Add event listeners to mine tiles
+        document.querySelectorAll('.mine-tile[data-tile-index]').forEach(tile => {
+            tile.addEventListener('click', () => {
+                const index = parseInt(tile.dataset.tileIndex);
+                this.dig(index);
+            });
+        });
 
         const energyEl = document.getElementById('mine-energy');
         if (energyEl) energyEl.textContent = this.energy;

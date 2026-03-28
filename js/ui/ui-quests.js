@@ -2,7 +2,10 @@
 // UIQuests - Rendu quetes
 // ============================================
 
-const UIQuests = {
+import { questSystem } from '../systems/quests.js';
+
+
+export const UIQuests = {
     renderQuests() {
         const dailyContainer = document.getElementById('daily-quests');
         const storyContainer = document.getElementById('story-quests');
@@ -15,21 +18,21 @@ const UIQuests = {
 
         let dailyHtml = '';
         if (daily.length === 0) {
-            dailyHtml = '<div class="quest-empty">Aucune quete quotidienne disponible</div>';
+            dailyHtml = `<div class="quest-empty">${i18n.t('quests.dailyEmpty')}</div>`;
         } else {
             daily.forEach(quest => {
                 const progress = Math.min(quest.current, quest.target);
                 const percent = (progress / quest.target) * 100;
                 const isCompleted = quest.completed;
                 dailyHtml += `
-                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4CB}</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">\u{1F381} Reclamer</button>' : ''}
+                        ${isCompleted ? `<button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
                     </div>
                     <div class="quest-progress">
                         <div class="quest-progress-bar">
@@ -39,9 +42,9 @@ const UIQuests = {
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards.map(r => {
-                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${r.amount} XP</span>`;
-                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${r.amount} cristaux</span>`;
-                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${r.amount} energie</span>`;
+                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
                             if (r.type === 'item') return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
                             return '';
                         }).join('')}
@@ -53,21 +56,21 @@ const UIQuests = {
 
         let storyHtml = '';
         if (story.length === 0) {
-            storyHtml = '<div class="quest-empty">Aucune quete d\'histoire disponible</div>';
+            storyHtml = `<div class="quest-empty">${i18n.t('quests.storyEmpty')}</div>`;
         } else {
             story.forEach(quest => {
                 const progress = Math.min(quest.current, quest.target);
                 const percent = (progress / quest.target) * 100;
                 const isCompleted = quest.completed;
                 storyHtml += `
-                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4D6}</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        ${isCompleted ? '<button class="quest-claim-btn" onclick="UI.claimQuestReward(\'' + quest.id + '\')">\u{1F381} Reclamer</button>' : ''}
+                        ${isCompleted ? `<button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
                     </div>
                     <div class="quest-progress">
                         <div class="quest-progress-bar">
@@ -77,9 +80,9 @@ const UIQuests = {
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards.map(r => {
-                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${r.amount} XP</span>`;
-                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${r.amount} cristaux</span>`;
-                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${r.amount} energie</span>`;
+                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
                             if (r.type === 'item') return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
                             return '';
                         }).join('')}
@@ -91,24 +94,24 @@ const UIQuests = {
 
         let completedHtml = '';
         if (completedUnclaimed.length === 0) {
-            completedHtml = '<div class="quest-empty">Aucune recompense a reclamer</div>';
+            completedHtml = `<div class="quest-empty">${i18n.t('quests.noRewards')}</div>`;
         } else {
             completedUnclaimed.forEach(quest => {
                 completedHtml += `
-                <div class="quest-card completed">
+                <div class="quest-card completed" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u2705</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        <button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">\u{1F381} Reclamer</button>
+                        <button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards.map(r => {
-                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${r.amount} XP</span>`;
-                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${r.amount} cristaux</span>`;
-                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${r.amount} energie</span>`;
+                            if (r.type === 'xp') return `<span class="quest-reward">\u{1F4C8} ${i18n.t('quests.rewardXp', { amount: r.amount })}</span>`;
+                            if (r.type === 'crystals') return `<span class="quest-reward">\u{1F48E} ${i18n.t('quests.rewardCrystals', { amount: r.amount })}</span>`;
+                            if (r.type === 'energy') return `<span class="quest-reward">\u26A1 ${i18n.t('quests.rewardEnergy', { amount: r.amount })}</span>`;
                             if (r.type === 'item') return `<span class="quest-reward">\u{1F381} ${r.item.name}</span>`;
                             return '';
                         }).join('')}
@@ -117,16 +120,15 @@ const UIQuests = {
             });
         }
         completedContainer.innerHTML = completedHtml;
-    },
 
-    claimQuestReward(questId) {
-        const success = questSystem.claimQuestRewards(questId);
-        if (success) {
-            UI.toast('\u{1F381} Recompenses reclamees !', 'success');
-            this.renderQuests();
-            UI.updateCurrencies();
-        } else {
-            UI.toast('\u274C Impossible de reclamer les recompenses', 'error');
-        }
+        // Add event listeners to claim buttons
+        document.querySelectorAll('.quest-claim-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const questId = e.target.dataset.questId;
+                questSystem.claimQuestRewards(questId);
+            });
+        });
     },
-};
+}
+
+

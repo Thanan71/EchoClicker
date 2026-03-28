@@ -2,7 +2,7 @@
 // ÉchoClicker - Bus d'événements
 // ============================================
 
-const EventBus = {
+export const EventBus = {
     _listeners: {},
 
     on(event, callback) {
@@ -33,7 +33,7 @@ const EventBus = {
 };
 
 // Événements du jeu
-const GAME_EVENTS = {
+export const GAME_EVENTS = {
     ENERGY_CHANGED:    'energy_changed',
     LINKS_CHANGED:     'links_changed',
     CLICK:             'click',

@@ -18,7 +18,9 @@ function loadScript(filePath) {
 const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
 const echoesContext = { ECHOES_DB: undefined };
 echoesContext.echoesContext = echoesContext; // self-reference for VM
-const echoesCodeToEval = echoesCode.replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+const echoesCodeToEval = echoesCode
+    .replace(/\bexport\b\s*/g, '')
+    .replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
 vm.createContext(echoesContext);
 vm.runInContext(echoesCodeToEval, echoesContext);
 const ECHOES_DB = echoesContext.ECHOES_DB;
@@ -27,7 +29,9 @@ const ECHOES_DB = echoesContext.ECHOES_DB;
 const regionsCode = fs.readFileSync(path.join(__dirname, '../js/data/regions-data.js'), 'utf-8');
 const regionsContext = { REGIONS: undefined };
 regionsContext.regionsContext = regionsContext; // self-reference for VM
-const regionsCodeToEval = regionsCode.replace('const REGIONS', 'regionsContext.REGIONS');
+const regionsCodeToEval = regionsCode
+    .replace(/\bexport\b\s*/g, '')
+    .replace('const REGIONS', 'regionsContext.REGIONS');
 vm.createContext(regionsContext);
 vm.runInContext(regionsCodeToEval, regionsContext);
 const REGIONS = regionsContext.REGIONS;

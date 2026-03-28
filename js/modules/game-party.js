@@ -3,7 +3,11 @@
 // Responsibility: add, remove, move, build team, find echoes
 // ============================================
 
-const GameParty = {
+import { GAME_CONFIG } from '../data/game-config.js';
+import { UI } from '../ui.js';
+
+
+export const GameParty = {
     addToParty(echo) {
         if (this.state.party.length >= GAME_CONFIG.MAX_PARTY) return false;
         this.state.party.push(echo);

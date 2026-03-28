@@ -2,6 +2,8 @@
 // FORÊT ÉVEILLÉE
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawTree(map, x, y, size) {
         const ctx = map.ctx;

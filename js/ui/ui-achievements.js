@@ -2,7 +2,10 @@
 // UIAchievements - Rendu succes
 // ============================================
 
-const UIAchievements = {
+import { ACHIEVEMENTS } from '../data/achievements-data.js';
+import { Game } from '../game.js';
+
+export const UIAchievements = {
     renderAchievements() {
         const list = document.getElementById('achievements-list');
         if (!list) return;

@@ -2,7 +2,7 @@
 // EchoClicker - Succes
 // ============================================
 
-const ACHIEVEMENTS = [
+export const ACHIEVEMENTS = [
     { id:'click1',     name:'Premier Pas',      desc:'Clique pour la première fois',       icon:'👆', cond:s=>s.totalClicks>=1 },
     { id:'click100',   name:'Cliquer Débutant', desc:'100 clics au total',                 icon:'👆', cond:s=>s.totalClicks>=100 },
     { id:'click1k',    name:'Cliquer Confirmé', desc:'1 000 clics au total',               icon:'💪', cond:s=>s.totalClicks>=1000 },

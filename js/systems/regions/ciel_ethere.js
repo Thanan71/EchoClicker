@@ -2,6 +2,8 @@
 // CIEL ETHERE
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawSkyBackground(map) {
         const ctx = map.ctx, w = map.width, h = map.height;

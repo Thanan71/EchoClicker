@@ -4,7 +4,20 @@
 // Uses RegionRegistry for dynamic region renderers
 // ============================================
 
-const MapSystem = Object.assign({}, MapCore, {
+import { MapCore } from './map-core.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { RegionRegistry } from './regions/RegionRegistry.js';
+
+// Import des fichiers de régions pour les enregistrer dans le RegionRegistry
+import './regions/foret.js';
+import './regions/montagnes.js';
+import './regions/ocean.js';
+import './regions/volcan.js';
+import './regions/foret_maudite.js';
+import './regions/ciel_ethere.js';
+import './regions/dimension_arcane.js';
+
+export const MapSystem = Object.assign({}, MapCore, {
     // Dependances injectees (DIP)
     _game: null,
     _ui: null,

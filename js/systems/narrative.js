@@ -4,7 +4,21 @@
 // Gere les dialogues du PNJ guide, les dialogues de boss,
 // le lore débloquable, les cinematiques et le Logbook.
 
-const NarrativeSystem = {
+import { NARRATIVE_DATA } from '../data/narrative-data.js';
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+import { UI } from '../ui.js';
+import { Game } from '../game.js';
+
+// Use imported modules directly (circular dependency handled by module system)
+function getGame() {
+    return Game;
+}
+
+function getUI() {
+    return UI;
+}
+
+export const NarrativeSystem = {
     state: {
         seenDialogues: new Set(),
         unlockedLore: new Set(),
@@ -81,13 +95,19 @@ const NarrativeSystem = {
         this.state.currentGuideDialogue = dialogue;
 
         const guide = NARRATIVE_DATA.guide;
-        UI.showModal(
+        getUI().showModal(
             `${guide.avatar} ${guide.name}`,
             `<div class="narrative-dialogue">
                 <p class="dialogue-text">${dialogue.text}</p>
             </div>`,
-            `<button class="btn-combat" onclick="UI.closeModal()">Continuer</button>`
+            `<button class="btn-combat modal-continue-btn">Continuer</button>`
         );
+
+        // Add event listener to the continue button
+        const continueBtn = document.querySelector('.modal-continue-btn');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', () => UI.closeModal());
+        }
 
         EventBus.emit('narrative:dialogue', { type: 'guide', dialogue });
     },
@@ -115,13 +135,19 @@ const NarrativeSystem = {
         if (!dialogue) return;
 
         const emoji = isBefore ? '⚔️' : '🏆';
-        UI.showModal(
+        getUI().showModal(
             `${emoji} ${dialogue.name}`,
             `<div class="narrative-dialogue boss-dialogue">
                 <p class="dialogue-text">"${dialogue.text}"</p>
             </div>`,
-            `<button class="btn-combat" onclick="UI.closeModal()">${isBefore ? 'Combattre' : 'Continuer'}</button>`
+            `<button class="btn-combat modal-action-btn">${isBefore ? 'Combattre' : 'Continuer'}</button>`
         );
+
+        // Add event listener to the action button
+        const actionBtn = document.querySelector('.modal-action-btn');
+        if (actionBtn) {
+            actionBtn.addEventListener('click', () => UI.closeModal());
+        }
 
         EventBus.emit('narrative:dialogue', { type: 'boss', regionId, isBefore, dialogue });
     },
@@ -131,6 +157,7 @@ const NarrativeSystem = {
     // ============================================
 
     checkLoreUnlocks() {
+        const Game = getGame();
         const stats = Game.getStats();
         const state = Game.state;
 
@@ -188,7 +215,7 @@ const NarrativeSystem = {
     unlockLore(lore) {
         this.state.unlockedLore.add(lore.id);
         
-        UI.toast(`📖 Nouveau lore débloqué : ${lore.title}`, 'info');
+        getUI().toast(`📖 Nouveau lore débloqué : ${lore.title}`, 'info');
         
         EventBus.emit('narrative:lore_unlocked', lore);
     },
@@ -217,14 +244,14 @@ const NarrativeSystem = {
 
     showCinematicScene(cinematic, sceneIndex) {
         if (sceneIndex >= cinematic.scenes.length) {
-            UI.closeModal();
+            getUI().closeModal();
             EventBus.emit('narrative:cinematic_complete', cinematic);
             return;
         }
 
         const scene = cinematic.scenes[sceneIndex];
         
-        UI.showModal(
+        getUI().showModal(
             `🎬 ${cinematic.title}`,
             `<div class="narrative-cinematic">
                 <p class="cinematic-text">${scene.text}</p>
@@ -232,9 +259,20 @@ const NarrativeSystem = {
                     ${cinematic.scenes.map((_, i) => `<span class="progress-dot ${i <= sceneIndex ? 'active' : ''}"></span>`).join('')}
                 </div>
             </div>`,
-            `<button class="btn-combat secondary" onclick="NarrativeSystem.skipCinematic()">Passer</button>
-             <button class="btn-combat" onclick="NarrativeSystem.nextCinematicScene('${cinematic.title}', ${sceneIndex + 1})">Suivant</button>`
+            `<button class="btn-combat secondary cinematic-skip-btn">Passer</button>
+             <button class="btn-combat cinematic-next-btn">Suivant</button>`
         );
+
+        // Add event listeners to cinematic buttons
+        const skipBtn = document.querySelector('.cinematic-skip-btn');
+        const nextBtn = document.querySelector('.cinematic-next-btn');
+        
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => this.skipCinematic());
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => this.nextCinematicScene(cinematic.title, sceneIndex + 1));
+        }
     },
 
     nextCinematicScene(cinematicTitle, nextIndex) {
@@ -295,9 +333,9 @@ const NarrativeSystem = {
         let html = `
             <div class="logbook-container">
                 <div class="logbook-tabs">
-                    <button class="logbook-tab active" onclick="NarrativeSystem.switchLogbookTab('guide')">📜 Dialogues</button>
-                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('lore')">📖 Lore</button>
-                    <button class="logbook-tab" onclick="NarrativeSystem.switchLogbookTab('cinematics')">🎬 Cinematiques</button>
+                    <button class="logbook-tab active" data-tab="guide">${i18n.t('logbook.dialogues')}</button>
+                    <button class="logbook-tab" data-tab="lore">${i18n.t('logbook.lore')}</button>
+                    <button class="logbook-tab" data-tab="cinematics">${i18n.t('logbook.cinematics')}</button>
                 </div>
                 <div class="logbook-content" id="logbook-content">
                     ${this.renderLogbookGuide(data.guideDialogues)}
@@ -305,16 +343,27 @@ const NarrativeSystem = {
             </div>
         `;
 
-        UI.showModal('📕 Logbook', html, '<button class="btn-combat secondary" onclick="UI.closeModal()">Fermer</button>');
+        UI.showModal(i18n.t('logbook.title'), html, `<button class="btn-combat secondary logbook-close-btn">${i18n.t('logbook.close')}</button>`);
+
+        // Add event listeners to logbook tabs
+        document.querySelectorAll('.logbook-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.logbook-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                this.switchLogbookTab(e.target.dataset.tab);
+            });
+        });
+
+        // Add event listener to close button
+        const closeBtn = document.querySelector('.logbook-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => UI.closeModal());
+        }
     },
 
     switchLogbookTab(tab) {
         const data = this.getLogbookData();
         const content = document.getElementById('logbook-content');
-        
-        // Mettre a jour les onglets
-        document.querySelectorAll('.logbook-tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
 
         switch (tab) {
             case 'guide':

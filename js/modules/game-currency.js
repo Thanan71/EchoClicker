@@ -3,7 +3,9 @@
 // Responsibility: energy, links, click power, passive income, boosts
 // ============================================
 
-const GameCurrency = {
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+
+export const GameCurrency = {
     // === Monnaies ===
     spendEnergy(amount) {
         if (this.state.energy < amount) return false;

@@ -36,7 +36,10 @@
     "close": "Cerrar",
     "back": "Atrás",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "logbook": "📓 Registro",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Idioma"
   },
   "combat": {
     "enemySide": "Enemigo",
@@ -56,7 +59,10 @@
     "noEchoAvailable": "¡No hay Echo disponible!",
     "partyFull": "¡Equipo completo! (máx 6)",
     "optimalTeamCreated": "¡⚡ Equipo óptimo creado!",
-    "newTeam": "Nuevo equipo: {names}"
+    "newTeam": "Nuevo equipo: {names}",
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClick": "+{dmg} DAÑO",
+    "dmgClickZero": "+0 daño"
   },
   "capture": {
     "title": "🔮 Zona de Captura",
@@ -72,7 +78,11 @@
     "routeLocked": "¡Ruta no desbloqueada!",
     "regionLocked": "¡Región no desbloqueada!",
     "newRoute": "¡Nueva ruta: {name}!",
-    "newRegion": "¡Nueva región desbloqueada: {name}!"
+    "newRegion": "¡Nueva región desbloqueada: {name}!",
+    "captureSuccessDisplay": "✨ ¡Captura exitosa!",
+    "captureFailedDisplay": "💥 ¡Captura fallida!",
+    "captureSuccess": "¡{name} capturado!",
+    "captureFailed": "¡Captura fallida!"
   },
   "map": {
     "title": "Mapa del Mundo",
@@ -99,7 +109,16 @@
     "optimalTeam": "Equipo Óptimo",
     "reserves": "📦 Reservas",
     "addToParty": "Añadir al equipo",
-    "removeFromParty": "Quitar del equipo"
+    "removeFromParty": "Quitar del equipo",
+    "primordial": "Primordial",
+    "addToReserve": "Añadir a reservas",
+    "levelLabel": "Nivel",
+    "vacant": "Vacío",
+    "noReserve": "No hay Echo en reservas",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Evoluciona a {name} en el nivel {level}",
+    "reserveBtn": "Reserva",
+    "partyBtn": "Equipo"
   },
   "pokedex": {
     "title": "Registro de Ecos",
@@ -110,7 +129,22 @@
     "captured": "Capturados",
     "total": "Total",
     "noEntry": "Sin entrada",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "typeAll": "Todos los tipos",
+    "counter": "{caught}/{total}",
+    "noResults": "Sin resultados",
+    "unknownEcho": "Eco Desconocido",
+    "notEncountered": "No encontrado",
+    "notCaptured": "No capturado",
+    "evolvesTo": "Evoluciona a {name}",
+    "stats": {
+      "hp": "HP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Capturado",
+    "notCapturedLabel": "No capturado",
+    "evolvesToLevel": "Evoluciona a {name} en el nivel {level}"
   },
   "hatchery": {
     "title": "Incubadora",
@@ -124,7 +158,8 @@
     "createEgg": "🥚 Crear un huevo",
     "selectParents": "Seleccionar padres",
     "parent1": "Padre 1",
-    "parent2": "Padre 2"
+    "parent2": "Padre 2",
+    "selectParent": "Seleccionar padre"
   },
   "mine": {
     "title": "Mina Subterránea",
@@ -141,7 +176,12 @@
     "radar": "Radar",
     "remainingEnergy": "Energía restante",
     "crystalsFound": "Cristales encontrados",
-    "energyRegen": "+1 energía cada 30 segundos"
+    "energyRegen": "+1 energía cada 30 segundos",
+    "energyNotEnough": "¡No hay suficiente energía de mina!",
+    "energyDepletedWait": "¡Energía de mina agotada! Espera o compra una recarga.",
+    "rechargeSuccess": "⛏️ +{amount} energía de mina!",
+    "energyDepleted": "Energía agotada",
+    "recharge": "Recargar"
   },
   "shop": {
     "title": "Mercado de Espíritus",
@@ -173,39 +213,130 @@
     "autoSave": "Guardado auto",
     "reset": "Reiniciar",
     "export": "Exportar",
-    "import": "Importar"
+    "import": "Importar",
+    "saveBtn": "💾 Guardar"
   },
   "echoes": {
-    "1": { "name": "Bolita", "desc": "Una pequeña bola de musgo que rueda sin rumbo." },
-    "2": { "name": "Hojarina", "desc": "Un brote mágico que pulsa con luz verde." },
-    "3": { "name": "Silvaguardia", "desc": "Un árbol viviente cuyas raíces cantan." },
-    "4": { "name": "Luciérnaga", "desc": "Una luciérnaga mágica que ilumina los caminos." },
-    "5": { "name": "Luminara", "desc": "Un hada de luz que danza entre los rayos." },
-    "6": { "name": "HojaViento", "desc": "Una hoja viviente que vuela con el viento." },
-    "7": { "name": "Torbellino", "desc": "Un torbellino consciente que lo absorbe todo." },
-    "8": { "name": "Champiñito", "desc": "Un champiñón que libera esporas somníferas." },
-    "9": { "name": "Toxichampi", "desc": "Un champiñón gigante cuyas esporas son tóxicas." },
-    "10": { "name": "Ruiseñor", "desc": "Un pájaro cuyo canto cura las heridas." },
-    "11": { "name": "Sombrilla", "desc": "Una mini sombra que imita los movimientos de otros." },
-    "12": { "name": "Gotita", "desc": "Una gota de agua mágica que nunca se evapora." },
-    "13": { "name": "Copito", "desc": "Un copo de nieve que nunca se derrite." },
-    "14": { "name": "Heladito", "desc": "Un bloque de hielo viviente que congela todo contacto." },
-    "15": { "name": "Glacius", "desc": "Un dragón de hielo que crea ventiscas." },
-    "16": { "name": "Cristalina", "desc": "Un pequeño cristal que canta al tocarlo." },
-    "17": { "name": "Cristalama", "desc": "Una entidad de cristal puro que refracta la luz." },
-    "18": { "name": "Diamantor", "desc": "Un golem de diamante casi indestructible." },
-    "19": { "name": "Chispita", "desc": "Una chispa consciente que corre sobre los cristales." },
-    "20": { "name": "Truenex", "desc": "Una bestia de rayo que golpea como el trueno." },
-    "21": { "name": "Rocita", "desc": "Una roca animada que desciende por las pendientes." },
-    "22": { "name": "Montañor", "desc": "Una montaña viviente cuyos pasos hacen temblar la tierra." },
-    "23": { "name": "Olejita", "desc": "Una pequeña ola consciente que juega en las corrientes." },
-    "24": { "name": "Tsunamis", "desc": "Una ola titánica que lo devora todo." },
-    "25": { "name": "Meduseléctrica", "desc": "Una medusa luminosa que electrocuta a sus presas." },
-    "26": { "name": "Krakos", "desc": "Un kraken antiguo que gobierna el abismo." },
-    "27": { "name": "Coralvivo", "desc": "Un coral viviente que crea arrecifes protectores." },
-    "28": { "name": "Sirenita", "desc": "Una sirena juguetona que atrae a los marineros." },
-    "29": { "name": "Arcaneta", "desc": "Una chispa arcanica que aparece durante los rituales." },
-    "30": { "name": "Caosito", "desc": "Un mini vórtice de caos que distorsiona el aire." }
+    "1": {
+      "name": "Bolita",
+      "desc": "Una pequeña bola de musgo que rueda sin rumbo."
+    },
+    "2": {
+      "name": "Hojarina",
+      "desc": "Un brote mágico que pulsa con luz verde."
+    },
+    "3": {
+      "name": "Silvaguardia",
+      "desc": "Un árbol viviente cuyas raíces cantan."
+    },
+    "4": {
+      "name": "Luciérnaga",
+      "desc": "Una luciérnaga mágica que ilumina los caminos."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "Un hada de luz que danza entre los rayos."
+    },
+    "6": {
+      "name": "HojaViento",
+      "desc": "Una hoja viviente que vuela con el viento."
+    },
+    "7": {
+      "name": "Torbellino",
+      "desc": "Un torbellino consciente que lo absorbe todo."
+    },
+    "8": {
+      "name": "Champiñito",
+      "desc": "Un champiñón que libera esporas somníferas."
+    },
+    "9": {
+      "name": "Toxichampi",
+      "desc": "Un champiñón gigante cuyas esporas son tóxicas."
+    },
+    "10": {
+      "name": "Ruiseñor",
+      "desc": "Un pájaro cuyo canto cura las heridas."
+    },
+    "11": {
+      "name": "Sombrilla",
+      "desc": "Una mini sombra que imita los movimientos de otros."
+    },
+    "12": {
+      "name": "Gotita",
+      "desc": "Una gota de agua mágica que nunca se evapora."
+    },
+    "13": {
+      "name": "Copito",
+      "desc": "Un copo de nieve que nunca se derrite."
+    },
+    "14": {
+      "name": "Heladito",
+      "desc": "Un bloque de hielo viviente que congela todo contacto."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "Un dragón de hielo que crea ventiscas."
+    },
+    "16": {
+      "name": "Cristalina",
+      "desc": "Un pequeño cristal que canta al tocarlo."
+    },
+    "17": {
+      "name": "Cristalama",
+      "desc": "Una entidad de cristal puro que refracta la luz."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "Un golem de diamante casi indestructible."
+    },
+    "19": {
+      "name": "Chispita",
+      "desc": "Una chispa consciente que corre sobre los cristales."
+    },
+    "20": {
+      "name": "Truenex",
+      "desc": "Una bestia de rayo que golpea como el trueno."
+    },
+    "21": {
+      "name": "Rocita",
+      "desc": "Una roca animada que desciende por las pendientes."
+    },
+    "22": {
+      "name": "Montañor",
+      "desc": "Una montaña viviente cuyos pasos hacen temblar la tierra."
+    },
+    "23": {
+      "name": "Olejita",
+      "desc": "Una pequeña ola consciente que juega en las corrientes."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "Una ola titánica que lo devora todo."
+    },
+    "25": {
+      "name": "Meduseléctrica",
+      "desc": "Una medusa luminosa que electrocuta a sus presas."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "Un kraken antiguo que gobierna el abismo."
+    },
+    "27": {
+      "name": "Coralvivo",
+      "desc": "Un coral viviente que crea arrecifes protectores."
+    },
+    "28": {
+      "name": "Sirenita",
+      "desc": "Una sirena juguetona que atrae a los marineros."
+    },
+    "29": {
+      "name": "Arcaneta",
+      "desc": "Una chispa arcanica que aparece durante los rituales."
+    },
+    "30": {
+      "name": "Caosito",
+      "desc": "Un mini vórtice de caos que distorsiona el aire."
+    }
   },
   "types": {
     "FLORE": "Flora",
@@ -229,7 +360,20 @@
   },
   "quests": {
     "title": "📋 Misiones",
-    "desc": "¡Completa misiones para ganar recompensas y progresar en tu aventura!"
+    "desc": "¡Completa misiones para ganar recompensas y progresar en tu aventura!",
+    "dailyEmpty": "No hay misiones diarias disponibles",
+    "storyEmpty": "No hay misiones de historia disponibles",
+    "noRewards": "No hay recompensas disponibles",
+    "claim": "Reclamar",
+    "claimedRewards": "Recompensas reclamadas",
+    "cannotClaim": "No se puede reclamar",
+    "dailyTitle": "📋 Misiones Diarias",
+    "storyTitle": "📖 Misiones de Historia",
+    "completedTitle": "✅ Misiones Completadas",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Cristales",
+    "rewardEnergy": "+{amount} Energía",
+    "rewardsTitle": "✅ Recompensas para Reclamar"
   },
   "notifications": {
     "saved": "¡Partida guardada!",
@@ -237,5 +381,17 @@
     "reset": "¡Partida reiniciada!",
     "error": "¡Error!",
     "success": "¡Éxito!"
+  },
+  "logbook": {
+    "title": "📖 Registro",
+    "dialogues": "💬 Diálogos",
+    "lore": "📜 Historia",
+    "cinematics": "🎬 Cinemáticas",
+    "close": "Cerrar"
+  },
+  "footer": {
+    "clicks": "Clics",
+    "cps": "CPS",
+    "echoes": "Ecos"
   }
 }

@@ -3,7 +3,11 @@
 // Responsibility: game state creation, stats snapshot
 // ============================================
 
-const GameState = {
+import { GAME_CONFIG } from '../data/game-config.js';
+import { REGIONS } from '../data/regions-data.js';
+import { Utils } from '../data/utils.js';
+
+export const GameState = {
     initState() {
         this.state = {
             energy: 0,

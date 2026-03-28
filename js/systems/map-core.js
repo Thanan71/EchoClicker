@@ -3,7 +3,10 @@
 // Responsibility: UI rendering and interaction for the map
 // ============================================
 
-const MapCore = {
+import { GAME_CONFIG } from '../data/game-config.js';
+import { Combat } from '../combat.js';
+
+export const MapCore = {
     canvas: null,
     ctx: null,
     width: 800,

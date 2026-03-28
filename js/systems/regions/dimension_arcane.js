@@ -2,6 +2,8 @@
 // DIMENSION ARCANE
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawArcaneBackground(map) {
         const ctx = map.ctx, w = map.width, h = map.height;

@@ -36,7 +36,10 @@
     "close": "Close",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "logbook": "📓 Logbook",
+    "wiki": "📚 Wiki",
+    "language": "🌍 Language"
   },
   "combat": {
     "enemySide": "Enemy",
@@ -56,7 +59,10 @@
     "noEchoAvailable": "No Echo available!",
     "partyFull": "Party full! (max 6)",
     "optimalTeamCreated": "⚡ Optimal team created!",
-    "newTeam": "New team: {names}"
+    "newTeam": "New team: {names}",
+    "dmgClick": "+{dmg} DMG",
+    "dmgPreview": "{min} - {max} DMG",
+    "dmgClickZero": "+0 DMG"
   },
   "capture": {
     "title": "🔮 Capture Zone",
@@ -72,7 +78,11 @@
     "routeLocked": "Route not unlocked!",
     "regionLocked": "Region not unlocked!",
     "newRoute": "New route: {name}!",
-    "newRegion": "New region unlocked: {name}!"
+    "newRegion": "New region unlocked: {name}!",
+    "captureSuccessDisplay": "✨ Capture succeeded!",
+    "captureFailedDisplay": "💥 Capture failed!",
+    "captureSuccess": "{name} captured!",
+    "captureFailed": "Capture failed!"
   },
   "map": {
     "title": "World Map",
@@ -99,7 +109,16 @@
     "optimalTeam": "Optimal Team",
     "reserves": "📦 Reserves",
     "addToParty": "Add to party",
-    "removeFromParty": "Remove from party"
+    "removeFromParty": "Remove from party",
+    "primordial": "Primordial",
+    "addToReserve": "Add to reserve",
+    "levelLabel": "Level",
+    "vacant": "Empty",
+    "noReserve": "No Echo in reserves",
+    "primordialBonus": "Primordial (+10%)",
+    "evolution": "Evolves into {name} at level {level}",
+    "reserveBtn": "Reserve",
+    "partyBtn": "Party"
   },
   "pokedex": {
     "title": "Echo Logbook",
@@ -110,7 +129,22 @@
     "captured": "Captured",
     "total": "Total",
     "noEntry": "No entry",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "typeAll": "All types",
+    "counter": "{caught}/{total}",
+    "noResults": "No results",
+    "unknownEcho": "Unknown Echo",
+    "notEncountered": "Not encountered",
+    "notCaptured": "Not captured",
+    "evolvesTo": "Evolves into {name}",
+    "stats": {
+      "hp": "HP",
+      "atk": "ATK",
+      "def": "DEF"
+    },
+    "capturedLabel": "Captured",
+    "notCapturedLabel": "Not captured",
+    "evolvesToLevel": "Evolves into {name} at level {level}"
   },
   "hatchery": {
     "title": "Hatchery",
@@ -124,7 +158,8 @@
     "createEgg": "🥚 Create an egg",
     "selectParents": "Select parents",
     "parent1": "Parent 1",
-    "parent2": "Parent 2"
+    "parent2": "Parent 2",
+    "selectParent": "Select parent"
   },
   "mine": {
     "title": "Underground Mine",
@@ -141,7 +176,12 @@
     "radar": "Radar",
     "remainingEnergy": "Remaining energy",
     "crystalsFound": "Crystals found",
-    "energyRegen": "+1 energy every 30 seconds"
+    "energyRegen": "+1 energy every 30 seconds",
+    "energyDepleted": "Energy depleted",
+    "recharge": "Recharge",
+    "energyNotEnough": "Not enough mine energy!",
+    "energyDepletedWait": "Mine energy depleted! Wait or buy a recharge.",
+    "rechargeSuccess": "⛏️ +{amount} mine energy!"
   },
   "shop": {
     "title": "Spirit Market",
@@ -173,39 +213,130 @@
     "autoSave": "Auto-save",
     "reset": "Reset",
     "export": "Export",
-    "import": "Import"
+    "import": "Import",
+    "saveBtn": "💾 Save"
   },
   "echoes": {
-    "1": { "name": "Mossling", "desc": "A small ball of moss that rolls aimlessly." },
-    "2": { "name": "Leafrix", "desc": "A magical sprout that pulses with green light." },
-    "3": { "name": "Sylvaguard", "desc": "A living tree whose roots sing." },
-    "4": { "name": "Glimmerfly", "desc": "A magical firefly that lights up the paths." },
-    "5": { "name": "Luminara", "desc": "A light fairy that dances between rays." },
-    "6": { "name": "Leafwind", "desc": "A living leaf that flies with the wind." },
-    "7": { "name": "Cyclorath", "desc": "A conscious whirlwind that sucks everything in." },
-    "8": { "name": "Shroomlet", "desc": "A mushroom that releases sleep-inducing spores." },
-    "9": { "name": "Toxishroom", "desc": "A giant mushroom whose spores are toxic." },
-    "10": { "name": "Songbird", "desc": "A bird whose song heals wounds." },
-    "11": { "name": "Shadelet", "desc": "A mini shadow that mimics others' movements." },
-    "12": { "name": "Droplet", "desc": "A magical drop of water that never evaporates." },
-    "13": { "name": "Frostlet", "desc": "A snowflake that never melts." },
-    "14": { "name": "Glaceling", "desc": "A living block of ice that freezes everything it touches." },
-    "15": { "name": "Glacius", "desc": "An ice dragon that creates blizzards." },
-    "16": { "name": "Crystaline", "desc": "A small crystal that sings when touched." },
-    "17": { "name": "Crystalame", "desc": "A pure crystal entity that refracts light." },
-    "18": { "name": "Diamantor", "desc": "A nearly indestructible diamond golem." },
-    "19": { "name": "Sparklet", "desc": "A conscious spark that runs on crystals." },
-    "20": { "name": "Thunderex", "desc": "A lightning beast that strikes like thunder." },
-    "21": { "name": "Rocklett", "desc": "An animated rock that rolls down slopes." },
-    "22": { "name": "Mountagnor", "desc": "A living mountain whose steps shake the earth." },
-    "23": { "name": "Wavelet", "desc": "A small conscious wave that plays in currents." },
-    "24": { "name": "Tsunamis", "desc": "A titanic wave that devours everything." },
-    "25": { "name": "Jellyshock", "desc": "A luminous jellyfish that electrocutes its prey." },
-    "26": { "name": "Krakos", "desc": "An ancient kraken that rules the abyss." },
-    "27": { "name": "Coralblade", "desc": "A living coral that creates protective reefs." },
-    "28": { "name": "Sirenlet", "desc": "A playful siren that attracts sailors." },
-    "29": { "name": "Arcanette", "desc": "An arcane spark that appears during rituals." },
-    "30": { "name": "Chaoslet", "desc": "A mini chaos vortex that distorts the air." }
+    "1": {
+      "name": "Mossling",
+      "desc": "A small ball of moss that rolls aimlessly."
+    },
+    "2": {
+      "name": "Leafrix",
+      "desc": "A magical sprout that pulses with green light."
+    },
+    "3": {
+      "name": "Sylvaguard",
+      "desc": "A living tree whose roots sing."
+    },
+    "4": {
+      "name": "Glimmerfly",
+      "desc": "A magical firefly that lights up the paths."
+    },
+    "5": {
+      "name": "Luminara",
+      "desc": "A light fairy that dances between rays."
+    },
+    "6": {
+      "name": "Leafwind",
+      "desc": "A living leaf that flies with the wind."
+    },
+    "7": {
+      "name": "Cyclorath",
+      "desc": "A conscious whirlwind that sucks everything in."
+    },
+    "8": {
+      "name": "Shroomlet",
+      "desc": "A mushroom that releases sleep-inducing spores."
+    },
+    "9": {
+      "name": "Toxishroom",
+      "desc": "A giant mushroom whose spores are toxic."
+    },
+    "10": {
+      "name": "Songbird",
+      "desc": "A bird whose song heals wounds."
+    },
+    "11": {
+      "name": "Shadelet",
+      "desc": "A mini shadow that mimics others' movements."
+    },
+    "12": {
+      "name": "Droplet",
+      "desc": "A magical drop of water that never evaporates."
+    },
+    "13": {
+      "name": "Frostlet",
+      "desc": "A snowflake that never melts."
+    },
+    "14": {
+      "name": "Glaceling",
+      "desc": "A living block of ice that freezes everything it touches."
+    },
+    "15": {
+      "name": "Glacius",
+      "desc": "An ice dragon that creates blizzards."
+    },
+    "16": {
+      "name": "Crystaline",
+      "desc": "A small crystal that sings when touched."
+    },
+    "17": {
+      "name": "Crystalame",
+      "desc": "A pure crystal entity that refracts light."
+    },
+    "18": {
+      "name": "Diamantor",
+      "desc": "A nearly indestructible diamond golem."
+    },
+    "19": {
+      "name": "Sparklet",
+      "desc": "A conscious spark that runs on crystals."
+    },
+    "20": {
+      "name": "Thunderex",
+      "desc": "A lightning beast that strikes like thunder."
+    },
+    "21": {
+      "name": "Rocklett",
+      "desc": "An animated rock that rolls down slopes."
+    },
+    "22": {
+      "name": "Mountagnor",
+      "desc": "A living mountain whose steps shake the earth."
+    },
+    "23": {
+      "name": "Wavelet",
+      "desc": "A small conscious wave that plays in currents."
+    },
+    "24": {
+      "name": "Tsunamis",
+      "desc": "A titanic wave that devours everything."
+    },
+    "25": {
+      "name": "Jellyshock",
+      "desc": "A luminous jellyfish that electrocutes its prey."
+    },
+    "26": {
+      "name": "Krakos",
+      "desc": "An ancient kraken that rules the abyss."
+    },
+    "27": {
+      "name": "Coralblade",
+      "desc": "A living coral that creates protective reefs."
+    },
+    "28": {
+      "name": "Sirenlet",
+      "desc": "A playful siren that attracts sailors."
+    },
+    "29": {
+      "name": "Arcanette",
+      "desc": "An arcane spark that appears during rituals."
+    },
+    "30": {
+      "name": "Chaoslet",
+      "desc": "A mini chaos vortex that distorts the air."
+    }
   },
   "types": {
     "FLORE": "Flora",
@@ -229,7 +360,20 @@
   },
   "quests": {
     "title": "📋 Quests",
-    "desc": "Complete quests to earn rewards and progress in your adventure!"
+    "desc": "Complete quests to earn rewards and progress in your adventure!",
+    "dailyEmpty": "No daily quests available",
+    "storyEmpty": "No story quests available",
+    "noRewards": "No rewards available",
+    "claim": "Claim",
+    "claimedRewards": "Claimed rewards",
+    "cannotClaim": "Cannot claim",
+    "dailyTitle": "📋 Daily Quests",
+    "storyTitle": "📖 Story Quests",
+    "completedTitle": "✅ Completed Quests",
+    "rewardXp": "+{amount} XP",
+    "rewardCrystals": "+{amount} Crystals",
+    "rewardEnergy": "+{amount} Energy",
+    "rewardsTitle": "✅ Rewards to Claim"
   },
   "notifications": {
     "saved": "Game saved!",
@@ -237,5 +381,17 @@
     "reset": "Game reset!",
     "error": "Error!",
     "success": "Success!"
+  },
+  "logbook": {
+    "title": "📖 Logbook",
+    "dialogues": "💬 Dialogues",
+    "lore": "📜 Lore",
+    "cinematics": "🎬 Cinematics",
+    "close": "Close"
+  },
+  "footer": {
+    "clicks": "Clicks",
+    "cps": "CPS",
+    "echoes": "Echoes"
   }
 }

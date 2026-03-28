@@ -12,6 +12,7 @@ const configCode = fs.readFileSync(configPath, 'utf-8');
 // Créer un contexte pour capturer les variables
 const context = {};
 const codeToEval = configCode
+    .replace(/\bexport\b\s*/g, '')
     .replace('const GAME_CONFIG', 'context.GAME_CONFIG')
     .replace('const SHOP', 'context.SHOP');
 eval(codeToEval);

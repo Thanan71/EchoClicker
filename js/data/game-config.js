@@ -3,7 +3,7 @@
 // ============================================
 
 // Paramètres de jeu
-const GAME_CONFIG = {
+export const GAME_CONFIG = {
     TICK_RATE: 50,              // ms entre chaque tick (20 ticks/sec)
     PASSIVE_BASE: 0.1,          // Énergie passive de base par tick
     CPS_WINDOW: 5000,           // Fenêtre de calcul du CPS (ms)
@@ -23,7 +23,7 @@ const GAME_CONFIG = {
 };
 
 // === BOUTIQUE ===
-const SHOP = {
+export const SHOP = {
     links: [
         { id:'l10',  name:'10 Liens',  icon:'🔗', price:50,   currency:'energy', amount:10 },
         { id:'l50',  name:'50 Liens',  icon:'🔗', price:200,  currency:'energy', amount:50 },

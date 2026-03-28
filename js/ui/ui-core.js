@@ -2,24 +2,32 @@
 // UICore - Helpers communs et orchestration
 // ============================================
 
-function getEchoImagePath(echo) {
+import { ShinyEffect } from '../core/shinyEffect.js';
+import { Utils } from '../data/utils.js';
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+import { Game } from '../game.js';
+import { Mine } from '../systems/mine.js';
+import { Hatchery } from '../systems/hatchery.js';
+
+
+export function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');
     return `assets/echos-no-bg/echo_${id}_no_bg.png`;
 }
 
-function getEchoImagePathById(id) {
+export function getEchoImagePathById(id) {
     const idStr = String(id).padStart(3, '0');
     return `assets/echos-no-bg/echo_${idStr}_no_bg.png`;
 }
 
-function applyShinyToImage(imgElement, echo) {
+export function applyShinyToImage(imgElement, echo) {
     if (!imgElement || !echo) return;
     if (echo.isPrimordial || echo.isShiny) {
         ShinyEffect.makeShiny(imgElement, echo.rarity || 'common', true);
     }
 }
 
-function createEchoImageHTML(echo, size = 64) {
+export function createEchoImageHTML(echo, size = 64) {
     const imgPath = getEchoImagePath(echo);
     const isShiny = echo.isPrimordial || echo.isShiny;
     if (isShiny) {
@@ -29,7 +37,7 @@ function createEchoImageHTML(echo, size = 64) {
     return `<img src="${imgPath}" alt="${echo.name}" style="width:${size}px;height:${size}px;object-fit:contain;">`;
 }
 
-const UICore = {
+export const UICore = {
     currentTab: 'map',
     captureWildEcho: null,
     pokedexStatusFilter: 'all',
@@ -156,14 +164,35 @@ const UICore = {
     },
 
     showSettings() {
-        this.showModal('\u2699\uFE0F Param\u00E8tres', `
+        this.showModal('\u2699\uFE0F ' + i18n.t('settings.title'), `
             <div style="display:flex;flex-direction:column;gap:12px">
-                <button class="btn-combat" onclick="SaveSystem.save();UI.toast('Sauvegard\u00E9 !','success');UI.closeModal()">\u{1F4BE} Sauvegarder</button>
-                <button class="btn-combat secondary" onclick="Game.exportSave();UI.closeModal()">\u{1F4E4} Exporter</button>
-                <button class="btn-combat secondary" onclick="Game.importSave();UI.closeModal()">\u{1F4E5} Importer</button>
-                <button class="btn-combat" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)" onclick="Game.resetGame()">\u{1F5D1}\uFE0F R\u00E9initialiser</button>
+                <button class="btn-combat settings-save-btn">\u{1F4BE} ${i18n.t('buttons.save')}</button>
+                <button class="btn-combat secondary settings-export-btn">\u{1F4E4} ${i18n.t('settings.export')}</button>
+                <button class="btn-combat secondary settings-import-btn">\u{1F4E5} ${i18n.t('settings.import')}</button>
+                <button class="btn-combat settings-reset-btn" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)">\u{1F5D1}\uFE0F ${i18n.t('settings.reset')}</button>
             </div>
         `);
+
+        // Add event listeners to settings buttons
+        document.querySelector('.settings-save-btn')?.addEventListener('click', () => {
+            SaveSystem.save();
+            this.toast(i18n.t('notifications.saved'), 'success');
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-export-btn')?.addEventListener('click', () => {
+            Game.exportSave();
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-import-btn')?.addEventListener('click', () => {
+            Game.importSave();
+            this.closeModal();
+        });
+
+        document.querySelector('.settings-reset-btn')?.addEventListener('click', () => {
+            Game.resetGame();
+        });
     },
 
     spawnParticle(event, text) {

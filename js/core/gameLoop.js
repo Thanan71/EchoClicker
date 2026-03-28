@@ -2,7 +2,9 @@
 // ÉchoClicker - Boucle de jeu (RAF + Delta Time)
 // ============================================
 
-const GameLoop = {
+import { GAME_CONFIG } from '../data/game-config.js';
+
+export const GameLoop = {
     _running: false,
     _lastTime: 0,
     _accumulator: 0,

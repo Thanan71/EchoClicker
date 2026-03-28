@@ -4,7 +4,11 @@
 // Responsable uniquement de la conversion entre Game.state et donnees JSON.
 // Ne connait pas le localStorage ni la migration - c'est le role de SaveSystem.
 
-const SaveSerializer = {
+import { GAME_CONFIG } from './data/game-config.js';
+import { REGIONS } from './data/regions-data.js';
+import { Utils } from './data/utils.js';
+
+export const SaveSerializer = {
     CURRENT_VERSION: 4,
 
     /**

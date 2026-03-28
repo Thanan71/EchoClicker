@@ -146,6 +146,9 @@ class I18n {
 
 const i18n = new I18n();
 
+// Rendre i18n accessible globalement pour les modules ES6
+window.i18n = i18n;
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = i18n;
 }

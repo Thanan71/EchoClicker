@@ -2,7 +2,12 @@
 // ÉchoClicker - Classe Echo
 // ============================================
 
-class Echo {
+import { Utils } from '../data/utils.js';
+import { getEchoById } from '../data/constants.js';
+import { GAME_CONFIG } from '../data/game-config.js';
+import { EventBus, GAME_EVENTS } from './eventBus.js';
+
+export class Echo {
     constructor(data, level = 1, isPrimordial = false) {
         this.uid = Utils.uid();
         this.id = data.id;
@@ -160,7 +165,7 @@ class Echo {
 }
 
 // Génération d'un Écho sauvage
-function generateWildEcho(routeIds, routeLv) {
+export function generateWildEcho(routeIds, routeLv) {
     const id = routeIds[Utils.randInt(0, routeIds.length - 1)];
     const data = getEchoById(id);
     if (!data) return null;

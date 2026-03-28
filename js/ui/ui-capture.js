@@ -2,7 +2,12 @@
 // UICapture - Zone de capture
 // ============================================
 
-const UICapture = {
+import { Utils } from '../data/utils.js';
+import { generateWildEcho } from '../core/echo.js';
+import { createEchoImageHTML } from './ui-core.js';
+import { Game } from '../game.js';
+
+export const UICapture = {
     renderCaptureZone() {
         if (!this.captureWildEcho) this.generateCaptureEcho();
         this.updateCaptureDisplay();
@@ -51,7 +56,7 @@ const UICapture = {
         const success = Game.attemptCapture(this.captureWildEcho);
         const cr = document.getElementById('capture-result');
         if (cr) {
-            cr.textContent = success ? '\u2728 Capture reussie !' : '\u{1F4A5} Capture echouee !';
+            cr.textContent = success ? i18n.t('capture.captureSuccessDisplay') : i18n.t('capture.captureFailedDisplay');
             cr.className = `capture-result ${success?'success':'fail'}`;
         }
         if (success) setTimeout(() => this.generateCaptureEcho(), 1000);
