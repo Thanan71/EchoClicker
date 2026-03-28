@@ -369,7 +369,8 @@
     "completedTitle": "✅ 完了したクエスト",
     "rewardXp": "+{amount} XP",
     "rewardCrystals": "+{amount} クリスタル",
-    "rewardEnergy": "+{amount} エネルギー"
+    "rewardEnergy": "+{amount} エネルギー",
+    "rewardsTitle": "✅ 受取可能な報酬"
   },
   "notifications": {
     "saved": "セーブしました！",

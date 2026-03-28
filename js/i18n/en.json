@@ -367,7 +367,8 @@
     "completedTitle": "✅ Completed Quests",
     "rewardXp": "+{amount} XP",
     "rewardCrystals": "+{amount} Crystals",
-    "rewardEnergy": "+{amount} Energy"
+    "rewardEnergy": "+{amount} Energy",
+    "rewardsTitle": "✅ Rewards to Claim"
   },
   "notifications": {
     "saved": "Game saved!",

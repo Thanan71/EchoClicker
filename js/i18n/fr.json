@@ -368,7 +368,8 @@
     "completedTitle": "✅ Quêtes Terminées",
     "rewardXp": "+{amount} XP",
     "rewardCrystals": "+{amount} Cristaux",
-    "rewardEnergy": "+{amount} Énergie"
+    "rewardEnergy": "+{amount} Énergie",
+    "rewardsTitle": "✅ Récompenses à réclamer"
   },
   "notifications": {
     "saved": "Partie sauvegardée !",

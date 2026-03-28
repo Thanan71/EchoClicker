@@ -366,7 +366,8 @@
     "completedTitle": "✅ Abgeschlossene Aufgaben",
     "rewardXp": "+{amount} XP",
     "rewardCrystals": "+{amount} Kristalle",
-    "rewardEnergy": "+{amount} Energie"
+    "rewardEnergy": "+{amount} Energie",
+    "rewardsTitle": "✅ Einzufordernde Belohnungen"
   },
   "notifications": {
     "saved": "Spiel gespeichert!",
@@ -374,6 +375,11 @@
     "reset": "Spiel zurückgesetzt!",
     "error": "Fehler!",
     "success": "Erfolg!"
+  },
+  "footer": {
+    "clicks": "Klicks",
+    "cps": "KPS",
+    "echoes": "Echos"
   },
   "logbook": {
     "title": "📖 Logbuch",

@@ -364,7 +364,8 @@
     "completedTitle": "✅ Misiones Completadas",
     "rewardXp": "+{amount} XP",
     "rewardCrystals": "+{amount} Cristales",
-    "rewardEnergy": "+{amount} Energía"
+    "rewardEnergy": "+{amount} Energía",
+    "rewardsTitle": "✅ Recompensas para Reclamar"
   },
   "notifications": {
     "saved": "¡Partida guardada!",

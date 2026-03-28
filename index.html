@@ -44,11 +44,11 @@
                     <!-- Boosts actifs affichés ici -->
                 </div>
                 <button class="btn-icon" id="btn-save" data-i18n-title="buttons.save" title="Sauvegarder">💾</button>
-                <button class="btn-icon" id="btn-logbook" title="Logbook">📕</button>
-                <a href="wiki.html" class="btn-icon" title="Wiki" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">📖</a>
+                <button class="btn-icon" id="btn-logbook" data-i18n-title="buttons.logbook" title="Logbook">📕</button>
+                <a href="wiki.html" class="btn-icon" data-i18n-title="buttons.wiki" title="Wiki" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">📖</a>
                 <button class="btn-icon" id="btn-settings" data-i18n-title="buttons.settings" title="Paramètres">⚙️</button>
                 <div class="lang-selector">
-                    <button class="btn-icon" id="btn-lang" title="Language">🌐</button>
+                    <button class="btn-icon" id="btn-lang" data-i18n-title="buttons.language" title="Language">🌐</button>
                     <div class="lang-dropdown" id="lang-dropdown">
                         <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
                         <button class="lang-option" data-lang="en">🇬🇧 English</button>
@@ -244,21 +244,21 @@
                 <p class="tab-desc" data-i18n="quests.desc">Complète des quêtes pour gagner des récompenses et progresser dans l'aventure !</p>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">📋 Quêtes Quotidiennes</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.dailyTitle">📋 Quêtes Quotidiennes</h3>
                     <div id="daily-quests">
                         <!-- Quêtes quotidiennes générées par JS -->
                     </div>
                 </div>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">📖 Quêtes d'Histoire</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.storyTitle">📖 Quêtes d'Histoire</h3>
                     <div id="story-quests">
                         <!-- Quêtes d'histoire générées par JS -->
                     </div>
                 </div>
                 
                 <div class="quest-section">
-                    <h3 class="quest-section-title">✅ Récompenses à réclamer</h3>
+                    <h3 class="quest-section-title" data-i18n="quests.rewardsTitle">✅ Récompenses à réclamer</h3>
                     <div id="completed-quests">
                         <!-- Quêtes complétées générées par JS -->
                     </div>
@@ -350,9 +350,9 @@
         <footer id="game-footer">
             <div class="footer-stats">
                 <span><span id="play-time">00:00:00</span></span>
-                <span><span id="total-clicks">0</span> clics</span>
-                <span><span id="cps-display">0.0</span> CPS</span>
-                <span><span id="total-echoes">0</span> Échos</span>
+                <span><span id="total-clicks">0</span> <span data-i18n="footer.clicks">clics</span></span>
+                <span><span id="cps-display">0.0</span> <span data-i18n="footer.cps">CPS</span></span>
+                <span><span id="total-echoes">0</span> <span data-i18n="footer.echoes">Échos</span></span>
             </div>
             <div class="footer-right">
                 <span>v0.2.0 Alpha</span>
