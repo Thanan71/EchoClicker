@@ -376,8 +376,8 @@ class QuestSystem {
         // Logique spécifique par catégorie
         switch (category) {
           case QUEST_CATEGORIES.CAPTURE:
-            if (quest.id.includes('flore') && data.type !== 'Flore') return;
-            if (quest.id.includes('shadow') && data.type !== 'Ombre') return;
+            if (quest.id.includes('flore') && data.type !== 'FLORE') return;
+            if (quest.id.includes('shadow') && data.type !== 'OMBRE') return;
             break;
           case QUEST_CATEGORIES.LEVEL:
             if (quest.id.includes('level_10') && data.level < 10) return;
@@ -431,7 +431,7 @@ class QuestSystem {
           if (Game.state && Game.state.caughtEchoes) {
             const hasShadowEcho = Array.from(Game.state.caughtEchoes).some(echoId => {
               const echoData = getEchoById(echoId);
-              return echoData && echoData.type === 'Ombre';
+              return echoData && echoData.type === 'OMBRE';
             });
             
             if (hasShadowEcho) {
