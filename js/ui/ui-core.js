@@ -156,12 +156,12 @@ const UICore = {
     },
 
     showSettings() {
-        this.showModal('\u2699\uFE0F Param\u00E8tres', `
+        this.showModal('\u2699\uFE0F ' + i18n.t('settings.title'), `
             <div style="display:flex;flex-direction:column;gap:12px">
-                <button class="btn-combat" onclick="SaveSystem.save();UI.toast('Sauvegard\u00E9 !','success');UI.closeModal()">\u{1F4BE} Sauvegarder</button>
-                <button class="btn-combat secondary" onclick="Game.exportSave();UI.closeModal()">\u{1F4E4} Exporter</button>
-                <button class="btn-combat secondary" onclick="Game.importSave();UI.closeModal()">\u{1F4E5} Importer</button>
-                <button class="btn-combat" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)" onclick="Game.resetGame()">\u{1F5D1}\uFE0F R\u00E9initialiser</button>
+                <button class="btn-combat" onclick="SaveSystem.save();UI.toast(i18n.t('notifications.saved'),'success');UI.closeModal()">\u{1F4BE} ${i18n.t('buttons.save')}</button>
+                <button class="btn-combat secondary" onclick="Game.exportSave();UI.closeModal()">\u{1F4E4} ${i18n.t('settings.export')}</button>
+                <button class="btn-combat secondary" onclick="Game.importSave();UI.closeModal()">\u{1F4E5} ${i18n.t('settings.import')}</button>
+                <button class="btn-combat" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)" onclick="Game.resetGame()">\u{1F5D1}\uFE0F ${i18n.t('settings.reset')}</button>
             </div>
         `);
     },
