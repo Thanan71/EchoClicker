@@ -2,7 +2,7 @@
 // CombatParty - Gestion de l'equipe (heal, selection active echo)
 // ============================================
 
-const CombatParty = {
+export const CombatParty = {
     _state: null,
     _game: null,
 

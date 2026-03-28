@@ -2,6 +2,8 @@
 // VOLCAN INFERNAL
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawVolcanBackground(map) {
         const ctx = map.ctx, w = map.width, h = map.height;

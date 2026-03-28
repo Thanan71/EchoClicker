@@ -3,7 +3,7 @@
 // 30 Échos, 10 types, 3 premières contrées
 // ============================================
 
-const ECHOES_DB = [
+export const ECHOES_DB = [
     // === FORÊT ÉVEILLÉE (Niveau 1-15) ===
     { id:1,  name:'Boulette',     type:'FLORE',   emoji:'🟢', rarity:'common',   baseHp:20, baseAtk:10, baseDef:15, baseSpd:25, captureRate:60, evo:{to:2,lv:8},  desc:'Une petite boule de mousse qui roule sans but.' },
     { id:2,  name:'Feuillame',    type:'FLORE',   emoji:'🌱', rarity:'uncommon', baseHp:35, baseAtk:20, baseDef:25, baseSpd:30, captureRate:45, evo:{to:3,lv:18}, desc:'Une pousse magique qui pulse de lumière verte.' },

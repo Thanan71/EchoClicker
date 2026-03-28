@@ -2,7 +2,9 @@
 // CombatCapture - Logique de capture (tentative, auto-capture)
 // ============================================
 
-const CombatCapture = {
+import { CombatEngine } from './CombatEngine.js';
+
+export const CombatCapture = {
     _state: null,
     _game: null,
     _ui: null,

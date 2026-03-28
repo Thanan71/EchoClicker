@@ -2,7 +2,9 @@
 // CombatAuto - Auto-combat timer et auto-capture toggle
 // ============================================
 
-const CombatAuto = {
+import { CombatEngine } from './CombatEngine.js';
+
+export const CombatAuto = {
     _state: null,
 
     init({ state }) {

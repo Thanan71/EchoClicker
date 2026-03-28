@@ -4,7 +4,10 @@
 // Gere les dialogues du PNJ guide, les dialogues de boss,
 // le lore débloquable, les cinematiques et le Logbook.
 
-const NarrativeSystem = {
+import { NARRATIVE_DATA } from '../data/narrative-data.js';
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+
+export const NarrativeSystem = {
     state: {
         seenDialogues: new Set(),
         unlockedLore: new Set(),

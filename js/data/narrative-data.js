@@ -2,7 +2,7 @@
 // EchoClicker - Donnees de narration et lore
 // ============================================
 
-const NARRATIVE_DATA = {
+export const NARRATIVE_DATA = {
     // PNJ Guide : Le Tisseur Ancien
     guide: {
         name: "Le Tisseur Ancien",

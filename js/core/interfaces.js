@@ -62,7 +62,7 @@
  * @param {IUIRenderer} uiRef - Référence au renderer UI
  * @param {IEventBus} eventBusRef - Référence au bus d'événements
  */
-function injectDependencies(system, gameRef, uiRef, eventBusRef) {
+export function injectDependencies(system, gameRef, uiRef, eventBusRef) {
     system._game = gameRef;
     system._ui = uiRef;
     system._eventBus = eventBusRef;

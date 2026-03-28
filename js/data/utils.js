@@ -2,7 +2,11 @@
 // ÉchoClicker - Utilitaires
 // ============================================
 
-const Utils = {
+import { TYPE_CHART } from './types.js';
+import { GAME_CONFIG } from './game-config.js';
+import { TYPES } from './types.js';
+
+export const Utils = {
     // Formatage de nombres (1.2K, 3.4M, etc.)
     formatNumber(num) {
         if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';

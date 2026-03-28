@@ -2,7 +2,15 @@
 // ÉchoClicker - Système d'Élevage / Incubateur
 // ============================================
 
-const Hatchery = {
+import { TYPES } from '../data/types.js';
+import { ECHOES_DB } from '../data/echoesData.js';
+import { GAME_CONFIG } from '../data/game-config.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { Echo } from '../core/echo.js';
+import { getEchoById } from '../data/constants.js';
+import { Utils } from '../data/utils.js';
+
+export const Hatchery = {
     slots: [],
     maxSlots: 4,
     parents: [null, null],

@@ -4,7 +4,11 @@
 // Uses RegionRegistry for dynamic region renderers
 // ============================================
 
-const MapSystem = Object.assign({}, MapCore, {
+import { MapCore } from './map-core.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { RegionRegistry } from './regions/RegionRegistry.js';
+
+export const MapSystem = Object.assign({}, MapCore, {
     // Dependances injectees (DIP)
     _game: null,
     _ui: null,

@@ -2,7 +2,9 @@
 // UIQuests - Rendu quetes
 // ============================================
 
-const UIQuests = {
+import { questSystem } from '../systems/quests.js';
+
+export const UIQuests = {
     renderQuests() {
         const dailyContainer = document.getElementById('daily-quests');
         const storyContainer = document.getElementById('story-quests');

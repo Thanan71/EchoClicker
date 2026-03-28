@@ -376,73 +376,13 @@
     <div id="toast-container"></div>
 
     <!-- ============================================
-         Scripts - Chargement modulaire par couches
+         Scripts - Chargement ES6 Modules
          ============================================ -->
-
-    <!-- Couche Données (aucune dépendance interne) -->
+    
+    <!-- i18n (chargé séparément car pas encore converti en module) -->
     <script src="js/i18n/i18n.js"></script>
-    <script src="js/data/types.js"></script>
-    <script src="js/data/game-config.js"></script>
-    <script src="js/data/regions-data.js"></script>
-    <script src="js/data/achievements-data.js"></script>
-    <script src="js/data/narrative-data.js"></script>
-    <script src="js/data/constants.js"></script>
-    <script src="js/data/utils.js"></script>
-    <script src="js/data/echoesData.js"></script>
-
-    <!-- Couche Noyau (infrastructure du jeu) -->
-    <script src="js/core/eventBus.js"></script>
-    <script src="js/core/interfaces.js"></script>
-    <script src="js/core/echo.js"></script>
-    <script src="js/core/gameLoop.js"></script>
-    <script src="js/core/shinyEffect.js"></script>
-
-    <!-- Couche Modules Game SRP (dépend de Données + Noyau) -->
-    <script src="js/modules/game-state.js"></script>
-    <script src="js/modules/game-party.js"></script>
-    <script src="js/modules/game-currency.js"></script>
-    <script src="js/modules/game-routes.js"></script>
-
-    <!-- Couche Systèmes (dépend de Données + Noyau) -->
-    <script src="js/systems/mine.js"></script>
-    <script src="js/systems/hatchery.js"></script>
-    <script src="js/systems/narrative.js"></script>
-    <script src="js/systems/regions/RegionRegistry.js"></script>
-    <script src="js/systems/regions/foret.js"></script>
-    <script src="js/systems/regions/montagnes.js"></script>
-    <script src="js/systems/regions/ocean.js"></script>
-    <script src="js/systems/regions/volcan.js"></script>
-    <script src="js/systems/regions/foret_maudite.js"></script>
-    <script src="js/systems/regions/ciel_ethere.js"></script>
-    <script src="js/systems/regions/dimension_arcane.js"></script>
-    <script src="js/systems/map-core.js"></script>
-    <script src="js/systems/map.js"></script>
-    <script src="js/systems/quests.js"></script>
-
-    <!-- Couche Logique Métier (dépend de Systèmes) -->
-    <script src="js/combat/CombatEngine.js"></script>
-    <script src="js/combat/CombatCapture.js"></script>
-    <script src="js/combat/CombatAuto.js"></script>
-    <script src="js/combat/CombatParty.js"></script>
-    <script src="js/combat.js"></script>
-    <script src="js/save-serializer.js"></script>
-    <script src="js/save.js"></script>
-
-    <!-- Couche Présentation (dépend de tout le reste) -->
-    <script src="js/ui/ui-core.js"></script>
-    <script src="js/ui/ui-routes.js"></script>
-    <script src="js/ui/ui-combat.js"></script>
-    <script src="js/ui/ui-party.js"></script>
-    <script src="js/ui/ui-capture.js"></script>
-    <script src="js/ui/ui-pokedex.js"></script>
-    <script src="js/ui/ui-shop.js"></script>
-    <script src="js/ui/ui-quests.js"></script>
-    <script src="js/ui/ui-achievements.js"></script>
-
-    <!-- Combinateur UI (fusionne tous les sous-modules en un seul objet UI) -->
-    <script src="js/ui.js"></script>
-
-    <!-- Orchestrateur (dernier - dépend de toutes les couches) -->
-    <script src="js/game.js"></script>
+    
+    <!-- Point d'entrée principal (modules ES6) -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

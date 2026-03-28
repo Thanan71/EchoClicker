@@ -7,8 +7,13 @@
 //   CombatAuto    - auto-combat timer
 //   CombatParty   - heal, active echo selection
 // ============================================
+import { CombatEngine } from './combat/CombatEngine.js';
+import { CombatCapture } from './combat/CombatCapture.js';
+import { CombatAuto } from './combat/CombatAuto.js';
+import { CombatParty } from './combat/CombatParty.js';
+import { GAME_CONFIG } from './data/game-config.js';
 
-const Combat = {
+export const Combat = {
     inCombat: false,
     enemy: null,
     activeEcho: null,

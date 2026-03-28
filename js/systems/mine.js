@@ -2,7 +2,9 @@
 // ÉchoClicker - Système de Mine Souterraine
 // ============================================
 
-const Mine = {
+import { GAME_CONFIG } from '../data/game-config.js';
+
+export const Mine = {
     grid: [],
     gridSize: 48,
     energy: 100,
@@ -229,9 +231,6 @@ const Mine = {
             this.energy = data.energy ?? this.maxEnergy;
             this.crystalsFound = data.crystalsFound ?? 0;
             this.regenTimer = data.regenTimer ?? 0;
-        }
-    }
-};r ?? 0;
         }
     }
 };

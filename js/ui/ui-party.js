@@ -2,7 +2,12 @@
 // UIParty - Rendu equipe et reserves
 // ============================================
 
-const UIParty = {
+import { TYPES } from '../data/types.js';
+import { getEchoById } from '../data/constants.js';
+import { createEchoImageHTML, getEchoImagePathById } from './ui-core.js';
+import { Game } from '../game.js';
+
+export const UIParty = {
     renderParty() {
         const pg = document.getElementById('party-grid');
         const rg = document.getElementById('reserves-grid');

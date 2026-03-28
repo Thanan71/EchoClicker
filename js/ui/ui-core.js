@@ -2,24 +2,33 @@
 // UICore - Helpers communs et orchestration
 // ============================================
 
-function getEchoImagePath(echo) {
+import { ShinyEffect } from '../core/shinyEffect.js';
+import { Utils } from '../data/utils.js';
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+import { Game } from '../game.js';
+import { Mine } from '../mine.js';
+import { Hatchery } from '../hatchery.js';
+import { i18n } from '../i18n.js';
+
+
+export function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');
     return `assets/echos-no-bg/echo_${id}_no_bg.png`;
 }
 
-function getEchoImagePathById(id) {
+export function getEchoImagePathById(id) {
     const idStr = String(id).padStart(3, '0');
     return `assets/echos-no-bg/echo_${idStr}_no_bg.png`;
 }
 
-function applyShinyToImage(imgElement, echo) {
+export function applyShinyToImage(imgElement, echo) {
     if (!imgElement || !echo) return;
     if (echo.isPrimordial || echo.isShiny) {
         ShinyEffect.makeShiny(imgElement, echo.rarity || 'common', true);
     }
 }
 
-function createEchoImageHTML(echo, size = 64) {
+export function createEchoImageHTML(echo, size = 64) {
     const imgPath = getEchoImagePath(echo);
     const isShiny = echo.isPrimordial || echo.isShiny;
     if (isShiny) {
@@ -29,7 +38,7 @@ function createEchoImageHTML(echo, size = 64) {
     return `<img src="${imgPath}" alt="${echo.name}" style="width:${size}px;height:${size}px;object-fit:contain;">`;
 }
 
-const UICore = {
+export const UICore = {
     currentTab: 'map',
     captureWildEcho: null,
     pokedexStatusFilter: 'all',

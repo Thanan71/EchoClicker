@@ -2,7 +2,10 @@
 // UIShop - Rendu boutique
 // ============================================
 
-const UIShop = {
+import { SHOP } from '../data/game-config.js';
+import { Game } from '../game.js';
+
+export const UIShop = {
     renderShop() {
         const container = document.getElementById('shop-items');
         if (!container) return;

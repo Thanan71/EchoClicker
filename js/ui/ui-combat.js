@@ -2,7 +2,12 @@
 // UICombat - Rendu combat
 // ============================================
 
-const UICombat = {
+import { TYPES } from '../data/types.js';
+import { GAME_CONFIG } from '../data/game-config.js';
+import { createEchoImageHTML } from './ui-core.js';
+import { Combat } from '../combat.js';
+
+export const UICombat = {
     updateCombat() {
         const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
         const setHTML = (id, v) => { const e = document.getElementById(id); if (e) e.innerHTML = v; };

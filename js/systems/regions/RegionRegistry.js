@@ -4,7 +4,7 @@
 // Ajouter une région = créer un fichier, sans modifier map.js.
 // ============================================
 
-const RegionRegistry = {
+export const RegionRegistry = {
     _renderers: {},
 
     register(regionId, renderFn) {

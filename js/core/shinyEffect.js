@@ -3,7 +3,7 @@
 // Remplace les sprites shiny séparés par des filtres dynamiques
 // ============================================
 
-const ShinyEffect = {
+export const ShinyEffect = {
     // Configuration des effets shiny par rareté
     SHINY_CONFIGS: {
         common: {

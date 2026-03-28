@@ -2,7 +2,7 @@
 // EchoClicker - Donnees des contrees & Routes
 // ============================================
 
-const REGIONS = [
+export const REGIONS = [
     {
         id: 'foret', name: 'Forêt Éveillée', emoji: '🌲',
         desc: 'Une forêt ancienne où les Échos de Flore et de Lumière dansent entre les arbres.',

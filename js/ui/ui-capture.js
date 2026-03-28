@@ -2,7 +2,12 @@
 // UICapture - Zone de capture
 // ============================================
 
-const UICapture = {
+import { Utils } from '../data/utils.js';
+import { generateWildEcho } from '../core/echo.js';
+import { createEchoImageHTML } from './ui-core.js';
+import { Game } from '../game.js';
+
+export const UICapture = {
     renderCaptureZone() {
         if (!this.captureWildEcho) this.generateCaptureEcho();
         this.updateCaptureDisplay();

@@ -2,6 +2,8 @@
 // FORET MAUDITE
 // ============================================
 
+import { RegionRegistry } from './RegionRegistry.js';
+
 (function() {
     function drawMauditeGround(map) {
         const ctx = map.ctx, w = map.width, h = map.height;

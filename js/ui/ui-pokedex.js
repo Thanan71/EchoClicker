@@ -2,7 +2,13 @@
 // UIPokedex - Rendu Pokedex
 // ============================================
 
-const UIPokedex = {
+import { TYPES } from '../data/types.js';
+import { ECHOES_DB } from '../data/echoesData.js';
+import { getEchoById } from '../data/constants.js';
+import { getEchoImagePathById } from './ui-core.js';
+import { Game } from '../game.js';
+
+export const UIPokedex = {
     initPokedexFilters() {
         const typeFiltersContainer = document.getElementById('type-filters');
         if (typeFiltersContainer) {

@@ -3,7 +3,9 @@
 // Responsibility: select route/region, unlock routes, defeat boss
 // ============================================
 
-const GameRoutes = {
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+
+export const GameRoutes = {
     // === Routes & Régions ===
     selectRoute(routeId) {
         const region = this.state.regions.find(r => r.id === this.state.currentRegion);
