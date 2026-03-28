@@ -52,7 +52,13 @@ function renderRoutes() {
         region.routes.forEach(route => {
             const echoesList = route.ids.map(id => {
                 const echo = ECHOES_DB.find(e => e.id === id);
-                return echo ? `<span title="${echo.name}">${echo.emoji}</span>` : '?';
+                if (!echo) return '?';
+                const imgPath = `assets/echos-no-bg/echo_${String(echo.id).padStart(3, '0')}_no_bg.png`;
+                return `<span class="echo-sprite-container" data-echo-name="${echo.name}">
+                    <img src="${imgPath}" alt="${echo.name}" class="echo-sprite" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span class="echo-emoji-fallback" style="display:none;">${echo.emoji}</span>
+                    <span class="echo-tooltip">${echo.name}</span>
+                </span>`;
             }).join(' ');
 
             html += `
