@@ -51,7 +51,7 @@ const Hatchery = {
         });
         html += '</div>';
 
-        this._ui.showModal('Sélectionner un parent', html);
+        this._ui.showModal(i18n.t('hatchery.selectParent'), html);
     },
 
     setParent(slotIndex, uid) {
@@ -297,12 +297,12 @@ const Hatchery = {
         if (p1) {
             if (this.parents[0]) {
                 const imgPath1 = getEchoImagePath(this.parents[0]);
-                p1.innerHTML = `<span class="slot-label">Parent 1</span>
+                p1.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent1')}</span>
                     <div class="slot-content"><img src="${imgPath1}" alt="${this.parents[0].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[0].name}</div>`;
                 p1.classList.add('filled');
             } else {
-                p1.innerHTML = `<span class="slot-label">Parent 1</span><div class="slot-content">+</div>`;
+                p1.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent1')}</span><div class="slot-content">+</div>`;
                 p1.classList.remove('filled');
             }
         }
@@ -310,12 +310,12 @@ const Hatchery = {
         if (p2) {
             if (this.parents[1]) {
                 const imgPath2 = getEchoImagePath(this.parents[1]);
-                p2.innerHTML = `<span class="slot-label">Parent 2</span>
+                p2.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent2')}</span>
                     <div class="slot-content"><img src="${imgPath2}" alt="${this.parents[1].name}" style="width:48px;height:48px;object-fit:contain"></div>
                     <div style="font-size:0.7rem">${this.parents[1].name}</div>`;
                 p2.classList.add('filled');
             } else {
-                p2.innerHTML = `<span class="slot-label">Parent 2</span><div class="slot-content">+</div>`;
+                p2.innerHTML = `<span class="slot-label">${i18n.t('hatchery.parent2')}</span><div class="slot-content">+</div>`;
                 p2.classList.remove('filled');
             }
         }
