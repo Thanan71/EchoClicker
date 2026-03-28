@@ -1,33 +1,60 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "formatter": {
-        "enabled": true,
-        "indentStyle": "space",
-        "indentWidth": 4,
-        "lineWidth": 120
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "recommended": true,
-            "correctness": {
-                "noUnusedImports": "warn",
-                "noUnusedVariables": "warn"
-            },
-            "suspicious": {
-                "noDoubleEquals": "error"
-            },
-            "style": {
-                "noVar": "error",
-                "useConst": "error"
-            }
-        }
-    },
-    "javascript": {
-        "formatter": {
-            "quoteStyle": "single",
-            "semicolons": "always",
-            "trailingCommas": "all"
-        }
+  "$schema": "https://biomejs.dev/schemas/2.4.0/schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnusedPrivateClassMembers": "error",
+        "noInvalidUseBeforeDeclaration": "error"
+      },
+      "suspicious": {
+        "noDoubleEquals": "error",
+        "noExplicitAny": "error",
+        "noArrayIndexKey": "error",
+        "noConsole": "warn",
+        "noDebugger": "error",
+        "noRedundantUseStrict": "error",
+        "noShadowRestrictedNames": "error"
+      },
+      "style": {
+        "noVar": "error",
+        "useConst": "error",
+        "useBlockStatements": "error",
+        "useShorthandFunctionType": "error",
+        "useTemplate": "error",
+        "useSelfClosingElements": "error",
+        "useSingleCaseStatement": "error",
+        "noNonNullAssertion": "warn"
+      },
+      "complexity": {
+        "noForEach": "warn",
+        "noExcessiveCognitiveComplexity": "warn",
+        "useLiteralKeys": "error"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "error"
+      }
     }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always",
+      "bracketSpacing": true
+    }
+  }
 }

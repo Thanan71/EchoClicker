@@ -5,29 +5,27 @@
 // ============================================
 
 export const RegionRegistry = {
-    _renderers: {},
+  _renderers: {},
 
-    register(regionId, renderFn) {
-        if (this._renderers[regionId]) {
-            console.warn(`[RegionRegistry] Région "${regionId}" déjà enregistrée, écrasement.`);
-        }
-        this._renderers[regionId] = renderFn;
-    },
+  register(regionId, renderFn) {
+    if (this._renderers[regionId]) {
+    }
+    this._renderers[regionId] = renderFn;
+  },
 
-    render(regionId, map) {
-        const renderer = this._renderers[regionId];
-        if (renderer) {
-            renderer(map);
-        } else if (typeof DEBUG !== 'undefined' && DEBUG) {
-            console.warn(`[RegionRegistry] Aucun renderer pour la région "${regionId}"`);
-        }
-    },
+  render(regionId, map) {
+    const renderer = this._renderers[regionId];
+    if (renderer) {
+      renderer(map);
+    } else if (typeof DEBUG !== 'undefined' && DEBUG) {
+    }
+  },
 
-    has(regionId) {
-        return regionId in this._renderers;
-    },
+  has(regionId) {
+    return regionId in this._renderers;
+  },
 
-    getRegisteredIds() {
-        return Object.keys(this._renderers);
-    },
+  getRegisteredIds() {
+    return Object.keys(this._renderers);
+  },
 };
