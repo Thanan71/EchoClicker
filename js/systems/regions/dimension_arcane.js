@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawArcaneBackground(map) {
         const ctx = map.ctx,
             w = map.width,
@@ -213,7 +213,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('dimension_arcane', function (map) {
+    RegionRegistry.register('dimension_arcane', (map) => {
         drawArcaneBackground(map);
         drawRuneCircles(map);
         drawFloatingCrystals(map);

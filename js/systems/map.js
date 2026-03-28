@@ -4,8 +4,8 @@
 // Uses RegionRegistry for dynamic region renderers
 // ============================================
 
-import { MapCore } from './map-core.js';
 import { GAME_EVENTS } from '../core/eventBus.js';
+import { MapCore } from './map-core.js';
 import { RegionRegistry } from './regions/RegionRegistry.js';
 
 // Import des fichiers de régions pour les enregistrer dans le RegionRegistry

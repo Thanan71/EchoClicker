@@ -3,8 +3,8 @@
 // Responsibility: select route/region, unlock routes, defeat boss
 // ============================================
 
-import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 import { Combat } from '../combat.js';
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 import { UI } from '../ui.js';
 
 export const GameRoutes = {

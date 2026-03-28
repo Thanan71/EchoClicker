@@ -4,17 +4,17 @@
 // Orchestration : localStorage, migration, versioning.
 // La conversion state <-> JSON est deleguee a SaveSerializer.
 
-import { SaveSerializer } from './save-serializer.js';
-import { Game } from './game.js';
-import { EventBus, GAME_EVENTS } from './core/eventBus.js';
-import { Mine } from './systems/mine.js';
-import { Hatchery } from './systems/hatchery.js';
-import { questSystem } from './systems/quests.js';
-import { NarrativeSystem } from './systems/narrative.js';
 import { Echo } from './core/echo.js';
-import { Utils } from './data/utils.js';
-import { REGIONS } from './data/regions-data.js';
+import { EventBus, GAME_EVENTS } from './core/eventBus.js';
 import { GAME_CONFIG } from './data/game-config.js';
+import { REGIONS } from './data/regions-data.js';
+import { Utils } from './data/utils.js';
+import { Game } from './game.js';
+import { SaveSerializer } from './save-serializer.js';
+import { Hatchery } from './systems/hatchery.js';
+import { Mine } from './systems/mine.js';
+import { NarrativeSystem } from './systems/narrative.js';
+import { questSystem } from './systems/quests.js';
 
 export const SaveSystem = {
     KEY: 'echoclicker_save_v2',

@@ -2,12 +2,12 @@
 // ÉchoClicker - Système d'Élevage / Incubateur
 // ============================================
 
-import { TYPES } from '../data/types.js';
+import { Echo } from '../core/echo.js';
+import { GAME_EVENTS } from '../core/eventBus.js';
+import { getEchoById } from '../data/constants.js';
 import { ECHOES_DB } from '../data/echoesData.js';
 import { GAME_CONFIG } from '../data/game-config.js';
-import { GAME_EVENTS } from '../core/eventBus.js';
-import { Echo } from '../core/echo.js';
-import { getEchoById } from '../data/constants.js';
+import { TYPES } from '../data/types.js';
 import { Utils } from '../data/utils.js';
 import { getEchoImagePath } from '../ui/ui-core.js';
 
@@ -304,7 +304,7 @@ export const Hatchery = {
             // Add event listeners to incubator slots
             document.querySelectorAll('.incubator-slot[data-slot-index]').forEach((slot) => {
                 slot.addEventListener('click', () => {
-                    const index = parseInt(slot.dataset.slotIndex);
+                    const index = Number.parseInt(slot.dataset.slotIndex);
                     this.collectEgg(index);
                 });
             });

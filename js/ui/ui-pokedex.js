@@ -2,12 +2,11 @@
 // UIPokedex - Rendu Pokedex
 // ============================================
 
-import { TYPES } from '../data/types.js';
-import { ECHOES_DB } from '../data/echoesData.js';
 import { getEchoById } from '../data/constants.js';
-import { getEchoImagePathById } from './ui-core.js';
+import { ECHOES_DB } from '../data/echoesData.js';
+import { TYPES } from '../data/types.js';
 import { Game } from '../game.js';
-import { UI } from '../ui.js';
+import { getEchoImagePathById } from './ui-core.js';
 
 export const UIPokedex = {
     initPokedexFilters() {
@@ -89,7 +88,7 @@ export const UIPokedex = {
         // Add event listeners to pokedex cards
         document.querySelectorAll('.pokedex-card[data-echo-id]').forEach((card) => {
             card.addEventListener('click', () => {
-                const echoId = parseInt(card.dataset.echoId);
+                const echoId = Number.parseInt(card.dataset.echoId);
                 this.showPokedexDetail(echoId);
             });
         });

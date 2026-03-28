@@ -4,10 +4,10 @@
 // Gere les dialogues du PNJ guide, les dialogues de boss,
 // le lore débloquable, les cinematiques et le Logbook.
 
-import { NARRATIVE_DATA } from '../data/narrative-data.js';
 import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
-import { UI } from '../ui.js';
+import { NARRATIVE_DATA } from '../data/narrative-data.js';
 import { Game } from '../game.js';
+import { UI } from '../ui.js';
 
 // Use imported modules directly (circular dependency handled by module system)
 function getGame() {
@@ -328,7 +328,7 @@ export const NarrativeSystem = {
     showLogbook() {
         const data = this.getLogbookData();
 
-        let html = `
+        const html = `
             <div class="logbook-container">
                 <div class="logbook-tabs">
                     <button class="logbook-tab active" data-tab="guide">${i18n.t('logbook.dialogues')}</button>

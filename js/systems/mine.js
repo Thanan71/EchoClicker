@@ -212,7 +212,7 @@ export const Mine = {
         // Add event listeners to mine tiles
         document.querySelectorAll('.mine-tile[data-tile-index]').forEach((tile) => {
             tile.addEventListener('click', () => {
-                const index = parseInt(tile.dataset.tileIndex);
+                const index = Number.parseInt(tile.dataset.tileIndex);
                 this.dig(index);
             });
         });

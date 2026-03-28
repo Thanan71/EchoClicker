@@ -4,25 +4,25 @@
 // Compose les modules SRP : GameState, GameParty, GameCurrency, GameRoutes
 // Responsabilite propre : boucle de jeu, capture, boutique, evenements DOM
 
-import { GameState } from './modules/game-state.js';
-import { GameParty } from './modules/game-party.js';
-import { GameCurrency } from './modules/game-currency.js';
-import { GameRoutes } from './modules/game-routes.js';
+import { Combat } from './combat.js';
+import { Echo } from './core/echo.js';
 import { EventBus, GAME_EVENTS } from './core/eventBus.js';
-import { GAME_CONFIG, SHOP } from './data/game-config.js';
+import { GameLoop } from './core/gameLoop.js';
 import { ACHIEVEMENTS } from './data/achievements-data.js';
 import { getEchoById } from './data/constants.js';
+import { GAME_CONFIG } from './data/game-config.js';
 import { Utils } from './data/utils.js';
-import { Echo } from './core/echo.js';
-import { GameLoop } from './core/gameLoop.js';
-import { UI } from './ui.js';
-import { Mine } from './systems/mine.js';
+import { GameCurrency } from './modules/game-currency.js';
+import { GameParty } from './modules/game-party.js';
+import { GameRoutes } from './modules/game-routes.js';
+import { GameState } from './modules/game-state.js';
+import { SaveSystem } from './save.js';
 import { Hatchery } from './systems/hatchery.js';
 import { MapSystem } from './systems/map.js';
-import { Combat } from './combat.js';
-import { questSystem } from './systems/quests.js';
+import { Mine } from './systems/mine.js';
 import { NarrativeSystem } from './systems/narrative.js';
-import { SaveSystem } from './save.js';
+import { questSystem } from './systems/quests.js';
+import { UI } from './ui.js';
 
 export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRoutes, {
     state: null,

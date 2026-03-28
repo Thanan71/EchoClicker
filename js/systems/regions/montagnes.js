@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawStarrySky(map) {
         const ctx = map.ctx;
         const w = map.width;
@@ -163,7 +163,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('montagnes', function (map) {
+    RegionRegistry.register('montagnes', (map) => {
         drawStarrySky(map);
         drawMountainRange(map);
         drawCrystals(map);

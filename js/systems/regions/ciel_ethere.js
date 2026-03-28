@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawSkyBackground(map) {
         const ctx = map.ctx,
             w = map.width,
@@ -137,7 +137,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('ciel_ethere', function (map) {
+    RegionRegistry.register('ciel_ethere', (map) => {
         drawSkyBackground(map);
         drawClouds(map);
         drawLightRays(map);

@@ -2,9 +2,9 @@
 // ÉchoClicker - Classe Echo
 // ============================================
 
-import { Utils } from '../data/utils.js';
 import { getEchoById } from '../data/constants.js';
 import { GAME_CONFIG } from '../data/game-config.js';
+import { Utils } from '../data/utils.js';
 import { EventBus, GAME_EVENTS } from './eventBus.js';
 
 export class Echo {

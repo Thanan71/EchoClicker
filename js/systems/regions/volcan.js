@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawVolcanBackground(map) {
         const ctx = map.ctx,
             w = map.width,
@@ -182,7 +182,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('volcan', function (map) {
+    RegionRegistry.register('volcan', (map) => {
         drawVolcanBackground(map);
         drawLavaRivers(map);
         drawVolcanRocks(map);

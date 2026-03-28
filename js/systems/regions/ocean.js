@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawOceanBackground(map) {
         const ctx = map.ctx,
             w = map.width,
@@ -163,7 +163,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('ocean', function (map) {
+    RegionRegistry.register('ocean', (map) => {
         drawOceanBackground(map);
         drawWaves(map);
         drawBubbles(map);

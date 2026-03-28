@@ -2,9 +2,9 @@
 // ÉchoClicker - Wiki Logic (Module ES6)
 // ============================================
 
-import { TYPES, TYPE_CHART, RARITY_COLORS } from './data/types.js';
-import { REGIONS } from './data/regions-data.js';
 import { ECHOES_DB } from './data/echoesData.js';
+import { REGIONS } from './data/regions-data.js';
+import { RARITY_COLORS, TYPES, TYPE_CHART } from './data/types.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     renderRoutes();

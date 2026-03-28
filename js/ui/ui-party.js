@@ -2,11 +2,11 @@
 // UIParty - Rendu equipe et reserves
 // ============================================
 
-import { TYPES } from '../data/types.js';
-import { getEchoById } from '../data/constants.js';
-import { createEchoImageHTML, getEchoImagePathById } from './ui-core.js';
-import { Game } from '../game.js';
 import { Combat } from '../combat.js';
+import { getEchoById } from '../data/constants.js';
+import { TYPES } from '../data/types.js';
+import { Game } from '../game.js';
+import { createEchoImageHTML, getEchoImagePathById } from './ui-core.js';
 
 export const UIParty = {
     renderParty() {

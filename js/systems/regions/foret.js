@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawTree(map, x, y, size) {
         const ctx = map.ctx;
         const sway = Math.sin(map.time * 1.5 + x * 0.01) * 2;
@@ -164,7 +164,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('foret', function (map) {
+    RegionRegistry.register('foret', (map) => {
         drawGrassGround(map);
         drawForestTrees(map);
         drawGlowMushrooms(map);

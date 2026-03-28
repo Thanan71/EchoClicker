@@ -1,3 +1,5 @@
+import { CombatAuto } from './combat/CombatAuto.js';
+import { CombatCapture } from './combat/CombatCapture.js';
 // ============================================
 // Combat - Facade orchestrant les sous-modules de combat
 // ============================================
@@ -8,8 +10,6 @@
 //   CombatParty   - heal, active echo selection
 // ============================================
 import { CombatEngine } from './combat/CombatEngine.js';
-import { CombatCapture } from './combat/CombatCapture.js';
-import { CombatAuto } from './combat/CombatAuto.js';
 import { CombatParty } from './combat/CombatParty.js';
 import { GAME_CONFIG } from './data/game-config.js';
 

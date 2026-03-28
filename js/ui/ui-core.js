@@ -2,12 +2,12 @@
 // UICore - Helpers communs et orchestration
 // ============================================
 
+import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 import { ShinyEffect } from '../core/shinyEffect.js';
 import { Utils } from '../data/utils.js';
-import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 import { Game } from '../game.js';
-import { Mine } from '../systems/mine.js';
 import { Hatchery } from '../systems/hatchery.js';
+import { Mine } from '../systems/mine.js';
 
 export function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');

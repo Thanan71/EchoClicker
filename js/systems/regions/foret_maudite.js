@@ -4,7 +4,7 @@
 
 import { RegionRegistry } from './RegionRegistry.js';
 
-(function () {
+(() => {
     function drawMauditeGround(map) {
         const ctx = map.ctx,
             w = map.width,
@@ -141,7 +141,7 @@ import { RegionRegistry } from './RegionRegistry.js';
         });
     }
 
-    RegionRegistry.register('foret_maudite', function (map) {
+    RegionRegistry.register('foret_maudite', (map) => {
         drawMauditeGround(map);
         drawDeadTrees(map);
         drawMushrooms(map);

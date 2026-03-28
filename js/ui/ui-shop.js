@@ -28,7 +28,7 @@ export const UIShop = {
         // Add event listeners to buy buttons
         document.querySelectorAll('.btn-buy[data-item-index]').forEach((btn) => {
             btn.addEventListener('click', () => {
-                const index = parseInt(btn.dataset.itemIndex);
+                const index = Number.parseInt(btn.dataset.itemIndex);
                 const item = items[index];
                 if (item) {
                     Game.buyItem(item);

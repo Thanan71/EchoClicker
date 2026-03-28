@@ -2,8 +2,8 @@
 // ÉchoClicker - Utilitaires
 // ============================================
 
-import { TYPE_CHART } from './types.js';
 import { GAME_CONFIG } from './game-config.js';
+import { TYPE_CHART } from './types.js';
 import { TYPES } from './types.js';
 
 export const Utils = {
