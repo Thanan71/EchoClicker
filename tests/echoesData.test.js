@@ -32,9 +32,7 @@ const RARITY_COLORS = typesContext.RARITY_COLORS;
 const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
 const echoesContext = { ECHOES_DB: undefined };
 echoesContext.echoesContext = echoesContext; // self-reference for VM
-const echoesCodeToEval = echoesCode
-    .replace(/\bexport\b\s*/g, '')
-    .replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+const echoesCodeToEval = echoesCode.replace(/\bexport\b\s*/g, '').replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
 vm.createContext(echoesContext);
 vm.runInContext(echoesCodeToEval, echoesContext);
 const ECHOES_DB = echoesContext.ECHOES_DB;
@@ -46,16 +44,16 @@ describe('echoesData.js - Structure des Echos', () => {
     });
 
     test('IDs uniques', () => {
-        const ids = ECHOES_DB.map(e => e.id);
+        const ids = ECHOES_DB.map((e) => e.id);
         expect(new Set(ids).size).toBe(ids.length);
     });
 
     test('noms uniques', () => {
-        const names = ECHOES_DB.map(e => e.name);
+        const names = ECHOES_DB.map((e) => e.name);
         expect(new Set(names).size).toBe(names.length);
     });
 
-    test.each(ECHOES_DB.map(e => [e.id, e.name, e]))(
+    test.each(ECHOES_DB.map((e) => [e.id, e.name, e]))(
         'Echo #%s "%s" a id, name, type valide, rarity valide, stats > 0, captureRate',
         (_, __, echo) => {
             // id
@@ -87,12 +85,12 @@ describe('echoesData.js - Structure des Echos', () => {
             expect(typeof echo.captureRate).toBe('number');
             expect(echo.captureRate).toBeGreaterThan(0);
             expect(echo.captureRate).toBeLessThanOrEqual(100);
-        }
+        },
     );
 
     describe('Chaines d evolution valides', () => {
         test('si evo.to existe, il pointe vers un Echo existant', () => {
-            const allIds = new Set(ECHOES_DB.map(e => e.id));
+            const allIds = new Set(ECHOES_DB.map((e) => e.id));
             for (const echo of ECHOES_DB) {
                 if (echo.evo && echo.evo.to) {
                     expect(allIds).toContain(echo.evo.to);

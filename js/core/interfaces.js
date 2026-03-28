@@ -14,7 +14,7 @@
  * @interface IGameStateProvider
  * @description Fournit un accès en lecture/écriture à l'état du jeu.
  * Implémenté par l'objet Game.
- * 
+ *
  * @property {Object} state - L'objet d'état du jeu
  * @method {function} findEcho(uid) - Trouve un Écho par son UID
  * @method {function} addToParty(echo) - Ajoute un Écho à l'équipe
@@ -30,7 +30,7 @@
  * @interface IUIRenderer
  * @description Fournit les méthodes de rendu et de notification UI.
  * Implémenté par l'objet UI.
- * 
+ *
  * @method {function} toast(message, type) - Affiche une notification
  * @method {function} addLog(type, message) - Ajoute une entrée au journal
  * @method {function} updateCombat() - Met à jour l'affichage du combat
@@ -46,7 +46,7 @@
  * @interface IEventBus
  * @description Système de publication/souscription pour la communication
  * découplée entre modules. Implémenté par l'objet EventBus.
- * 
+ *
  * @method {function} on(event, callback) - S'abonner à un événement
  * @method {function} off(event, callback) - Se désabonner
  * @method {function} emit(event, data) - Publier un événement
@@ -56,7 +56,7 @@
 /**
  * Injecte les dépendances dans un système.
  * Appelé par Game.init() pour chaque système.
- * 
+ *
  * @param {Object} system - Le système à initialiser
  * @param {IGameStateProvider} gameRef - Référence au provider d'état de jeu
  * @param {IUIRenderer} uiRef - Référence au renderer UI

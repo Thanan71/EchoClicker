@@ -21,14 +21,14 @@ export const Mine = {
     tools: {
         pick: { name: 'Pioche', emoji: '⛏️', cost: 1, power: 1, area: 1 },
         bomb: { name: 'Bombe', emoji: '💣', cost: 5, power: 3, area: 3 },
-        radar: { name: 'Radar', emoji: '📡', cost: 10, power: 0, area: 5, reveal: true }
+        radar: { name: 'Radar', emoji: '📡', cost: 10, power: 0, area: 5, reveal: true },
     },
     rewards: {
         crystal: { emoji: '💎', chance: 15, value: 1 },
         gold: { emoji: '💰', chance: 25, value: 5 },
         shard: { emoji: '✨', chance: 10, value: 1 },
         gem: { emoji: '💠', chance: 5, value: 3 },
-        rock: { emoji: '🪨', chance: 45, value: 0 }
+        rock: { emoji: '🪨', chance: 45, value: 0 },
     },
 
     /**
@@ -52,7 +52,7 @@ export const Mine = {
                 dug: false,
                 revealed: false,
                 reward: this.getRandomReward(),
-                depth: Math.floor(Math.random() * 3)
+                depth: Math.floor(Math.random() * 3),
             });
         }
     },
@@ -68,9 +68,9 @@ export const Mine = {
     },
 
     setupEventListeners() {
-        document.querySelectorAll('.tool-btn').forEach(btn => {
+        document.querySelectorAll('.tool-btn').forEach((btn) => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tool-btn').forEach((b) => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.currentTool = btn.dataset.tool;
             });
@@ -102,7 +102,7 @@ export const Mine = {
 
     digArea(center, radius) {
         const positions = this.getAreaPositions(center, radius);
-        positions.forEach(pos => {
+        positions.forEach((pos) => {
             if (pos >= 0 && pos < this.gridSize) {
                 const tile = this.grid[pos];
                 if (!tile.dug) {
@@ -115,7 +115,7 @@ export const Mine = {
 
     revealArea(center, radius) {
         const positions = this.getAreaPositions(center, radius);
-        positions.forEach(pos => {
+        positions.forEach((pos) => {
             if (pos >= 0 && pos < this.gridSize) {
                 this.grid[pos].revealed = true;
             }
@@ -196,7 +196,7 @@ export const Mine = {
         this.grid.forEach((tile, i) => {
             let content = '🟫';
             let classes = 'mine-tile';
-            
+
             if (tile.dug) {
                 classes += ' dug';
                 content = this.rewards[tile.reward].emoji;
@@ -204,13 +204,13 @@ export const Mine = {
                 classes += ' revealed';
                 content = this.rewards[tile.reward].emoji;
             }
-            
+
             html += `<div class="${classes}" data-tile-index="${i}">${content}</div>`;
         });
         grid.innerHTML = html;
 
         // Add event listeners to mine tiles
-        document.querySelectorAll('.mine-tile[data-tile-index]').forEach(tile => {
+        document.querySelectorAll('.mine-tile[data-tile-index]').forEach((tile) => {
             tile.addEventListener('click', () => {
                 const index = parseInt(tile.dataset.tileIndex);
                 this.dig(index);
@@ -219,7 +219,7 @@ export const Mine = {
 
         const energyEl = document.getElementById('mine-energy');
         if (energyEl) energyEl.textContent = this.energy;
-        
+
         const crystalsEl = document.getElementById('mine-crystals');
         if (crystalsEl) crystalsEl.textContent = this.crystalsFound;
     },
@@ -229,7 +229,7 @@ export const Mine = {
             grid: this.grid,
             energy: this.energy,
             crystalsFound: this.crystalsFound,
-            regenTimer: this.regenTimer
+            regenTimer: this.regenTimer,
         };
     },
 
@@ -240,5 +240,5 @@ export const Mine = {
             this.crystalsFound = data.crystalsFound ?? 0;
             this.regenTimer = data.regenTimer ?? 0;
         }
-    }
+    },
 };

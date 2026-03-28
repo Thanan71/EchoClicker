@@ -57,7 +57,7 @@ const Game = {
     getAllEchoes: jest.fn(() => []),
     buyItem: jest.fn(() => true),
     checkAchievements: jest.fn(),
-    buildOptimalTeam: jest.fn()
+    buildOptimalTeam: jest.fn(),
 };
 
 module.exports = { Game, createMockGameState };

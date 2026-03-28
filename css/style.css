@@ -10,11 +10,11 @@
     --bg-tertiary: #1a1a3e;
     --bg-card: #1e1e42;
     --bg-hover: #2a2a5e;
-    
+
     --text-primary: #e8e8f0;
     --text-secondary: #a0a0c0;
     --text-muted: #6a6a8e;
-    
+
     --accent-purple: #8b5cf6;
     --accent-blue: #3b82f6;
     --accent-cyan: #06b6d4;
@@ -22,11 +22,11 @@
     --accent-gold: #f59e0b;
     --accent-green: #10b981;
     --accent-red: #ef4444;
-    
+
     --glow-purple: rgba(139, 92, 246, 0.4);
     --glow-blue: rgba(59, 130, 246, 0.4);
     --glow-gold: rgba(245, 158, 11, 0.4);
-    
+
     /* Type Colors */
     --type-feu: #ff6b35;
     --type-glace: #74b9ff;
@@ -40,17 +40,17 @@
     --type-ocean: #0984e3;
     --type-terre: #b8860b;
     --type-arcane: #a855f7;
-    
+
     /* Spacing */
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
-    
+
     /* Fonts */
-    --font-title: 'Cinzel', serif;
-    --font-body: 'Inter', sans-serif;
-    
+    --font-title: "Cinzel", serif;
+    --font-body: "Inter", sans-serif;
+
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
@@ -58,7 +58,9 @@
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -75,8 +77,7 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
-    background-image: 
-        radial-gradient(ellipse at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 80%, rgba(236, 72, 153, 0.04) 0%, transparent 50%);
 }
@@ -368,11 +369,12 @@ body {
 }
 
 @keyframes boostPulse {
-    0%, 100% { 
+    0%,
+    100% {
         box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
         transform: scale(1);
     }
-    50% { 
+    50% {
         box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
         transform: scale(1.02);
     }
@@ -528,8 +530,14 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .tab-desc {
@@ -759,8 +767,13 @@ body {
 }
 
 @keyframes attack {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(20px) scale(1.1); }
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px) scale(1.1);
+    }
 }
 
 .enemy-side .echo-sprite.attacking {
@@ -768,8 +781,13 @@ body {
 }
 
 @keyframes attackEnemy {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-20px) scale(1.1); }
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-20px) scale(1.1);
+    }
 }
 
 .echo-name {
@@ -795,7 +813,7 @@ body {
 }
 
 .hp-bar::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -819,7 +837,7 @@ body {
     font-size: 0.7rem;
     font-weight: 700;
     z-index: 1;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .type-badge {
@@ -840,8 +858,15 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
 }
 
 .combat-log {
@@ -858,7 +883,7 @@ body {
 .log-entry {
     padding: 4px 0;
     color: var(--text-secondary);
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .log-entry:last-child {
@@ -960,7 +985,7 @@ body {
 }
 
 .toggle-slider::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 18px;
     height: 18px;
@@ -1009,8 +1034,14 @@ body {
 }
 
 @keyframes particleFly {
-    0% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-80px) scale(0.5);
+    }
 }
 
 /* ============================================
@@ -1088,8 +1119,15 @@ body {
 }
 
 @keyframes sparkle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.2); }
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.2);
+    }
 }
 
 .reserves-grid {
@@ -1144,8 +1182,13 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .wild-echo-name {
@@ -1212,9 +1255,17 @@ body {
 }
 
 @keyframes captureSuccess {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .capture-stats {
@@ -1251,7 +1302,8 @@ body {
    Pokédex / Logbook
    ============================================ */
 
-.pokedex-filters, .type-filters {
+.pokedex-filters,
+.type-filters {
     display: flex;
     gap: 6px;
     margin-bottom: 16px;
@@ -1414,9 +1466,16 @@ body {
 }
 
 @keyframes wobble {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
 }
 
 .incubator-timer {
@@ -1580,9 +1639,15 @@ body {
 }
 
 @keyframes foundItem {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .mine-tools {
@@ -1846,8 +1911,14 @@ body {
 }
 
 @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.9) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .modal-header {
@@ -1936,13 +2007,25 @@ body {
 }
 
 @keyframes toastIn {
-    from { opacity: 0; transform: translateX(100px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes toastOut {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(100px); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
 }
 
 /* ============================================
@@ -1950,52 +2033,54 @@ body {
    ============================================ */
 
 @media (max-width: 768px) {
-    html { font-size: 13px; }
-    
+    html {
+        font-size: 13px;
+    }
+
     #game-header {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .header-left {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .currency-display {
         gap: 8px;
     }
-    
+
     .currency {
         padding: 4px 10px;
     }
-    
+
     .currency-label {
         display: none;
     }
-    
+
     .adventure-layout {
         gap: 16px;
     }
-    
+
     .combat-field {
         flex-direction: column;
         gap: 20px;
         padding: 20px;
     }
-    
+
     .combat-vs {
         font-size: 1.5rem;
     }
-    
+
     .hatchery-container {
         grid-template-columns: 1fr;
     }
-    
+
     .mine-grid {
         grid-template-columns: repeat(6, 1fr);
     }
-    
+
     /* Routes container removed - using canvas map instead */
 }
 
@@ -2003,20 +2088,20 @@ body {
     .currency-display {
         flex-wrap: wrap;
     }
-    
+
     .nav-btn {
         padding: 6px 10px;
         font-size: 0.75rem;
     }
-    
+
     .mine-grid {
         grid-template-columns: repeat(5, 1fr);
     }
-    
+
     .combat-actions {
         flex-direction: column;
     }
-    
+
     .btn-combat {
         width: 100%;
     }

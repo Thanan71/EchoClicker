@@ -5,15 +5,13 @@
 // Mocks globaux
 globalThis.GAME_CONFIG = {
     ENERGY_PER_CLICK_BASE: 1,
-    PASSIVE_BASE: 0.1
+    PASSIVE_BASE: 0.1,
 };
 
-globalThis.REGIONS = [
-    { id: 'foret', name: 'Forêt', routes: [], bosses: [] }
-];
+globalThis.REGIONS = [{ id: 'foret', name: 'Forêt', routes: [], bosses: [] }];
 
 globalThis.Utils = {
-    deepClone: jest.fn((obj) => JSON.parse(JSON.stringify(obj)))
+    deepClone: jest.fn((obj) => JSON.parse(JSON.stringify(obj))),
 };
 
 // Définir GameState directement
@@ -48,7 +46,7 @@ globalThis.GameState = {
             regions: Utils.deepClone(REGIONS),
             boosts: {},
             inventory: [],
-            startTime: Date.now()
+            startTime: Date.now(),
         };
     },
 
@@ -63,9 +61,9 @@ globalThis.GameState = {
             maxLevel: this.state.maxLevel,
             bossesDefeated: this.state.bossesDefeated,
             regionsUnlocked: this.state.regionsUnlocked,
-            playTime: Math.floor(this.state.playTime)
+            playTime: Math.floor(this.state.playTime),
         };
-    }
+    },
 };
 
 describe('GameState', () => {
@@ -216,7 +214,7 @@ describe('GameState', () => {
         test('returns stats object with correct properties', () => {
             GameState.initState();
             const stats = GameState.getStats();
-            
+
             expect(stats).toHaveProperty('totalClicks');
             expect(stats).toHaveProperty('totalCaptures');
             expect(stats).toHaveProperty('uniqueCaptures');
@@ -234,9 +232,9 @@ describe('GameState', () => {
             GameState.state.totalClicks = 100;
             GameState.state.totalCaptures = 5;
             GameState.state.maxLevel = 10;
-            
+
             const stats = GameState.getStats();
-            
+
             expect(stats.totalClicks).toBe(100);
             expect(stats.totalCaptures).toBe(5);
             expect(stats.maxLevel).toBe(10);
@@ -245,9 +243,9 @@ describe('GameState', () => {
         test('floors playTime', () => {
             GameState.initState();
             GameState.state.playTime = 123.456;
-            
+
             const stats = GameState.getStats();
-            
+
             expect(stats.playTime).toBe(123);
         });
     });

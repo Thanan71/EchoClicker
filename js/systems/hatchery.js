@@ -49,7 +49,7 @@ export const Hatchery = {
         }
 
         let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">';
-        party.forEach(echo => {
+        party.forEach((echo) => {
             const t = TYPES[echo.type];
             const imgPath = getEchoImagePath(echo);
             html += `<div class="party-slot" data-echo-uid="${echo.uid}">
@@ -63,7 +63,7 @@ export const Hatchery = {
         this._ui.showModal(i18n.t('hatchery.selectParent'), html);
 
         // Add event listeners to party slots
-        document.querySelectorAll('.party-slot[data-echo-uid]').forEach(slot => {
+        document.querySelectorAll('.party-slot[data-echo-uid]').forEach((slot) => {
             slot.addEventListener('click', () => {
                 const uid = slot.dataset.echoUid;
                 this.setParent(slotIndex, uid);
@@ -96,7 +96,7 @@ export const Hatchery = {
     },
 
     hasFreeSlot() {
-        return this.slots.some(s => s === null);
+        return this.slots.some((s) => s === null);
     },
 
     breed() {
@@ -114,16 +114,16 @@ export const Hatchery = {
         const p2 = this.parents[1];
 
         const offspring = this.calculateOffspring(p1, p2);
-        
-        const slotIndex = this.slots.findIndex(s => s === null);
+
+        const slotIndex = this.slots.findIndex((s) => s === null);
         const incubationTime = this.getIncubationTime(offspring.rarity);
-        
+
         this.slots[slotIndex] = {
             egg: offspring,
             startTime: Date.now(),
             duration: incubationTime,
             parent1: p1.id,
-            parent2: p2.id
+            parent2: p2.id,
         };
 
         this.parents = [null, null];
@@ -135,19 +135,18 @@ export const Hatchery = {
     calculateOffspring(p1, p2) {
         // Déterminer le type de l'offspring
         const type = this.determineOffspringType(p1, p2);
-        
+
         // Trouver les Échos possibles de ce type
-        const possibleEchoes = ECHOES_DB.filter(e => e.type === type);
-        
+        const possibleEchoes = ECHOES_DB.filter((e) => e.type === type);
+
         // Choisir en fonction de la rareté des parents
         const avgRarity = this.getAverageRarity(p1, p2);
-        const filteredEchoes = possibleEchoes.filter(e => 
-            this.getRarityWeight(e.rarity) <= avgRarity + 1
-        );
+        const filteredEchoes = possibleEchoes.filter((e) => this.getRarityWeight(e.rarity) <= avgRarity + 1);
 
-        const chosen = filteredEchoes.length > 0 
-            ? filteredEchoes[Math.floor(Math.random() * filteredEchoes.length)]
-            : possibleEchoes[0];
+        const chosen =
+            filteredEchoes.length > 0
+                ? filteredEchoes[Math.floor(Math.random() * filteredEchoes.length)]
+                : possibleEchoes[0];
 
         // Chance de Primordial basée sur les parents
         const primordialChance = (p1.isPrimordial ? 0.02 : 0) + (p2.isPrimordial ? 0.02 : 0) + 0.005;
@@ -168,7 +167,7 @@ export const Hatchery = {
             baseHp: chosen.baseHp,
             baseAtk: chosen.baseAtk,
             baseDef: chosen.baseDef,
-            baseSpd: chosen.baseSpd
+            baseSpd: chosen.baseSpd,
         };
     },
 
@@ -176,11 +175,11 @@ export const Hatchery = {
         // 60% chance d'avoir le type du parent 1, 40% du parent 2
         // Ou un type mixte si les parents sont de types différents
         if (p1.type === p2.type) return p1.type;
-        
+
         const rand = Math.random();
         if (rand < 0.45) return p1.type;
         if (rand < 0.9) return p2.type;
-        
+
         // 10% de chance d'avoir un type aléatoire
         const types = Object.keys(TYPES);
         return types[Math.floor(Math.random() * types.length)];
@@ -197,19 +196,19 @@ export const Hatchery = {
             rare: 3,
             epic: 4,
             legendary: 5,
-            mythical: 6
+            mythical: 6,
         };
         return weights[rarity] || 1;
     },
 
     getIncubationTime(rarity) {
         const times = {
-            common: 30000,      // 30 secondes
-            uncommon: 60000,    // 1 minute
-            rare: 120000,       // 2 minutes
-            epic: 300000,       // 5 minutes
-            legendary: 600000,  // 10 minutes
-            mythical: 900000    // 15 minutes
+            common: 30000, // 30 secondes
+            uncommon: 60000, // 1 minute
+            rare: 120000, // 2 minutes
+            epic: 300000, // 5 minutes
+            legendary: 600000, // 10 minutes
+            mythical: 900000, // 15 minutes
         };
         return times[rarity] || 30000;
     },
@@ -228,11 +227,7 @@ export const Hatchery = {
         if (!slot) return;
 
         const eggData = slot.egg;
-        const echo = new Echo(
-            getEchoById(eggData.id),
-            eggData.level,
-            eggData.isPrimordial
-        );
+        const echo = new Echo(getEchoById(eggData.id), eggData.level, eggData.isPrimordial);
 
         if (this._game.state.party.length < GAME_CONFIG.MAX_PARTY) {
             this._game.addToParty(echo);
@@ -246,7 +241,7 @@ export const Hatchery = {
 
         const prefix = echo.isPrimordial ? '✨ PRIMORDIAL ! ' : '';
         this._ui.toast(`${prefix}🥚 ${echo.name} est éclos !`, 'success');
-        
+
         this._eventBus.emit(GAME_EVENTS.ECHO_CAPTURED, { echo });
 
         this.slots[index] = null;
@@ -307,7 +302,7 @@ export const Hatchery = {
             slotsEl.innerHTML = html;
 
             // Add event listeners to incubator slots
-            document.querySelectorAll('.incubator-slot[data-slot-index]').forEach(slot => {
+            document.querySelectorAll('.incubator-slot[data-slot-index]').forEach((slot) => {
                 slot.addEventListener('click', () => {
                     const index = parseInt(slot.dataset.slotIndex);
                     this.collectEgg(index);
@@ -318,7 +313,7 @@ export const Hatchery = {
         // Mettre à jour les parents
         const p1 = document.getElementById('parent-1');
         const p2 = document.getElementById('parent-2');
-        
+
         if (p1) {
             if (this.parents[0]) {
                 const imgPath1 = getEchoImagePath(this.parents[0]);
@@ -352,7 +347,7 @@ export const Hatchery = {
     toJSON() {
         return {
             slots: this.slots,
-            parents: this.parents.map(p => p ? p.uid : null)
+            parents: this.parents.map((p) => (p ? p.uid : null)),
         };
     },
 
@@ -361,10 +356,10 @@ export const Hatchery = {
             this.slots = data.slots || Array(this.maxSlots).fill(null);
             if (data.parents) {
                 this.parents = [
-                    data.parents[0] ? (this._game.findEcho(data.parents[0]) || null) : null,
-                    data.parents[1] ? (this._game.findEcho(data.parents[1]) || null) : null
+                    data.parents[0] ? this._game.findEcho(data.parents[0]) || null : null,
+                    data.parents[1] ? this._game.findEcho(data.parents[1]) || null : null,
                 ];
             }
         }
-    }
+    },
 };

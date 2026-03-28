@@ -33,5 +33,5 @@ export const CombatCapture = {
         const s = this._state;
         if (!s.enemy) return;
         this._game.captureEcho(s.enemy, { isAuto: true });
-    }
+    },
 };

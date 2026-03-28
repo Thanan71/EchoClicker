@@ -11,16 +11,16 @@ globalThis.GAME_EVENTS = GAME_EVENTS;
 globalThis.UI = {
     toast: jest.fn(),
     renderRoutes: jest.fn(),
-    updateCombat: jest.fn()
+    updateCombat: jest.fn(),
 };
 
 globalThis.i18n = {
-    t: jest.fn((key) => key)
+    t: jest.fn((key) => key),
 };
 
 globalThis.Combat = {
     startCombat: jest.fn(),
-    endCombat: jest.fn()
+    endCombat: jest.fn(),
 };
 
 // Définir GameRoutes directement
@@ -28,9 +28,9 @@ globalThis.GameRoutes = {
     _state: null,
 
     selectRoute(routeId) {
-        const region = this._state.regions.find(r => r.id === this._state.currentRegion);
+        const region = this._state.regions.find((r) => r.id === this._state.currentRegion);
         if (!region) return;
-        const route = region.routes.find(r => r.id === routeId);
+        const route = region.routes.find((r) => r.id === routeId);
         if (!route || !route.unlocked) {
             UI.toast(i18n.t('capture.routeLocked'), 'warning');
             return;
@@ -42,7 +42,7 @@ globalThis.GameRoutes = {
     },
 
     selectRegion(regionId) {
-        const region = this._state.regions.find(r => r.id === regionId);
+        const region = this._state.regions.find((r) => r.id === regionId);
         if (!region || !region.unlocked) {
             UI.toast(i18n.t('capture.regionLocked'), 'warning');
             return;
@@ -54,9 +54,9 @@ globalThis.GameRoutes = {
     },
 
     unlockNextRoute() {
-        const region = this._state.regions.find(r => r.id === this._state.currentRegion);
+        const region = this._state.regions.find((r) => r.id === this._state.currentRegion);
         if (!region) return;
-        const idx = region.routes.findIndex(r => r.id === this._state.currentRoute?.id);
+        const idx = region.routes.findIndex((r) => r.id === this._state.currentRoute?.id);
         if (idx < region.routes.length - 1) {
             const nextRoute = region.routes[idx + 1];
             if (!nextRoute.unlocked) {
@@ -68,7 +68,7 @@ globalThis.GameRoutes = {
     },
 
     defeatBoss() {
-        const region = this._state.regions.find(r => r.id === this._state.currentRegion);
+        const region = this._state.regions.find((r) => r.id === this._state.currentRegion);
         if (!region) return;
         region.bossDefeated = true;
         this._state.bossesDefeated++;
@@ -76,7 +76,7 @@ globalThis.GameRoutes = {
 
         EventBus.emit('boss:defeated', { id: this._state.currentRegion });
 
-        const idx = this._state.regions.findIndex(r => r.id === this._state.currentRegion);
+        const idx = this._state.regions.findIndex((r) => r.id === this._state.currentRegion);
         if (idx < this._state.regions.length - 1) {
             const next = this._state.regions[idx + 1];
             next.unlocked = true;
@@ -87,7 +87,7 @@ globalThis.GameRoutes = {
         } else {
             UI.toast(i18n.t('notifications.success'), 'success');
         }
-    }
+    },
 };
 
 describe('GameRoutes', () => {
@@ -110,21 +110,19 @@ describe('GameRoutes', () => {
                     bossDefeated: false,
                     routes: [
                         { id: 'r1', name: 'Clairière', unlocked: true },
-                        { id: 'r2', name: 'Sous-bois', unlocked: false }
+                        { id: 'r2', name: 'Sous-bois', unlocked: false },
                     ],
-                    bosses: [{ name: 'Boss Forêt', echoId: 1, level: 10 }]
+                    bosses: [{ name: 'Boss Forêt', echoId: 1, level: 10 }],
                 },
                 {
                     id: 'montagnes',
                     name: 'Montagnes',
                     unlocked: false,
                     bossDefeated: false,
-                    routes: [
-                        { id: 'r3', name: 'Pied', unlocked: false }
-                    ],
-                    bosses: [{ name: 'Boss Montagnes', echoId: 2, level: 20 }]
-                }
-            ]
+                    routes: [{ id: 'r3', name: 'Pied', unlocked: false }],
+                    bosses: [{ name: 'Boss Montagnes', echoId: 2, level: 20 }],
+                },
+            ],
         };
 
         GameRoutes._state = mockState;

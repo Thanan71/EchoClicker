@@ -10,9 +10,9 @@ export const Utils = {
     // Formatage de nombres (1.2K, 3.4M, etc.)
     formatNumber(num) {
         if (num >= 1e12) return (num / 1e12).toFixed(1) + 'T';
-        if (num >= 1e9)  return (num / 1e9).toFixed(1) + 'B';
-        if (num >= 1e6)  return (num / 1e6).toFixed(1) + 'M';
-        if (num >= 1e3)  return (num / 1e3).toFixed(1) + 'K';
+        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
         return Math.floor(num).toString();
     },
 
@@ -21,7 +21,7 @@ export const Utils = {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
         const s = Math.floor(seconds % 60);
-        return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     },
 
     // Nombre aléatoire entre min et max (inclus)
@@ -69,8 +69,8 @@ export const Utils = {
 
     // Taux de capture
     calculateCaptureRate(baseRate, currentHp, maxHp) {
-        const hpFactor = 1 - (currentHp / maxHp);
-        const rate = baseRate + (hpFactor * GAME_CONFIG.CAPTURE_HP_BONUS);
+        const hpFactor = 1 - currentHp / maxHp;
+        const rate = baseRate + hpFactor * GAME_CONFIG.CAPTURE_HP_BONUS;
         return this.clamp(rate, 5, 95);
     },
 
@@ -120,8 +120,8 @@ export const Utils = {
             if (!inThrottle) {
                 fn(...args);
                 inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
+                setTimeout(() => (inThrottle = false), limit);
             }
         };
-    }
+    },
 };

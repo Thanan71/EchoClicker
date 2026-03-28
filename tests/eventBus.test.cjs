@@ -68,7 +68,9 @@ describe('EventBus Mock', () => {
 
     test('should handle errors in callbacks gracefully', () => {
         const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const handler = () => { throw new Error('boom'); };
+        const handler = () => {
+            throw new Error('boom');
+        };
 
         EventBus.on('test', handler);
 

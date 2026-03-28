@@ -23,7 +23,7 @@ globalThis.Quest = class Quest {
         prerequisites = [],
         storyOrder = null,
         completed = false,
-        claimed = false
+        claimed = false,
     }) {
         this.id = id;
         this.name = name;
@@ -45,25 +45,25 @@ globalThis.Quest = class Quest {
 
     updateProgress(amount = 1) {
         if (this.completed) return false;
-        
+
         this.current = Math.min(this.current + amount, this.target);
-        
+
         if (this.isCompleted()) {
             this.completed = true;
             EventBus.emit('quest:completed', this);
             return true;
         }
-        
+
         EventBus.emit('quest:progress', this);
         return false;
     }
 
     claimRewards() {
         if (!this.completed || this.claimed) return false;
-        
+
         this.claimed = true;
-        
-        this.rewards.forEach(reward => {
+
+        this.rewards.forEach((reward) => {
             switch (reward.type) {
                 case 'xp':
                     if (Game.state && Game.state.player) {
@@ -87,7 +87,7 @@ globalThis.Quest = class Quest {
                     break;
             }
         });
-        
+
         EventBus.emit('quest:rewardsClaimed', this);
         return true;
     }
@@ -97,7 +97,7 @@ globalThis.Quest = class Quest {
             id: this.id,
             current: this.current,
             completed: this.completed,
-            claimed: this.claimed
+            claimed: this.claimed,
         };
     }
 
@@ -121,11 +121,11 @@ globalThis.QuestSystem = class QuestSystem {
 
     init() {
         if (this.initialized) return;
-        
+
         this.loadStoryQuests();
         this.checkDailyReset();
         this.setupEventListeners();
-        
+
         this.initialized = true;
         EventBus.emit('quest:systemInitialized', this);
     }
@@ -137,7 +137,7 @@ globalThis.QuestSystem = class QuestSystem {
     checkDailyReset() {
         const now = new Date();
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-        
+
         if (!this.lastDailyReset || this.lastDailyReset < today) {
             this.generateDailyQuests();
             this.lastDailyReset = today;
@@ -153,19 +153,19 @@ globalThis.QuestSystem = class QuestSystem {
         EventBus.on('echo:captured', (echo) => {
             this.updateQuests('capture', { type: echo.type });
         });
-        
+
         EventBus.on('echo:levelUp', (echo) => {
             this.updateQuests('level', { level: echo.level });
         });
-        
+
         EventBus.on('combat:victory', () => {
             this.updateQuests('combat');
         });
-        
+
         EventBus.on('mine:crystal', () => {
             this.updateQuests('mine');
         });
-        
+
         EventBus.on('boss:defeated', (boss) => {
             this.updateQuests('boss', { bossId: boss.id });
         });
@@ -173,86 +173,104 @@ globalThis.QuestSystem = class QuestSystem {
 
     updateQuests(category, data = {}) {
         const allQuests = [...this.dailyQuests, ...this.storyQuests];
-        
-        allQuests.forEach(quest => {
+
+        allQuests.forEach((quest) => {
             if (quest.category === category && !quest.completed) {
                 if (quest.type === 'story' && quest.prerequisites.length > 0) {
-                    const prerequisitesMet = quest.prerequisites.every(prereqId => {
-                        const prereqQuest = this.storyQuests.find(q => q.id === prereqId);
+                    const prerequisitesMet = quest.prerequisites.every((prereqId) => {
+                        const prereqQuest = this.storyQuests.find((q) => q.id === prereqId);
                         return prereqQuest && prereqQuest.completed;
                     });
-                    
+
                     if (!prerequisitesMet) return;
                 }
-                
+
                 quest.updateProgress(1);
             }
         });
     }
 
     getActiveQuests() {
-        const activeDaily = this.dailyQuests.filter(q => !q.claimed);
-        const activeStory = this.storyQuests.filter(q => {
+        const activeDaily = this.dailyQuests.filter((q) => !q.claimed);
+        const activeStory = this.storyQuests.filter((q) => {
             if (q.claimed) return false;
-            
+
             if (q.prerequisites.length > 0) {
-                return q.prerequisites.every(prereqId => {
-                    const prereqQuest = this.storyQuests.find(sq => sq.id === prereqId);
+                return q.prerequisites.every((prereqId) => {
+                    const prereqQuest = this.storyQuests.find((sq) => sq.id === prereqId);
                     return prereqQuest && prereqQuest.completed;
                 });
             }
-            
+
             return q.storyOrder === 1;
         });
-        
+
         return { daily: activeDaily, story: activeStory };
     }
 
     getCompletedUnclaimedQuests() {
         const allQuests = [...this.dailyQuests, ...this.storyQuests];
-        return allQuests.filter(q => q.completed && !q.claimed);
+        return allQuests.filter((q) => q.completed && !q.claimed);
     }
 
     claimQuestRewards(questId) {
         const allQuests = [...this.dailyQuests, ...this.storyQuests];
-        const quest = allQuests.find(q => q.id === questId);
-        
+        const quest = allQuests.find((q) => q.id === questId);
+
         if (quest && quest.completed && !quest.claimed) {
             return quest.claimRewards();
         }
-        
+
         return false;
     }
 
     toJSON() {
         return {
-            dailyQuests: this.dailyQuests.map(q => q.toJSON()),
-            storyQuests: this.storyQuests.map(q => q.toJSON()),
-            lastDailyReset: this.lastDailyReset
+            dailyQuests: this.dailyQuests.map((q) => q.toJSON()),
+            storyQuests: this.storyQuests.map((q) => q.toJSON()),
+            lastDailyReset: this.lastDailyReset,
         };
     }
 
     fromJSON(data) {
         if (!data) return;
-        
+
         if (data.dailyQuests) {
-            this.dailyQuests = data.dailyQuests.map(savedQuest => {
-                const template = { id: savedQuest.id, name: '', description: '', type: 'daily', category: 'combat', target: 1 };
-                return Quest.fromJSON(savedQuest, template);
-            }).filter(q => q !== null);
+            this.dailyQuests = data.dailyQuests
+                .map((savedQuest) => {
+                    const template = {
+                        id: savedQuest.id,
+                        name: '',
+                        description: '',
+                        type: 'daily',
+                        category: 'combat',
+                        target: 1,
+                    };
+                    return Quest.fromJSON(savedQuest, template);
+                })
+                .filter((q) => q !== null);
         }
-        
+
         if (data.storyQuests) {
-            this.storyQuests = data.storyQuests.map(savedQuest => {
-                const template = { id: savedQuest.id, name: '', description: '', type: 'story', category: 'boss', target: 1 };
-                return Quest.fromJSON(savedQuest, template);
-            }).filter(q => q !== null);
+            this.storyQuests = data.storyQuests
+                .map((savedQuest) => {
+                    const template = {
+                        id: savedQuest.id,
+                        name: '',
+                        description: '',
+                        type: 'story',
+                        category: 'boss',
+                        target: 1,
+                    };
+                    return Quest.fromJSON(savedQuest, template);
+                })
+                .filter((q) => q !== null);
         } else {
             this.loadStoryQuests();
         }
-        
+
         this.lastDailyReset = data.lastDailyReset;
-        
+
         this.checkDailyReset();
     }
 };
@@ -267,7 +285,7 @@ describe('Quest', () => {
                 type: 'daily',
                 category: 'capture',
                 target: 5,
-                rewards: [{ type: 'xp', amount: 100 }]
+                rewards: [{ type: 'xp', amount: 100 }],
             });
 
             expect(quest.id).toBe('test_quest');
@@ -282,36 +300,78 @@ describe('Quest', () => {
         });
 
         test('defaults current to 0', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 3 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             expect(quest.current).toBe(0);
         });
 
         test('defaults completed to false', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 3 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             expect(quest.completed).toBe(false);
         });
 
         test('defaults claimed to false', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 3 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             expect(quest.claimed).toBe(false);
         });
     });
 
     describe('isCompleted()', () => {
         test('returns false when current < target', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.current = 3;
             expect(quest.isCompleted()).toBe(false);
         });
 
         test('returns true when current >= target', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.current = 5;
             expect(quest.isCompleted()).toBe(true);
         });
 
         test('returns true when current > target', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.current = 10;
             expect(quest.isCompleted()).toBe(true);
         });
@@ -319,19 +379,40 @@ describe('Quest', () => {
 
     describe('updateProgress()', () => {
         test('increments current by amount', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress(2);
             expect(quest.current).toBe(2);
         });
 
         test('caps current at target', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress(10);
             expect(quest.current).toBe(5);
         });
 
         test('sets completed to true when target reached', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress(5);
             expect(quest.completed).toBe(true);
         });
@@ -339,7 +420,14 @@ describe('Quest', () => {
         test('emits quest:completed event when completed', () => {
             const listener = jest.fn();
             EventBus.on('quest:completed', listener);
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress(5);
             expect(listener).toHaveBeenCalledWith(quest);
         });
@@ -347,13 +435,27 @@ describe('Quest', () => {
         test('emits quest:progress event when not completed', () => {
             const listener = jest.fn();
             EventBus.on('quest:progress', listener);
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress(2);
             expect(listener).toHaveBeenCalledWith(quest);
         });
 
         test('does nothing if already completed', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.completed = true;
             quest.current = 5;
             quest.updateProgress(3);
@@ -361,7 +463,14 @@ describe('Quest', () => {
         });
 
         test('defaults amount to 1', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.updateProgress();
             expect(quest.current).toBe(1);
         });
@@ -369,7 +478,14 @@ describe('Quest', () => {
 
     describe('toJSON()', () => {
         test('returns serializable object', () => {
-            const quest = new Quest({ id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5 });
+            const quest = new Quest({
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+            });
             quest.current = 3;
             quest.completed = true;
             quest.claimed = false;
@@ -385,7 +501,15 @@ describe('Quest', () => {
 
     describe('fromJSON()', () => {
         test('restores quest from saved data', () => {
-            const template = { id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5, rewards: [] };
+            const template = {
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+                rewards: [],
+            };
             const savedData = { id: 'test', current: 3, completed: true, claimed: false };
 
             const quest = Quest.fromJSON(savedData, template);
@@ -397,7 +521,15 @@ describe('Quest', () => {
         });
 
         test('defaults missing values', () => {
-            const template = { id: 'test', name: 'Test', description: 'Test', type: 'daily', category: 'combat', target: 5, rewards: [] };
+            const template = {
+                id: 'test',
+                name: 'Test',
+                description: 'Test',
+                type: 'daily',
+                category: 'combat',
+                target: 5,
+                rewards: [],
+            };
             const savedData = { id: 'test' };
 
             const quest = Quest.fromJSON(savedData, template);
@@ -436,10 +568,26 @@ describe('QuestSystem', () => {
             const qs = new QuestSystem();
             qs.dailyQuests = [
                 new Quest({ id: 'd1', name: 'D1', description: 'D1', type: 'daily', category: 'combat', target: 3 }),
-                new Quest({ id: 'd2', name: 'D2', description: 'D2', type: 'daily', category: 'combat', target: 3, claimed: true })
+                new Quest({
+                    id: 'd2',
+                    name: 'D2',
+                    description: 'D2',
+                    type: 'daily',
+                    category: 'combat',
+                    target: 3,
+                    claimed: true,
+                }),
             ];
             qs.storyQuests = [
-                new Quest({ id: 's1', name: 'S1', description: 'S1', type: 'story', category: 'boss', target: 1, storyOrder: 1 })
+                new Quest({
+                    id: 's1',
+                    name: 'S1',
+                    description: 'S1',
+                    type: 'story',
+                    category: 'boss',
+                    target: 1,
+                    storyOrder: 1,
+                }),
             ];
 
             const active = qs.getActiveQuests();
@@ -453,15 +601,36 @@ describe('QuestSystem', () => {
     describe('getCompletedUnclaimedQuests()', () => {
         test('returns only completed and unclaimed quests', () => {
             const qs = new QuestSystem();
-            const q1 = new Quest({ id: 'q1', name: 'Q1', description: 'Q1', type: 'daily', category: 'combat', target: 3 });
+            const q1 = new Quest({
+                id: 'q1',
+                name: 'Q1',
+                description: 'Q1',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             q1.completed = true;
             q1.claimed = false;
 
-            const q2 = new Quest({ id: 'q2', name: 'Q2', description: 'Q2', type: 'daily', category: 'combat', target: 3 });
+            const q2 = new Quest({
+                id: 'q2',
+                name: 'Q2',
+                description: 'Q2',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             q2.completed = true;
             q2.claimed = true;
 
-            const q3 = new Quest({ id: 'q3', name: 'Q3', description: 'Q3', type: 'daily', category: 'combat', target: 3 });
+            const q3 = new Quest({
+                id: 'q3',
+                name: 'Q3',
+                description: 'Q3',
+                type: 'daily',
+                category: 'combat',
+                target: 3,
+            });
             q3.completed = false;
 
             qs.dailyQuests = [q1, q2, q3];
@@ -477,7 +646,7 @@ describe('QuestSystem', () => {
         test('returns serializable data', () => {
             const qs = new QuestSystem();
             qs.dailyQuests = [
-                new Quest({ id: 'd1', name: 'D1', description: 'D1', type: 'daily', category: 'combat', target: 3 })
+                new Quest({ id: 'd1', name: 'D1', description: 'D1', type: 'daily', category: 'combat', target: 3 }),
             ];
             qs.lastDailyReset = 12345;
 

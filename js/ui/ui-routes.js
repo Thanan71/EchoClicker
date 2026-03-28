@@ -7,7 +7,7 @@ import { MapSystem } from '../systems/map.js';
 
 export const UIRoutes = {
     renderRoutes() {
-        const region = Game.state.regions.find(r => r.id === Game.state.currentRegion);
+        const region = Game.state.regions.find((r) => r.id === Game.state.currentRegion);
         if (!region) return;
 
         // Mettre a jour le panneau d'info de la region

@@ -40,8 +40,8 @@ export const SaveSerializer = {
                 clickPower: state.clickPower,
                 passiveIncome: state.passiveIncome,
                 currentRegion: state.currentRegion,
-                party: state.party.map(e => e.toJSON()),
-                reserves: state.reserves.map(e => e.toJSON()),
+                party: state.party.map((e) => e.toJSON()),
+                reserves: state.reserves.map((e) => e.toJSON()),
                 seenEchoes: [...state.seenEchoes],
                 caughtEchoes: [...state.caughtEchoes],
                 achievements: [...state.achievements],
@@ -51,8 +51,8 @@ export const SaveSerializer = {
                 mine: systemState.mine,
                 hatchery: systemState.hatchery,
                 quests: systemState.quests,
-                narrative: systemState.narrative
-            }
+                narrative: systemState.narrative,
+            },
         };
     },
 
@@ -93,8 +93,8 @@ export const SaveSerializer = {
             state.inventory = s.inventory || [];
 
             // Reconstruire les Echos depuis JSON
-            state.party = (s.party || []).map(j => Echo.fromJSON(j));
-            state.reserves = (s.reserves || []).map(j => Echo.fromJSON(j));
+            state.party = (s.party || []).map((j) => Echo.fromJSON(j));
+            state.reserves = (s.reserves || []).map((j) => Echo.fromJSON(j));
 
             state.seenEchoes = new Set(s.seenEchoes || []);
             state.caughtEchoes = new Set(s.caughtEchoes || []);
@@ -119,5 +119,5 @@ export const SaveSerializer = {
             console.error('Deserialize error:', e);
             return false;
         }
-    }
+    },
 };

@@ -45,7 +45,7 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
         UI.init();
         GameLoop.start(
             (dt) => this.update(dt),
-            (alpha) => this.render(alpha)
+            (alpha) => this.render(alpha),
         );
         setInterval(() => SaveSystem.save(), GAME_CONFIG.AUTO_SAVE_INTERVAL);
         i18n.translateDOM();
@@ -77,7 +77,7 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
     updateCPS() {
         const now = Date.now();
         const window = GAME_CONFIG.CPS_WINDOW;
-        this._clickTimestamps = this._clickTimestamps.filter(t => now - t < window);
+        this._clickTimestamps = this._clickTimestamps.filter((t) => now - t < window);
         this._cps = this._clickTimestamps.length / (window / 1000);
     },
 
@@ -110,17 +110,14 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
         }
         let rate = Utils.calculateCaptureRate(
             wildEcho.captureRate || GAME_CONFIG.CAPTURE_BASE_RATE,
-            wildEcho.hp, wildEcho.maxHp
+            wildEcho.hp,
+            wildEcho.maxHp,
         );
         if (this.state.boosts.capture) {
             rate *= 2;
         }
         if (Utils.chance(rate)) {
-            const captured = new Echo(
-                getEchoById(wildEcho.id),
-                wildEcho.level,
-                wildEcho.isPrimordial
-            );
+            const captured = new Echo(getEchoById(wildEcho.id), wildEcho.level, wildEcho.isPrimordial);
             this.state.totalCaptures++;
             if (!this.state.caughtEchoes.has(wildEcho.id)) {
                 this.state.uniqueCaptures++;
@@ -161,10 +158,12 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
 
     buyItem(item) {
         if (item.currency === 'energy' && !this.spendEnergy(item.price)) {
-            UI.toast(i18n.t('notifications.error'), 'error'); return false;
+            UI.toast(i18n.t('notifications.error'), 'error');
+            return false;
         }
         if (item.currency === 'shards' && this.state.shards < item.price) {
-            UI.toast(i18n.t('notifications.error'), 'error'); return false;
+            UI.toast(i18n.t('notifications.error'), 'error');
+            return false;
         }
         if (item.currency === 'shards') this.state.shards -= item.price;
         if (item.amount && item.id.startsWith('l')) this.addLinks(item.amount);
@@ -172,7 +171,7 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
         if (item.id === 'candy' && this.state.party[0]) {
             this.state.party[0].gainXp(this.state.party[0].xpToNext);
         }
-        if (item.id === 'potion') this.getAllEchoes().forEach(e => e.fullHeal());
+        if (item.id === 'potion') this.getAllEchoes().forEach((e) => e.fullHeal());
         if (item.duration) this.state.boosts[item.type] = { endTime: Date.now() + item.duration * 1000 };
         EventBus.emit(GAME_EVENTS.ITEM_PURCHASED, { item });
         UI.toast(i18n.t('shop.purchaseSuccess'), 'success');
@@ -181,7 +180,7 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
 
     checkAchievements() {
         const stats = this.getStats();
-        ACHIEVEMENTS.forEach(ach => {
+        ACHIEVEMENTS.forEach((ach) => {
             if (!this.state.achievements.has(ach.id) && ach.cond(stats)) {
                 this.state.achievements.add(ach.id);
                 EventBus.emit(GAME_EVENTS.ACHIEVEMENT_UNLOCKED, { achievement: ach });
@@ -191,10 +190,10 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
     },
 
     setupEvents() {
-        document.querySelectorAll('.nav-btn').forEach(btn => {
+        document.querySelectorAll('.nav-btn').forEach((btn) => {
             btn.addEventListener('click', () => UI.switchTab(btn.dataset.tab));
         });
-        document.getElementById('btn-tisser-coup').addEventListener('click', e => this.click(e));
+        document.getElementById('btn-tisser-coup').addEventListener('click', (e) => this.click(e));
         document.getElementById('btn-capture-combat').addEventListener('click', () => Combat.attemptCapture());
         document.getElementById('btn-flee').addEventListener('click', () => {
             Combat.endCombat();
@@ -221,7 +220,10 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
                 UI.toast('Equipe soignee !', 'success');
             });
         }
-        document.getElementById('btn-save').addEventListener('click', () => { SaveSystem.save(); UI.toast(i18n.t('notifications.saved'), 'success'); });
+        document.getElementById('btn-save').addEventListener('click', () => {
+            SaveSystem.save();
+            UI.toast(i18n.t('notifications.saved'), 'success');
+        });
         document.getElementById('btn-logbook').addEventListener('click', () => NarrativeSystem.showLogbook());
         document.getElementById('btn-settings').addEventListener('click', () => UI.showSettings());
         const btnLang = document.getElementById('btn-lang');
@@ -231,13 +233,13 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
                 e.stopPropagation();
                 langDropdown.classList.toggle('active');
             });
-            document.querySelectorAll('.lang-option').forEach(option => {
+            document.querySelectorAll('.lang-option').forEach((option) => {
                 option.addEventListener('click', async (e) => {
                     const lang = e.target.dataset.lang;
                     await i18n.setLanguage(lang);
                     i18n.translateDOM();
                     langDropdown.classList.remove('active');
-                    document.querySelectorAll('.lang-option').forEach(opt => {
+                    document.querySelectorAll('.lang-option').forEach((opt) => {
                         opt.classList.toggle('active', opt.dataset.lang === lang);
                     });
                 });
@@ -247,9 +249,16 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
             });
         }
         document.getElementById('modal-close').addEventListener('click', () => UI.closeModal());
-        document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target.id === 'modal-overlay') UI.closeModal(); });
-        document.getElementById('game-main').addEventListener('click', e => {
-            if (e.target.closest('button, .route-card, .shop-item, .party-slot, .reserve-slot, .pokedex-card, .mine-tile, .nav-btn, .filter-btn, .shop-cat, .parent-slot, .combat-arena')) return;
+        document.getElementById('modal-overlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-overlay') UI.closeModal();
+        });
+        document.getElementById('game-main').addEventListener('click', (e) => {
+            if (
+                e.target.closest(
+                    'button, .route-card, .shop-item, .party-slot, .reserve-slot, .pokedex-card, .mine-tile, .nav-btn, .filter-btn, .shop-cat, .parent-slot, .combat-arena',
+                )
+            )
+                return;
             if (document.getElementById('tab-capture').classList.contains('active')) return;
             this.click(e);
         });
@@ -288,10 +297,11 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
 
     importSave() {
         const input = document.createElement('input');
-        input.type = 'file'; input.accept = '.json';
-        input.onchange = e => {
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (e) => {
             const reader = new FileReader();
-            reader.onload = ev => {
+            reader.onload = (ev) => {
                 try {
                     const data = JSON.parse(ev.target.result);
                     if (SaveSystem.importFromData(data)) {
@@ -300,7 +310,9 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
                     } else {
                         UI.toast(i18n.t('notifications.error'), 'error');
                     }
-                } catch { UI.toast(i18n.t('notifications.error'), 'error'); }
+                } catch {
+                    UI.toast(i18n.t('notifications.error'), 'error');
+                }
             };
             reader.readAsText(e.target.files[0]);
         };
@@ -322,7 +334,7 @@ export const Game = Object.assign({}, GameState, GameParty, GameCurrency, GameRo
                 console.log('Erreur de chargage, nouveau jeu');
             }
         }
-    }
+    },
 });
 
 // Auto-initialization removed - handled by main.js

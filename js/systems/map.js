@@ -86,7 +86,7 @@ export const MapSystem = Object.assign({}, MapCore, {
             volcan: { c1: '#1a0500', c2: '#3a1000', c3: '#200a00' },
             foret_maudite: { c1: '#0a0510', c2: '#1a0a2a', c3: '#0d0515' },
             ciel_ethere: { c1: '#1a1a30', c2: '#2a2a50', c3: '#151535' },
-            dimension_arcane: { c1: '#10051a', c2: '#200a3a', c3: '#150525' }
+            dimension_arcane: { c1: '#10051a', c2: '#200a3a', c3: '#150525' },
         };
         const c = configs[regionId] || configs.foret;
 
@@ -102,5 +102,5 @@ export const MapSystem = Object.assign({}, MapCore, {
 
     drawRegion(regionId) {
         RegionRegistry.render(regionId, this);
-    }
+    },
 });

@@ -11,5 +11,9 @@ import { ECHOES_DB } from './echoesData.js';
 import { REGIONS } from './regions-data.js';
 
 // Helpers
-export function getEchoById(id) { return ECHOES_DB.find(e=>e.id===id); }
-export function getRegionById(id) { return REGIONS.find(r=>r.id===id); }
+export function getEchoById(id) {
+    return ECHOES_DB.find((e) => e.id === id);
+}
+export function getRegionById(id) {
+    return REGIONS.find((r) => r.id === id);
+}

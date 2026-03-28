@@ -42,7 +42,7 @@ export const MapCore = {
         const nav = document.createElement('div');
         nav.className = 'map-nav-buttons';
         const regions = this._game.state.regions;
-        regions.forEach(region => {
+        regions.forEach((region) => {
             const btn = document.createElement('button');
             btn.className = 'map-nav-btn' + (region.id === this.currentRegionId ? ' active' : '');
             btn.dataset.region = region.id;
@@ -68,14 +68,14 @@ export const MapCore = {
         this.currentRegionId = regionId;
         this._game.state.currentRegion = regionId;
         this._game.state.currentRoute = null;
-        document.querySelectorAll('.map-nav-btn').forEach(btn => {
+        document.querySelectorAll('.map-nav-btn').forEach((btn) => {
             btn.classList.toggle('active', btn.dataset.region === regionId);
         });
         this.updateRegionInfo();
     },
 
     updateRegionInfo() {
-        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find((r) => r.id === this.currentRegionId);
         if (!region) return;
         const nameEl = document.getElementById('region-name');
         const descEl = document.getElementById('region-desc');
@@ -127,7 +127,10 @@ export const MapCore = {
                     this._game.selectRoute(r.route.id);
                     this.spawnParticles(r.x, r.y, this.getRegionColor());
                 } else {
-                    this._ui.toast('🔒 Route verrouillée ! Termine les routes précédentes pour débloquer celle-ci.', 'warning');
+                    this._ui.toast(
+                        '🔒 Route verrouillée ! Termine les routes précédentes pour débloquer celle-ci.',
+                        'warning',
+                    );
                 }
                 break;
             }
@@ -139,7 +142,7 @@ export const MapCore = {
     // ============================================
 
     getRoutePositions() {
-        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find((r) => r.id === this.currentRegionId);
         if (!region) return [];
         const routes = region.routes;
         const positions = [];
@@ -151,7 +154,7 @@ export const MapCore = {
             { angle: 0.5, dist: 0.7 },
             { angle: 1.2, dist: 0.9 },
             { angle: 2.0, dist: 0.75 },
-            { angle: 2.8, dist: 0.8 }
+            { angle: 2.8, dist: 0.8 },
         ];
         routes.forEach((route, idx) => {
             const offset = offsets[idx % offsets.length];
@@ -160,7 +163,7 @@ export const MapCore = {
             positions.push({
                 route,
                 x: centerX + Math.cos(angle) * spread,
-                y: centerY + Math.sin(angle) * spread
+                y: centerY + Math.sin(angle) * spread,
             });
         });
         return positions;
@@ -174,7 +177,7 @@ export const MapCore = {
             volcan: '#ff6b35',
             foret_maudite: '#6c5ce7',
             ciel_ethere: '#ffeaa7',
-            dimension_arcane: '#a855f7'
+            dimension_arcane: '#a855f7',
         };
         return colors[this.currentRegionId] || '#8b5cf6';
     },
@@ -192,7 +195,7 @@ export const MapCore = {
                 this.transitioningTo = null;
             }
         }
-        this.particles = this.particles.filter(p => {
+        this.particles = this.particles.filter((p) => {
             p.x += p.vx;
             p.y += p.vy;
             p.life -= 0.025;
@@ -210,22 +213,27 @@ export const MapCore = {
             const angle = (i / 15) * Math.PI * 2;
             const speed = 2 + Math.random() * 4;
             this.particles.push({
-                x, y,
+                x,
+                y,
                 vx: Math.cos(angle) * speed,
                 vy: Math.sin(angle) * speed,
                 life: 1,
                 color,
-                size: 3 + Math.random() * 4
+                size: 3 + Math.random() * 4,
             });
         }
     },
 
     drawParticles() {
         const ctx = this.ctx;
-        this.particles.forEach(p => {
+        this.particles.forEach((p) => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.color + Math.floor(p.life * 255).toString(16).padStart(2, '0');
+            ctx.fillStyle =
+                p.color +
+                Math.floor(p.life * 255)
+                    .toString(16)
+                    .padStart(2, '0');
             ctx.fill();
         });
     },
@@ -238,13 +246,9 @@ export const MapCore = {
         const ctx = this.ctx;
         const route = loc.route;
         const padding = 10;
-        const lines = [
-            route.name,
-            `Niveau ${route.lv}`,
-            route.unlocked ? '⚔️ Cliquer pour combattre' : '🔒 Verrouillé'
-        ];
+        const lines = [route.name, `Niveau ${route.lv}`, route.unlocked ? '⚔️ Cliquer pour combattre' : '🔒 Verrouillé'];
         ctx.font = 'bold 12px Inter, sans-serif';
-        const maxWidth = Math.max(...lines.map(l => ctx.measureText(l).width));
+        const maxWidth = Math.max(...lines.map((l) => ctx.measureText(l).width));
         const tw = maxWidth + padding * 2;
         const th = lines.length * 18 + padding * 2;
         let tx = loc.x + 35;
@@ -272,7 +276,7 @@ export const MapCore = {
     // ============================================
 
     getKillsNeededForRoute(routeIndex) {
-        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find((r) => r.id === this.currentRegionId);
         if (!region) return GAME_CONFIG.KILLS_FOR_ROUTE;
         if (routeIndex === 0) return 0;
         const prevRoute = region.routes[routeIndex - 1];
@@ -281,7 +285,7 @@ export const MapCore = {
     },
 
     getCurrentRouteProgress() {
-        const region = this._game.state.regions.find(r => r.id === this.currentRegionId);
+        const region = this._game.state.regions.find((r) => r.id === this.currentRegionId);
         if (!region) return { current: 0, needed: 0, routeIndex: -1 };
         for (let i = 0; i < region.routes.length; i++) {
             if (!region.routes[i].unlocked) {
@@ -290,7 +294,7 @@ export const MapCore = {
                         current: Combat.routeKills || 0,
                         needed: GAME_CONFIG.KILLS_FOR_ROUTE,
                         routeIndex: i,
-                        routeName: region.routes[i].name
+                        routeName: region.routes[i].name,
                     };
                 }
             }
@@ -463,5 +467,5 @@ export const MapCore = {
         if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame);
         }
-    }
+    },
 };

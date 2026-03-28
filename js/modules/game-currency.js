@@ -55,5 +55,5 @@ export const GameCurrency = {
                 delete this.state.boosts[key];
             }
         }
-    }
+    },
 };

@@ -9,11 +9,11 @@ const { UI } = require('./__mocks__/ui.cjs');
 // Mocks pour les sous-modules
 const mockParty = {
     getActiveEcho: jest.fn(() => null),
-    getNextAliveEcho: jest.fn(() => null)
+    getNextAliveEcho: jest.fn(() => null),
 };
 
 const mockCapture = {
-    autoCaptureNewEcho: jest.fn()
+    autoCaptureNewEcho: jest.fn(),
 };
 
 // Mocks globaux
@@ -22,7 +22,7 @@ globalThis.CombatCapture = mockCapture;
 globalThis.GAME_CONFIG = {
     KILLS_FOR_ROUTE: 10,
     COMBAT_CLICK_MULTIPLIER: 2,
-    MAX_PARTY: 6
+    MAX_PARTY: 6,
 };
 
 // Mock generateWildEcho
@@ -40,11 +40,16 @@ globalThis.generateWildEcho = jest.fn((ids, lv) => {
         atk: 20,
         def: 10,
         spd: 15,
-        isAlive: function() { return this.hp > 0; },
-        takeDamage: function(dmg) { this.hp = Math.max(0, this.hp - dmg); return this.hp <= 0; },
+        isAlive: function () {
+            return this.hp > 0;
+        },
+        takeDamage: function (dmg) {
+            this.hp = Math.max(0, this.hp - dmg);
+            return this.hp <= 0;
+        },
         calculateDamageAgainst: jest.fn(() => 10),
         bossName: null,
-        isBoss: false
+        isBoss: false,
     };
 });
 
@@ -56,11 +61,11 @@ globalThis.getEchoById = jest.fn((id) => ({
     baseHp: 30,
     baseAtk: 15,
     baseDef: 10,
-    baseSpd: 12
+    baseSpd: 12,
 }));
 
 // Mock Echo class
-globalThis.Echo = jest.fn(function(data, level, isPrimordial) {
+globalThis.Echo = jest.fn(function (data, level, isPrimordial) {
     this.uid = 'echo-' + Math.random().toString(36).substr(2, 9);
     this.id = data.id;
     this.name = data.name;
@@ -74,11 +79,18 @@ globalThis.Echo = jest.fn(function(data, level, isPrimordial) {
     this.spd = data.baseSpd * level;
     this.isBoss = false;
     this.bossName = null;
-    this.isAlive = function() { return this.hp > 0; };
-    this.takeDamage = function(dmg) { this.hp = Math.max(0, this.hp - dmg); return this.hp <= 0; };
+    this.isAlive = function () {
+        return this.hp > 0;
+    };
+    this.takeDamage = function (dmg) {
+        this.hp = Math.max(0, this.hp - dmg);
+        return this.hp <= 0;
+    };
     this.calculateDamageAgainst = jest.fn(() => 15);
     this.gainXp = jest.fn(() => []);
-    this.fullHeal = jest.fn(() => { this.hp = this.maxHp; });
+    this.fullHeal = jest.fn(() => {
+        this.hp = this.maxHp;
+    });
 });
 
 // Définir CombatEngine directement
@@ -111,7 +123,7 @@ globalThis.CombatEngine = {
         const s = this._state;
         if (!route) return;
 
-        const region = this._game.state.regions.find(r => r.id === this._game.state.currentRegion);
+        const region = this._game.state.regions.find((r) => r.id === this._game.state.currentRegion);
         if (region && !region.bossDefeated && s.routeKills >= GAME_CONFIG.KILLS_FOR_ROUTE) {
             const last = region.routes[region.routes.length - 1];
             if (route.id === last.id && region.bosses.length) {
@@ -200,7 +212,7 @@ globalThis.CombatEngine = {
             xpGain *= 2;
         }
 
-        this._game.state.party.forEach(e => {
+        this._game.state.party.forEach((e) => {
             if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, this._game.state.party.length)));
         });
 
@@ -238,7 +250,7 @@ globalThis.CombatEngine = {
         s.isBoss = false;
         this._eventBus.emit(GAME_EVENTS.COMBAT_END, {});
         this._ui.updateCombat();
-    }
+    },
 };
 
 describe('CombatEngine', () => {
@@ -256,9 +268,9 @@ describe('CombatEngine', () => {
             isBoss: false,
             enemy: null,
             activeEcho: null,
-            autoCaptureEnabled: false
+            autoCaptureEnabled: false,
         };
-        
+
         // Initialiser seenEchoes et caughtEchoes sur Game.state
         Game.state.seenEchoes = new Set();
         Game.state.caughtEchoes = new Set();
@@ -278,7 +290,7 @@ describe('CombatEngine', () => {
                 game: Game,
                 ui: UI,
                 eventBus: EventBus,
-                onEnemyDefeated: onDefeated
+                onEnemyDefeated: onDefeated,
             });
 
             expect(CombatEngine._state).toBe(mockState);
@@ -363,9 +375,9 @@ describe('CombatEngine', () => {
             mockState.inCombat = false;
             mockState.enemy = { hp: 100, takeDamage: jest.fn(), isAlive: () => true };
             mockState.activeEcho = { calculateDamageAgainst: jest.fn(() => 10) };
-            
+
             CombatEngine.playerClick();
-            
+
             expect(mockState.enemy.takeDamage).not.toHaveBeenCalled();
         });
 
@@ -373,9 +385,9 @@ describe('CombatEngine', () => {
             mockState.inCombat = true;
             mockState.enemy = null;
             mockState.activeEcho = { calculateDamageAgainst: jest.fn(() => 10) };
-            
+
             CombatEngine.playerClick();
-            
+
             expect(UI.updateCombat).not.toHaveBeenCalled();
         });
 
@@ -383,9 +395,9 @@ describe('CombatEngine', () => {
             mockState.inCombat = true;
             mockState.enemy = { hp: 100, takeDamage: jest.fn(), isAlive: () => true };
             mockState.activeEcho = null;
-            
+
             CombatEngine.playerClick();
-            
+
             expect(UI.updateCombat).not.toHaveBeenCalled();
         });
 
@@ -395,9 +407,9 @@ describe('CombatEngine', () => {
             mockState.inCombat = true;
             mockState.enemy = enemy;
             mockState.activeEcho = activeEcho;
-            
+
             CombatEngine.playerClick();
-            
+
             expect(enemy.takeDamage).toHaveBeenCalledWith(20);
         });
 
@@ -407,9 +419,9 @@ describe('CombatEngine', () => {
             mockState.inCombat = true;
             mockState.enemy = enemy;
             mockState.activeEcho = activeEcho;
-            
+
             CombatEngine.playerClick();
-            
+
             expect(UI.spawnDamageParticle).toHaveBeenCalledWith(20);
         });
     });
@@ -419,9 +431,9 @@ describe('CombatEngine', () => {
             Game.state.totalWins = 0;
             mockState.enemy = { level: 5, name: 'Test', bossName: null };
             mockState.isBoss = false;
-            
+
             CombatEngine.onEnemyDefeated();
-            
+
             expect(Game.state.totalWins).toBe(1);
         });
 
@@ -429,9 +441,9 @@ describe('CombatEngine', () => {
             mockState.routeKills = 0;
             mockState.enemy = { level: 5, name: 'Test', bossName: null };
             mockState.isBoss = false;
-            
+
             CombatEngine.onEnemyDefeated();
-            
+
             expect(mockState.routeKills).toBe(1);
         });
 
@@ -440,18 +452,18 @@ describe('CombatEngine', () => {
             EventBus.on(GAME_EVENTS.ENEMY_DEFEATED, listener);
             mockState.enemy = { level: 5, name: 'Test', bossName: null };
             mockState.isBoss = false;
-            
+
             CombatEngine.onEnemyDefeated();
-            
+
             expect(listener).toHaveBeenCalled();
         });
 
         test('calls onEnemyDefeated callback', () => {
             mockState.enemy = { level: 5, name: 'Test', bossName: null };
             mockState.isBoss = false;
-            
+
             CombatEngine.onEnemyDefeated();
-            
+
             expect(CombatEngine._onEnemyDefeated).toHaveBeenCalled();
         });
     });

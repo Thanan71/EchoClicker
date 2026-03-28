@@ -6,7 +6,6 @@
 import { GAME_CONFIG } from '../data/game-config.js';
 import { UI } from '../ui.js';
 
-
 export const GameParty = {
     addToParty(echo) {
         if (this.state.party.length >= GAME_CONFIG.MAX_PARTY) return false;
@@ -22,7 +21,7 @@ export const GameParty = {
         }
 
         // Calculer le score de chaque écho
-        const scoredEchoes = allEchoes.map(echo => {
+        const scoredEchoes = allEchoes.map((echo) => {
             let score = 0;
 
             // Stats totales
@@ -36,12 +35,12 @@ export const GameParty = {
 
             // Bonus rareté
             const rarityBonus = {
-                'common': 0,
-                'uncommon': 20,
-                'rare': 50,
-                'epic': 100,
-                'legendary': 200,
-                'mythical': 300
+                common: 0,
+                uncommon: 20,
+                rare: 50,
+                epic: 100,
+                legendary: 200,
+                mythical: 300,
             };
             score += rarityBonus[echo.rarity] || 0;
 
@@ -79,20 +78,20 @@ export const GameParty = {
         this.state.party = newParty;
 
         // Remettre les autres en réserve
-        const partyUids = new Set(newParty.map(e => e.uid));
-        const newReserves = allEchoes.filter(e => !partyUids.has(e.uid));
+        const partyUids = new Set(newParty.map((e) => e.uid));
+        const newReserves = allEchoes.filter((e) => !partyUids.has(e.uid));
         this.state.reserves = newReserves;
 
         // Soigner la nouvelle équipe
-        this.state.party.forEach(e => e.fullHeal());
+        this.state.party.forEach((e) => e.fullHeal());
 
         UI.renderParty();
         UI.toast(i18n.t('combat.optimalTeamCreated'), 'success');
-        UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map(e => e.name).join(', ') }));
+        UI.addLog('info', i18n.t('combat.newTeam', { names: newParty.map((e) => e.name).join(', ') }));
     },
 
     removeFromParty(uid) {
-        const idx = this.state.party.findIndex(e => e.uid === uid);
+        const idx = this.state.party.findIndex((e) => e.uid === uid);
         if (idx === -1) return false;
         const echo = this.state.party.splice(idx, 1)[0];
         this.state.reserves.push(echo);
@@ -104,7 +103,7 @@ export const GameParty = {
             UI.toast(i18n.t('combat.partyFull'), 'warning');
             return false;
         }
-        const idx = this.state.reserves.findIndex(e => e.uid === uid);
+        const idx = this.state.reserves.findIndex((e) => e.uid === uid);
         if (idx === -1) return false;
         const echo = this.state.reserves.splice(idx, 1)[0];
         this.state.party.push(echo);
@@ -116,6 +115,6 @@ export const GameParty = {
     },
 
     findEcho(uid) {
-        return this.getAllEchoes().find(e => e.uid === uid);
-    }
+        return this.getAllEchoes().find((e) => e.uid === uid);
+    },
 };

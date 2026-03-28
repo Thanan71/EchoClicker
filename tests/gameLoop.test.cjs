@@ -4,15 +4,15 @@
 
 // Mocks globaux
 globalThis.GAME_CONFIG = {
-    TICK_RATE: 50
+    TICK_RATE: 50,
 };
 
 globalThis.performance = {
-    now: jest.fn(() => Date.now())
+    now: jest.fn(() => Date.now()),
 };
 
-globalThis.requestAnimationFrame = jest.fn(cb => setTimeout(() => cb(Date.now()), 16));
-globalThis.cancelAnimationFrame = jest.fn(id => clearTimeout(id));
+globalThis.requestAnimationFrame = jest.fn((cb) => setTimeout(() => cb(Date.now()), 16));
+globalThis.cancelAnimationFrame = jest.fn((id) => clearTimeout(id));
 
 // Définir GameLoop directement
 globalThis.GameLoop = {
@@ -39,7 +39,7 @@ globalThis.GameLoop = {
 
     _loop(timestamp) {
         if (!this._running) return;
-        this._rafId = requestAnimationFrame(t => this._loop(t));
+        this._rafId = requestAnimationFrame((t) => this._loop(t));
 
         const delta = timestamp - this._lastTime;
         this._lastTime = timestamp;
@@ -62,7 +62,7 @@ globalThis.GameLoop = {
 
     isRunning() {
         return this._running;
-    }
+    },
 };
 
 describe('GameLoop', () => {
@@ -140,9 +140,9 @@ describe('GameLoop', () => {
             const updateFn = jest.fn();
             const renderFn = jest.fn();
             GameLoop._callbacks = { update: updateFn, render: renderFn };
-            
+
             GameLoop._loop(1000);
-            
+
             expect(updateFn).not.toHaveBeenCalled();
             expect(renderFn).not.toHaveBeenCalled();
         });
@@ -153,9 +153,9 @@ describe('GameLoop', () => {
             GameLoop._accumulator = 0;
             const renderFn = jest.fn();
             GameLoop._callbacks = { update: jest.fn(), render: renderFn };
-            
+
             GameLoop._loop(1016);
-            
+
             expect(renderFn).toHaveBeenCalled();
         });
 
@@ -165,9 +165,9 @@ describe('GameLoop', () => {
             GameLoop._accumulator = 0;
             const updateFn = jest.fn();
             GameLoop._callbacks = { update: updateFn, render: jest.fn() };
-            
+
             GameLoop._loop(1500);
-            
+
             expect(updateFn).toHaveBeenCalledTimes(4);
         });
 
@@ -177,9 +177,9 @@ describe('GameLoop', () => {
             GameLoop._accumulator = 50;
             const updateFn = jest.fn();
             GameLoop._callbacks = { update: updateFn, render: jest.fn() };
-            
+
             GameLoop._loop(1000);
-            
+
             expect(updateFn).toHaveBeenCalledWith(0.05);
         });
 
@@ -189,9 +189,9 @@ describe('GameLoop', () => {
             GameLoop._accumulator = 0;
             const updateFn = jest.fn();
             GameLoop._callbacks = { update: updateFn, render: jest.fn() };
-            
+
             GameLoop._loop(1200);
-            
+
             expect(updateFn).toHaveBeenCalledTimes(4);
         });
     });

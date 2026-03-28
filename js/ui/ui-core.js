@@ -9,7 +9,6 @@ import { Game } from '../game.js';
 import { Mine } from '../systems/mine.js';
 import { Hatchery } from '../systems/hatchery.js';
 
-
 export function getEchoImagePath(echo) {
     const id = String(echo.id).padStart(3, '0');
     return `assets/echos-no-bg/echo_${id}_no_bg.png`;
@@ -60,7 +59,10 @@ export const UICore = {
     },
 
     setupEventBus() {
-        EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => { this.renderParty(); this.renderPokedex(); });
+        EventBus.on(GAME_EVENTS.ECHO_CAPTURED, () => {
+            this.renderParty();
+            this.renderPokedex();
+        });
         EventBus.on(GAME_EVENTS.ECHO_LEVELED_UP, () => this.renderParty());
         EventBus.on(GAME_EVENTS.ECHO_EVOLVED, () => this.renderParty());
         EventBus.on(GAME_EVENTS.ROUTE_UNLOCKED, () => this.renderRoutes());
@@ -74,12 +76,15 @@ export const UICore = {
 
     switchTab(tabId) {
         this.currentTab = tabId;
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach((t) => t.classList.remove('active'));
         document.querySelector(`.nav-btn[data-tab="${tabId}"]`)?.classList.add('active');
         document.getElementById(`tab-${tabId}`)?.classList.add('active');
         const renderers = {
-            map: () => { this.renderRoutes(); this.updateCombat(); },
+            map: () => {
+                this.renderRoutes();
+                this.updateCombat();
+            },
             party: () => this.renderParty(),
             capture: () => this.renderCaptureZone(),
             pokedex: () => this.renderPokedex(),
@@ -87,7 +92,7 @@ export const UICore = {
             achievements: () => this.renderAchievements(),
             mine: () => this.renderMine(),
             hatchery: () => this.renderHatchery(),
-            quests: () => this.renderQuests()
+            quests: () => this.renderQuests(),
         };
         renderers[tabId]?.();
     },
@@ -106,9 +111,9 @@ export const UICore = {
         let html = '';
         const now = Date.now();
         const boostTypes = {
-            'xp': { icon: '\u{1F4C8}', name: 'XP', cssClass: 'xp' },
-            'capture': { icon: '\u{1F3AF}', name: 'Capture', cssClass: 'capture' },
-            'energy': { icon: '\u26A1', name: '\u00C9nergie', cssClass: 'energy' }
+            xp: { icon: '\u{1F4C8}', name: 'XP', cssClass: 'xp' },
+            capture: { icon: '\u{1F3AF}', name: 'Capture', cssClass: 'capture' },
+            energy: { icon: '\u26A1', name: '\u00C9nergie', cssClass: 'energy' },
         };
         for (const [type, boost] of Object.entries(Game.state.boosts)) {
             if (boost && boost.endTime && now < boost.endTime) {
@@ -124,7 +129,10 @@ export const UICore = {
     },
 
     updateCurrencies() {
-        const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = Utils.formatNumber(v); };
+        const el = (id, v) => {
+            const e = document.getElementById(id);
+            if (e) e.textContent = Utils.formatNumber(v);
+        };
         el('energy-value', Game.state.energy);
         el('links-value', Game.state.links);
         el('crystals-value', Game.state.crystals);
@@ -132,15 +140,22 @@ export const UICore = {
     },
 
     updateFooter() {
-        const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+        const el = (id, v) => {
+            const e = document.getElementById(id);
+            if (e) e.textContent = v;
+        };
         el('play-time', Utils.formatTime(Game.state.playTime));
         el('total-clicks', Utils.formatNumber(Game.state.totalClicks));
         el('total-echoes', Game.state.caughtEchoes.size);
         el('cps-display', Game.getCPS().toFixed(1));
     },
 
-    renderMine() { Mine.updateDisplay(); },
-    renderHatchery() { Hatchery.updateDisplay(); },
+    renderMine() {
+        Mine.updateDisplay();
+    },
+    renderHatchery() {
+        Hatchery.updateDisplay();
+    },
 
     toast(message, type = 'info') {
         const container = document.getElementById('toast-container');
@@ -164,14 +179,17 @@ export const UICore = {
     },
 
     showSettings() {
-        this.showModal('\u2699\uFE0F ' + i18n.t('settings.title'), `
+        this.showModal(
+            '\u2699\uFE0F ' + i18n.t('settings.title'),
+            `
             <div style="display:flex;flex-direction:column;gap:12px">
                 <button class="btn-combat settings-save-btn">\u{1F4BE} ${i18n.t('buttons.save')}</button>
                 <button class="btn-combat secondary settings-export-btn">\u{1F4E4} ${i18n.t('settings.export')}</button>
                 <button class="btn-combat secondary settings-import-btn">\u{1F4E5} ${i18n.t('settings.import')}</button>
                 <button class="btn-combat settings-reset-btn" style="background:linear-gradient(135deg,var(--accent-red),#dc2626)">\u{1F5D1}\uFE0F ${i18n.t('settings.reset')}</button>
             </div>
-        `);
+        `,
+        );
 
         // Add event listeners to settings buttons
         document.querySelector('.settings-save-btn')?.addEventListener('click', () => {

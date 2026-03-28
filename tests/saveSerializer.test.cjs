@@ -5,15 +5,13 @@
 // Mocks globaux
 globalThis.GAME_CONFIG = {
     ENERGY_PER_CLICK_BASE: 1,
-    PASSIVE_BASE: 0.1
+    PASSIVE_BASE: 0.1,
 };
 
-globalThis.REGIONS = [
-    { id: 'foret', name: 'Forêt', routes: [], bosses: [] }
-];
+globalThis.REGIONS = [{ id: 'foret', name: 'Forêt', routes: [], bosses: [] }];
 
 globalThis.Utils = {
-    deepClone: jest.fn((obj) => JSON.parse(JSON.stringify(obj)))
+    deepClone: jest.fn((obj) => JSON.parse(JSON.stringify(obj))),
 };
 
 // Définir SaveSerializer directement
@@ -43,8 +41,8 @@ globalThis.SaveSerializer = {
                 clickPower: state.clickPower,
                 passiveIncome: state.passiveIncome,
                 currentRegion: state.currentRegion,
-                party: state.party.map(e => e.toJSON()),
-                reserves: state.reserves.map(e => e.toJSON()),
+                party: state.party.map((e) => e.toJSON()),
+                reserves: state.reserves.map((e) => e.toJSON()),
                 seenEchoes: [...state.seenEchoes],
                 caughtEchoes: [...state.caughtEchoes],
                 achievements: [...state.achievements],
@@ -53,8 +51,8 @@ globalThis.SaveSerializer = {
                 inventory: state.inventory || [],
                 mine: systemState.mine,
                 hatchery: systemState.hatchery,
-                quests: systemState.quests
-            }
+                quests: systemState.quests,
+            },
         };
     },
 
@@ -87,8 +85,8 @@ globalThis.SaveSerializer = {
             state.boosts = s.boosts ?? {};
             state.inventory = s.inventory || [];
 
-            state.party = (s.party || []).map(j => Echo.fromJSON(j));
-            state.reserves = (s.reserves || []).map(j => Echo.fromJSON(j));
+            state.party = (s.party || []).map((j) => Echo.fromJSON(j));
+            state.reserves = (s.reserves || []).map((j) => Echo.fromJSON(j));
 
             state.seenEchoes = new Set(s.seenEchoes || []);
             state.caughtEchoes = new Set(s.caughtEchoes || []);
@@ -106,7 +104,7 @@ globalThis.SaveSerializer = {
             console.error('Deserialize error:', e);
             return false;
         }
-    }
+    },
 };
 
 describe('SaveSerializer', () => {
@@ -148,24 +146,20 @@ describe('SaveSerializer', () => {
                 clickPower: 2,
                 passiveIncome: 0.5,
                 currentRegion: 'foret',
-                party: [
-                    { toJSON: () => ({ id: 1, level: 5 }) }
-                ],
-                reserves: [
-                    { toJSON: () => ({ id: 2, level: 3 }) }
-                ],
+                party: [{ toJSON: () => ({ id: 1, level: 5 }) }],
+                reserves: [{ toJSON: () => ({ id: 2, level: 3 }) }],
                 seenEchoes: new Set([1, 2, 3]),
                 caughtEchoes: new Set([1, 2]),
                 achievements: new Set(['first_capture']),
                 regions: [{ id: 'foret', unlocked: true }],
                 boosts: { xp: { endTime: Date.now() + 60000 } },
-                inventory: [{ id: 'potion', count: 3 }]
+                inventory: [{ id: 'potion', count: 3 }],
             };
 
             mockSystemState = {
                 mine: { energy: 50, grid: [] },
                 hatchery: { slots: [] },
-                quests: { dailyQuests: [], storyQuests: [] }
+                quests: { dailyQuests: [], storyQuests: [] },
             };
         });
 
@@ -252,7 +246,7 @@ describe('SaveSerializer', () => {
                 Mine: { fromJSON: jest.fn() },
                 Hatchery: { fromJSON: jest.fn() },
                 questSystem: { fromJSON: jest.fn() },
-                Echo: { fromJSON: jest.fn((json) => ({ ...json, uid: 'restored' })) }
+                Echo: { fromJSON: jest.fn((json) => ({ ...json, uid: 'restored' })) },
             };
         });
 
@@ -277,8 +271,8 @@ describe('SaveSerializer', () => {
                     reserves: [],
                     seenEchoes: [],
                     caughtEchoes: [],
-                    achievements: []
-                }
+                    achievements: [],
+                },
             };
             const result = SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(result).toBe(true);
@@ -287,7 +281,7 @@ describe('SaveSerializer', () => {
         test('restores energy', () => {
             const data = {
                 v: 4,
-                s: { energy: 100, party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] }
+                s: { energy: 100, party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockState.energy).toBe(100);
@@ -296,7 +290,7 @@ describe('SaveSerializer', () => {
         test('restores links', () => {
             const data = {
                 v: 4,
-                s: { links: 10, party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] }
+                s: { links: 10, party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockState.links).toBe(10);
@@ -305,7 +299,7 @@ describe('SaveSerializer', () => {
         test('defaults energy to 0 if missing', () => {
             const data = {
                 v: 4,
-                s: { party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] }
+                s: { party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [] },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockState.energy).toBe(0);
@@ -319,8 +313,8 @@ describe('SaveSerializer', () => {
                     reserves: [],
                     seenEchoes: [],
                     caughtEchoes: [],
-                    achievements: []
-                }
+                    achievements: [],
+                },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockSystemHandlers.Echo.fromJSON).toHaveBeenCalledWith({ id: 1, level: 5 });
@@ -329,7 +323,7 @@ describe('SaveSerializer', () => {
         test('restores seenEchoes as Set', () => {
             const data = {
                 v: 4,
-                s: { party: [], reserves: [], seenEchoes: [1, 2, 3], caughtEchoes: [], achievements: [] }
+                s: { party: [], reserves: [], seenEchoes: [1, 2, 3], caughtEchoes: [], achievements: [] },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockState.seenEchoes instanceof Set).toBe(true);
@@ -340,9 +334,13 @@ describe('SaveSerializer', () => {
             const data = {
                 v: 4,
                 s: {
-                    party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [],
-                    mine: { energy: 50 }
-                }
+                    party: [],
+                    reserves: [],
+                    seenEchoes: [],
+                    caughtEchoes: [],
+                    achievements: [],
+                    mine: { energy: 50 },
+                },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockSystemHandlers.Mine.fromJSON).toHaveBeenCalledWith({ energy: 50 });
@@ -352,9 +350,13 @@ describe('SaveSerializer', () => {
             const data = {
                 v: 4,
                 s: {
-                    party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [],
-                    hatchery: { slots: [] }
-                }
+                    party: [],
+                    reserves: [],
+                    seenEchoes: [],
+                    caughtEchoes: [],
+                    achievements: [],
+                    hatchery: { slots: [] },
+                },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockSystemHandlers.Hatchery.fromJSON).toHaveBeenCalledWith({ slots: [] });
@@ -364,9 +366,13 @@ describe('SaveSerializer', () => {
             const data = {
                 v: 4,
                 s: {
-                    party: [], reserves: [], seenEchoes: [], caughtEchoes: [], achievements: [],
-                    quests: { dailyQuests: [] }
-                }
+                    party: [],
+                    reserves: [],
+                    seenEchoes: [],
+                    caughtEchoes: [],
+                    achievements: [],
+                    quests: { dailyQuests: [] },
+                },
             };
             SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(mockSystemHandlers.questSystem.fromJSON).toHaveBeenCalledWith({ dailyQuests: [] });
@@ -375,7 +381,7 @@ describe('SaveSerializer', () => {
         test('returns false on error', () => {
             const data = {
                 v: 4,
-                s: null
+                s: null,
             };
             const result = SaveSerializer.deserialize(data, mockState, mockSystemHandlers);
             expect(result).toBe(false);

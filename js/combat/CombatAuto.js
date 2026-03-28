@@ -20,5 +20,5 @@ export const CombatAuto = {
             CombatEngine.autoAttack();
             s.autoTimer = s.activeEcho.getAttackInterval();
         }
-    }
+    },
 };

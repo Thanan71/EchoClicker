@@ -29,5 +29,5 @@ export const RegionRegistry = {
 
     getRegisteredIds() {
         return Object.keys(this._renderers);
-    }
+    },
 };

@@ -42,7 +42,7 @@ describe('EventBus', () => {
             expect(h3).toHaveBeenCalledWith(42);
         });
 
-        test('les listeners sont appelés dans l\'ordre d\'inscription', () => {
+        test("les listeners sont appelés dans l'ordre d'inscription", () => {
             const order = [];
             EventBus.on('evt', () => order.push('first'));
             EventBus.on('evt', () => order.push('second'));
@@ -94,11 +94,11 @@ describe('EventBus', () => {
             expect(remove).not.toHaveBeenCalled();
         });
 
-        test('silencieux si l\'événement n\'existe pas', () => {
+        test("silencieux si l'événement n'existe pas", () => {
             expect(() => EventBus.off('inexistant', () => {})).not.toThrow();
         });
 
-        test('silencieux si le callback n\'est pas dans la liste', () => {
+        test("silencieux si le callback n'est pas dans la liste", () => {
             EventBus.on('evt', () => {});
             const otherHandler = () => {};
 
@@ -137,7 +137,7 @@ describe('EventBus', () => {
             expect(() => EventBus.emit('no-listener', 'data')).not.toThrow();
         });
 
-        test('supporte l\'émission sans données (undefined)', () => {
+        test("supporte l'émission sans données (undefined)", () => {
             const handler = jest.fn();
             EventBus.on('evt', handler);
 
@@ -164,7 +164,7 @@ describe('EventBus', () => {
     // once() - Listener unique
     // ─────────────────────────────────────
     describe('once()', () => {
-        test('le callback n\'est appelé qu\'une seule fois', () => {
+        test("le callback n'est appelé qu'une seule fois", () => {
             const handler = jest.fn();
             EventBus.once('evt', handler);
 
@@ -221,7 +221,7 @@ describe('EventBus', () => {
     // ─────────────────────────────────────
     // Gestion d'erreurs dans les callbacks
     // ─────────────────────────────────────
-    describe('Gestion d\'erreurs dans les callbacks', () => {
+    describe("Gestion d'erreurs dans les callbacks", () => {
         let consoleSpy;
 
         beforeEach(() => {
@@ -233,7 +233,9 @@ describe('EventBus', () => {
         });
 
         test('une erreur dans un callback ne bloque pas les autres listeners', () => {
-            const errorHandler = jest.fn(() => { throw new Error('boom'); });
+            const errorHandler = jest.fn(() => {
+                throw new Error('boom');
+            });
             const safeHandler = jest.fn();
 
             EventBus.on('evt', errorHandler);
@@ -247,7 +249,9 @@ describe('EventBus', () => {
         });
 
         test('les erreurs sont logguées via console.error', () => {
-            EventBus.on('evt', () => { throw new Error('test error'); });
+            EventBus.on('evt', () => {
+                throw new Error('test error');
+            });
 
             EventBus.emit('evt', {});
 
@@ -301,7 +305,6 @@ describe('EventBus', () => {
         });
     });
 
-
     // Edge cases
     describe('Edge cases', () => {
         test('emettre puis retirer tous les listeners', () => {
@@ -324,7 +327,10 @@ describe('EventBus', () => {
             const results = [];
             let unsub;
             EventBus.on('evt', () => results.push('A'));
-            unsub = EventBus.on('evt', () => { results.push('B'); unsub(); });
+            unsub = EventBus.on('evt', () => {
+                results.push('B');
+                unsub();
+            });
             EventBus.on('evt', () => results.push('C'));
             EventBus.emit('evt');
             expect(results).toContain('A');
@@ -375,26 +381,36 @@ describe('EventBus', () => {
                 EventBus.on('bulk', h);
             }
             EventBus.emit('bulk', 'data');
-            handlers.forEach(h => {
+            handlers.forEach((h) => {
                 expect(h).toHaveBeenCalledTimes(1);
                 expect(h).toHaveBeenCalledWith('data');
             });
         });
     });
 
-
     // GAME_EVENTS - Constantes
     describe('GAME_EVENTS', () => {
         test('contient toutes les constantes attendues', () => {
             const expectedKeys = [
-                'ENERGY_CHANGED', 'LINKS_CHANGED', 'CLICK',
-                'COMBAT_START', 'COMBAT_END', 'ENEMY_DEFEATED',
-                'ECHO_CAPTURED', 'ECHO_LEVELED_UP', 'ECHO_EVOLVED',
-                'ECHO_FAINTED', 'BOSS_DEFEATED', 'ROUTE_UNLOCKED',
-                'REGION_UNLOCKED', 'ACHIEVEMENT_UNLOCKED',
-                'ITEM_PURCHASED', 'SAVE_COMPLETE', 'TICK'
+                'ENERGY_CHANGED',
+                'LINKS_CHANGED',
+                'CLICK',
+                'COMBAT_START',
+                'COMBAT_END',
+                'ENEMY_DEFEATED',
+                'ECHO_CAPTURED',
+                'ECHO_LEVELED_UP',
+                'ECHO_EVOLVED',
+                'ECHO_FAINTED',
+                'BOSS_DEFEATED',
+                'ROUTE_UNLOCKED',
+                'REGION_UNLOCKED',
+                'ACHIEVEMENT_UNLOCKED',
+                'ITEM_PURCHASED',
+                'SAVE_COMPLETE',
+                'TICK',
             ];
-            expectedKeys.forEach(key => {
+            expectedKeys.forEach((key) => {
                 expect(GAME_EVENTS).toHaveProperty(key);
                 expect(typeof GAME_EVENTS[key]).toBe('string');
             });

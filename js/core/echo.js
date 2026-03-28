@@ -41,15 +41,16 @@ export class Echo {
 
     recalcStats() {
         const primMult = this.isPrimordial ? 1.1 : 1;
-        this.maxHp  = Math.floor((this.baseHp  + this.level * 3) * primMult);
-        this.atk    = Math.floor((this.baseAtk + this.level * 2) * primMult);
-        this.def    = Math.floor((this.baseDef + this.level * 2) * primMult);
-        this.spd    = Math.floor((this.baseSpd + this.level * 1.5) * primMult);
+        this.maxHp = Math.floor((this.baseHp + this.level * 3) * primMult);
+        this.atk = Math.floor((this.baseAtk + this.level * 2) * primMult);
+        this.def = Math.floor((this.baseDef + this.level * 2) * primMult);
+        this.spd = Math.floor((this.baseSpd + this.level * 1.5) * primMult);
         if (this.hp > this.maxHp) this.hp = this.maxHp;
     }
 
     gainXp(amount) {
-        if (globalThis.Game && globalThis.Game.state && globalThis.Game.state.boosts && globalThis.Game.state.boosts.xp) amount = Math.floor(amount * 1.5);
+        if (globalThis.Game && globalThis.Game.state && globalThis.Game.state.boosts && globalThis.Game.state.boosts.xp)
+            amount = Math.floor(amount * 1.5);
         this.xp += amount;
         const leveledUp = [];
         while (this.xp >= this.xpToNext) {
@@ -146,7 +147,7 @@ export class Echo {
             atk: this.atk,
             def: this.def,
             spd: this.spd,
-            evolution: this.evolution
+            evolution: this.evolution,
         };
     }
 

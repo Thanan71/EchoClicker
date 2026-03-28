@@ -39,7 +39,7 @@ export const CombatEngine = {
         if (!route) return;
 
         // Check for boss spawn
-        const region = this._game.state.regions.find(r => r.id === this._game.state.currentRegion);
+        const region = this._game.state.regions.find((r) => r.id === this._game.state.currentRegion);
         if (region && !region.bossDefeated && s.routeKills >= GAME_CONFIG.KILLS_FOR_ROUTE) {
             const last = region.routes[region.routes.length - 1];
             if (route.id === last.id && region.bosses.length) {
@@ -128,7 +128,7 @@ export const CombatEngine = {
             xpGain *= 2;
         }
 
-        this._game.state.party.forEach(e => {
+        this._game.state.party.forEach((e) => {
             if (e.isAlive()) e.gainXp(Math.floor(xpGain / Math.max(1, this._game.state.party.length)));
         });
 
@@ -167,5 +167,5 @@ export const CombatEngine = {
         s.isBoss = false;
         this._eventBus.emit(GAME_EVENTS.COMBAT_END, {});
         this._ui.updateCombat();
-    }
+    },
 };
