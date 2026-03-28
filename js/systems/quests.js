@@ -213,10 +213,11 @@ export const DAILY_QUEST_TEMPLATES = [
 
 // Templates de quêtes d'histoire
 export const STORY_QUEST_TEMPLATES = [
+  // ===== FORÊT ÉVEILLÉE =====
   {
     id: 'story_boss_forest',
     name: 'Le Gardien de la Forêt',
-    description: 'Bat le boss de la Forêt',
+    description: 'Bat le boss de la Forêt Éveillée',
     type: QUEST_TYPES.STORY,
     category: QUEST_CATEGORIES.BOSS,
     target: 1,
@@ -228,12 +229,12 @@ export const STORY_QUEST_TEMPLATES = [
     ],
   },
   {
-    id: 'story_capture_shadow',
-    name: "L'Ombre Capturée",
-    description: 'Capture ton premier Écho de type Ombre',
+    id: 'story_capture_flore',
+    name: 'Ami de la Nature',
+    description: 'Capture 3 Échos de type Flore',
     type: QUEST_TYPES.STORY,
     category: QUEST_CATEGORIES.CAPTURE,
-    target: 1,
+    target: 3,
     storyOrder: 2,
     prerequisites: ['story_boss_forest'],
     rewards: [
@@ -242,29 +243,166 @@ export const STORY_QUEST_TEMPLATES = [
     ],
   },
   {
-    id: 'story_level_20',
-    name: 'Maître en Devenir',
-    description: 'Atteins le niveau 20',
+    id: 'story_level_15',
+    name: 'Tisseur Confirmé',
+    description: 'Atteins le niveau 15',
     type: QUEST_TYPES.STORY,
     category: QUEST_CATEGORIES.LEVEL,
     target: 1,
     storyOrder: 3,
-    prerequisites: ['story_capture_shadow'],
+    prerequisites: ['story_capture_flore'],
     rewards: [
-      { type: 'xp', amount: 1000 },
-      { type: 'crystals', amount: 500 },
-      { type: 'item', item: { id: 'master_badge', name: 'Badge de Maître', rarity: 'epic' } },
+      { type: 'xp', amount: 600 },
+      { type: 'crystals', amount: 300 },
+    ],
+  },
+
+  // ===== MONTAGNES CRISTALLINES =====
+  {
+    id: 'story_boss_montagnes',
+    name: 'Le Colosse de Pierre',
+    description: 'Bat le boss des Montagnes Cristallines',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.BOSS,
+    target: 1,
+    storyOrder: 4,
+    prerequisites: ['story_level_15'],
+    rewards: [
+      { type: 'xp', amount: 1200 },
+      { type: 'crystals', amount: 600 },
+      { type: 'item', item: { id: 'mountain_badge', name: 'Badge des Montagnes', rarity: 'epic' } },
     ],
   },
   {
-    id: 'story_collect_10',
-    name: 'Collectionneur Avisé',
-    description: 'Capture 10 Échos différents',
+    id: 'story_capture_terre',
+    name: 'Maître de la Roche',
+    description: 'Capture 2 Échos de type Terre',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 2,
+    storyOrder: 5,
+    prerequisites: ['story_boss_montagnes'],
+    rewards: [
+      { type: 'xp', amount: 400 },
+      { type: 'crystals', amount: 200 },
+    ],
+  },
+  {
+    id: 'story_capture_cristal',
+    name: 'Chasseur de Cristal',
+    description: 'Capture 2 Échos de type Cristal',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 2,
+    storyOrder: 6,
+    prerequisites: ['story_boss_montagnes'],
+    rewards: [
+      { type: 'xp', amount: 400 },
+      { type: 'crystals', amount: 200 },
+    ],
+  },
+
+  // ===== OCÉAN ABYSSAL =====
+  {
+    id: 'story_boss_ocean',
+    name: 'Le Léviathan',
+    description: "Bat le boss de l'Océan Abyssal",
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.BOSS,
+    target: 1,
+    storyOrder: 7,
+    prerequisites: ['story_capture_terre', 'story_capture_cristal'],
+    rewards: [
+      { type: 'xp', amount: 1800 },
+      { type: 'crystals', amount: 900 },
+      { type: 'item', item: { id: 'ocean_badge', name: "Badge de l'Océan", rarity: 'epic' } },
+    ],
+  },
+  {
+    id: 'story_capture_ocean',
+    name: 'Dompteur des Mers',
+    description: 'Capture 2 Échos de type Océan',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 2,
+    storyOrder: 8,
+    prerequisites: ['story_boss_ocean'],
+    rewards: [
+      { type: 'xp', amount: 500 },
+      { type: 'crystals', amount: 250 },
+    ],
+  },
+  {
+    id: 'story_level_30',
+    name: 'Tisseur Émérite',
+    description: 'Atteins le niveau 30',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.LEVEL,
+    target: 1,
+    storyOrder: 9,
+    prerequisites: ['story_capture_ocean'],
+    rewards: [
+      { type: 'xp', amount: 2000 },
+      { type: 'crystals', amount: 1000 },
+      { type: 'item', item: { id: 'emeritus_badge', name: 'Badge Émérite', rarity: 'legendary' } },
+    ],
+  },
+
+  // ===== VOLCAN INFERNAL =====
+  {
+    id: 'story_boss_volcan',
+    name: 'Le Seigneur Pyrodrak',
+    description: 'Bat le boss du Volcan Infernal',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.BOSS,
+    target: 1,
+    storyOrder: 10,
+    prerequisites: ['story_level_30'],
+    rewards: [
+      { type: 'xp', amount: 2500 },
+      { type: 'crystals', amount: 1250 },
+      { type: 'item', item: { id: 'volcano_badge', name: 'Badge du Volcan', rarity: 'legendary' } },
+    ],
+  },
+  {
+    id: 'story_capture_feu',
+    name: 'Maître des Flammes',
+    description: 'Capture 3 Échos de type Feu',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 3,
+    storyOrder: 11,
+    prerequisites: ['story_boss_volcan'],
+    rewards: [
+      { type: 'xp', amount: 600 },
+      { type: 'crystals', amount: 300 },
+    ],
+  },
+  {
+    id: 'story_collect_25',
+    name: 'Collectionneur Expert',
+    description: 'Capture 25 Échos différents',
     type: QUEST_TYPES.STORY,
     category: QUEST_CATEGORIES.COLLECTION,
-    target: 10,
-    storyOrder: 4,
-    prerequisites: ['story_level_20'],
+    target: 25,
+    storyOrder: 12,
+    prerequisites: ['story_capture_feu'],
+    rewards: [
+      { type: 'xp', amount: 1500 },
+      { type: 'crystals', amount: 750 },
+    ],
+  },
+
+  // ===== FORÊT MAUDITE =====
+  {
+    id: 'story_capture_shadow',
+    name: "L'Ombre Capturée",
+    description: 'Capture ton premier Écho de type Ombre',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 1,
+    storyOrder: 13,
+    prerequisites: ['story_collect_25'],
     rewards: [
       { type: 'xp', amount: 800 },
       { type: 'crystals', amount: 400 },
@@ -273,19 +411,143 @@ export const STORY_QUEST_TEMPLATES = [
   {
     id: 'story_boss_cave',
     name: "L'Obscurité Vaincue",
-    description: 'Bat le boss de la Caverne',
+    description: 'Bat le boss de la Forêt Maudite',
     type: QUEST_TYPES.STORY,
     category: QUEST_CATEGORIES.BOSS,
     target: 1,
-    storyOrder: 5,
-    prerequisites: ['story_collect_10'],
+    storyOrder: 14,
+    prerequisites: ['story_capture_shadow'],
+    rewards: [
+      { type: 'xp', amount: 3000 },
+      { type: 'crystals', amount: 1500 },
+      {
+        type: 'item',
+        item: { id: 'cursed_badge', name: 'Badge Maudit', rarity: 'legendary' },
+      },
+    ],
+  },
+  {
+    id: 'story_level_40',
+    name: 'Tisseur Légendaire',
+    description: 'Atteins le niveau 40',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.LEVEL,
+    target: 1,
+    storyOrder: 15,
+    prerequisites: ['story_boss_cave'],
+    rewards: [
+      { type: 'xp', amount: 3500 },
+      { type: 'crystals', amount: 1750 },
+      {
+        type: 'item',
+        item: { id: 'legendary_badge', name: 'Badge Légendaire', rarity: 'mythical' },
+      },
+    ],
+  },
+
+  // ===== CIEL ÉTHÉRÉ =====
+  {
+    id: 'story_capture_lumiere',
+    name: 'Porteur de Lumière',
+    description: 'Capture 2 Échos de type Lumière',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 2,
+    storyOrder: 16,
+    prerequisites: ['story_level_40'],
+    rewards: [
+      { type: 'xp', amount: 1000 },
+      { type: 'crystals', amount: 500 },
+    ],
+  },
+  {
+    id: 'story_boss_ciel',
+    name: 'Le Solarius Éternel',
+    description: 'Bat le boss du Ciel Éthéré',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.BOSS,
+    target: 1,
+    storyOrder: 17,
+    prerequisites: ['story_capture_lumiere'],
+    rewards: [
+      { type: 'xp', amount: 4000 },
+      { type: 'crystals', amount: 2000 },
+      { type: 'item', item: { id: 'celestial_badge', name: 'Badge Céleste', rarity: 'mythical' } },
+    ],
+  },
+  {
+    id: 'story_collect_40',
+    name: 'Grand Collectionneur',
+    description: 'Capture 40 Échos différents',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.COLLECTION,
+    target: 40,
+    storyOrder: 18,
+    prerequisites: ['story_boss_ciel'],
+    rewards: [
+      { type: 'xp', amount: 2500 },
+      { type: 'crystals', amount: 1250 },
+    ],
+  },
+
+  // ===== DIMENSION ARCANE =====
+  {
+    id: 'story_capture_arcane',
+    name: "Maître de l'Arcane",
+    description: 'Capture 2 Échos de type Arcane',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.CAPTURE,
+    target: 2,
+    storyOrder: 19,
+    prerequisites: ['story_collect_40'],
     rewards: [
       { type: 'xp', amount: 1500 },
       { type: 'crystals', amount: 750 },
-      {
-        type: 'item',
-        item: { id: 'cave_badge', name: 'Badge de la Caverne', rarity: 'legendary' },
-      },
+    ],
+  },
+  {
+    id: 'story_boss_dimension',
+    name: "L'Arcanexus Absolu",
+    description: 'Bat le boss de la Dimension Arcane',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.BOSS,
+    target: 1,
+    storyOrder: 20,
+    prerequisites: ['story_capture_arcane'],
+    rewards: [
+      { type: 'xp', amount: 5000 },
+      { type: 'crystals', amount: 2500 },
+      { type: 'item', item: { id: 'arcane_badge', name: "Badge de l'Arcane", rarity: 'mythical' } },
+    ],
+  },
+  {
+    id: 'story_level_50',
+    name: 'Maître Absolu',
+    description: 'Atteins le niveau 50',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.LEVEL,
+    target: 1,
+    storyOrder: 21,
+    prerequisites: ['story_boss_dimension'],
+    rewards: [
+      { type: 'xp', amount: 6000 },
+      { type: 'crystals', amount: 3000 },
+      { type: 'item', item: { id: 'absolute_badge', name: 'Badge Absolu', rarity: 'mythical' } },
+    ],
+  },
+  {
+    id: 'story_collect_50',
+    name: 'Collectionneur Ultime',
+    description: 'Capture 50 Échos différents',
+    type: QUEST_TYPES.STORY,
+    category: QUEST_CATEGORIES.COLLECTION,
+    target: 50,
+    storyOrder: 22,
+    prerequisites: ['story_level_50'],
+    rewards: [
+      { type: 'xp', amount: 4000 },
+      { type: 'crystals', amount: 2000 },
+      { type: 'item', item: { id: 'ultimate_badge', name: 'Badge Ultime', rarity: 'mythical' } },
     ],
   },
 ];
@@ -390,19 +652,39 @@ export class QuestSystem {
 
   _matchesCategoryFilter(quest, category, data) {
     if (category === QUEST_CATEGORIES.CAPTURE) {
-      if (quest.id.includes('flore') && data.type !== 'FLORE') {
-        return false;
-      }
-      if (quest.id.includes('shadow') && data.type !== 'OMBRE') {
-        return false;
+      // Vérifier les types spécifiques pour les quêtes de capture
+      const typeFilters = {
+        flore: 'FLORE',
+        shadow: 'OMBRE',
+        terre: 'TERRE',
+        cristal: 'CRISTAL',
+        ocean: 'OCEAN',
+        feu: 'FEU',
+        lumiere: 'LUMIERE',
+        arcane: 'ARCANE',
+      };
+
+      for (const [keyword, type] of Object.entries(typeFilters)) {
+        if (quest.id.includes(keyword) && data.type !== type) {
+          return false;
+        }
       }
     }
     if (category === QUEST_CATEGORIES.LEVEL) {
-      if (quest.id.includes('level_10') && data.level < 10) {
-        return false;
-      }
-      if (quest.id.includes('level_20') && data.level < 20) {
-        return false;
+      // Vérifier les niveaux spécifiques pour les quêtes de niveau
+      const levelFilters = {
+        level_10: 10,
+        level_15: 15,
+        level_20: 20,
+        level_30: 30,
+        level_40: 40,
+        level_50: 50,
+      };
+
+      for (const [keyword, requiredLevel] of Object.entries(levelFilters)) {
+        if (quest.id.includes(keyword) && data.level < requiredLevel) {
+          return false;
+        }
       }
     }
     return true;
@@ -455,30 +737,81 @@ export class QuestSystem {
   }
 
   _checkCaptureProgress(quest) {
-    if (quest.id.includes('shadow') && Game.state?.caughtEchoes) {
-      const hasShadowEcho = Array.from(Game.state.caughtEchoes).some((echoId) => {
-        const echoData = getEchoById(echoId);
-        return echoData && echoData.type === 'OMBRE';
-      });
-      if (hasShadowEcho) {
-        this._completeQuest(quest);
+    if (!Game.state?.caughtEchoes) {
+      return;
+    }
+
+    // Vérifier les captures de types spécifiques
+    const typeChecks = {
+      shadow: 'OMBRE',
+      flore: 'FLORE',
+      terre: 'TERRE',
+      cristal: 'CRISTAL',
+      ocean: 'OCEAN',
+      feu: 'FEU',
+      lumiere: 'LUMIERE',
+      arcane: 'ARCANE',
+    };
+
+    for (const [keyword, type] of Object.entries(typeChecks)) {
+      if (quest.id.includes(keyword)) {
+        const hasType = Array.from(Game.state.caughtEchoes).some((echoId) => {
+          const echoData = getEchoById(echoId);
+          return echoData && echoData.type === type;
+        });
+        if (hasType) {
+          this._completeQuest(quest);
+        }
+        return;
       }
     }
   }
 
   _checkLevelProgress(quest) {
-    if (quest.id.includes('level_20') && Game.state?.party) {
-      const hasLevel20 = Game.state.party.some((echo) => echo.level >= 20);
-      if (hasLevel20) {
-        this._completeQuest(quest);
+    if (!Game.state?.party) {
+      return;
+    }
+
+    // Vérifier les niveaux spécifiques
+    const levelChecks = {
+      level_10: 10,
+      level_15: 15,
+      level_20: 20,
+      level_30: 30,
+      level_40: 40,
+      level_50: 50,
+    };
+
+    for (const [keyword, requiredLevel] of Object.entries(levelChecks)) {
+      if (quest.id.includes(keyword)) {
+        const hasLevel = Game.state.party.some((echo) => echo.level >= requiredLevel);
+        if (hasLevel) {
+          this._completeQuest(quest);
+        }
+        return;
       }
     }
   }
 
   _checkCollectionProgress(quest) {
-    if (quest.id.includes('collect_10') && Game.state?.caughtEchoes) {
-      if (Game.state.caughtEchoes.size >= 10) {
-        this._completeQuest(quest);
+    if (!Game.state?.caughtEchoes) {
+      return;
+    }
+
+    // Vérifier les collections spécifiques
+    const collectionChecks = {
+      collect_10: 10,
+      collect_25: 25,
+      collect_40: 40,
+      collect_50: 50,
+    };
+
+    for (const [keyword, requiredCount] of Object.entries(collectionChecks)) {
+      if (quest.id.includes(keyword)) {
+        if (Game.state.caughtEchoes.size >= requiredCount) {
+          this._completeQuest(quest);
+        }
+        return;
       }
     }
   }
@@ -487,16 +820,25 @@ export class QuestSystem {
     if (!Game.state?.regions) {
       return;
     }
-    if (quest.id.includes('boss_forest')) {
-      const region = Game.state.regions.find((r) => r.id === 'foret');
-      if (region?.bossDefeated) {
-        this._completeQuest(quest);
-      }
-    }
-    if (quest.id.includes('boss_cave')) {
-      const region = Game.state.regions.find((r) => r.id === 'foret_maudite');
-      if (region?.bossDefeated) {
-        this._completeQuest(quest);
+
+    // Vérifier les boss de toutes les régions
+    const bossChecks = {
+      boss_forest: 'foret',
+      boss_montagnes: 'montagnes',
+      boss_ocean: 'ocean',
+      boss_volcan: 'volcan',
+      boss_cave: 'foret_maudite',
+      boss_ciel: 'ciel_ethere',
+      boss_dimension: 'dimension_arcane',
+    };
+
+    for (const [keyword, regionId] of Object.entries(bossChecks)) {
+      if (quest.id.includes(keyword)) {
+        const region = Game.state.regions.find((r) => r.id === regionId);
+        if (region?.bossDefeated) {
+          this._completeQuest(quest);
+        }
+        return;
       }
     }
   }
