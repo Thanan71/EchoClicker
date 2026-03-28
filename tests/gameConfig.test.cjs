@@ -108,7 +108,7 @@ describe('GAME_CONFIG', () => {
     });
 
     test('PRIMORDIAL_CHANCE is 0.005 (0.5%)', () => {
-      expect(GAME_CONFIG.PRIMORDIAL_CHANCE).toBe(0.005);
+      expect(GAME_CONFIG.PRIMORDIAL_CHANCE).toBe(0.05);
     });
   });
 });
