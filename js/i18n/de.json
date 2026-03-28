@@ -176,7 +176,10 @@
     "crystalsFound": "Kristalle gefunden",
     "energyRegen": "+1 Energie alle 30 Sekunden",
     "energyDepleted": "Energie aufgebraucht",
-    "recharge": "Aufladen"
+    "recharge": "Aufladen",
+    "energyNotEnough": "Nicht genug Minenenergie!",
+    "energyDepletedWait": "Minenenergie aufgebraucht! Warten oder Nachladung kaufen.",
+    "rechargeSuccess": "⛏️ +{amount} Minenenergie!"
   },
   "shop": {
     "title": "Geistermarkt",

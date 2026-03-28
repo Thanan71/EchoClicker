@@ -176,7 +176,10 @@
     "crystalsFound": "Crystals found",
     "energyRegen": "+1 energy every 30 seconds",
     "energyDepleted": "Energy depleted",
-    "recharge": "Recharge"
+    "recharge": "Recharge",
+    "energyNotEnough": "Not enough mine energy!",
+    "energyDepletedWait": "Mine energy depleted! Wait or buy a recharge.",
+    "rechargeSuccess": "⛏️ +{amount} mine energy!"
   },
   "shop": {
     "title": "Spirit Market",

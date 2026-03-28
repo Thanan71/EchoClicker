@@ -174,7 +174,10 @@
     "radar": "Radar",
     "remainingEnergy": "Energía restante",
     "crystalsFound": "Cristales encontrados",
-    "energyRegen": "+1 energía cada 30 segundos"
+    "energyRegen": "+1 energía cada 30 segundos",
+    "energyNotEnough": "¡No hay suficiente energía de mina!",
+    "energyDepletedWait": "¡Energía de mina agotada! Espera o compra una recarga.",
+    "rechargeSuccess": "⛏️ +{amount} energía de mina!"
   },
   "shop": {
     "title": "Mercado de Espíritus",

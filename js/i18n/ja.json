@@ -178,7 +178,10 @@
     "crystalsFound": "クリスタル発見数",
     "energyRegen": "30秒ごとにエネルギー+1",
     "energyDepleted": "エネルギー枯渇",
-    "recharge": "充電"
+    "recharge": "充電",
+    "energyNotEnough": "鉱山エネルギーが足りない！",
+    "energyDepletedWait": "鉱山エネルギー枯渇！待つか再充電を購入してください。",
+    "rechargeSuccess": "⛏️ +{amount} 鉱山エネルギー！"
   },
   "shop": {
     "title": "スピリットマーケット",

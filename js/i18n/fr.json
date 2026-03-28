@@ -177,7 +177,10 @@
     "crystalsFound": "Cristaux trouvés",
     "energyRegen": "+1 énergie toutes les 30 secondes",
     "energyDepleted": "Énergie épuisée",
-    "recharge": "Recharger"
+    "recharge": "Recharger",
+    "energyNotEnough": "Pas assez d'énergie de mine !",
+    "energyDepletedWait": "Énergie de mine épuisée ! Attendez ou achetez un rechargement.",
+    "rechargeSuccess": "⛏️ +{amount} énergie de mine !"
   },
   "shop": {
     "title": "Marché des Esprits",
