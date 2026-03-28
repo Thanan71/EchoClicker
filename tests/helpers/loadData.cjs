@@ -10,7 +10,11 @@ const vm = require('vm');
 function loadDataFile(filePath) {
     const code = fs.readFileSync(filePath, 'utf-8');
     // Remplacer const/let par var pour que vm.runInNewContext capture les variables
-    const patched = code.replace(/\bconst\b/g, 'var').replace(/\blet\b/g, 'var');
+    // Supprimer les export statements pour compatibilité CommonJS
+    const patched = code
+        .replace(/\bexport\b\s*/g, '')
+        .replace(/\bconst\b/g, 'var')
+        .replace(/\blet\b/g, 'var');
     const context = {};
     vm.createContext(context);
     vm.runInNewContext(patched, context);

@@ -4,6 +4,7 @@
 
 import { questSystem } from '../systems/quests.js';
 
+
 export const UIQuests = {
     renderQuests() {
         const dailyContainer = document.getElementById('daily-quests');
@@ -24,14 +25,14 @@ export const UIQuests = {
                 const percent = (progress / quest.target) * 100;
                 const isCompleted = quest.completed;
                 dailyHtml += `
-                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4CB}</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        ${isCompleted ? `<button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
+                        ${isCompleted ? `<button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
                     </div>
                     <div class="quest-progress">
                         <div class="quest-progress-bar">
@@ -62,14 +63,14 @@ export const UIQuests = {
                 const percent = (progress / quest.target) * 100;
                 const isCompleted = quest.completed;
                 storyHtml += `
-                <div class="quest-card ${isCompleted ? 'completed' : ''}">
+                <div class="quest-card ${isCompleted ? 'completed' : ''}" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u{1F4D6}</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        ${isCompleted ? `<button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
+                        ${isCompleted ? `<button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>` : ''}
                     </div>
                     <div class="quest-progress">
                         <div class="quest-progress-bar">
@@ -97,14 +98,14 @@ export const UIQuests = {
         } else {
             completedUnclaimed.forEach(quest => {
                 completedHtml += `
-                <div class="quest-card completed">
+                <div class="quest-card completed" data-quest-id="${quest.id}">
                     <div class="quest-header">
                         <div class="quest-icon">\u2705</div>
                         <div class="quest-info">
                             <div class="quest-name">${quest.name}</div>
                             <div class="quest-description">${quest.description}</div>
                         </div>
-                        <button class="quest-claim-btn" onclick="UI.claimQuestReward('${quest.id}')">\u{1F381} ${i18n.t('quests.claim')}</button>
+                        <button class="quest-claim-btn" data-quest-id="${quest.id}">\u{1F381} ${i18n.t('quests.claim')}</button>
                     </div>
                     <div class="quest-rewards">
                         ${quest.rewards.map(r => {
@@ -119,16 +120,15 @@ export const UIQuests = {
             });
         }
         completedContainer.innerHTML = completedHtml;
-    },
 
-    claimQuestReward(questId) {
-        const success = questSystem.claimQuestRewards(questId);
-        if (success) {
-            UI.toast(`\u{1F381} ${i18n.t('quests.claimedRewards')}`, 'success');
-            this.renderQuests();
-            UI.updateCurrencies();
-        } else {
-            UI.toast(`\u274C ${i18n.t('quests.cannotClaim')}`, 'error');
-        }
+        // Add event listeners to claim buttons
+        document.querySelectorAll('.quest-claim-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const questId = e.target.dataset.questId;
+                questSystem.claimQuestRewards(questId);
+            });
+        });
     },
-};
+}
+
+

@@ -19,6 +19,7 @@ const typesCode = fs.readFileSync(path.join(__dirname, '../js/data/types.js'), '
 const typesContext = { TYPES: undefined, RARITY_COLORS: undefined, TYPE_CHART: undefined };
 typesContext.typesContext = typesContext; // self-reference for VM
 const typesCodeToEval = typesCode
+    .replace(/\bexport\b\s*/g, '')
     .replace('const TYPES', 'typesContext.TYPES')
     .replace('const TYPE_CHART', 'typesContext.TYPE_CHART')
     .replace('const RARITY_COLORS', 'typesContext.RARITY_COLORS');
@@ -31,7 +32,9 @@ const RARITY_COLORS = typesContext.RARITY_COLORS;
 const echoesCode = fs.readFileSync(path.join(__dirname, '../js/data/echoesData.js'), 'utf-8');
 const echoesContext = { ECHOES_DB: undefined };
 echoesContext.echoesContext = echoesContext; // self-reference for VM
-const echoesCodeToEval = echoesCode.replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
+const echoesCodeToEval = echoesCode
+    .replace(/\bexport\b\s*/g, '')
+    .replace('const ECHOES_DB', 'echoesContext.ECHOES_DB');
 vm.createContext(echoesContext);
 vm.runInContext(echoesCodeToEval, echoesContext);
 const ECHOES_DB = echoesContext.ECHOES_DB;

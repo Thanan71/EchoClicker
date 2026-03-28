@@ -4,6 +4,8 @@
 // ============================================
 
 import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
+import { Combat } from '../combat.js';
+import { UI } from '../ui.js';
 
 export const GameRoutes = {
     // === Routes & Régions ===

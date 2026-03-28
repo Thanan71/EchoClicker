@@ -4,6 +4,8 @@
 // ============================================
 
 import { GAME_CONFIG } from '../data/game-config.js';
+import { UI } from '../ui.js';
+
 
 export const GameParty = {
     addToParty(echo) {

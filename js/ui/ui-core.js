@@ -6,9 +6,8 @@ import { ShinyEffect } from '../core/shinyEffect.js';
 import { Utils } from '../data/utils.js';
 import { EventBus, GAME_EVENTS } from '../core/eventBus.js';
 import { Game } from '../game.js';
-import { Mine } from '../mine.js';
-import { Hatchery } from '../hatchery.js';
-import { i18n } from '../i18n.js';
+import { Mine } from '../systems/mine.js';
+import { Hatchery } from '../systems/hatchery.js';
 
 
 export function getEchoImagePath(echo) {

@@ -52,9 +52,15 @@ function loadCombat() {
     createSubModuleMocks();
     const combatPath = path.join(__dirname, '..', 'js', 'combat.js');
     const combatCode = fs.readFileSync(combatPath, 'utf-8');
-    const patchedCode = combatCode.replace(/^const Combat =/m, 'Combat =');
-    const loader = new Function('CombatEngine', 'CombatCapture', 'CombatAuto', 'CombatParty', patchedCode + '; return Combat;');
-    Combat = loader(mockEngine, mockCapture, mockAuto, mockParty);
+    const patchedCode = combatCode
+        .replace(/^import \{ CombatEngine \} from '.*';$/m, '// CombatEngine from arg')
+        .replace(/^import \{ CombatCapture \} from '.*';$/m, '// CombatCapture from arg')
+        .replace(/^import \{ CombatAuto \} from '.*';$/m, '// CombatAuto from arg')
+        .replace(/^import \{ CombatParty \} from '.*';$/m, '// CombatParty from arg')
+        .replace(/^import \{ GAME_CONFIG \} from '.*';$/m, '// GAME_CONFIG from global')
+        .replace(/^export const Combat =/m, 'const Combat =');
+    const loader = new Function('CombatEngine', 'CombatCapture', 'CombatAuto', 'CombatParty', 'GAME_CONFIG', patchedCode + '; return Combat;');
+    Combat = loader(mockEngine, mockCapture, mockAuto, mockParty, globalThis.GAME_CONFIG);
 }
 
 describe('Combat (facade)', () => {

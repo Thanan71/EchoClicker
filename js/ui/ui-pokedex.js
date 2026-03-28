@@ -7,6 +7,7 @@ import { ECHOES_DB } from '../data/echoesData.js';
 import { getEchoById } from '../data/constants.js';
 import { getEchoImagePathById } from './ui-core.js';
 import { Game } from '../game.js';
+import { UI } from './ui.js';
 
 export const UIPokedex = {
     initPokedexFilters() {

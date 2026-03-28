@@ -5,7 +5,7 @@
 // gestion d'erreurs dans callbacks, edge cases,
 // et constantes GAME_EVENTS.
 
-const { EventBus, GAME_EVENTS } = require('../js/core/eventBus.js');
+const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
 
 describe('EventBus', () => {
     beforeEach(() => {

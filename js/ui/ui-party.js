@@ -6,6 +6,7 @@ import { TYPES } from '../data/types.js';
 import { getEchoById } from '../data/constants.js';
 import { createEchoImageHTML, getEchoImagePathById } from './ui-core.js';
 import { Game } from '../game.js';
+import { Combat } from '../combat.js';
 
 export const UIParty = {
     renderParty() {
