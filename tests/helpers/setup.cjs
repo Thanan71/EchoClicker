@@ -95,4 +95,5 @@ module.exports = {
   localStorageMock,
   mockDateNow,
   restoreDateNow,
+  Utils: globalThis.Utils,
 };

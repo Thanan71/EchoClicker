@@ -5,6 +5,7 @@
 // Charger les mocks globaux (EventBus, GAME_EVENTS, Game, Utils, getEchoById)
 const { EventBus, GAME_EVENTS } = require('./__mocks__/eventBus.cjs');
 const { Game } = require('./__mocks__/game.cjs');
+const { Utils } = require('./helpers/setup.cjs');
 
 // Données de test simulant ECHOES_DB
 const mockEchoData = {
